@@ -61,8 +61,8 @@ $container->bind(PDO::class, fn() => \Config\DataBase::getConexion());
 $router = new Router($container);
 $GLOBALS['router'] = $router;
 
-require BASE_PATH . '/bankend/core/helpers.php';
-require BASE_PATH . '/bankend/router/Router.php';
+require BASE_PATH . '/backend/core/helpers.php';
+require BASE_PATH . '/backend/router/Router.php';
 
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/';
