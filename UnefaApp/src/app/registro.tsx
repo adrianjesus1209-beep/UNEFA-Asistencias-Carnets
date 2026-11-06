@@ -6,13 +6,11 @@ import {
   ScrollView,
   TextInput,
   Pressable,
-  SafeAreaView,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { UnefaColors, MaxContentWidth } from '@/constants/theme';
-import { PreviewBar } from '@/components/PreviewBar';
-import { StatusStrip } from '@/components/StatusStrip';
 import { Header } from '@/components/Header';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function RegistroScreen() {
   const router = useRouter();
@@ -117,12 +115,6 @@ export default function RegistroScreen() {
 
   return (
     <SafeAreaView style={[styles.root, styles.rootLight]}>
-      <PreviewBar viewName="Vista 03 · Registro" />
-      <StatusStrip
-        label="CINU"
-        sublabel="Admisiones"
-        statusText="Convocatoria abierta"
-      />
       <Header subtitle="Registro CINU" showBack={true} />
 
       <ScrollView

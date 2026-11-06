@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Modal, Pressable } from 'react-native';
 import { UnefaColors } from '@/constants/theme';
+import { Camera } from 'lucide-react-native';
 
 interface QrModalProps {
   visible: boolean;
@@ -19,7 +20,7 @@ export function QrModal({ visible, onClose }: QrModalProps) {
           style={styles.card}
           onPress={(e) => e.stopPropagation()}>
           <View style={styles.iconWrap}>
-            <Text style={styles.cameraIcon}>📷</Text>
+            <Camera size={28} color={UnefaColors.goldDark} strokeWidth={2.2} />
           </View>
           <Text style={styles.title}>
             Acceso a la cámara

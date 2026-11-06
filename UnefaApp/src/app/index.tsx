@@ -5,18 +5,16 @@ import {
   StyleSheet,
   ScrollView,
   Pressable,
-  SafeAreaView,
   LayoutChangeEvent,
   type ScrollViewProps,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // ScrollView imperative handle type
 type ScrollViewHandle = React.ElementRef<typeof ScrollView>;
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { UnefaColors, MaxContentWidth } from '@/constants/theme';
-import { PreviewBar } from '@/components/PreviewBar';
-import { StatusStrip } from '@/components/StatusStrip';
 import { Header } from '@/components/Header';
 import { BottomNav } from '@/components/BottomNav';
 import { MenuDrawer } from '@/components/MenuDrawer';
@@ -84,12 +82,6 @@ export default function LandingScreen() {
 
   return (
     <SafeAreaView style={[styles.root, styles.rootLight]}>
-      <PreviewBar viewName="Vista 01 · Landing" />
-      <StatusStrip
-        label="UNEFA"
-        sublabel="R.B.V."
-        statusText="SICEU en línea"
-      />
       <Header
         subtitle="Excelencia Educativa"
         onMenuPress={() => setMenuOpen(true)}

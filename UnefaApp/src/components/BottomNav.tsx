@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, Pressable, Platform } from 'react-native';
+import { View, Text, Pressable, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
+import { Home, GraduationCap, FileText, User, QrCode } from 'lucide-react-native';
 import { UnefaColors } from '@/constants/theme';
 
 interface BottomNavProps {
@@ -18,141 +19,119 @@ export function BottomNav({
 }: BottomNavProps) {
   const router = useRouter();
 
+  const getIconColor = (tab: BottomNavProps['activeTab']) =>
+    activeTab === tab ? UnefaColors.blue : '#475569';
+
   return (
-    <View style={[styles.nav, styles.navLight]}>
+    <View
+      className={`h-16 flex-row items-center justify-around bg-white border-t border-slate-200 pt-1.5 z-50 ${
+        Platform.OS === 'ios' ? 'pb-3' : 'pb-1.5'
+      }`}>
+      {/* Tab: Inicio */}
       <Pressable
-        style={[styles.item, activeTab === 'inicio' && styles.itemActive]}
+        className="flex-1 items-center justify-center py-1 gap-0.5"
+        accessibilityRole="tab"
+        accessibilityState={{ selected: activeTab === 'inicio' }}
+        accessibilityLabel="Inicio"
         onPress={() => {
           if (onPressInicio) onPressInicio();
-          else router.push('/');
+          else router.replace('/');
         }}>
-        <Text style={[styles.icon, activeTab === 'inicio' ? styles.iconActive : styles.textDark]}>
-          ⌂
-        </Text>
-        <Text style={[styles.label, activeTab === 'inicio' ? styles.labelActive : styles.subLight]}>
+        <Home
+          size={20}
+          color={getIconColor('inicio')}
+          strokeWidth={activeTab === 'inicio' ? 2.5 : 2}
+        />
+        <Text
+          className={`text-[11px] ${
+            activeTab === 'inicio'
+              ? 'font-bold text-unefa-blue'
+              : 'font-semibold text-slate-500'
+          }`}>
           Inicio
         </Text>
       </Pressable>
 
+      {/* Tab: Carreras */}
       <Pressable
-        style={[styles.item, activeTab === 'carreras' && styles.itemActive]}
+        className="flex-1 items-center justify-center py-1 gap-0.5"
+        accessibilityRole="tab"
+        accessibilityState={{ selected: activeTab === 'carreras' }}
+        accessibilityLabel="Carreras"
         onPress={() => {
           if (onPressCarreras) onPressCarreras();
-          else router.push('/');
+          else router.replace('/');
         }}>
-        <Text style={[styles.icon, activeTab === 'carreras' ? styles.iconActive : styles.textDark]}>
-          🎓
-        </Text>
-        <Text style={[styles.label, activeTab === 'carreras' ? styles.labelActive : styles.subLight]}>
+        <GraduationCap
+          size={20}
+          color={getIconColor('carreras')}
+          strokeWidth={activeTab === 'carreras' ? 2.5 : 2}
+        />
+        <Text
+          className={`text-[11px] ${
+            activeTab === 'carreras'
+              ? 'font-bold text-unefa-blue'
+              : 'font-semibold text-slate-500'
+          }`}>
           Carreras
         </Text>
       </Pressable>
 
+      {/* Tab: CINU */}
       <Pressable
-        style={[styles.item, activeTab === 'cinu' && styles.itemActive]}
+        className="flex-1 items-center justify-center py-1 gap-0.5"
+        accessibilityRole="tab"
+        accessibilityState={{ selected: activeTab === 'cinu' }}
+        accessibilityLabel="Preinscripción CINU"
         onPress={() => router.push('/registro')}>
-        <Text style={[styles.icon, activeTab === 'cinu' ? styles.iconActive : styles.textDark]}>
-          📝
-        </Text>
-        <Text style={[styles.label, activeTab === 'cinu' ? styles.labelActive : styles.subLight]}>
+        <FileText
+          size={20}
+          color={getIconColor('cinu')}
+          strokeWidth={activeTab === 'cinu' ? 2.5 : 2}
+        />
+        <Text
+          className={`text-[11px] ${
+            activeTab === 'cinu'
+              ? 'font-bold text-unefa-blue'
+              : 'font-semibold text-slate-500'
+          }`}>
           CINU
         </Text>
       </Pressable>
 
+      {/* Tab: SICEU */}
       <Pressable
-        style={[styles.item, activeTab === 'siceu' && styles.itemActive]}
+        className="flex-1 items-center justify-center py-1 gap-0.5"
+        accessibilityRole="tab"
+        accessibilityState={{ selected: activeTab === 'siceu' }}
+        accessibilityLabel="Portal SICEU"
         onPress={() => router.push('/login')}>
-        <Text style={[styles.icon, activeTab === 'siceu' ? styles.iconActive : styles.textDark]}>
-          👤
-        </Text>
-        <Text style={[styles.label, activeTab === 'siceu' ? styles.labelActive : styles.subLight]}>
+        <User
+          size={20}
+          color={getIconColor('siceu')}
+          strokeWidth={activeTab === 'siceu' ? 2.5 : 2}
+        />
+        <Text
+          className={`text-[11px] ${
+            activeTab === 'siceu'
+              ? 'font-bold text-unefa-blue'
+              : 'font-semibold text-slate-500'
+          }`}>
           SICEU
         </Text>
       </Pressable>
 
+      {/* Acción: Escáner QR */}
       <Pressable
-        style={[styles.item, styles.qrItem]}
+        className="flex-1 items-center justify-center py-1 gap-0.5"
+        accessibilityRole="button"
+        accessibilityLabel="Abrir escáner QR"
         onPress={onOpenQr}>
-        <View style={styles.qrBadge}>
-          <Text style={styles.qrIcon}>▦</Text>
+        <View className="w-[26px] h-[26px] rounded-[7px] bg-unefa-gold items-center justify-center">
+          <QrCode size={16} color={UnefaColors.navy} strokeWidth={2.5} />
         </View>
-        <Text style={[styles.label, styles.qrLabel]}>ScanerQR</Text>
+        <Text className="text-[11px] font-bold text-unefa-goldDark">ScanerQR</Text>
       </Pressable>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  nav: {
-    height: 64,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    borderTopWidth: StyleSheet.hairlineWidth,
-    paddingBottom: Platform.OS === 'ios' ? 12 : 6,
-    paddingTop: 6,
-    zIndex: 90,
-  },
-  navLight: {
-    backgroundColor: '#ffffff',
-    borderTopColor: '#e2e8f0',
-  },
-  navDark: {
-    backgroundColor: '#0d1829',
-    borderTopColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  item: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 4,
-  },
-  itemActive: {},
-  icon: {
-    fontSize: 18,
-    marginBottom: 2,
-  },
-  iconActive: {
-    color: UnefaColors.blue,
-  },
-  label: {
-    fontSize: 11,
-    fontWeight: '600',
-  },
-  labelActive: {
-    color: UnefaColors.blue,
-    fontWeight: '700',
-  },
-  qrItem: {},
-  qrBadge: {
-    width: 26,
-    height: 26,
-    borderRadius: 7,
-    backgroundColor: UnefaColors.gold,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 2,
-  },
-  qrIcon: {
-    fontSize: 14,
-    color: UnefaColors.navy,
-    fontWeight: '900',
-  },
-  qrLabel: {
-    color: UnefaColors.goldDark,
-    fontWeight: '700',
-  },
-  textLight: {
-    color: '#cbd5e1',
-  },
-  textDark: {
-    color: '#475569',
-  },
-  subLight: {
-    color: '#64748b',
-  },
-  subDark: {
-    color: '#94a3b8',
-  },
-});
-

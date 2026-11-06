@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Modal, Pressable, ScrollView } from 'react-nati
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { UnefaColors } from '@/constants/theme';
+import { X, ArrowRight } from 'lucide-react-native';
 
 interface MenuDrawerProps {
   visible: boolean;
@@ -40,7 +41,7 @@ export function MenuDrawer({ visible, onClose, onNavigateSection }: MenuDrawerPr
               </View>
             </View>
             <Pressable style={styles.closeBtn} onPress={onClose}>
-              <Text style={styles.closeText}>✕</Text>
+              <X size={18} color="#0f172a" strokeWidth={2.5} />
             </Pressable>
           </View>
 
@@ -49,31 +50,31 @@ export function MenuDrawer({ visible, onClose, onNavigateSection }: MenuDrawerPr
               <Pressable style={styles.navLink} onPress={() => handleLink('inicio')}>
                 <Text style={styles.idx}>[01]</Text>
                 <Text style={styles.navText}>Inicio</Text>
-                <Text style={styles.arrow}>→</Text>
+                <ArrowRight size={16} color={UnefaColors.gold} strokeWidth={2.5} />
               </Pressable>
 
               <Pressable style={styles.navLink} onPress={() => handleLink('nosotros')}>
                 <Text style={styles.idx}>[02]</Text>
                 <Text style={styles.navText}>Doctrina</Text>
-                <Text style={styles.arrow}>→</Text>
+                <ArrowRight size={16} color={UnefaColors.gold} strokeWidth={2.5} />
               </Pressable>
 
               <Pressable style={styles.navLink} onPress={() => handleLink('carreras')}>
                 <Text style={styles.idx}>[03]</Text>
                 <Text style={styles.navText}>Carreras</Text>
-                <Text style={styles.arrow}>→</Text>
+                <ArrowRight size={16} color={UnefaColors.gold} strokeWidth={2.5} />
               </Pressable>
 
               <Pressable style={styles.navLink} onPress={() => handleLink('admisiones')}>
                 <Text style={styles.idx}>[04]</Text>
                 <Text style={styles.navText}>Admisiones CINU</Text>
-                <Text style={styles.arrow}>→</Text>
+                <ArrowRight size={16} color={UnefaColors.gold} strokeWidth={2.5} />
               </Pressable>
 
               <Pressable style={styles.navLink} onPress={() => handleLink('servicios')}>
                 <Text style={styles.idx}>[05]</Text>
                 <Text style={styles.navText}>Servicios</Text>
-                <Text style={styles.arrow}>→</Text>
+                <ArrowRight size={16} color={UnefaColors.gold} strokeWidth={2.5} />
               </Pressable>
             </View>
 

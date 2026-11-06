@@ -6,14 +6,12 @@ import {
   ScrollView,
   TextInput,
   Pressable,
-  SafeAreaView,
   ActivityIndicator,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { UnefaColors, MaxContentWidth } from '@/constants/theme';
-import { PreviewBar } from '@/components/PreviewBar';
-import { StatusStrip } from '@/components/StatusStrip';
 import { Header } from '@/components/Header';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -56,12 +54,6 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView style={[styles.root, styles.rootLight]}>
-      <PreviewBar viewName="Vista 02 · Login" />
-      <StatusStrip
-        label="SICEU"
-        sublabel="Sistema central"
-        statusText="Autenticación activa"
-      />
       <Header subtitle="SICEU en línea" showBack={true} />
 
       <ScrollView

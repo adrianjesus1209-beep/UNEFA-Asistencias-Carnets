@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
-import { UnefaColors } from '@/constants/theme';
+import { ArrowLeft, Menu } from 'lucide-react-native';
 
 interface HeaderProps {
   subtitle: string;
@@ -13,130 +13,62 @@ interface HeaderProps {
 export function Header({ subtitle, showBack, onMenuPress }: HeaderProps) {
   const router = useRouter();
 
+  const handleGoHome = () => {
+    if (router.canGoBack()) {
+      router.back();
+    } else {
+      router.replace('/');
+    }
+  };
+
   return (
-    <View style={styles.header}>
+    <View className="h-[58px] px-4 flex-row items-center justify-between bg-white border-b border-slate-200 z-50">
       <Pressable
-        style={styles.brand}
-        onPress={() => router.push('/')}
+        className="flex-row items-center gap-2.5"
+        onPress={handleGoHome}
         accessibilityRole="button"
         accessibilityLabel="Ir al inicio">
-        <View style={styles.logoWrap}>
+        <View className="w-9 h-9 rounded-lg items-center justify-center bg-white p-0.5 border border-slate-200">
           <Image
             source={require('@/assets/images/unefa-logo.png')}
-            style={styles.logo}
+            style={{ width: 30, height: 30 }}
             contentFit="contain"
           />
         </View>
-        <View style={styles.brandTextWrap}>
-          <Text style={styles.brandName}>UNEFA</Text>
-          <Text style={styles.brandSub}>{subtitle}</Text>
+        <View className="justify-center">
+          <Text className="text-base font-black tracking-wider text-slate-900">
+            UNEFA
+          </Text>
+          <Text className="text-[10px] text-slate-500 font-semibold uppercase tracking-wide">
+            {subtitle}
+          </Text>
         </View>
       </Pressable>
 
-      <View style={styles.tools}>
+      <View className="flex-row items-center gap-2">
         {showBack && (
           <Pressable
-            style={styles.iconBtn}
-            onPress={() => router.push('/')}
+            className="h-9 px-3 rounded-full items-center justify-center flex-row gap-1.5 border border-slate-200 bg-slate-50 active:bg-slate-100"
+            hitSlop={8}
+            onPress={handleGoHome}
             accessibilityRole="button"
             accessibilityLabel="Volver al inicio">
-            <Text style={styles.backArrow}>←</Text>
-            <Text style={styles.backLabel}>Inicio</Text>
+            <ArrowLeft size={15} color="#0f172a" strokeWidth={2.5} />
+            <Text className="text-xs font-bold text-slate-900">Inicio</Text>
           </Pressable>
         )}
 
         {onMenuPress && (
           <Pressable
-            style={styles.iconBtn}
+            className="w-9 h-9 rounded-full items-center justify-center border border-slate-200 bg-slate-50 active:bg-slate-100"
+            hitSlop={8}
             onPress={onMenuPress}
             accessibilityRole="button"
             accessibilityLabel="Abrir menú">
-            <Text style={styles.menuIcon}>☰</Text>
+            <Menu size={18} color="#0f172a" strokeWidth={2.5} />
           </Pressable>
         )}
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  header: {
-    height: 58,
-    paddingHorizontal: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    zIndex: 50,
-    backgroundColor: '#ffffff',
-    borderBottomColor: '#e2e8f0',
-  },
-  brand: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
-  logoWrap: {
-    width: 36,
-    height: 36,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ffffff',
-    padding: 2,
-    borderWidth: 1,
-    borderColor: '#e2e8f0',
-  },
-  logo: {
-    width: 30,
-    height: 30,
-  },
-  brandTextWrap: {
-    justifyContent: 'center',
-  },
-  brandName: {
-    fontSize: 16,
-    fontWeight: '900',
-    letterSpacing: 0.8,
-    color: '#0f172a',
-  },
-  brandSub: {
-    fontSize: 10,
-    color: '#64748b',
-    fontWeight: '600',
-    textTransform: 'uppercase',
-    letterSpacing: 0.3,
-  },
-  tools: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  iconBtn: {
-    height: 36,
-    paddingHorizontal: 10,
-    borderRadius: 18,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    gap: 4,
-    borderWidth: 1,
-    backgroundColor: '#f8fafc',
-    borderColor: '#e2e8f0',
-  },
-  backArrow: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#0f172a',
-  },
-  backLabel: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: '#0f172a',
-  },
-  menuIcon: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#0f172a',
-  },
-});
