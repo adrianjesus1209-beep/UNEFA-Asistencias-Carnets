@@ -6,7 +6,8 @@ import {
   ScrollView,
   Pressable,
   LayoutChangeEvent,
-  type ScrollViewProps,
+  type NativeScrollEvent,
+  type NativeSyntheticEvent,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -34,18 +35,41 @@ export default function LandingScreen() {
   // Modals
   const [menuOpen, setMenuOpen] = useState(false);
   const [qrOpen, setQrOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<'inicio' | 'carreras' | 'cinu' | 'siceu'>('inicio');
 
   // Section Y positions for smooth scrolling
   const sectionPositions = useRef<{ [key: string]: number }>({});
+  const sectionTabs: Record<string, 'inicio' | 'carreras' | 'cinu' | 'siceu'> = {
+    inicio: 'inicio',
+    nosotros: 'inicio',
+    carreras: 'carreras',
+    admisiones: 'cinu',
+    servicios: 'siceu',
+  };
 
   const handleLayoutSection = (key: string) => (event: LayoutChangeEvent) => {
     sectionPositions.current[key] = event.nativeEvent.layout.y;
   };
 
   const scrollToSection = (key: string) => {
+    const nextTab = sectionTabs[key] ?? 'inicio';
+    setActiveTab((currentTab) => (currentTab === nextTab ? currentTab : nextTab));
     const y = sectionPositions.current[key];
     if (y !== undefined && scrollRef.current) {
       scrollRef.current.scrollTo({ y: Math.max(0, y - 20), animated: true });
+    }
+  };
+
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const scrollY = event.nativeEvent.contentOffset.y + 100;
+    const visibleSections = Object.entries(sectionPositions.current)
+      .filter(([, y]) => y <= scrollY)
+      .sort(([, firstY], [, secondY]) => firstY - secondY);
+    const activeSection = visibleSections[visibleSections.length - 1]?.[0];
+
+    if (activeSection) {
+      const nextTab = sectionTabs[activeSection] ?? 'inicio';
+      setActiveTab((currentTab) => (currentTab === nextTab ? currentTab : nextTab));
     }
   };
 
@@ -91,6 +115,8 @@ export default function LandingScreen() {
         ref={scrollRef}
         style={styles.scroll}
         contentContainerStyle={styles.scrollContent}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}>
         <View style={styles.centerContainer}>
           {/* ── 01. HERO SECTION ─────────────────────────────────────────── */}
@@ -824,7 +850,7 @@ export default function LandingScreen() {
 
       {/* ── NAVEGACIÓN INFERIOR ─────────────────────────────────────────── */}
       <BottomNav
-        activeTab="inicio"
+        activeTab={activeTab}
         onPressInicio={() => scrollToSection('inicio')}
         onPressCarreras={() => scrollToSection('carreras')}
         onOpenQr={() => setQrOpen(true)}

@@ -1,5 +1,14 @@
-import React from 'react';
-import { View, Text, StyleSheet, Modal, Pressable, ScrollView } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Modal,
+  Pressable,
+  ScrollView,
+  Animated,
+  useWindowDimensions,
+} from 'react-native';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { UnefaColors } from '@/constants/theme';
@@ -13,6 +22,61 @@ interface MenuDrawerProps {
 
 export function MenuDrawer({ visible, onClose, onNavigateSection }: MenuDrawerProps) {
   const router = useRouter();
+  const { width: windowWidth } = useWindowDimensions();
+  const drawerWidth = windowWidth * 0.85;
+  const drawerTranslateX = useRef(new Animated.Value(drawerWidth)).current;
+  const backdropOpacity = useRef(new Animated.Value(0)).current;
+  const [modalVisible, setModalVisible] = useState(visible);
+  const modalMounted = useRef(visible);
+
+  // Mantiene el modal montado hasta completar la entrada o salida lateral.
+  useEffect(() => {
+    if (visible) {
+      modalMounted.current = true;
+      setModalVisible(true);
+      drawerTranslateX.setValue(drawerWidth);
+      backdropOpacity.setValue(0);
+
+      const openingAnimation = Animated.parallel([
+        Animated.timing(drawerTranslateX, {
+          toValue: 0,
+          duration: 260,
+          useNativeDriver: true,
+        }),
+        Animated.timing(backdropOpacity, {
+          toValue: 1,
+          duration: 220,
+          useNativeDriver: true,
+        }),
+      ]);
+
+      openingAnimation.start();
+      return () => openingAnimation.stop();
+    }
+
+    if (!modalMounted.current) return;
+
+    const closingAnimation = Animated.parallel([
+      Animated.timing(drawerTranslateX, {
+        toValue: drawerWidth,
+        duration: 260,
+        useNativeDriver: true,
+      }),
+      Animated.timing(backdropOpacity, {
+        toValue: 0,
+        duration: 220,
+        useNativeDriver: true,
+      }),
+    ]);
+
+    closingAnimation.start(({ finished }) => {
+      if (finished) {
+        modalMounted.current = false;
+        setModalVisible(false);
+      }
+    });
+    return () => closingAnimation.stop();
+  }, [backdropOpacity, drawerTranslateX, drawerWidth, visible]);
 
   const handleLink = (section: string) => {
     onClose();
@@ -22,10 +86,14 @@ export function MenuDrawer({ visible, onClose, onNavigateSection }: MenuDrawerPr
   };
 
   return (
-    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
-      <View style={styles.backdrop}>
+    <Modal visible={modalVisible} transparent animationType="none" onRequestClose={onClose}>
+      <Animated.View style={[styles.backdrop, { opacity: backdropOpacity }]}>
         <Pressable style={styles.dismissOverlay} onPress={onClose} />
-        <View style={styles.sheet}>
+        <Animated.View
+          style={[
+            styles.sheet,
+            { width: drawerWidth, transform: [{ translateX: drawerTranslateX }] },
+          ]}>
           <View style={styles.header}>
             <View style={styles.brand}>
               <View style={styles.logoWrap}>
@@ -118,8 +186,8 @@ export function MenuDrawer({ visible, onClose, onNavigateSection }: MenuDrawerPr
               Periodo académico 2026-I · Presencia en los 24 estados{'\n'}República Bolivariana de Venezuela
             </Text>
           </ScrollView>
-        </View>
-      </View>
+        </Animated.View>
+      </Animated.View>
     </Modal>
   );
 }
@@ -131,11 +199,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   dismissOverlay: {
-    width: '15%',
+    flex: 1,
     height: '100%',
   },
   sheet: {
-    width: '85%',
     height: '100%',
     paddingTop: 16,
     paddingHorizontal: 20,
