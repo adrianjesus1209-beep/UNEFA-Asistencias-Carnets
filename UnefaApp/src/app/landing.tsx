@@ -27,7 +27,7 @@ import {
   Pillar,
 } from '@/constants/data';
 
-export default function InicioScreen() {
+export default function LandingScreen() {
   const router = useRouter();
   const scrollRef = useRef<ScrollViewHandle>(null);
 

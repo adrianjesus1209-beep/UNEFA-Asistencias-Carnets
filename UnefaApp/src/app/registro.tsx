@@ -253,7 +253,7 @@ export default function RegistroScreen() {
                   </Pressable>
                   <Pressable
                     style={[styles.btn, styles.btnOutline]}
-                    onPress={() => router.push('/inicio')}>
+                    onPress={() => router.push('/landing')}>
                     <Text style={[styles.btnOutlineText, styles.textDark]}>
                       Volver a la página principal
                     </Text>

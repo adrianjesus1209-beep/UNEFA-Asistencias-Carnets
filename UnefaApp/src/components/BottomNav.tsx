@@ -35,7 +35,7 @@ export function BottomNav({
         accessibilityLabel="Inicio"
         onPress={() => {
           if (onPressInicio) onPressInicio();
-          else router.replace('/inicio');
+          else router.replace('/landing');
         }}>
         <Home
           size={20}
@@ -60,7 +60,7 @@ export function BottomNav({
         accessibilityLabel="Carreras"
         onPress={() => {
           if (onPressCarreras) onPressCarreras();
-          else router.replace('/inicio');
+          else router.replace('/landing');
         }}>
         <GraduationCap
           size={20}

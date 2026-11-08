@@ -17,7 +17,7 @@ export function Header({ subtitle, showBack, onMenuPress }: HeaderProps) {
     if (router.canGoBack()) {
       router.back();
     } else {
-      router.replace('/inicio');
+      router.replace('/landing');
     }
   };
 

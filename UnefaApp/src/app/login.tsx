@@ -271,7 +271,7 @@ export default function LoginScreen() {
               Si no recuerdas tu clave o tu usuario no está activo, acude a la Unidad de Control de
               Estudios de tu núcleo.
             </Text>
-            <Pressable onPress={() => router.push('/inicio')}>
+            <Pressable onPress={() => router.push('/landing')}>
               <Text style={styles.miniLink}>Volver a la landing →</Text>
             </Pressable>
           </View>
