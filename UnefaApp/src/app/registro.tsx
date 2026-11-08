@@ -253,7 +253,7 @@ export default function RegistroScreen() {
                   </Pressable>
                   <Pressable
                     style={[styles.btn, styles.btnOutline]}
-                    onPress={() => router.push('/')}>
+                    onPress={() => router.push('/inicio')}>
                     <Text style={[styles.btnOutlineText, styles.textDark]}>
                       Volver a la página principal
                     </Text>
@@ -1173,4 +1173,3 @@ const styles = StyleSheet.create({
     color: '#cbd5e1',
   },
 });
-

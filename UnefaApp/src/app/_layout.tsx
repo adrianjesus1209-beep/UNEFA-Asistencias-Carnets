@@ -23,6 +23,7 @@ function RootNavigator() {
           contentStyle: { backgroundColor: '#ffffff' },
         }}>
         <Stack.Screen name="index" />
+        <Stack.Screen name="inicio" />
         <Stack.Screen name="login" />
         <Stack.Screen name="registro" />
       </Stack>

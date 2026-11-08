@@ -8,6 +8,7 @@ import {
   Pressable,
   ActivityIndicator,
 } from 'react-native';
+import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { UnefaColors, MaxContentWidth } from '@/constants/theme';
 import { Header } from '@/components/Header';
@@ -62,13 +63,29 @@ export default function LoginScreen() {
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled">
         <View style={styles.centerContainer}>
-          {/* Auth Banner */}
-          <View style={[styles.banner, styles.bannerLight]}>
-            <Text style={[styles.bannerSub, styles.subLight]}>
-              Portal académico
-            </Text>
-            <Text style={[styles.bannerTitle, styles.textDark]}>
-              Periodo 2026-I
+          {/* Institutional banner */}
+          <View style={styles.banner}>
+            <View style={styles.bannerTopRow}>
+              <View style={styles.bannerBrand}>
+                <View style={styles.bannerMark}>
+                  <Image
+                    source={require('@/assets/images/unefa-logo.png')}
+                    style={styles.bannerLogo}
+                    contentFit="contain"
+                    accessibilityLabel="Logo de la UNEFA"
+                  />
+                </View>
+                <View>
+                  <Text style={styles.bannerSub}>PORTAL ACADÉMICO</Text>
+                  <Text style={styles.bannerTitle}>SICEU en línea</Text>
+                </View>
+              </View>
+              <View style={styles.periodBadge}>
+                <Text style={styles.periodBadgeText}>2026-I</Text>
+              </View>
+            </View>
+            <Text style={styles.bannerCaption}>
+              Acceso seguro para estudiantes y personal UNEFA.
             </Text>
           </View>
 
@@ -155,10 +172,13 @@ export default function LoginScreen() {
                   ]}
                   value={cedula}
                   onChangeText={(val) => {
-                    setCedula(val);
+                    setCedula(val.replace(/\D/g, ''));
                     setErrorMsg('');
                   }}
                   keyboardType="numeric"
+                  maxLength={12}
+                  returnKeyType="next"
+                  accessibilityLabel="Número de cédula"
                   placeholder="Ej. 28123456"
                   placeholderTextColor="#94a3b8"
                 />
@@ -185,12 +205,16 @@ export default function LoginScreen() {
                     setErrorMsg('');
                   }}
                   secureTextEntry={!showPassword}
+                  returnKeyType="go"
+                  accessibilityLabel="Contraseña institucional"
                   placeholder="••••••••••••"
                   placeholderTextColor="#94a3b8"
                 />
                 <Pressable
                   style={styles.togglePassBtn}
-                  onPress={() => setShowPassword((prev) => !prev)}>
+                  onPress={() => setShowPassword((prev) => !prev)}
+                  accessibilityRole="button"
+                  accessibilityLabel={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}>
                   <Text style={styles.togglePassText}>{showPassword ? 'Ocultar' : 'Mostrar'}</Text>
                 </Pressable>
               </View>
@@ -207,7 +231,9 @@ export default function LoginScreen() {
             <Pressable
               style={[styles.btn, styles.btnGold, styles.btnLg]}
               onPress={handleSubmit}
-              disabled={isLoading}>
+              disabled={isLoading}
+              accessibilityRole="button"
+              accessibilityLabel="Acceder al SICEU">
               {isLoading ? (
                 <ActivityIndicator color={UnefaColors.navy} size="small" />
               ) : (
@@ -233,7 +259,7 @@ export default function LoginScreen() {
             </View>
 
             <Text style={styles.secureNote}>
-              🔒 Conexión segura con el servidor de la UNEFA.{'\n'}
+              Conexión segura con el servidor de la UNEFA.{'\n'}
               Uso exclusivo para la comunidad universitaria autorizada.
             </Text>
           </View>
@@ -245,7 +271,7 @@ export default function LoginScreen() {
               Si no recuerdas tu clave o tu usuario no está activo, acude a la Unidad de Control de
               Estudios de tu núcleo.
             </Text>
-            <Pressable onPress={() => router.push('/')}>
+            <Pressable onPress={() => router.push('/inicio')}>
               <Text style={styles.miniLink}>Volver a la landing →</Text>
             </Pressable>
           </View>
@@ -281,27 +307,63 @@ const styles = StyleSheet.create({
 
   // Banner
   banner: {
-    padding: 14,
-    borderRadius: 14,
+    padding: 18,
+    borderRadius: 18,
     marginBottom: 16,
     borderWidth: 1,
+    backgroundColor: UnefaColors.blueDeep,
+    borderColor: UnefaColors.blue,
   },
-  bannerLight: {
-    backgroundColor: '#f8fafc',
-    borderColor: '#e2e8f0',
+  bannerTopRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
-  bannerDark: {
-    backgroundColor: '#0f1d33',
-    borderColor: 'rgba(255, 255, 255, 0.08)',
+  bannerBrand: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  bannerMark: {
+    width: 42,
+    height: 42,
+    borderRadius: 13,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#ffffff',
+  },
+  bannerLogo: {
+    width: 34,
+    height: 34,
   },
   bannerSub: {
-    fontSize: 11,
+    color: 'rgba(255, 255, 255, 0.75)',
+    fontSize: 10,
     fontWeight: '600',
-    marginBottom: 2,
+    letterSpacing: 1,
+    marginBottom: 3,
   },
   bannerTitle: {
-    fontSize: 16,
+    color: '#ffffff',
+    fontSize: 17,
     fontWeight: '900',
+  },
+  periodBadge: {
+    borderRadius: 20,
+    backgroundColor: UnefaColors.gold,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+  },
+  periodBadgeText: {
+    color: UnefaColors.navy,
+    fontSize: 11,
+    fontWeight: '900',
+  },
+  bannerCaption: {
+    color: 'rgba(255, 255, 255, 0.82)',
+    fontSize: 12,
+    lineHeight: 18,
+    marginTop: 14,
   },
 
   // Auth Card
@@ -597,5 +659,3 @@ const styles = StyleSheet.create({
     color: '#cbd5e1',
   },
 });
-
-
