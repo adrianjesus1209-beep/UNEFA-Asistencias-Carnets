@@ -83,7 +83,7 @@ export function BottomNav({
         accessibilityRole="tab"
         accessibilityState={{ selected: activeTab === 'cinu' }}
         accessibilityLabel="Preinscripción CINU"
-        onPress={() => router.push('/registro')}>
+        onPress={() => router.replace('/registro')}>
         <FileText
           size={20}
           color={getIconColor('cinu')}
@@ -105,7 +105,7 @@ export function BottomNav({
         accessibilityRole="tab"
         accessibilityState={{ selected: activeTab === 'siceu' }}
         accessibilityLabel="Portal SICEU"
-        onPress={() => router.push('/login')}>
+        onPress={() => router.replace('/login')}>
         <User
           size={20}
           color={getIconColor('siceu')}

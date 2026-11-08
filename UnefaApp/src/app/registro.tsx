@@ -10,6 +10,8 @@ import {
 import { useRouter } from 'expo-router';
 import { UnefaColors, MaxContentWidth } from '@/constants/theme';
 import { Header } from '@/components/Header';
+import { BottomNav } from '@/components/BottomNav';
+import { QrModal } from '@/components/QrModal';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function RegistroScreen() {
@@ -19,6 +21,7 @@ export default function RegistroScreen() {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>('');
+  const [qrOpen, setQrOpen] = useState(false);
 
   // Password visibility
   const [showPass, setShowPass] = useState<boolean>(false);
@@ -726,6 +729,9 @@ export default function RegistroScreen() {
           </View>
         </View>
       </ScrollView>
+      {/* La barra y el modal QR se mantienen disponibles desde CINU. */}
+      <BottomNav activeTab="cinu" onOpenQr={() => setQrOpen(true)} />
+      <QrModal visible={qrOpen} onClose={() => setQrOpen(false)} />
     </SafeAreaView>
   );
 }

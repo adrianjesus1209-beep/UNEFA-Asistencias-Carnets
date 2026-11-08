@@ -12,6 +12,8 @@ import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { UnefaColors, MaxContentWidth } from '@/constants/theme';
 import { Header } from '@/components/Header';
+import { BottomNav } from '@/components/BottomNav';
+import { QrModal } from '@/components/QrModal';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function LoginScreen() {
@@ -28,6 +30,7 @@ export default function LoginScreen() {
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [qrOpen, setQrOpen] = useState(false);
 
   const handleSubmit = () => {
     setErrorMsg('');
@@ -277,6 +280,9 @@ export default function LoginScreen() {
           </View>
         </View>
       </ScrollView>
+      {/* La barra y el modal QR se mantienen disponibles desde SICEU. */}
+      <BottomNav activeTab="siceu" onOpenQr={() => setQrOpen(true)} />
+      <QrModal visible={qrOpen} onClose={() => setQrOpen(false)} />
     </SafeAreaView>
   );
 }
