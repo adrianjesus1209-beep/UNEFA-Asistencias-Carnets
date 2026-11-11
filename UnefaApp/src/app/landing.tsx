@@ -1,8 +1,7 @@
-﻿import React, { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   ScrollView,
   Pressable,
   LayoutChangeEvent,
@@ -11,11 +10,10 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-// ScrollView imperative handle type
-type ScrollViewHandle = React.ElementRef<typeof ScrollView>;
 import { Image } from 'expo-image';
+import { cssInterop } from 'nativewind';
 import { useRouter } from 'expo-router';
-import { UnefaColors, MaxContentWidth } from '@/constants/theme';
+
 import { Header } from '@/components/Header';
 import { BottomNav } from '@/components/BottomNav';
 import { MenuDrawer } from '@/components/MenuDrawer';
@@ -27,6 +25,11 @@ import {
   Career,
   Pillar,
 } from '@/constants/data';
+
+cssInterop(Image, { className: 'style' });
+
+// ScrollView imperative handle type
+type ScrollViewHandle = React.ElementRef<typeof ScrollView>;
 
 export default function LandingScreen() {
   const router = useRouter();
@@ -105,7 +108,7 @@ export default function LandingScreen() {
   const percentage = Math.round((completedCount / CHECKLIST_ITEMS.length) * 100);
 
   return (
-    <SafeAreaView style={[styles.root, styles.rootLight]}>
+    <SafeAreaView className="flex-1 bg-white">
       <Header
         subtitle="Excelencia Educativa"
         onMenuPress={() => setMenuOpen(true)}
@@ -113,110 +116,110 @@ export default function LandingScreen() {
 
       <ScrollView
         ref={scrollRef}
-        style={styles.scroll}
-        contentContainerStyle={styles.scrollContent}
+        className="flex-1"
+        contentContainerClassName="items-center pb-5"
         onScroll={handleScroll}
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}>
-        <View style={styles.centerContainer}>
+        <View className="w-full max-w-[480px]">
           {/* ── 01. HERO SECTION ─────────────────────────────────────────── */}
           <View
-            style={[styles.hero, styles.sectionLight]}
+            className="px-4 pt-5 pb-8 bg-white"
             onLayout={handleLayoutSection('inicio')}>
-            <Text style={styles.heroKicker}>[01] — Institución politécnica cívico-militar</Text>
-            <Text style={[styles.heroTitle, styles.textDark]}>
+            <Text className="mb-2 text-[11px] font-extrabold uppercase tracking-[0.5px] text-unefa-blue">[01] — Institución politécnica cívico-militar</Text>
+            <Text className="mb-3 text-[36px] leading-[40px] font-black tracking-[-0.5px] text-neutral-950">
               Vanguardia{'\n'}Técnica &{'\n'}
-              <Text style={styles.heroTitleBlue}>Soberanía</Text>
+              <Text className="text-unefa-blue">Soberanía</Text>
             </Text>
 
-            <Text style={[styles.heroDesc, styles.subLight]}>
+            <Text className="mb-5 text-[15px] leading-[22px] text-slate-600">
               Formación politécnica rigurosa, investigación científica aplicada y valores
               cívico-militares con 100% de gratuidad de matrícula.
             </Text>
 
-            <View style={styles.metricsRow}>
-              <View style={[styles.metricCard, styles.cardLight]}>
-                <Text style={[styles.metricVal, styles.textDark]}>
+            <View className="mb-6 flex-row gap-2.5">
+              <View className="flex-1 items-center rounded-[14px] bg-white p-3 shadow-sm bg-white border-slate-200">
+                <Text className="text-[22px] font-black text-neutral-950">
                   100%
                 </Text>
-                <Text style={styles.metricLbl}>Gratuidad</Text>
+                <Text className="mt-0.5 text-[11px] font-semibold text-slate-500">Gratuidad</Text>
               </View>
-              <View style={[styles.metricCard, styles.cardLight]}>
-                <Text style={[styles.metricVal, styles.textDark]}>
+              <View className="flex-1 items-center rounded-[14px] bg-white p-3 shadow-sm bg-white border-slate-200">
+                <Text className="text-[22px] font-black text-neutral-950">
                   24
                 </Text>
-                <Text style={styles.metricLbl}>Estados</Text>
+                <Text className="mt-0.5 text-[11px] font-semibold text-slate-500">Estados</Text>
               </View>
-              <View style={[styles.metricCard, styles.cardLight]}>
-                <Text style={[styles.metricVal, styles.blueVal]}>CINU</Text>
-                <Text style={styles.metricLbl}>Convocatoria</Text>
+              <View className="flex-1 items-center rounded-[14px] bg-white p-3 shadow-sm bg-white border-slate-200">
+                <Text className="text-[22px] font-black text-unefa-blue">CINU</Text>
+                <Text className="mt-0.5 text-[11px] font-semibold text-slate-500">Convocatoria</Text>
               </View>
             </View>
 
-            <View style={styles.heroCta}>
+            <View className="mb-6 gap-2.5">
               <Pressable
-                style={[styles.btn, styles.btnGold, styles.btnLg]}
+                className="flex-row items-center justify-center gap-2 rounded-[14px] py-3.5 bg-unefa-gold shadow-md py-4"
                 onPress={() => router.push('/registro')}>
-                <Text style={styles.btnGoldText}>Preinscripción CINU</Text>
-                <Text style={styles.btnGoldArrow}>→</Text>
+                <Text className="text-[15px] font-black text-unefa-navy">Preinscripción CINU</Text>
+                <Text className="text-base font-black text-unefa-navy">→</Text>
               </Pressable>
 
               <Pressable
-                style={[styles.btn, styles.btnOutline]}
+                className="flex-row items-center justify-center gap-2 rounded-[14px] py-3.5 border border-slate-300 bg-transparent"
                 onPress={() => router.push('/login')}>
-                <Text style={[styles.btnOutlineText, styles.textDark]}>
+                <Text className="text-sm font-bold text-neutral-950">
                   Portal SICEU
                 </Text>
               </Pressable>
 
               <Pressable
-                style={styles.heroLink}
+                className="items-center self-center py-1.5"
                 onPress={() => scrollToSection('carreras')}>
-                <Text style={[styles.heroLinkText, styles.subLight]}>
+                <Text className="text-[13px] font-bold text-slate-600">
                   Explorar carreras ↓
                 </Text>
               </Pressable>
             </View>
 
-            <View style={styles.photoContainer}>
+            <View className="mb-5 overflow-hidden rounded-[18px] border border-slate-200">
               <Image
                 source={{
                   uri: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80',
                 }}
-                style={styles.heroImg}
+                className="h-[200px] w-full"
                 contentFit="cover"
               />
-              <View style={[styles.photoCaption, styles.captionLight]}>
+              <View className="flex-row items-center justify-between p-3 bg-white">
                 <View>
-                  <Text style={[styles.captionTitle, styles.textDark]}>
+                  <Text className="text-[10px] font-extrabold tracking-[0.4px] text-neutral-950">
                     FIG. 01 — LABORATORIO POLITÉCNICO
                   </Text>
-                  <Text style={styles.captionSub}>
+                  <Text className="text-[9px] font-semibold text-slate-500">
                     ROBÓTICA, AUTOMATIZACIÓN Y SISTEMAS APLICADOS
                   </Text>
                 </View>
-                <View style={styles.swatch} />
+                <View className="h-[14px] w-[14px] rounded-full bg-unefa-blue" />
               </View>
             </View>
 
-            <View style={styles.heroBadges}>
-              <View style={[styles.heroBadge, styles.cardLight]}>
-                <Text style={styles.badgeIcon}>⚙</Text>
+            <View className="flex-row gap-2.5">
+              <View className="flex-1 flex-row items-center gap-2.5 rounded-[14px] p-3 bg-white border-slate-200">
+                <Text className="text-xl text-unefa-blue">⚙</Text>
                 <View>
-                  <Text style={[styles.badgeMain, styles.textDark]}>
+                  <Text className="text-[13px] font-extrabold text-neutral-950">
                     Ingenierías
                   </Text>
-                  <Text style={styles.badgeSub}>10 Semestres</Text>
+                  <Text className="text-[10px] font-semibold text-slate-500">10 Semestres</Text>
                 </View>
               </View>
 
-              <View style={[styles.heroBadge, styles.cardLight]}>
-                <Text style={[styles.badgeIcon, styles.goldIcon]}>★</Text>
+              <View className="flex-1 flex-row items-center gap-2.5 rounded-[14px] p-3 bg-white border-slate-200">
+                <Text className="text-xl text-unefa-blue text-unefa-gold">★</Text>
                 <View>
-                  <Text style={[styles.badgeMain, styles.textDark]}>
+                  <Text className="text-[13px] font-extrabold text-neutral-950">
                     Cívico-Militar
                   </Text>
-                  <Text style={styles.badgeSub}>Doctrina Integral</Text>
+                  <Text className="text-[10px] font-semibold text-slate-500">Doctrina Integral</Text>
                 </View>
               </View>
             </View>
@@ -224,14 +227,14 @@ export default function LandingScreen() {
 
           {/* ── 02. DOCTRINA SECTION ─────────────────────────────────────── */}
           <View
-            style={[styles.section, styles.sectionLightAlt]}
+            className="px-4 py-8 border-y border-slate-200 bg-slate-50"
             onLayout={handleLayoutSection('nosotros')}>
-            <View style={styles.sectionHead}>
-              <Text style={styles.kicker}>[02] — Doctrina &amp; fundamentos</Text>
-              <Text style={[styles.sectionTitle, styles.textDark]}>
+            <View className="mb-5">
+              <Text className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.5px] text-unefa-blue">[02] — Doctrina &amp; fundamentos</Text>
+              <Text className="mb-1.5 text-2xl font-black text-neutral-950">
                 Pilares del modelo unefista
               </Text>
-              <Text style={[styles.sectionDesc, styles.subLight]}>
+              <Text className="text-sm leading-5 text-slate-600">
                 Una propuesta pedagógica única que une la disciplina del método científico
                 con la mística y responsabilidad cívico-militar.
               </Text>
@@ -240,29 +243,29 @@ export default function LandingScreen() {
             <ScrollView
               horizontal
               showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.scrollerRow}>
+              contentContainerClassName="gap-2 pb-4">
               {Object.keys(PILLARS_DATA).map((key) => {
                 const item = PILLARS_DATA[key];
                 const isActive = selectedPillarKey === key;
                 return (
                   <Pressable
                     key={key}
-                    style={[
-                      styles.pillarTab,
-                      styles.pillarTabLight,
-                      isActive && styles.pillarTabActive,
-                    ]}
+                    className={[
+                      'min-w-[150px] rounded-xl border p-2.5 px-3.5',
+                      'bg-white border-slate-200',
+                      isActive && '!border-unefa-blue !bg-unefa-blue/[0.06]',
+                    ].filter(Boolean).join(' ')}
                     onPress={() => setSelectedPillarKey(key)}>
-                    <View style={styles.pIndexRow}>
-                      <Text style={[styles.pNum, isActive && styles.pNumActive]}>[{item.number}]</Text>
-                      <Text style={styles.pSubtitle}>{item.subtitle}</Text>
+                    <View className="mb-1 flex-row justify-between">
+                      <Text className={['font-mono text-[11px] font-extrabold text-slate-500', isActive && '!text-unefa-blue'].filter(Boolean).join(' ')}>[{item.number}]</Text>
+                      <Text className="text-[10px] font-semibold text-slate-500">{item.subtitle}</Text>
                     </View>
                     <Text
-                      style={[
-                        styles.pName,
-                        styles.textDark,
-                        isActive && styles.pNameActive,
-                      ]}>
+                      className={[
+                        'text-[13px] font-bold',
+                        'text-neutral-950',
+                        isActive && '!text-unefa-blue',
+                      ].filter(Boolean).join(' ')}>
                       {item.tabTitle}
                     </Text>
                   </Pressable>
@@ -271,37 +274,37 @@ export default function LandingScreen() {
             </ScrollView>
 
             {/* Dossier Card */}
-            <View style={[styles.dossier, styles.cardLight]}>
-              <View style={styles.dossierMedia}>
+            <View className="mb-5 overflow-hidden rounded-[20px] border border-slate-200 shadow-md bg-white border-slate-200">
+              <View className="relative h-[180px]">
                 <Image
                   source={{ uri: activePillar.image }}
-                  style={styles.dossierImg}
+                  className="h-full w-full"
                   contentFit="cover"
                 />
-                <View style={[styles.dossierCaptionBox, styles.captionLight]}>
-                  <Text style={[styles.dossierCaptionText, styles.textDark]}>
+                <View className="absolute inset-x-0 bottom-0 px-3 py-1.5 bg-white">
+                  <Text className="text-[9px] font-bold tracking-[0.3px] text-neutral-950">
                     {activePillar.caption}
                   </Text>
                 </View>
               </View>
 
-              <View style={styles.dossierBody}>
-                <View style={styles.bluePill}>
-                  <Text style={styles.bluePillText}>Área {activePillar.number}</Text>
+              <View className="p-4">
+                <View className="mb-2.5 self-start rounded-lg bg-unefa-blue/10 px-2.5 py-1">
+                  <Text className="text-[11px] font-extrabold text-unefa-blue">Área {activePillar.number}</Text>
                 </View>
-                <Text style={[styles.dossierTitle, styles.textDark]}>
+                <Text className="mb-2 text-xl font-black text-neutral-950">
                   {activePillar.title}
                 </Text>
-                <Text style={[styles.dossierDesc, styles.subLight]}>
+                <Text className="mb-4 text-[13px] leading-[19px] text-slate-600">
                   {activePillar.description}
                 </Text>
 
-                <View style={styles.highlightSection}>
-                  <Text style={styles.listLabel}>Hitos de formación</Text>
+                <View className="mb-4">
+                  <Text className="mb-2 text-[11px] font-extrabold uppercase tracking-[0.4px] text-slate-500">Hitos de formación</Text>
                   {activePillar.highlights.map((h, i) => (
-                    <View key={i} style={styles.highlightItem}>
-                      <Text style={styles.highlightArrow}>→</Text>
-                      <Text style={[styles.highlightText, styles.textDark]}>
+                    <View key={i} className="mb-1.5 flex-row items-start gap-2">
+                      <Text className="text-sm font-extrabold text-unefa-blue">→</Text>
+                      <Text className="flex-1 text-xs leading-[18px] font-medium text-neutral-950">
                         {h}
                       </Text>
                     </View>
@@ -310,9 +313,9 @@ export default function LandingScreen() {
               </View>
             </View>
 
-            <View style={[styles.lemaBox, styles.lemaBoxLight]}>
-              <Text style={styles.lemaLabel}>Lema institucional</Text>
-              <Text style={[styles.lemaText, styles.textDark]}>
+            <View className="items-center rounded-[14px] border p-4 bg-white border-slate-200">
+              <Text className="mb-1 text-[10px] font-extrabold uppercase tracking-[0.4px] text-slate-500">Lema institucional</Text>
+              <Text className="text-sm font-extrabold italic text-center text-neutral-950">
                 "Excelencia Educativa Abierta al Pueblo"
               </Text>
             </View>
@@ -320,96 +323,96 @@ export default function LandingScreen() {
 
           {/* ── 03. CARRERAS SECTION ─────────────────────────────────────── */}
           <View
-            style={[styles.section, styles.sectionLight]}
+            className="px-4 py-8 bg-white"
             onLayout={handleLayoutSection('carreras')}>
-            <View style={styles.sectionHeadRow}>
+            <View className="mb-5 flex-row items-start justify-between">
               <View>
-                <Text style={styles.kicker}>[03] — Oferta académica</Text>
-                <Text style={[styles.sectionTitle, styles.textDark]}>
+                <Text className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.5px] text-unefa-blue">[03] — Oferta académica</Text>
+                <Text className="mb-1.5 text-2xl font-black text-neutral-950">
                   Explorador de carreras
                 </Text>
               </View>
               <Pressable onPress={() => router.push('/registro')}>
-                <Text style={styles.miniLink}>Inscripción →</Text>
+                <Text className="text-[13px] font-extrabold text-unefa-blue">Inscripción →</Text>
               </Pressable>
             </View>
 
             {/* Segmented control */}
-            <View style={[styles.segmented, styles.segmentedLight]}>
+            <View className="mb-4 flex-row rounded-[14px] border p-1 bg-slate-100 border-slate-200">
               <Pressable
-                style={[styles.segBtn, selectedFaculty === 'ingenieria' && styles.segBtnActive]}
+                className={['flex-1 items-center rounded-[10px] py-2', selectedFaculty === 'ingenieria' && '!bg-unefa-blue'].filter(Boolean).join(' ')}
                 onPress={() => {
                   setSelectedFaculty('ingenieria');
                   setSelectedCareerId(CAREERS_DATA.ingenieria[0].id);
                 }}>
                 <Text
-                  style={[
-                    styles.segLabel,
-                    selectedFaculty === 'ingenieria' && styles.segLabelActive,
-                  ]}>
+                  className={[
+                    'text-xs font-extrabold',
+                    selectedFaculty === 'ingenieria' && '!text-white',
+                  ].filter(Boolean).join(' ')}>
                   Ingenierías
                 </Text>
-                <Text style={styles.segMeta}>10 sem.</Text>
+                <Text className="text-[9px] text-slate-500">10 sem.</Text>
               </Pressable>
 
               <Pressable
-                style={[styles.segBtn, selectedFaculty === 'licenciaturas' && styles.segBtnActive]}
+                className={['flex-1 items-center rounded-[10px] py-2', selectedFaculty === 'licenciaturas' && '!bg-unefa-blue'].filter(Boolean).join(' ')}
                 onPress={() => {
                   setSelectedFaculty('licenciaturas');
                   setSelectedCareerId(CAREERS_DATA.licenciaturas[0].id);
                 }}>
                 <Text
-                  style={[
-                    styles.segLabel,
-                    selectedFaculty === 'licenciaturas' && styles.segLabelActive,
-                  ]}>
+                  className={[
+                    'text-xs font-extrabold',
+                    selectedFaculty === 'licenciaturas' && '!text-white',
+                  ].filter(Boolean).join(' ')}>
                   Licenciaturas
                 </Text>
-                <Text style={styles.segMeta}>8 sem.</Text>
+                <Text className="text-[9px] text-slate-500">8 sem.</Text>
               </Pressable>
 
               <Pressable
-                style={[styles.segBtn, selectedFaculty === 'tsu' && styles.segBtnActive]}
+                className={['flex-1 items-center rounded-[10px] py-2', selectedFaculty === 'tsu' && '!bg-unefa-blue'].filter(Boolean).join(' ')}
                 onPress={() => {
                   setSelectedFaculty('tsu');
                   setSelectedCareerId(CAREERS_DATA.tsu[0].id);
                 }}>
                 <Text
-                  style={[
-                    styles.segLabel,
-                    selectedFaculty === 'tsu' && styles.segLabelActive,
-                  ]}>
+                  className={[
+                    'text-xs font-extrabold',
+                    selectedFaculty === 'tsu' && '!text-white',
+                  ].filter(Boolean).join(' ')}>
                   Técnico Superior
                 </Text>
-                <Text style={styles.segMeta}>6 sem.</Text>
+                <Text className="text-[9px] text-slate-500">6 sem.</Text>
               </Pressable>
             </View>
 
             {/* Career buttons list */}
-            <View style={styles.careerList}>
+            <View className="mb-5 gap-2">
               {careersInFaculty.map((item) => {
                 const isSelected = activeCareer.id === item.id;
                 return (
                   <Pressable
                     key={item.id}
-                    style={[
-                      styles.careerBtn,
-                      styles.cardLight,
-                      isSelected && styles.careerBtnActive,
-                    ]}
+                    className={[
+                      'rounded-[14px] border border-slate-200 p-3',
+                      'bg-white border-slate-200',
+                      isSelected && '!border-unefa-blue !bg-unefa-blue/[0.05]',
+                    ].filter(Boolean).join(' ')}
                     onPress={() => setSelectedCareerId(item.id)}>
-                    <View style={styles.careerBtnTop}>
-                      <Text style={[styles.careerCode, isSelected && styles.careerCodeActive]}>
+                    <View className="mb-0.5 flex-row justify-between">
+                      <Text className={['font-mono text-[11px] font-extrabold text-slate-500', isSelected && '!text-unefa-blue'].filter(Boolean).join(' ')}>
                         {item.code}
                       </Text>
-                      <Text style={styles.careerDuration}>{item.duration}</Text>
+                      <Text className="text-[11px] font-semibold text-slate-500">{item.duration}</Text>
                     </View>
                     <Text
-                      style={[
-                        styles.careerBtnTitle,
-                        styles.textDark,
-                        isSelected && styles.careerBtnTitleActive,
-                      ]}>
+                      className={[
+                        'text-sm font-extrabold',
+                        'text-neutral-950',
+                        isSelected && '!text-unefa-blue',
+                      ].filter(Boolean).join(' ')}>
                       {item.title}
                     </Text>
                   </Pressable>
@@ -418,50 +421,50 @@ export default function LandingScreen() {
             </View>
 
             {/* Career Detailed Dossier */}
-            <View style={[styles.dossier, styles.cardLight]}>
-              <View style={styles.dossierMedia}>
+            <View className="mb-5 overflow-hidden rounded-[20px] border border-slate-200 shadow-md bg-white border-slate-200">
+              <View className="relative h-[180px]">
                 <Image
                   source={{ uri: activeCareer.image }}
-                  style={styles.dossierImg}
+                  className="h-full w-full"
                   contentFit="cover"
                 />
-                <View style={styles.careerMediaTag}>
-                  <Text style={styles.careerMediaTagText}>{activeCareer.code}</Text>
+                <View className="absolute left-2.5 top-2.5 rounded-md bg-unefa-navy px-2 py-1">
+                  <Text className="font-mono text-[10px] font-extrabold text-white">{activeCareer.code}</Text>
                 </View>
-                <View style={styles.careerMediaFooter}>
-                  <Text style={styles.careerDegreeText}>{activeCareer.degree}</Text>
-                  <Text style={styles.careerDurationGold}>{activeCareer.duration}</Text>
+                <View className="absolute inset-x-0 bottom-0 flex-row justify-between bg-unefa-navy/[0.85] px-3 py-1.5">
+                  <Text className="text-[11px] font-bold text-white">{activeCareer.degree}</Text>
+                  <Text className="text-[11px] font-extrabold text-unefa-gold">{activeCareer.duration}</Text>
                 </View>
               </View>
 
-              <View style={styles.dossierBody}>
-                <Text style={[styles.dossierTitle, styles.textDark]}>
+              <View className="p-4">
+                <Text className="mb-2 text-xl font-black text-neutral-950">
                   {activeCareer.title}
                 </Text>
-                <Text style={[styles.dossierDesc, styles.subLight]}>
+                <Text className="mb-4 text-[13px] leading-[19px] text-slate-600">
                   {activeCareer.description}
                 </Text>
 
-                <View style={styles.highlightSection}>
-                  <Text style={styles.listLabel}>Competencias principales</Text>
+                <View className="mb-4">
+                  <Text className="mb-2 text-[11px] font-extrabold uppercase tracking-[0.4px] text-slate-500">Competencias principales</Text>
                   {activeCareer.competencies.map((c, i) => (
-                    <View key={i} style={styles.highlightItem}>
-                      <Text style={styles.competencySquare}>■</Text>
-                      <Text style={[styles.highlightText, styles.textDark]}>
+                    <View key={i} className="mb-1.5 flex-row items-start gap-2">
+                      <Text className="text-[11px] text-unefa-gold">■</Text>
+                      <Text className="flex-1 text-xs leading-[18px] font-medium text-neutral-950">
                         {c}
                       </Text>
                     </View>
                   ))}
                 </View>
 
-                <View style={styles.subjectsSection}>
-                  <Text style={styles.listLabel}>Materias troncales</Text>
-                  <View style={styles.chipsRow}>
+                <View className="mb-4">
+                  <Text className="mb-2 text-[11px] font-extrabold uppercase tracking-[0.4px] text-slate-500">Materias troncales</Text>
+                  <View className="flex-row flex-wrap gap-1.5">
                     {activeCareer.subjects.map((sub, i) => (
                       <View
                         key={i}
-                        style={[styles.chip, styles.chipLight]}>
-                        <Text style={[styles.chipText, styles.textDark]}>
+                        className="rounded-[20px] border px-2.5 py-[5px] bg-slate-100 border-slate-200">
+                        <Text className="text-[11px] font-semibold text-neutral-950">
                           {sub}
                         </Text>
                       </View>
@@ -469,15 +472,15 @@ export default function LandingScreen() {
                   </View>
                 </View>
 
-                <View style={styles.careerCta}>
-                  <Text style={styles.monoNote}>
+                <View className="mt-2 gap-2">
+                  <Text className="font-mono text-[10px] text-center text-slate-500">
                     Modalidad presencial · Núcleo Central y sedes regionales
                   </Text>
                   <Pressable
-                    style={[styles.btn, styles.btnGold]}
+                    className="flex-row items-center justify-center gap-2 rounded-[14px] py-3.5 bg-unefa-gold shadow-md"
                     onPress={() => router.push('/registro')}>
-                    <Text style={styles.btnGoldText}>Postularme en esta carrera</Text>
-                    <Text style={styles.btnGoldArrow}>→</Text>
+                    <Text className="text-[15px] font-black text-unefa-navy">Postularme en esta carrera</Text>
+                    <Text className="text-base font-black text-unefa-navy">→</Text>
                   </Pressable>
                 </View>
               </View>
@@ -486,21 +489,21 @@ export default function LandingScreen() {
 
           {/* ── 04. ADMISIONES & VERIFICADOR CINU ─────────────────────────── */}
           <View
-            style={[styles.section, styles.sectionLightAlt]}
+            className="px-4 py-8 border-y border-slate-200 bg-slate-50"
             onLayout={handleLayoutSection('admisiones')}>
-            <View style={styles.sectionHead}>
-              <Text style={styles.kicker}>[04] — Admisiones &amp; nivelación</Text>
-              <Text style={[styles.sectionTitle, styles.textDark]}>
+            <View className="mb-5">
+              <Text className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.5px] text-unefa-blue">[04] — Admisiones &amp; nivelación</Text>
+              <Text className="mb-1.5 text-2xl font-black text-neutral-950">
                 Ruta de ingreso y verificador CINU
               </Text>
-              <Text style={[styles.sectionDesc, styles.subLight]}>
+              <Text className="text-sm leading-5 text-slate-600">
                 Todos los aspirantes formalizan su acceso a través del Curso Integral de
                 Nivelación Universitaria. Verifica tus recaudos antes de iniciar el registro.
               </Text>
             </View>
 
             {/* Timeline */}
-            <View style={styles.timeline}>
+            <View className="mb-5 gap-3">
               {[
                 {
                   num: '01',
@@ -523,15 +526,15 @@ export default function LandingScreen() {
                   desc: 'Asignación definitiva de matrícula e inicio del primer semestre académico regular.',
                 },
               ].map((step, idx) => (
-                <View key={idx} style={styles.timelineItem}>
-                  <View style={styles.timelineNumBox}>
-                    <Text style={styles.timelineNum}>{step.num}</Text>
+                <View key={idx} className="flex-row gap-3">
+                  <View className="h-8 w-8 items-center justify-center rounded-full bg-[rgba(242,184,7,0.16)]">
+                    <Text className="font-mono text-[13px] font-black text-[#c99106]">{step.num}</Text>
                   </View>
-                  <View style={styles.timelineContent}>
-                    <Text style={[styles.timelineTitle, styles.textDark]}>
+                  <View className="flex-1">
+                    <Text className="mb-0.5 text-sm font-extrabold text-neutral-950">
                       {step.title}
                     </Text>
-                    <Text style={[styles.timelineDesc, styles.subLight]}>
+                    <Text className="text-xs leading-[17px] text-slate-600">
                       {step.desc}
                     </Text>
                   </View>
@@ -540,72 +543,72 @@ export default function LandingScreen() {
             </View>
 
             {/* Sede central photo */}
-            <View style={styles.photoContainer}>
+            <View className="mb-5 overflow-hidden rounded-[18px] border border-slate-200">
               <Image
                 source={{
                   uri: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1200&q=80',
                 }}
-                style={styles.sedeImg}
+                className="h-[180px] w-full"
                 contentFit="cover"
               />
-              <View style={[styles.photoCaption, styles.captionLight]}>
-                <Text style={[styles.captionTitle, styles.textDark]}>
+              <View className="flex-row items-center justify-between p-3 bg-white">
+                <Text className="text-[10px] font-extrabold tracking-[0.4px] text-neutral-950">
                   INSTALACIONES DE PREGRADO Y POSTGRADO
                 </Text>
-                <Text style={styles.goldText}>SEDES EN 24 ESTADOS</Text>
+                <Text className="text-[10px] font-extrabold text-[#c99106]">SEDES EN 24 ESTADOS</Text>
               </View>
             </View>
 
             {/* Interactive Verificador */}
-            <View style={[styles.verifier, styles.cardLight]}>
-              <View style={styles.verifierHead}>
+            <View className="rounded-[20px] border border-slate-200 p-[18px] bg-white border-slate-200">
+              <View className="mb-3.5 flex-row items-center justify-between">
                 <View>
-                  <Text style={styles.verifierKicker}>Herramienta del aspirante</Text>
-                  <Text style={[styles.verifierTitle, styles.textDark]}>
+                  <Text className="text-[10px] font-extrabold uppercase text-unefa-blue">Herramienta del aspirante</Text>
+                  <Text className="text-lg font-black text-neutral-950">
                     Verificador de recaudos
                   </Text>
                 </View>
-                <View style={styles.percentWrap}>
-                  <Text style={styles.percentText}>{percentage}%</Text>
-                  <Text style={styles.percentLabel}>Listo para consignar</Text>
+                <View className="items-end">
+                  <Text className="text-[22px] font-black text-[#c99106]">{percentage}%</Text>
+                  <Text className="text-[10px] font-semibold text-slate-500">Listo para consignar</Text>
                 </View>
               </View>
 
               {/* Progress bar */}
-              <View style={styles.progressBarTrack}>
-                <View style={[styles.progressBarFill, { width: `${percentage}%` }]} />
+              <View className="mb-3.5 h-2 overflow-hidden rounded bg-slate-200">
+                <View className="h-full bg-unefa-gold" style={{ width: `${percentage}%` }} />
               </View>
 
-              <Text style={[styles.hintText, styles.subLight]}>
+              <Text className="mb-3 text-xs leading-[17px] text-slate-600">
                 Marca los recaudos que ya posees en físico para calcular tu preparación:
               </Text>
 
               {/* Checklist items */}
-              <View style={styles.checklist}>
+              <View className="mb-4 gap-2">
                 {CHECKLIST_ITEMS.map((item) => {
                   const isChecked = !!checkedItems[item.id];
                   return (
                     <Pressable
                       key={item.id}
-                      style={[
-                        styles.checkItem,
-                        styles.checkItemLight,
-                        isChecked && styles.checkItemActive,
-                      ]}
+                      className={[
+                        'flex-row items-center gap-2.5 rounded-xl border p-2.5',
+                        'bg-white border-slate-200',
+                        isChecked && '!border-unefa-blue !bg-unefa-blue/[0.04]',
+                      ].filter(Boolean).join(' ')}
                       onPress={() => toggleCheckItem(item.id)}>
-                      <View style={[styles.checkBox, isChecked && styles.checkBoxChecked]}>
-                        {isChecked && <Text style={styles.checkMark}>✓</Text>}
+                      <View className={['h-[22px] w-[22px] items-center justify-center rounded-md border-2 border-slate-300', isChecked && '!border-unefa-blue !bg-unefa-blue'].filter(Boolean).join(' ')}>
+                        {isChecked && <Text className="text-[13px] font-black text-white">✓</Text>}
                       </View>
                       <Text
-                        style={[
-                          styles.checkText,
-                          styles.textDark,
-                          isChecked && styles.checkTextActive,
-                        ]}>
+                        className={[
+                          'flex-1 text-xs leading-4 font-medium',
+                          'text-neutral-950',
+                          isChecked && '!font-bold',
+                        ].filter(Boolean).join(' ')}>
                         {item.text}
                       </Text>
-                      <View style={styles.phasePill}>
-                        <Text style={styles.phaseText}>{item.phase}</Text>
+                      <View className="rounded-md bg-slate-100 px-1.5 py-0.5">
+                        <Text className="text-[9px] font-bold text-slate-500">{item.phase}</Text>
                       </View>
                     </Pressable>
                   );
@@ -613,15 +616,15 @@ export default function LandingScreen() {
               </View>
 
               <View
-                style={[
-                  styles.feedbackBox,
-                  percentage === 100 ? styles.feedbackSuccess : styles.feedbackNormal,
-                ]}>
+                className={[
+                  'mb-3.5 rounded-xl p-3',
+                  percentage === 100 ? 'bg-green-100' : 'bg-unefa-blue/[0.06]',
+                ].filter(Boolean).join(' ')}>
                 <Text
-                  style={[
-                    styles.feedbackText,
-                    percentage === 100 ? styles.feedbackSuccessText : styles.feedbackNormalText,
-                  ]}>
+                  className={[
+                    'text-xs font-semibold text-center',
+                    percentage === 100 ? 'font-extrabold text-unefa-green' : 'text-unefa-blue',
+                  ].filter(Boolean).join(' ')}>
                   {percentage === 100
                     ? '¡100% de recaudos listos! Puedes formalizar tu expediente en Control de Estudios sin demoras.'
                     : `Tienes ${completedCount} de ${CHECKLIST_ITEMS.length} recaudos completados.`}
@@ -629,13 +632,13 @@ export default function LandingScreen() {
               </View>
 
               <Pressable
-                style={[styles.btn, styles.btnGold]}
+                className="flex-row items-center justify-center gap-2 rounded-[14px] py-3.5 bg-unefa-gold shadow-md"
                 onPress={() => router.push('/registro')}>
-                <Text style={styles.btnGoldText}>Iniciar preinscripción digital</Text>
-                <Text style={styles.btnGoldArrow}>→</Text>
+                <Text className="text-[15px] font-black text-unefa-navy">Iniciar preinscripción digital</Text>
+                <Text className="text-base font-black text-unefa-navy">→</Text>
               </Pressable>
 
-              <Text style={styles.secureNote}>
+              <Text className="mt-2.5 text-[11px] text-center text-slate-500">
                 🛡 Trámite 100% público y gratuito, sin intermediarios
               </Text>
             </View>
@@ -643,126 +646,122 @@ export default function LandingScreen() {
 
           {/* ── 05. SERVICIOS DIGITALES ──────────────────────────────────── */}
           <View
-            style={[styles.section, styles.sectionLight]}
+            className="px-4 py-8 bg-white"
             onLayout={handleLayoutSection('servicios')}>
-            <View style={styles.sectionHeadRow}>
+            <View className="mb-5 flex-row items-start justify-between">
               <View>
-                <Text style={styles.kicker}>[05] — Plataformas &amp; servicios</Text>
-                <Text style={[styles.sectionTitle, styles.textDark]}>
+                <Text className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.5px] text-unefa-blue">[05] — Plataformas &amp; servicios</Text>
+                <Text className="mb-1.5 text-2xl font-black text-neutral-950">
                   Servicios digitales
                 </Text>
               </View>
               <Pressable onPress={() => router.push('/login')}>
-                <Text style={styles.miniLink}>Ingreso →</Text>
+                <Text className="text-[13px] font-extrabold text-unefa-blue">Ingreso →</Text>
               </Pressable>
             </View>
 
-            <View style={styles.serviceStack}>
+            <View className="gap-3.5">
               {/* Service 01 */}
               <View
-                style={[
-                  styles.serviceCard,
-                  styles.serviceCardFeatured,
-                  styles.cardLight,
-                ]}>
-                <View style={styles.serviceMeta}>
-                  <View style={styles.goldPill}>
-                    <Text style={styles.goldPillText}>SVC-01</Text>
+                className="rounded-[18px] border border-slate-200 p-[18px] border-[1.5px] border-unefa-gold bg-white border-slate-200">
+                <View className="mb-2.5 flex-row gap-2">
+                  <View className="rounded-md bg-[rgba(242,184,7,0.16)] px-2 py--[3px]">
+                    <Text className="text-[10px] font-extrabold text-[#c99106]">SVC-01</Text>
                   </View>
-                  <View style={styles.neutralPill}>
-                    <Text style={styles.neutralPillText}>Sistema central</Text>
+                  <View className="rounded-md bg-slate-100 px-2 py-[3px]">
+                    <Text className="text-[10px] font-bold text-slate-500">Sistema central</Text>
                   </View>
                 </View>
-                <Text style={[styles.serviceTitle, styles.textDark]}>
+                <Text className="mb-1.5 text-lg font-black text-neutral-950">
                   Portal SICEU
                 </Text>
-                <Text style={[styles.serviceDesc, styles.subLight]}>
+                <Text className="mb-3.5 text-[13px] leading-[18px] text-slate-600">
                   Consulta de calificaciones, récord académico, inscripción de asignaturas,
                   control de asistencia y aulas asignadas.
                 </Text>
                 <Pressable
-                  style={[styles.btn, styles.btnGold]}
+                  className="flex-row items-center justify-center gap-2 rounded-[14px] py-3.5 bg-unefa-gold shadow-md"
                   onPress={() => router.push('/login')}>
-                  <Text style={styles.btnGoldText}>Acceder a SICEU</Text>
+                  <Text className="text-[15px] font-black text-unefa-navy">Acceder a SICEU</Text>
                 </Pressable>
               </View>
 
               {/* Service 02 */}
-              <View style={[styles.serviceCard, styles.cardLight]}>
-                <View style={styles.serviceMeta}>
-                  <View style={styles.neutralPill}>
-                    <Text style={styles.neutralPillText}>SVC-02</Text>
+              <View className="rounded-[18px] border border-slate-200 p-[18px] bg-white border-slate-200">
+                <View className="mb-2.5 flex-row gap-2">
+                  <View className="rounded-md bg-slate-100 px-2 py-[3px]">
+                    <Text className="text-[10px] font-bold text-slate-500">SVC-02</Text>
                   </View>
-                  <View style={styles.neutralPill}>
-                    <Text style={styles.neutralPillText}>Semestre 2026-I</Text>
+                  <View className="rounded-md bg-slate-100 px-2 py-[3px]">
+                    <Text className="text-[10px] font-bold text-slate-500">Semestre 2026-I</Text>
                   </View>
                 </View>
-                <Text style={[styles.serviceTitle, styles.textDark]}>
+                <Text className="mb-1.5 text-lg font-black text-neutral-950">
                   Calendario oficial
                 </Text>
-                <Text style={[styles.serviceDesc, styles.subLight]}>
+                <Text className="mb-3.5 text-[13px] leading-[18px] text-slate-600">
                   Fechas de inicio de clases, cortes de notas parciales, solicitudes de retiro o
                   adición y actos solemnes de grado.
                 </Text>
                 <Pressable
-                  style={[styles.btn, styles.btnOutline]}
+                  className="flex-row items-center justify-center gap-2 rounded-[14px] py-3.5 border border-slate-300 bg-transparent"
                   onPress={() => scrollToSection('inicio')}>
                   <Text
-                    style={[styles.btnOutlineText, styles.textDark]}>
+                    className="text-sm font-bold text-neutral-950">
                     Consultar fechas
                   </Text>
                 </Pressable>
               </View>
 
               {/* Service 03 */}
-              <View style={[styles.serviceCard, styles.cardLight]}>
-                <View style={styles.serviceMeta}>
-                  <View style={styles.neutralPill}>
-                    <Text style={styles.neutralPillText}>SVC-03</Text>
+              <View className="rounded-[18px] border border-slate-200 p-[18px] bg-white border-slate-200">
+                <View className="mb-2.5 flex-row gap-2">
+                  <View className="rounded-md bg-slate-100 px-2 py-[3px]">
+                    <Text className="text-[10px] font-bold text-slate-500">SVC-03</Text>
                   </View>
-                  <View style={styles.neutralPill}>
-                    <Text style={styles.neutralPillText}>Trámites</Text>
+                  <View className="rounded-md bg-slate-100 px-2 py-[3px]">
+                    <Text className="text-[10px] font-bold text-slate-500">Trámites</Text>
                   </View>
                 </View>
-                <Text style={[styles.serviceTitle, styles.textDark]}>
+                <Text className="mb-1.5 text-lg font-black text-neutral-950">
                   Constancias en línea
                 </Text>
-                <Text style={[styles.serviceDesc, styles.subLight]}>
+                <Text className="mb-3.5 text-[13px] leading-[18px] text-slate-600">
                   Generación automatizada de constancias de estudio, notas certificadas y cartas de
                   culminación con firma digital.
                 </Text>
                 <Pressable
-                  style={[styles.btn, styles.btnOutline]}
+                  className="flex-row items-center justify-center gap-2 rounded-[14px] py-3.5 border border-slate-300 bg-transparent"
                   onPress={() => router.push('/login')}>
                   <Text
-                    style={[styles.btnOutlineText, styles.textDark]}>
+                    className="text-sm font-bold text-neutral-950">
                     Gestión digital
                   </Text>
                 </Pressable>
               </View>
 
               {/* Service 04 */}
-              <View style={[styles.serviceCard, styles.cardLight]}>
-                <View style={styles.serviceMeta}>
-                  <View style={styles.neutralPill}>
-                    <Text style={styles.neutralPillText}>SVC-04</Text>
+              <View className="rounded-[18px] border border-slate-200 p-[18px] bg-white border-slate-200">
+                <View className="mb-2.5 flex-row gap-2">
+                  <View className="rounded-md bg-slate-100 px-2 py-[3px]">
+                    <Text className="text-[10px] font-bold text-slate-500">SVC-04</Text>
                   </View>
-                  <View style={styles.neutralPill}>
-                    <Text style={styles.neutralPillText}>Ciencia</Text>
+                  <View className="rounded-md bg-slate-100 px-2 py-[3px]">
+                    <Text className="text-[10px] font-bold text-slate-500">Ciencia</Text>
                   </View>
                 </View>
-                <Text style={[styles.serviceTitle, styles.textDark]}>
+                <Text className="mb-1.5 text-lg font-black text-neutral-950">
                   Repositorio y tesis
                 </Text>
-                <Text style={[styles.serviceDesc, styles.subLight]}>
+                <Text className="mb-3.5 text-[13px] leading-[18px] text-slate-600">
                   Acceso público y digital a trabajos especiales de grado, guías metodológicas de
                   ingeniería y revistas de investigación.
                 </Text>
                 <Pressable
-                  style={[styles.btn, styles.btnOutline]}
+                  className="flex-row items-center justify-center gap-2 rounded-[14px] py-3.5 border border-slate-300 bg-transparent"
                   onPress={() => scrollToSection('carreras')}>
                   <Text
-                    style={[styles.btnOutlineText, styles.textDark]}>
+                    className="text-sm font-bold text-neutral-950">
                     Abrir repositorio
                   </Text>
                 </Pressable>
@@ -771,78 +770,78 @@ export default function LandingScreen() {
           </View>
 
           {/* ── FOOTER ─────────────────────────────────────────────────── */}
-          <View style={[styles.footer, styles.footerLight]}>
-            <View style={styles.footerBrand}>
-              <View style={styles.footerLogoWrap}>
+          <View className="border-t px-4 py-8 border-t-slate-200 bg-slate-50">
+            <View className="mb-3 flex-row items-center gap-2.5">
+              <View className="h-8 w-8 items-center justify-center rounded-md border border-slate-200 bg-white">
                 <Image
                   source={require('@/assets/images/unefa-logo.png')}
-                  style={styles.footerLogo}
+                  className="h-[26px] w-[26px]"
                   contentFit="contain"
                 />
               </View>
-              <Text style={[styles.footerBrandText, styles.textDark]}>
+              <Text className="text-lg font-black text-neutral-950">
                 UNEFA
               </Text>
             </View>
 
-            <Text style={[styles.footerAbout, styles.subLight]}>
+            <Text className="mb-5 text-xs leading-[18px] text-slate-600">
               Universidad Nacional Experimental Politécnica de la Fuerza Armada Nacional
               Bolivariana. Institución pública formadora de profesionales con excelencia técnica,
               disciplina y compromiso patriótico.
             </Text>
 
-            <View style={styles.footerNavGrid}>
-              <View style={styles.footerNavCol}>
-                <Text style={[styles.footerColHead, styles.textDark]}>
+            <View className="mb-5 flex-row gap-6">
+              <View className="flex-1 gap-1.5">
+                <Text className="mb-1 text-[13px] font-extrabold text-neutral-950">
                   Navegación
                 </Text>
                 <Pressable onPress={() => scrollToSection('inicio')}>
-                  <Text style={styles.footerLink}>Página principal</Text>
+                  <Text className="py-0.5 text-xs font-semibold text-unefa-blue">Página principal</Text>
                 </Pressable>
                 <Pressable onPress={() => scrollToSection('nosotros')}>
-                  <Text style={styles.footerLink}>Doctrina</Text>
+                  <Text className="py-0.5 text-xs font-semibold text-unefa-blue">Doctrina</Text>
                 </Pressable>
                 <Pressable onPress={() => scrollToSection('carreras')}>
-                  <Text style={styles.footerLink}>Catálogo carreras</Text>
+                  <Text className="py-0.5 text-xs font-semibold text-unefa-blue">Catálogo carreras</Text>
                 </Pressable>
                 <Pressable onPress={() => scrollToSection('admisiones')}>
-                  <Text style={styles.footerLink}>Admisión CINU</Text>
+                  <Text className="py-0.5 text-xs font-semibold text-unefa-blue">Admisión CINU</Text>
                 </Pressable>
               </View>
 
-              <View style={styles.footerNavCol}>
-                <Text style={[styles.footerColHead, styles.textDark]}>
+              <View className="flex-1 gap-1.5">
+                <Text className="mb-1 text-[13px] font-extrabold text-neutral-950">
                   Plataformas
                 </Text>
                 <Pressable onPress={() => router.push('/login')}>
-                  <Text style={styles.footerLink}>SICEU estudiantes</Text>
+                  <Text className="py-0.5 text-xs font-semibold text-unefa-blue">SICEU estudiantes</Text>
                 </Pressable>
                 <Pressable onPress={() => router.push('/login')}>
-                  <Text style={styles.footerLink}>SICEU docentes</Text>
+                  <Text className="py-0.5 text-xs font-semibold text-unefa-blue">SICEU docentes</Text>
                 </Pressable>
                 <Pressable onPress={() => router.push('/registro')}>
-                  <Text style={styles.footerLink}>Preinscripción CINU</Text>
+                  <Text className="py-0.5 text-xs font-semibold text-unefa-blue">Preinscripción CINU</Text>
                 </Pressable>
                 <Pressable onPress={() => scrollToSection('servicios')}>
-                  <Text style={styles.footerLink}>Biblioteca digital</Text>
+                  <Text className="py-0.5 text-xs font-semibold text-unefa-blue">Biblioteca digital</Text>
                 </Pressable>
               </View>
             </View>
 
-            <View style={styles.footerAddress}>
-              <Text style={[styles.footerAddrBold, styles.textDark]}>
+            <View className="mb-4 border-t border-slate-300 pt-4">
+              <Text className="mb-1 text-[13px] font-extrabold text-neutral-950">
                 Sede Central
               </Text>
-              <Text style={[styles.footerAddrText, styles.subLight]}>
+              <Text className="text-[11px] leading-4 text-slate-600">
                 Edificio Sede UNEFA, Chuao.{'\n'}
                 Caracas, República Bolivariana de Venezuela.{'\n'}
                 Teléfono: +58 (0212) 908-2000
               </Text>
             </View>
 
-            <View style={styles.footerBottom}>
-              <Text style={styles.copyright}>© 2026 UNEFA — Todos los derechos reservados.</Text>
-              <Text style={styles.proposalBadge}>Propuesta de interfaz móvil · 2026</Text>
+            <View className="gap-1">
+              <Text className="text-[10px] text-slate-500">© 2026 UNEFA — Todos los derechos reservados.</Text>
+              <Text className="text-[10px] font-bold text-[#c99106]">Propuesta de interfaz móvil · 2026</Text>
             </View>
           </View>
         </View>
@@ -866,951 +865,3 @@ export default function LandingScreen() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-  },
-  rootLight: {
-    backgroundColor: '#ffffff',
-  },
-  rootDark: {
-    backgroundColor: '#0a0e17',
-  },
-  scroll: {
-    flex: 1,
-  },
-  scrollContent: {
-    paddingBottom: 20,
-    alignItems: 'center',
-  },
-  centerContainer: {
-    width: '100%',
-    maxWidth: MaxContentWidth,
-  },
-
-  // Sections
-  hero: {
-    paddingHorizontal: 16,
-    paddingTop: 20,
-    paddingBottom: 32,
-  },
-  section: {
-    paddingHorizontal: 16,
-    paddingVertical: 32,
-  },
-  sectionLight: {
-    backgroundColor: '#ffffff',
-  },
-  sectionDark: {
-    backgroundColor: '#0a0e17',
-  },
-  sectionLightAlt: {
-    backgroundColor: '#f8fafc',
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: '#e2e8f0',
-  },
-  sectionDarkAlt: {
-    backgroundColor: '#06152a',
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.08)',
-  },
-
-  // Hero texts
-  heroKicker: {
-    fontSize: 11,
-    fontWeight: '800',
-    color: UnefaColors.blue,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-    marginBottom: 8,
-  },
-  heroTitle: {
-    fontSize: 36,
-    lineHeight: 40,
-    fontWeight: '900',
-    letterSpacing: -0.5,
-    marginBottom: 12,
-  },
-  heroTitleBlue: {
-    color: UnefaColors.blue,
-  },
-  heroDesc: {
-    fontSize: 15,
-    lineHeight: 22,
-    marginBottom: 20,
-  },
-
-  // Metrics
-  metricsRow: {
-    flexDirection: 'row',
-    gap: 10,
-    marginBottom: 24,
-  },
-  metricCard: {
-    flex: 1,
-    padding: 12,
-    borderRadius: 14,
-    alignItems: 'center',
-    shadowColor: '#06152a',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.06,
-    shadowRadius: 8,
-    elevation: 2,
-  },
-  metricVal: {
-    fontSize: 22,
-    fontWeight: '900',
-  },
-  blueVal: {
-    color: UnefaColors.blue,
-  },
-  metricLbl: {
-    fontSize: 11,
-    fontWeight: '600',
-    color: '#64748b',
-    marginTop: 2,
-  },
-
-  // CTAs
-  heroCta: {
-    gap: 10,
-    marginBottom: 24,
-  },
-  btn: {
-    paddingVertical: 14,
-    borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    gap: 8,
-  },
-  btnLg: {
-    paddingVertical: 16,
-  },
-  btnGold: {
-    backgroundColor: UnefaColors.gold,
-    shadowColor: UnefaColors.goldDark,
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.25,
-    shadowRadius: 10,
-    elevation: 3,
-  },
-  btnGoldText: {
-    color: UnefaColors.navy,
-    fontWeight: '900',
-    fontSize: 15,
-  },
-  btnGoldArrow: {
-    color: UnefaColors.navy,
-    fontWeight: '900',
-    fontSize: 16,
-  },
-  btnOutline: {
-    borderWidth: 1,
-    borderColor: '#cbd5e1',
-    backgroundColor: 'transparent',
-  },
-  btnOutlineDark: {
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-  },
-  btnOutlineText: {
-    fontWeight: '700',
-    fontSize: 14,
-  },
-  heroLink: {
-    alignSelf: 'center',
-    paddingVertical: 6,
-  },
-  heroLinkText: {
-    fontSize: 13,
-    fontWeight: '700',
-  },
-
-  // Hero photo
-  photoContainer: {
-    borderRadius: 18,
-    overflow: 'hidden',
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: '#e2e8f0',
-  },
-  heroImg: {
-    width: '100%',
-    height: 200,
-  },
-  photoCaption: {
-    padding: 12,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  captionLight: {
-    backgroundColor: '#ffffff',
-  },
-  captionDark: {
-    backgroundColor: '#0d1829',
-  },
-  captionTitle: {
-    fontSize: 10,
-    fontWeight: '800',
-    letterSpacing: 0.4,
-  },
-  captionSub: {
-    fontSize: 9,
-    color: '#64748b',
-    fontWeight: '600',
-  },
-  swatch: {
-    width: 14,
-    height: 14,
-    borderRadius: 7,
-    backgroundColor: UnefaColors.blue,
-  },
-
-  // Hero badges
-  heroBadges: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  heroBadge: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    padding: 12,
-    borderRadius: 14,
-  },
-  badgeIcon: {
-    fontSize: 20,
-    color: UnefaColors.blue,
-  },
-  goldIcon: {
-    color: UnefaColors.gold,
-  },
-  badgeMain: {
-    fontSize: 13,
-    fontWeight: '800',
-  },
-  badgeSub: {
-    fontSize: 10,
-    color: '#64748b',
-    fontWeight: '600',
-  },
-
-  // Headings
-  sectionHead: {
-    marginBottom: 20,
-  },
-  sectionHeadRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 20,
-  },
-  kicker: {
-    fontSize: 11,
-    fontWeight: '800',
-    color: UnefaColors.blue,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-    marginBottom: 4,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '900',
-    marginBottom: 6,
-  },
-  sectionDesc: {
-    fontSize: 14,
-    lineHeight: 20,
-  },
-  miniLink: {
-    fontSize: 13,
-    color: UnefaColors.blue,
-    fontWeight: '800',
-  },
-
-  // Scroller
-  scrollerRow: {
-    gap: 8,
-    paddingBottom: 16,
-  },
-  pillarTab: {
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    borderRadius: 12,
-    borderWidth: 1,
-    minWidth: 150,
-  },
-  pillarTabLight: {
-    backgroundColor: '#ffffff',
-    borderColor: '#e2e8f0',
-  },
-  pillarTabDark: {
-    backgroundColor: '#0d1829',
-    borderColor: 'rgba(255, 255, 255, 0.12)',
-  },
-  pillarTabActive: {
-    borderColor: UnefaColors.blue,
-    backgroundColor: 'rgba(4, 15, 217, 0.06)',
-  },
-  pIndexRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 4,
-  },
-  pNum: {
-    fontSize: 11,
-    fontFamily: 'monospace',
-    fontWeight: '800',
-    color: '#64748b',
-  },
-  pNumActive: {
-    color: UnefaColors.blue,
-  },
-  pSubtitle: {
-    fontSize: 10,
-    color: '#64748b',
-    fontWeight: '600',
-  },
-  pName: {
-    fontSize: 13,
-    fontWeight: '700',
-  },
-  pNameActive: {
-    color: UnefaColors.blue,
-  },
-
-  // Dossier Card
-  dossier: {
-    borderRadius: 20,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: '#e2e8f0',
-    marginBottom: 20,
-    shadowColor: '#06152a',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-    elevation: 3,
-  },
-  dossierMedia: {
-    position: 'relative',
-    height: 180,
-  },
-  dossierImg: {
-    width: '100%',
-    height: '100%',
-  },
-  dossierCaptionBox: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-  },
-  dossierCaptionText: {
-    fontSize: 9,
-    fontWeight: '700',
-    letterSpacing: 0.3,
-  },
-  dossierBody: {
-    padding: 16,
-  },
-  bluePill: {
-    alignSelf: 'flex-start',
-    backgroundColor: 'rgba(4, 15, 217, 0.1)',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 8,
-    marginBottom: 10,
-  },
-  bluePillText: {
-    color: UnefaColors.blue,
-    fontSize: 11,
-    fontWeight: '800',
-  },
-  dossierTitle: {
-    fontSize: 20,
-    fontWeight: '900',
-    marginBottom: 8,
-  },
-  dossierDesc: {
-    fontSize: 13,
-    lineHeight: 19,
-    marginBottom: 16,
-  },
-  highlightSection: {
-    marginBottom: 16,
-  },
-  listLabel: {
-    fontSize: 11,
-    fontWeight: '800',
-    textTransform: 'uppercase',
-    color: '#64748b',
-    letterSpacing: 0.4,
-    marginBottom: 8,
-  },
-  highlightItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 8,
-    marginBottom: 6,
-  },
-  highlightArrow: {
-    color: UnefaColors.blue,
-    fontSize: 14,
-    fontWeight: '800',
-  },
-  highlightText: {
-    flex: 1,
-    fontSize: 12,
-    lineHeight: 18,
-    fontWeight: '500',
-  },
-
-  // Lema
-  lemaBox: {
-    padding: 16,
-    borderRadius: 14,
-    alignItems: 'center',
-    borderWidth: 1,
-  },
-  lemaBoxLight: {
-    backgroundColor: '#ffffff',
-    borderColor: '#e2e8f0',
-  },
-  lemaBoxDark: {
-    backgroundColor: '#0d1829',
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  lemaLabel: {
-    fontSize: 10,
-    color: '#64748b',
-    fontWeight: '800',
-    textTransform: 'uppercase',
-    letterSpacing: 0.4,
-    marginBottom: 4,
-  },
-  lemaText: {
-    fontSize: 14,
-    fontWeight: '800',
-    fontStyle: 'italic',
-    textAlign: 'center',
-  },
-
-  // Segmented
-  segmented: {
-    flexDirection: 'row',
-    borderRadius: 14,
-    padding: 4,
-    marginBottom: 16,
-    borderWidth: 1,
-  },
-  segmentedLight: {
-    backgroundColor: '#f1f5f9',
-    borderColor: '#e2e8f0',
-  },
-  segmentedDark: {
-    backgroundColor: '#0f1d33',
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  segBtn: {
-    flex: 1,
-    paddingVertical: 8,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  segBtnActive: {
-    backgroundColor: UnefaColors.blue,
-  },
-  segLabel: {
-    fontSize: 12,
-    fontWeight: '800',
-  },
-  segLabelActive: {
-    color: '#ffffff',
-  },
-  segMeta: {
-    fontSize: 9,
-    color: '#64748b',
-  },
-
-  // Career list
-  careerList: {
-    gap: 8,
-    marginBottom: 20,
-  },
-  careerBtn: {
-    padding: 12,
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: '#e2e8f0',
-  },
-  careerBtnActive: {
-    borderColor: UnefaColors.blue,
-    backgroundColor: 'rgba(4, 15, 217, 0.05)',
-  },
-  careerBtnTop: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 2,
-  },
-  careerCode: {
-    fontSize: 11,
-    fontFamily: 'monospace',
-    fontWeight: '800',
-    color: '#64748b',
-  },
-  careerCodeActive: {
-    color: UnefaColors.blue,
-  },
-  careerDuration: {
-    fontSize: 11,
-    color: '#64748b',
-    fontWeight: '600',
-  },
-  careerBtnTitle: {
-    fontSize: 14,
-    fontWeight: '800',
-  },
-  careerBtnTitleActive: {
-    color: UnefaColors.blue,
-  },
-
-  // Career Media Overlay
-  careerMediaTag: {
-    position: 'absolute',
-    top: 10,
-    left: 10,
-    backgroundColor: UnefaColors.navy,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 6,
-  },
-  careerMediaTagText: {
-    color: '#ffffff',
-    fontSize: 10,
-    fontFamily: 'monospace',
-    fontWeight: '800',
-  },
-  careerMediaFooter: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: 'rgba(6, 21, 42, 0.85)',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  careerDegreeText: {
-    color: '#ffffff',
-    fontSize: 11,
-    fontWeight: '700',
-  },
-  careerDurationGold: {
-    color: UnefaColors.gold,
-    fontSize: 11,
-    fontWeight: '800',
-  },
-  competencySquare: {
-    color: UnefaColors.gold,
-    fontSize: 11,
-  },
-  subjectsSection: {
-    marginBottom: 16,
-  },
-  chipsRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 6,
-  },
-  chip: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 20,
-    borderWidth: 1,
-  },
-  chipLight: {
-    backgroundColor: '#f1f5f9',
-    borderColor: '#e2e8f0',
-  },
-  chipDark: {
-    backgroundColor: '#13233c',
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  chipText: {
-    fontSize: 11,
-    fontWeight: '600',
-  },
-  careerCta: {
-    gap: 8,
-    marginTop: 8,
-  },
-  monoNote: {
-    fontSize: 10,
-    fontFamily: 'monospace',
-    color: '#64748b',
-    textAlign: 'center',
-  },
-
-  // Timeline
-  timeline: {
-    gap: 12,
-    marginBottom: 20,
-  },
-  timelineItem: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  timelineNumBox: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: UnefaColors.goldSoft,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  timelineNum: {
-    color: UnefaColors.goldDark,
-    fontSize: 13,
-    fontWeight: '900',
-    fontFamily: 'monospace',
-  },
-  timelineContent: {
-    flex: 1,
-  },
-  timelineTitle: {
-    fontSize: 14,
-    fontWeight: '800',
-    marginBottom: 2,
-  },
-  timelineDesc: {
-    fontSize: 12,
-    lineHeight: 17,
-  },
-  sedeImg: {
-    width: '100%',
-    height: 180,
-  },
-  goldText: {
-    color: UnefaColors.goldDark,
-    fontSize: 10,
-    fontWeight: '800',
-  },
-
-  // Verificador
-  verifier: {
-    padding: 18,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: '#e2e8f0',
-  },
-  verifierHead: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 14,
-  },
-  verifierKicker: {
-    fontSize: 10,
-    fontWeight: '800',
-    color: UnefaColors.blue,
-    textTransform: 'uppercase',
-  },
-  verifierTitle: {
-    fontSize: 18,
-    fontWeight: '900',
-  },
-  percentWrap: {
-    alignItems: 'flex-end',
-  },
-  percentText: {
-    fontSize: 22,
-    fontWeight: '900',
-    color: UnefaColors.goldDark,
-  },
-  percentLabel: {
-    fontSize: 10,
-    color: '#64748b',
-    fontWeight: '600',
-  },
-  progressBarTrack: {
-    height: 8,
-    backgroundColor: '#e2e8f0',
-    borderRadius: 4,
-    overflow: 'hidden',
-    marginBottom: 14,
-  },
-  progressBarFill: {
-    height: '100%',
-    backgroundColor: UnefaColors.gold,
-  },
-  hintText: {
-    fontSize: 12,
-    lineHeight: 17,
-    marginBottom: 12,
-  },
-  checklist: {
-    gap: 8,
-    marginBottom: 16,
-  },
-  checkItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10,
-    borderRadius: 12,
-    borderWidth: 1,
-    gap: 10,
-  },
-  checkItemLight: {
-    backgroundColor: '#ffffff',
-    borderColor: '#e2e8f0',
-  },
-  checkItemDark: {
-    backgroundColor: '#0d1829',
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  checkItemActive: {
-    borderColor: UnefaColors.blue,
-    backgroundColor: 'rgba(4, 15, 217, 0.04)',
-  },
-  checkBox: {
-    width: 22,
-    height: 22,
-    borderRadius: 6,
-    borderWidth: 2,
-    borderColor: '#cbd5e1',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  checkBoxChecked: {
-    backgroundColor: UnefaColors.blue,
-    borderColor: UnefaColors.blue,
-  },
-  checkMark: {
-    color: '#ffffff',
-    fontSize: 13,
-    fontWeight: '900',
-  },
-  checkText: {
-    flex: 1,
-    fontSize: 12,
-    lineHeight: 16,
-    fontWeight: '500',
-  },
-  checkTextActive: {
-    fontWeight: '700',
-  },
-  phasePill: {
-    backgroundColor: '#f1f5f9',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 6,
-  },
-  phaseText: {
-    fontSize: 9,
-    color: '#64748b',
-    fontWeight: '700',
-  },
-  feedbackBox: {
-    padding: 12,
-    borderRadius: 12,
-    marginBottom: 14,
-  },
-  feedbackNormal: {
-    backgroundColor: 'rgba(4, 15, 217, 0.06)',
-  },
-  feedbackSuccess: {
-    backgroundColor: UnefaColors.greenSoft,
-  },
-  feedbackText: {
-    fontSize: 12,
-    fontWeight: '600',
-    textAlign: 'center',
-  },
-  feedbackNormalText: {
-    color: UnefaColors.blue,
-  },
-  feedbackSuccessText: {
-    color: UnefaColors.green,
-    fontWeight: '800',
-  },
-  secureNote: {
-    fontSize: 11,
-    color: '#64748b',
-    textAlign: 'center',
-    marginTop: 10,
-  },
-
-  // Services
-  serviceStack: {
-    gap: 14,
-  },
-  serviceCard: {
-    padding: 18,
-    borderRadius: 18,
-    borderWidth: 1,
-    borderColor: '#e2e8f0',
-  },
-  serviceCardFeatured: {
-    borderColor: UnefaColors.gold,
-    borderWidth: 1.5,
-  },
-  serviceMeta: {
-    flexDirection: 'row',
-    gap: 8,
-    marginBottom: 10,
-  },
-  goldPill: {
-    backgroundColor: UnefaColors.goldSoft,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 6,
-  },
-  goldPillText: {
-    color: UnefaColors.goldDark,
-    fontSize: 10,
-    fontWeight: '800',
-  },
-  neutralPill: {
-    backgroundColor: '#f1f5f9',
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 6,
-  },
-  neutralPillText: {
-    color: '#64748b',
-    fontSize: 10,
-    fontWeight: '700',
-  },
-  serviceTitle: {
-    fontSize: 18,
-    fontWeight: '900',
-    marginBottom: 6,
-  },
-  serviceDesc: {
-    fontSize: 13,
-    lineHeight: 18,
-    marginBottom: 14,
-  },
-
-  // Footer
-  footer: {
-    paddingHorizontal: 16,
-    paddingVertical: 32,
-    borderTopWidth: 1,
-  },
-  footerLight: {
-    backgroundColor: '#f8fafc',
-    borderTopColor: '#e2e8f0',
-  },
-  footerDark: {
-    backgroundColor: '#06152a',
-    borderTopColor: 'rgba(255, 255, 255, 0.08)',
-  },
-  footerBrand: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    marginBottom: 12,
-  },
-  footerLogoWrap: {
-    width: 32,
-    height: 32,
-    borderRadius: 6,
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#e2e8f0',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  footerLogo: {
-    width: 26,
-    height: 26,
-  },
-  footerBrandText: {
-    fontSize: 18,
-    fontWeight: '900',
-  },
-  footerAbout: {
-    fontSize: 12,
-    lineHeight: 18,
-    marginBottom: 20,
-  },
-  footerNavGrid: {
-    flexDirection: 'row',
-    gap: 24,
-    marginBottom: 20,
-  },
-  footerNavCol: {
-    flex: 1,
-    gap: 6,
-  },
-  footerColHead: {
-    fontSize: 13,
-    fontWeight: '800',
-    marginBottom: 4,
-  },
-  footerLink: {
-    fontSize: 12,
-    color: UnefaColors.blue,
-    fontWeight: '600',
-    paddingVertical: 2,
-  },
-  footerAddress: {
-    paddingTop: 16,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: '#cbd5e1',
-    marginBottom: 16,
-  },
-  footerAddrBold: {
-    fontSize: 13,
-    fontWeight: '800',
-    marginBottom: 4,
-  },
-  footerAddrText: {
-    fontSize: 11,
-    lineHeight: 16,
-  },
-  footerBottom: {
-    gap: 4,
-  },
-  copyright: {
-    fontSize: 10,
-    color: '#64748b',
-  },
-  proposalBadge: {
-    fontSize: 10,
-    color: UnefaColors.goldDark,
-    fontWeight: '700',
-  },
-
-  // Common card themes
-  cardLight: {
-    backgroundColor: '#ffffff',
-    borderColor: '#e2e8f0',
-  },
-  cardDark: {
-    backgroundColor: '#0d1829',
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  textLight: {
-    color: '#f8fafc',
-  },
-  textDark: {
-    color: '#0a0a0a',
-  },
-  subLight: {
-    color: '#475569',
-  },
-  subDark: {
-    color: '#cbd5e1',
-  },
-});

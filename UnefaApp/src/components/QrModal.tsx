@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Modal, Pressable } from 'react-native';
+import { View, Text, Modal, Pressable } from 'react-native';
 import { UnefaColors } from '@/constants/theme';
 import { Camera } from 'lucide-react-native';
 
@@ -15,30 +15,36 @@ export function QrModal({ visible, onClose }: QrModalProps) {
       transparent
       animationType="fade"
       onRequestClose={onClose}>
-      <Pressable style={styles.backdrop} onPress={onClose}>
+      <Pressable
+        className="flex-1 items-center justify-center bg-[rgba(6,21,42,0.65)] p-6"
+        onPress={onClose}>
         <Pressable
-          style={styles.card}
+          className="w-full max-w-[360px] items-center rounded-[22px] bg-white p-6 shadow-2xl"
           onPress={(e) => e.stopPropagation()}>
-          <View style={styles.iconWrap}>
+          <View className="mb-4 h-[60px] w-[60px] items-center justify-center rounded-full bg-[rgba(242,184,7,0.16)]">
             <Camera size={28} color={UnefaColors.goldDark} strokeWidth={2.2} />
           </View>
-          <Text style={styles.title}>
+          <Text className="mb-2.5 text-center text-lg font-extrabold text-neutral-950">
             Acceso a la cámara
           </Text>
-          <Text style={styles.description}>
+          <Text className="mb-3 text-center text-sm leading-5 text-slate-600">
             ¿Desea permitir que UNEFA Móvil acceda a la cámara del dispositivo para escanear un código QR?
           </Text>
-          <Text style={styles.note}>
+          <Text className="mb-5 text-center text-xs italic text-unefa-goldDark">
             Esta es una interfaz de prueba: la cámara no se activará.
           </Text>
-          <View style={styles.actions}>
+          <View className="w-full flex-row gap-3">
             <Pressable
-              style={[styles.btn, styles.btnOutline]}
+              className="flex-1 items-center justify-center rounded-[14px] border border-slate-300 py-3"
               onPress={onClose}>
-              <Text style={styles.btnText}>Ahora no</Text>
+              <Text className="text-sm font-bold text-neutral-950">Ahora no</Text>
             </Pressable>
-            <Pressable style={[styles.btn, styles.btnGold]} onPress={onClose}>
-              <Text style={styles.btnGoldText}>Permitir</Text>
+            <Pressable
+              className="flex-1 items-center justify-center rounded-[14px] bg-unefa-gold py-3"
+              onPress={onClose}>
+              <Text className="text-sm font-extrabold text-unefa-navy">
+                Permitir
+              </Text>
             </Pressable>
           </View>
         </Pressable>
@@ -46,89 +52,3 @@ export function QrModal({ visible, onClose }: QrModalProps) {
     </Modal>
   );
 }
-
-const styles = StyleSheet.create({
-  backdrop: {
-    flex: 1,
-    backgroundColor: 'rgba(6, 21, 42, 0.65)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 24,
-  },
-  card: {
-    width: '100%',
-    maxWidth: 360,
-    borderRadius: 22,
-    padding: 24,
-    alignItems: 'center',
-    shadowColor: '#06152a',
-    shadowOffset: { width: 0, height: 12 },
-    shadowOpacity: 0.25,
-    shadowRadius: 24,
-    elevation: 10,
-    backgroundColor: '#ffffff',
-  },
-  iconWrap: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: UnefaColors.goldSoft,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 16,
-  },
-  cameraIcon: {
-    fontSize: 28,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: '800',
-    marginBottom: 10,
-    textAlign: 'center',
-    color: '#0a0a0a',
-  },
-  description: {
-    fontSize: 14,
-    lineHeight: 20,
-    textAlign: 'center',
-    marginBottom: 12,
-    color: '#475569',
-  },
-  note: {
-    fontSize: 12,
-    color: UnefaColors.goldDark,
-    textAlign: 'center',
-    marginBottom: 20,
-    fontStyle: 'italic',
-  },
-  actions: {
-    flexDirection: 'row',
-    gap: 12,
-    width: '100%',
-  },
-  btn: {
-    flex: 1,
-    paddingVertical: 12,
-    borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  btnOutline: {
-    borderWidth: 1,
-    borderColor: '#cbd5e1',
-    backgroundColor: 'transparent',
-  },
-  btnGold: {
-    backgroundColor: UnefaColors.gold,
-  },
-  btnText: {
-    fontWeight: '700',
-    fontSize: 14,
-    color: '#0a0a0a',
-  },
-  btnGoldText: {
-    color: UnefaColors.navy,
-    fontWeight: '800',
-    fontSize: 14,
-  },
-});
