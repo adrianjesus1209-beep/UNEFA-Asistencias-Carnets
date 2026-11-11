@@ -410,7 +410,7 @@ export default function DashboardScreen() {
                 <View style={styles.blockHead}>
                   <View>
                     <Text style={styles.blockKicker}>CÁTEDRA ACTIVA</Text>
-                    <Text style={styles.blockTitle}>Cursos y registro de pase de lista</Text>
+                    <Text style={styles.blockTitle}>Secciones</Text>
                   </View>
                   <View style={[styles.pillGreen, { backgroundColor: 'rgba(13, 148, 136, 0.1)' }]}>
                     <Text style={[styles.pillGreenText, { color: '#0d9488' }]}>Activas 2026-I</Text>
@@ -428,7 +428,7 @@ export default function DashboardScreen() {
                     status: 'Pase de lista al día',
                   },
                   {
-                    name: 'Arquitectura de Software Crítico',
+                    name: 'Arquitectura de Software',
                     sec: 'Sección SIS-702',
                     students: '28 estudiantes',
                     schedule: 'Mar y Jue 10:30 - 12:45',
@@ -539,10 +539,10 @@ export default function DashboardScreen() {
                 <View style={styles.blockHead}>
                   <View>
                     <Text style={styles.blockKicker}>SUPERVISIÓN DE CARRERA</Text>
-                    <Text style={styles.blockTitle}>Monitoreo de cátedras y docentes</Text>
+                    <Text style={styles.blockTitle}>cátedras y docentes</Text>
                   </View>
                   <View style={[styles.pillGreen, { backgroundColor: 'rgba(180, 83, 9, 0.1)' }]}>
-                    <Text style={[styles.pillGreenText, { color: '#b45309' }]}>Caracas · Activo</Text>
+                    <Text style={[styles.pillGreenText, { color: '#b45309' }]}>Guacara · Activo</Text>
                   </View>
                 </View>
 

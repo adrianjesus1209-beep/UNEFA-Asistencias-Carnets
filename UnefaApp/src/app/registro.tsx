@@ -701,11 +701,11 @@ export default function RegistroScreen() {
                     )}
                     {currentStep < 3 ? (
                       <Pressable style={[styles.btn, styles.btnGold, styles.btnSm]} onPress={handleNext}>
-                        <Text style={styles.btnGoldText}>Continuar →</Text>
+                        <Text style={styles.btnGoldText}>Continuar </Text>
                       </Pressable>
                     ) : (
                       <Pressable style={[styles.btn, styles.btnBlue, styles.btnSm]} onPress={handleSubmit}>
-                        <Text style={styles.btnBlueText}>Finalizar ✓</Text>
+                        <Text style={styles.btnBlueText}>Finalizar </Text>
                       </Pressable>
                     )}
                   </View>
