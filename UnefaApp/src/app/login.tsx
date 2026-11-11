@@ -87,7 +87,7 @@ export default function LoginScreen() {
                 <View className="h-[42px] w-[42px] items-center justify-center rounded-[13px] bg-white">
                   <Image
                     source={require('@/assets/images/unefa-logo.png')}
-                    style={{ width: 34, height: 34 }}
+                    className="h-[34px] w-[34px]"
                     contentFit="contain"
                     accessibilityLabel="Logo de la UNEFA"
                   />
@@ -139,13 +139,9 @@ export default function LoginScreen() {
             {/* Simulación Evaluativa de Entidades */}
             <View className="mb-4 rounded-2xl border border-slate-200 bg-slate-50 p-3.5">
               <View className="mb-3">
-                <View
-                  className="mb-1.5 flex-row items-center gap-1 self-start rounded-md px-2 py-0.5"
-                  style={{ backgroundColor: UnefaColors.goldSoft }}>
-                  <Sparkles size={11} color={UnefaColors.navy} />
-                  <Text
-                    className="text-[9px] font-black tracking-wide"
-                    style={{ color: UnefaColors.navy }}>
+                <View className="mb-1.5 flex-row items-center gap-1 self-start rounded-md bg-unefa-gold/20 px-2 py-0.5">
+                  <Sparkles size={11} color="#06152a" />
+                  <Text className="text-[9px] font-black tracking-wide text-unefa-navy">
                     EVALUACIÓN DE ENTIDADES
                   </Text>
                 </View>
