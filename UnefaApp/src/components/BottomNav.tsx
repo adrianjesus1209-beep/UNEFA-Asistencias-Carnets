@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Pressable, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Home, GraduationCap, FileText, User, QrCode } from 'lucide-react-native';
+import { Home, GraduationCap, FileText, User } from 'lucide-react-native';
 import { UnefaColors } from '@/constants/theme';
 
 interface BottomNavProps {
@@ -119,18 +119,6 @@ export function BottomNav({
           }`}>
           SICEU
         </Text>
-      </Pressable>
-
-      {/* Acción: Escáner QR */}
-      <Pressable
-        className="flex-1 items-center justify-center py-1 gap-0.5"
-        accessibilityRole="button"
-        accessibilityLabel="Abrir escáner QR"
-        onPress={onOpenQr}>
-        <View className="w-[26px] h-[26px] rounded-[7px] bg-unefa-gold items-center justify-center">
-          <QrCode size={16} color={UnefaColors.navy} strokeWidth={2.5} />
-        </View>
-        <Text className="text-[11px] font-bold text-unefa-goldDark">ScanerQR</Text>
       </Pressable>
     </View>
   );
