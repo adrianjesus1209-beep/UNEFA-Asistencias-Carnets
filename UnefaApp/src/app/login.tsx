@@ -6,7 +6,6 @@ import {
   TextInput,
   Pressable,
   ActivityIndicator,
-  StyleSheet,
 } from 'react-native';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
@@ -16,8 +15,9 @@ import {
   ClipboardCheck,
   ShieldCheck,
   Sparkles,
+  ChevronRight,
 } from 'lucide-react-native';
-import { UnefaColors, MaxContentWidth } from '@/constants/theme';
+import { UnefaColors } from '@/constants/theme';
 import { Header } from '@/components/Header';
 import { BottomNav } from '@/components/BottomNav';
 import { QrModal } from '@/components/QrModal';
@@ -137,90 +137,116 @@ export default function LoginScreen() {
             </View>
 
             {/* Simulación Evaluativa de Entidades */}
-            <View style={styles.simCard}>
-              <View style={styles.simHeader}>
-                <View style={styles.simBadge}>
+            <View className="mb-4 rounded-2xl border border-slate-200 bg-slate-50 p-3.5">
+              <View className="mb-3">
+                <View
+                  className="mb-1.5 flex-row items-center gap-1 self-start rounded-md px-2 py-0.5"
+                  style={{ backgroundColor: UnefaColors.goldSoft }}>
                   <Sparkles size={11} color={UnefaColors.navy} />
-                  <Text style={styles.simBadgeText}>EVALUACIÓN DE ENTIDADES</Text>
+                  <Text
+                    className="text-[9px] font-black tracking-wide"
+                    style={{ color: UnefaColors.navy }}>
+                    EVALUACIÓN DE ENTIDADES
+                  </Text>
                 </View>
-                <Text style={styles.simTitle}>Simular acceso por rol</Text>
-                <Text style={styles.simSub}>
-                  Ingresa directamente al dashboard de cada entidad sin requerir backend:
+                <Text className="text-sm font-black text-slate-900 mb-0.5">
+                  Simular acceso por rol
+                </Text>
+                <Text className="text-[11px] leading-4 text-slate-500">
+                  Ingresa directamente al dashboard de cada entidad con su barra de navegación:
                 </Text>
               </View>
 
-              <View style={styles.simGrid}>
+              <View className="gap-2">
                 {/* 1. Estudiante */}
                 <Pressable
-                  style={[styles.simBtn, styles.simBtnEstudiante]}
+                  className="flex-row items-center rounded-xl border border-blue-200 bg-white p-2.5 active:bg-blue-50"
                   onPress={() => handleSimulatedLogin('estudiante')}
                   accessibilityRole="button"
                   accessibilityLabel="Ingresar como Estudiante">
-                  <View style={[styles.simIconBox, { backgroundColor: 'rgba(4, 15, 217, 0.1)' }]}>
+                  <View className="mr-2.5 h-9 w-9 items-center justify-center rounded-lg bg-[rgba(4,15,217,0.1)]">
                     <GraduationCap size={18} color={UnefaColors.blue} />
                   </View>
-                  <View style={styles.simTextBox}>
-                    <Text style={[styles.simRoleName, { color: UnefaColors.blue }]}>Estudiante</Text>
-                    <Text style={styles.simRoleSub}>C.I. 28.123.456 · 7mo Semestre</Text>
+                  <View className="flex-1">
+                    <Text className="text-[13px] font-extrabold text-unefa-blue">
+                      Estudiante
+                    </Text>
+                    <Text className="text-[10px] font-semibold text-slate-500">
+                      C.I. 28.123.456 · 7mo Semestre
+                    </Text>
                   </View>
-                  
+                  <ChevronRight size={16} color={UnefaColors.blue} />
                 </Pressable>
 
                 {/* 2. Profesor */}
                 <Pressable
-                  style={[styles.simBtn, styles.simBtnProfesor]}
+                  className="flex-row items-center rounded-xl border border-teal-200 bg-white p-2.5 active:bg-teal-50"
                   onPress={() => handleSimulatedLogin('profesor')}
                   accessibilityRole="button"
                   accessibilityLabel="Ingresar como Profesor">
-                  <View style={[styles.simIconBox, { backgroundColor: 'rgba(13, 148, 136, 0.12)' }]}>
+                  <View className="mr-2.5 h-9 w-9 items-center justify-center rounded-lg bg-[rgba(13,148,136,0.12)]">
                     <BookOpen size={18} color="#0d9488" />
                   </View>
-                  <View style={styles.simTextBox}>
-                    <Text style={[styles.simRoleName, { color: '#0d9488' }]}>Profesor</Text>
-                    <Text style={styles.simRoleSub}>C.I. 14.567.890 · Docente Ordinario</Text>
+                  <View className="flex-1">
+                    <Text className="text-[13px] font-extrabold text-teal-700">
+                      Profesor / Docente
+                    </Text>
+                    <Text className="text-[10px] font-semibold text-slate-500">
+                      C.I. 14.567.890 · Docente Ordinario
+                    </Text>
                   </View>
-                  
+                  <ChevronRight size={16} color="#0d9488" />
                 </Pressable>
 
                 {/* 3. Coordinador */}
                 <Pressable
-                  style={[styles.simBtn, styles.simBtnCoordinador]}
+                  className="flex-row items-center rounded-xl border border-amber-200 bg-white p-2.5 active:bg-amber-50"
                   onPress={() => handleSimulatedLogin('coordinador')}
                   accessibilityRole="button"
                   accessibilityLabel="Ingresar como Coordinador">
-                  <View style={[styles.simIconBox, { backgroundColor: 'rgba(180, 83, 9, 0.12)' }]}>
+                  <View className="mr-2.5 h-9 w-9 items-center justify-center rounded-lg bg-[rgba(180,83,9,0.12)]">
                     <ClipboardCheck size={18} color="#b45309" />
                   </View>
-                  <View style={styles.simTextBox}>
-                    <Text style={[styles.simRoleName, { color: '#b45309' }]}>Coordinador</Text>
-                    <Text style={styles.simRoleSub}>C.I. 11.234.567 · Coord. Carrera</Text>
+                  <View className="flex-1">
+                    <Text className="text-[13px] font-extrabold text-amber-700">
+                      Coordinador de Carrera
+                    </Text>
+                    <Text className="text-[10px] font-semibold text-slate-500">
+                      C.I. 11.234.567 · Coord. Carrera
+                    </Text>
                   </View>
-                  
+                  <ChevronRight size={16} color="#b45309" />
                 </Pressable>
 
                 {/* 4. Director */}
                 <Pressable
-                  style={[styles.simBtn, styles.simBtnDirector]}
+                  className="flex-row items-center rounded-xl border border-slate-300 bg-white p-2.5 active:bg-slate-100"
                   onPress={() => handleSimulatedLogin('director')}
                   accessibilityRole="button"
                   accessibilityLabel="Ingresar como Director">
-                  <View style={[styles.simIconBox, { backgroundColor: 'rgba(6, 21, 42, 0.12)' }]}>
+                  <View className="mr-2.5 h-9 w-9 items-center justify-center rounded-lg bg-[rgba(6,21,42,0.12)]">
                     <ShieldCheck size={18} color={UnefaColors.navy} />
                   </View>
-                  <View style={styles.simTextBox}>
-                    <Text style={[styles.simRoleName, { color: UnefaColors.navy }]}>Director</Text>
-                    <Text style={styles.simRoleSub}>Cnel. Roberto Silva · Dir. Núcleo</Text>
+                  <View className="flex-1">
+                    <Text className="text-[13px] font-extrabold text-unefa-navy">
+                      Director de Núcleo
+                    </Text>
+                    <Text className="text-[10px] font-semibold text-slate-500">
+                      Cnel. Roberto Silva · Dir. General
+                    </Text>
                   </View>
-                  
+                  <ChevronRight size={16} color={UnefaColors.navy} />
                 </Pressable>
               </View>
             </View>
 
             {/* Separador */}
-            <View style={styles.dividerRow}>
-              <View style={styles.dividerLine} />
-              <Text style={styles.dividerText}>O INGRESO CON CREDENCIALES</Text>
-              <View style={styles.dividerLine} />
+            <View className="mb-4 flex-row items-center gap-2.5">
+              <View className="h-px flex-1 bg-slate-200" />
+              <Text className="text-[10px] font-extrabold tracking-wider text-slate-400">
+                O INGRESO CON CREDENCIALES
+              </Text>
+              <View className="h-px flex-1 bg-slate-200" />
             </View>
 
             {/* Error alert */}
@@ -409,493 +435,3 @@ export default function LoginScreen() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-  },
-  rootLight: {
-    backgroundColor: '#ffffff',
-  },
-  rootDark: {
-    backgroundColor: '#0a0e17',
-  },
-  scroll: {
-    flex: 1,
-  },
-  scrollContent: {
-    paddingBottom: 40,
-    alignItems: 'center',
-  },
-  centerContainer: {
-    width: '100%',
-    maxWidth: MaxContentWidth,
-    paddingHorizontal: 16,
-    paddingTop: 16,
-  },
-
-  // Banner
-  banner: {
-    padding: 18,
-    borderRadius: 18,
-    marginBottom: 16,
-    borderWidth: 1,
-    backgroundColor: UnefaColors.blueDeep,
-    borderColor: UnefaColors.blue,
-  },
-  bannerTopRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  bannerBrand: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  bannerMark: {
-    width: 42,
-    height: 42,
-    borderRadius: 13,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ffffff',
-  },
-  bannerLogo: {
-    width: 34,
-    height: 34,
-  },
-  bannerSub: {
-    color: 'rgba(255, 255, 255, 0.75)',
-    fontSize: 10,
-    fontWeight: '600',
-    letterSpacing: 1,
-    marginBottom: 3,
-  },
-  bannerTitle: {
-    color: '#ffffff',
-    fontSize: 17,
-    fontWeight: '900',
-  },
-  periodBadge: {
-    borderRadius: 20,
-    backgroundColor: UnefaColors.gold,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-  },
-  periodBadgeText: {
-    color: UnefaColors.navy,
-    fontSize: 11,
-    fontWeight: '900',
-  },
-  bannerCaption: {
-    color: 'rgba(255, 255, 255, 0.82)',
-    fontSize: 12,
-    lineHeight: 18,
-    marginTop: 14,
-  },
-
-  // Auth Card
-  authCard: {
-    borderRadius: 22,
-    padding: 20,
-    borderWidth: 1,
-    shadowColor: '#06152a',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.1,
-    shadowRadius: 20,
-    elevation: 4,
-    marginBottom: 20,
-  },
-  cardHead: {
-    marginBottom: 20,
-  },
-  badgeRow: {
-    flexDirection: 'row',
-    gap: 8,
-    marginBottom: 12,
-  },
-  badgeBlue: {
-    backgroundColor: 'rgba(4, 15, 217, 0.1)',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 8,
-  },
-  badgeBlueText: {
-    color: UnefaColors.blue,
-    fontSize: 11,
-    fontWeight: '800',
-  },
-  badgeNeutral: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 8,
-    borderWidth: 1,
-  },
-  badgeLight: {
-    backgroundColor: '#f1f5f9',
-    borderColor: '#e2e8f0',
-  },
-  badgeDark: {
-    backgroundColor: '#13233c',
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  badgeNeutralText: {
-    fontSize: 11,
-    fontWeight: '700',
-  },
-  authTitle: {
-    fontSize: 26,
-    fontWeight: '900',
-    marginBottom: 6,
-  },
-  authSub: {
-    fontSize: 13,
-    lineHeight: 18,
-  },
-
-  // Alerts
-  alertError: {
-    backgroundColor: '#fee2e2',
-    borderColor: '#fca5a5',
-    borderWidth: 1,
-    padding: 12,
-    borderRadius: 12,
-    marginBottom: 16,
-  },
-  alertErrorText: {
-    color: UnefaColors.red,
-    fontSize: 13,
-    fontWeight: '700',
-  },
-  alertSuccess: {
-    backgroundColor: '#dcfce7',
-    borderColor: '#86efac',
-    borderWidth: 1,
-    padding: 12,
-    borderRadius: 12,
-    marginBottom: 16,
-  },
-  alertSuccessText: {
-    color: UnefaColors.green,
-    fontSize: 13,
-    fontWeight: '700',
-    lineHeight: 18,
-  },
-
-  // Fields
-  field: {
-    marginBottom: 18,
-  },
-  label: {
-    fontSize: 13,
-    fontWeight: '700',
-    marginBottom: 6,
-  },
-  fieldLabelRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 6,
-  },
-  inlineLink: {
-    fontSize: 12,
-    color: UnefaColors.blue,
-    fontWeight: '700',
-  },
-  cedulaGroup: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-  nationalityToggle: {
-    flexDirection: 'row',
-    borderRadius: 12,
-    backgroundColor: '#f1f5f9',
-    padding: 3,
-  },
-  natBtn: {
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  natBtnDark: {
-    backgroundColor: '#13233c',
-  },
-  natBtnActive: {
-    backgroundColor: UnefaColors.blue,
-  },
-  natBtnText: {
-    fontSize: 13,
-    fontWeight: '800',
-    color: '#64748b',
-  },
-  natBtnTextActive: {
-    color: '#ffffff',
-  },
-  input: {
-    height: 48,
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    fontSize: 14,
-    borderWidth: 1,
-  },
-  cedulaInput: {
-    flex: 1,
-  },
-  inputLight: {
-    backgroundColor: '#f8fafc',
-    borderColor: '#cbd5e1',
-    color: '#0a0a0a',
-  },
-  inputDark: {
-    backgroundColor: '#06152a',
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-    color: '#f8fafc',
-  },
-  passwordWrap: {
-    position: 'relative',
-    justifyContent: 'center',
-  },
-  togglePassBtn: {
-    position: 'absolute',
-    right: 12,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-  },
-  togglePassText: {
-    fontSize: 12,
-    color: UnefaColors.blue,
-    fontWeight: '700',
-  },
-  formNote: {
-    fontSize: 11,
-    color: UnefaColors.goldDark,
-    marginTop: 6,
-    lineHeight: 16,
-    fontStyle: 'italic',
-  },
-
-  // Buttons
-  btn: {
-    paddingVertical: 14,
-    borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    gap: 8,
-  },
-  btnLg: {
-    paddingVertical: 16,
-    marginTop: 6,
-  },
-  btnGold: {
-    backgroundColor: UnefaColors.gold,
-    shadowColor: UnefaColors.goldDark,
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.25,
-    shadowRadius: 10,
-    elevation: 3,
-  },
-  btnGoldText: {
-    color: UnefaColors.navy,
-    fontWeight: '900',
-    fontSize: 15,
-  },
-  btnGoldArrow: {
-    color: UnefaColors.navy,
-    fontWeight: '900',
-    fontSize: 16,
-  },
-  btnOutline: {
-    borderWidth: 1,
-    borderColor: '#cbd5e1',
-    backgroundColor: 'transparent',
-  },
-  btnOutlineDark: {
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-  },
-  btnOutlineText: {
-    fontWeight: '700',
-    fontSize: 13,
-  },
-
-  // Auth Switch
-  authSwitch: {
-    marginTop: 24,
-    paddingTop: 16,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: '#cbd5e1',
-    gap: 10,
-  },
-  switchPrompt: {
-    fontSize: 12,
-    textAlign: 'center',
-    fontWeight: '600',
-  },
-  secureNote: {
-    fontSize: 11,
-    color: '#64748b',
-    textAlign: 'center',
-    marginTop: 20,
-    lineHeight: 16,
-  },
-
-  // Simulation Card (Efectos evaluativos)
-  simCard: {
-    backgroundColor: '#f8fafc',
-    borderRadius: 16,
-    padding: 14,
-    marginBottom: 16,
-    borderWidth: 1.5,
-    borderColor: '#e2e8f0',
-  },
-  simHeader: {
-    marginBottom: 12,
-  },
-  simBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5,
-    backgroundColor: UnefaColors.goldSoft,
-    alignSelf: 'flex-start',
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 6,
-    marginBottom: 6,
-  },
-  simBadgeText: {
-    fontSize: 9,
-    fontWeight: '900',
-    color: UnefaColors.navy,
-    letterSpacing: 0.5,
-  },
-  simTitle: {
-    fontSize: 14,
-    fontWeight: '900',
-    color: '#0f172a',
-    marginBottom: 2,
-  },
-  simSub: {
-    fontSize: 11,
-    color: '#64748b',
-    lineHeight: 16,
-  },
-  simGrid: {
-    gap: 8,
-  },
-  simBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    borderRadius: 12,
-    borderWidth: 1,
-    backgroundColor: '#ffffff',
-  },
-  simBtnEstudiante: {
-    borderColor: 'rgba(4, 15, 217, 0.25)',
-  },
-  simBtnProfesor: {
-    borderColor: 'rgba(13, 148, 136, 0.25)',
-  },
-  simBtnCoordinador: {
-    borderColor: 'rgba(180, 83, 9, 0.25)',
-  },
-  simBtnDirector: {
-    borderColor: 'rgba(6, 21, 42, 0.25)',
-  },
-  simIconBox: {
-    width: 36,
-    height: 36,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 10,
-  },
-  simTextBox: {
-    flex: 1,
-  },
-  simRoleName: {
-    fontSize: 13,
-    fontWeight: '800',
-    marginBottom: 1,
-  },
-  simRoleSub: {
-    fontSize: 10,
-    color: '#64748b',
-    fontWeight: '600',
-  },
-  simArrow: {
-    fontSize: 16,
-    fontWeight: '800',
-    color: '#94a3b8',
-    marginLeft: 6,
-  },
-
-  // Divider
-  dividerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    marginBottom: 16,
-  },
-  dividerLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: '#e2e8f0',
-  },
-  dividerText: {
-    fontSize: 10,
-    fontWeight: '800',
-    color: '#94a3b8',
-    letterSpacing: 0.5,
-  },
-
-  // Help card
-  authHelp: {
-    padding: 18,
-    borderRadius: 18,
-    borderWidth: 1,
-    borderColor: '#e2e8f0',
-  },
-  helpKicker: {
-    fontSize: 12,
-    fontWeight: '800',
-    color: UnefaColors.blue,
-    marginBottom: 6,
-  },
-  helpText: {
-    fontSize: 12,
-    lineHeight: 18,
-    marginBottom: 10,
-  },
-  miniLink: {
-    fontSize: 13,
-    color: UnefaColors.blue,
-    fontWeight: '800',
-  },
-
-  // Themes
-  cardLight: {
-    backgroundColor: '#ffffff',
-    borderColor: '#e2e8f0',
-  },
-  cardDark: {
-    backgroundColor: '#0d1829',
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  textLight: {
-    color: '#f8fafc',
-  },
-  textDark: {
-    color: '#0a0a0a',
-  },
-  subLight: {
-    color: '#475569',
-  },
-  subDark: {
-    color: '#cbd5e1',
-  },
-});

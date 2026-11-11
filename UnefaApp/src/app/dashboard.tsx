@@ -5,8 +5,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowLeft } from 'lucide-react-native';
 import { UnefaColors } from '@/constants/theme';
 import { Header } from '@/components/Header';
-import { BottomNav } from '@/components/BottomNav';
 import { StudentBottomNav } from '@/components/StudentBottomNav';
+import { TeacherBottomNav } from '@/components/TeacherBottomNav';
+import { CoordinatorBottomNav } from '@/components/CoordinatorBottomNav';
+import { DirectorBottomNav } from '@/components/DirectorBottomNav';
 import { QrModal } from '@/components/QrModal';
 import { EntityRole, ROLES_DATA } from '@/components/dashboard/types';
 import { RoleSelectorCard } from '@/components/dashboard/RoleSelectorCard';
@@ -22,14 +24,20 @@ export default function DashboardScreen() {
   const router = useRouter();
   const params = useLocalSearchParams<{ role?: string }>();
 
-  const initialRole: EntityRole =
+  const roleFromParams: EntityRole | null =
     params.role === 'profesor' ||
     params.role === 'coordinador' ||
-    params.role === 'director'
+    params.role === 'director' ||
+    params.role === 'estudiante'
       ? (params.role as EntityRole)
-      : 'estudiante';
+      : null;
 
-  const [activeRole, setActiveRole] = useState<EntityRole>(initialRole);
+  // Si viene con param de login, el rol queda fijo (sesión real).
+  // Sin param, habilita el selector de evaluación.
+  const fromLogin = Boolean(roleFromParams);
+  const [selectedRole, setSelectedRole] = useState<EntityRole>('estudiante');
+
+  const activeRole: EntityRole = roleFromParams ?? selectedRole;
   const [qrOpen, setQrOpen] = useState(false);
 
   const currentRole = ROLES_DATA[activeRole];
@@ -46,7 +54,10 @@ export default function DashboardScreen() {
           className="w-full px-4 pt-4"
           style={{ maxWidth: 480 }}>
 
-          <RoleSelectorCard activeRole={activeRole} onSelect={setActiveRole} />
+          {/* Selector de rol solo en modo evaluación (sin sesión real) */}
+          {!fromLogin && (
+            <RoleSelectorCard activeRole={activeRole} onSelect={setSelectedRole} />
+          )}
 
           <SessionBanner
             activeRole={activeRole}
@@ -75,16 +86,42 @@ export default function DashboardScreen() {
       </ScrollView>
 
       {/* Barra inferior diferenciada por rol */}
-      {activeRole === 'estudiante' ? (
+      {activeRole === 'estudiante' && (
         <StudentBottomNav
           activeTab="inicio"
           onPressInicio={() => {}}
           onPressCarnet={() => {}}
-          onPressEscanear={() => {}}
+          onPressEscanear={() => setQrOpen(true)}
           onPressPerfil={() => {}}
         />
-      ) : (
-        <BottomNav activeTab="siceu" onOpenQr={() => setQrOpen(true)} />
+      )}
+      {activeRole === 'profesor' && (
+        <TeacherBottomNav
+          activeTab="inicio"
+          onPressInicio={() => {}}
+          onPressClase={() => setQrOpen(true)}
+          onPressActas={() => {}}
+          onPressCarnet={() => {}}
+          onPressPerfil={() => {}}
+        />
+      )}
+      {activeRole === 'coordinador' && (
+        <CoordinatorBottomNav
+          activeTab="inicio"
+          onPressInicio={() => {}}
+          onPressCatedras={() => {}}
+          onPressGestion={() => {}}
+          onPressPerfil={() => {}}
+        />
+      )}
+      {activeRole === 'director' && (
+        <DirectorBottomNav
+          activeTab="inicio"
+          onPressInicio={() => {}}
+          onPressSedes={() => {}}
+          onPressAuditoria={() => {}}
+          onPressPerfil={() => {}}
+        />
       )}
 
       <QrModal visible={qrOpen} onClose={() => setQrOpen(false)} />
