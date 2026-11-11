@@ -158,7 +158,6 @@ export default function LandingScreen() {
                 style={[styles.btn, styles.btnGold, styles.btnLg]}
                 onPress={() => router.push('/registro')}>
                 <Text style={styles.btnGoldText}>Preinscripción CINU</Text>
-                <Text style={styles.btnGoldArrow}>→</Text>
               </Pressable>
 
               <Pressable
@@ -173,7 +172,7 @@ export default function LandingScreen() {
                 style={styles.heroLink}
                 onPress={() => scrollToSection('carreras')}>
                 <Text style={[styles.heroLinkText, styles.subLight]}>
-                  Explorar carreras ↓
+                  Explorar carreras 
                 </Text>
               </Pressable>
             </View>
@@ -300,7 +299,7 @@ export default function LandingScreen() {
                   <Text style={styles.listLabel}>Hitos de formación</Text>
                   {activePillar.highlights.map((h, i) => (
                     <View key={i} style={styles.highlightItem}>
-                      <Text style={styles.highlightArrow}>→</Text>
+                      <Text style={styles.highlightArrow}>-</Text>
                       <Text style={[styles.highlightText, styles.textDark]}>
                         {h}
                       </Text>
@@ -330,7 +329,7 @@ export default function LandingScreen() {
                 </Text>
               </View>
               <Pressable onPress={() => router.push('/registro')}>
-                <Text style={styles.miniLink}>Inscripción →</Text>
+                <Text style={styles.miniLink}>Inscripción </Text>
               </Pressable>
             </View>
 
@@ -477,7 +476,6 @@ export default function LandingScreen() {
                     style={[styles.btn, styles.btnGold]}
                     onPress={() => router.push('/registro')}>
                     <Text style={styles.btnGoldText}>Postularme en esta carrera</Text>
-                    <Text style={styles.btnGoldArrow}>→</Text>
                   </Pressable>
                 </View>
               </View>
@@ -632,7 +630,6 @@ export default function LandingScreen() {
                 style={[styles.btn, styles.btnGold]}
                 onPress={() => router.push('/registro')}>
                 <Text style={styles.btnGoldText}>Iniciar preinscripción digital</Text>
-                <Text style={styles.btnGoldArrow}>→</Text>
               </Pressable>
 
               <Text style={styles.secureNote}>

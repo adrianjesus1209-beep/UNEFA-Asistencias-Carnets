@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -10,6 +10,13 @@ import {
 } from 'react-native';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
+import {
+  GraduationCap,
+  BookOpen,
+  ClipboardCheck,
+  ShieldCheck,
+  Sparkles,
+} from 'lucide-react-native';
 import { UnefaColors, MaxContentWidth } from '@/constants/theme';
 import { Header } from '@/components/Header';
 import { BottomNav } from '@/components/BottomNav';
@@ -51,9 +58,16 @@ export default function LoginScreen() {
     setTimeout(() => {
       setIsLoading(false);
       setSuccessMsg(
-        `Acceso simulado. Credenciales verificadas para la cédula ${nacionalidad}-${cedula.trim()}. En producción, aquí se abriría el panel SICEU.`
+        `Acceso verificado para ${nacionalidad}-${cedula.trim()}. Redirigiendo a SICEU...`
       );
-    }, 900);
+      setTimeout(() => {
+        router.push({ pathname: '/dashboard' as any, params: { role: 'estudiante' } });
+      }, 500);
+    }, 800);
+  };
+
+  const handleSimulatedLogin = (role: 'estudiante' | 'profesor' | 'coordinador' | 'director') => {
+    router.push({ pathname: '/dashboard' as any, params: { role } });
   };
 
   return (
@@ -112,6 +126,93 @@ export default function LoginScreen() {
               <Text style={[styles.authSub, styles.subLight]}>
                 Ingresa con tu documento de identidad y clave institucional.
               </Text>
+            </View>
+
+            {/* Simulación Evaluativa de Entidades */}
+            <View style={styles.simCard}>
+              <View style={styles.simHeader}>
+                <View style={styles.simBadge}>
+                  <Sparkles size={11} color={UnefaColors.navy} />
+                  <Text style={styles.simBadgeText}>EVALUACIÓN DE ENTIDADES</Text>
+                </View>
+                <Text style={styles.simTitle}>Simular acceso por rol</Text>
+                <Text style={styles.simSub}>
+                  Ingresa directamente al dashboard de cada entidad sin requerir backend:
+                </Text>
+              </View>
+
+              <View style={styles.simGrid}>
+                {/* 1. Estudiante */}
+                <Pressable
+                  style={[styles.simBtn, styles.simBtnEstudiante]}
+                  onPress={() => handleSimulatedLogin('estudiante')}
+                  accessibilityRole="button"
+                  accessibilityLabel="Ingresar como Estudiante">
+                  <View style={[styles.simIconBox, { backgroundColor: 'rgba(4, 15, 217, 0.1)' }]}>
+                    <GraduationCap size={18} color={UnefaColors.blue} />
+                  </View>
+                  <View style={styles.simTextBox}>
+                    <Text style={[styles.simRoleName, { color: UnefaColors.blue }]}>Estudiante</Text>
+                    <Text style={styles.simRoleSub}>C.I. 28.123.456 · 7mo Semestre</Text>
+                  </View>
+                  
+                </Pressable>
+
+                {/* 2. Profesor */}
+                <Pressable
+                  style={[styles.simBtn, styles.simBtnProfesor]}
+                  onPress={() => handleSimulatedLogin('profesor')}
+                  accessibilityRole="button"
+                  accessibilityLabel="Ingresar como Profesor">
+                  <View style={[styles.simIconBox, { backgroundColor: 'rgba(13, 148, 136, 0.12)' }]}>
+                    <BookOpen size={18} color="#0d9488" />
+                  </View>
+                  <View style={styles.simTextBox}>
+                    <Text style={[styles.simRoleName, { color: '#0d9488' }]}>Profesor</Text>
+                    <Text style={styles.simRoleSub}>C.I. 14.567.890 · Docente Ordinario</Text>
+                  </View>
+                  
+                </Pressable>
+
+                {/* 3. Coordinador */}
+                <Pressable
+                  style={[styles.simBtn, styles.simBtnCoordinador]}
+                  onPress={() => handleSimulatedLogin('coordinador')}
+                  accessibilityRole="button"
+                  accessibilityLabel="Ingresar como Coordinador">
+                  <View style={[styles.simIconBox, { backgroundColor: 'rgba(180, 83, 9, 0.12)' }]}>
+                    <ClipboardCheck size={18} color="#b45309" />
+                  </View>
+                  <View style={styles.simTextBox}>
+                    <Text style={[styles.simRoleName, { color: '#b45309' }]}>Coordinador</Text>
+                    <Text style={styles.simRoleSub}>C.I. 11.234.567 · Coord. Carrera</Text>
+                  </View>
+                  
+                </Pressable>
+
+                {/* 4. Director */}
+                <Pressable
+                  style={[styles.simBtn, styles.simBtnDirector]}
+                  onPress={() => handleSimulatedLogin('director')}
+                  accessibilityRole="button"
+                  accessibilityLabel="Ingresar como Director">
+                  <View style={[styles.simIconBox, { backgroundColor: 'rgba(6, 21, 42, 0.12)' }]}>
+                    <ShieldCheck size={18} color={UnefaColors.navy} />
+                  </View>
+                  <View style={styles.simTextBox}>
+                    <Text style={[styles.simRoleName, { color: UnefaColors.navy }]}>Director</Text>
+                    <Text style={styles.simRoleSub}>Cnel. Roberto Silva · Dir. Núcleo</Text>
+                  </View>
+                  
+                </Pressable>
+              </View>
+            </View>
+
+            {/* Separador */}
+            <View style={styles.dividerRow}>
+              <View style={styles.dividerLine} />
+              <Text style={styles.dividerText}>O INGRESO CON CREDENCIALES</Text>
+              <View style={styles.dividerLine} />
             </View>
 
             {/* Error alert */}
@@ -242,7 +343,6 @@ export default function LoginScreen() {
               ) : (
                 <>
                   <Text style={styles.btnGoldText}>Acceder al SICEU</Text>
-                  <Text style={styles.btnGoldArrow}>→</Text>
                 </>
               )}
             </Pressable>
@@ -275,7 +375,7 @@ export default function LoginScreen() {
               Estudios de tu núcleo.
             </Text>
             <Pressable onPress={() => router.push('/landing')}>
-              <Text style={styles.miniLink}>Volver a la landing →</Text>
+              <Text style={styles.miniLink}>Volver a la landing </Text>
             </Pressable>
           </View>
         </View>
@@ -617,6 +717,117 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
     lineHeight: 16,
+  },
+
+  // Simulation Card (Efectos evaluativos)
+  simCard: {
+    backgroundColor: '#f8fafc',
+    borderRadius: 16,
+    padding: 14,
+    marginBottom: 16,
+    borderWidth: 1.5,
+    borderColor: '#e2e8f0',
+  },
+  simHeader: {
+    marginBottom: 12,
+  },
+  simBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    backgroundColor: UnefaColors.goldSoft,
+    alignSelf: 'flex-start',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+    marginBottom: 6,
+  },
+  simBadgeText: {
+    fontSize: 9,
+    fontWeight: '900',
+    color: UnefaColors.navy,
+    letterSpacing: 0.5,
+  },
+  simTitle: {
+    fontSize: 14,
+    fontWeight: '900',
+    color: '#0f172a',
+    marginBottom: 2,
+  },
+  simSub: {
+    fontSize: 11,
+    color: '#64748b',
+    lineHeight: 16,
+  },
+  simGrid: {
+    gap: 8,
+  },
+  simBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderRadius: 12,
+    borderWidth: 1,
+    backgroundColor: '#ffffff',
+  },
+  simBtnEstudiante: {
+    borderColor: 'rgba(4, 15, 217, 0.25)',
+  },
+  simBtnProfesor: {
+    borderColor: 'rgba(13, 148, 136, 0.25)',
+  },
+  simBtnCoordinador: {
+    borderColor: 'rgba(180, 83, 9, 0.25)',
+  },
+  simBtnDirector: {
+    borderColor: 'rgba(6, 21, 42, 0.25)',
+  },
+  simIconBox: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+  },
+  simTextBox: {
+    flex: 1,
+  },
+  simRoleName: {
+    fontSize: 13,
+    fontWeight: '800',
+    marginBottom: 1,
+  },
+  simRoleSub: {
+    fontSize: 10,
+    color: '#64748b',
+    fontWeight: '600',
+  },
+  simArrow: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: '#94a3b8',
+    marginLeft: 6,
+  },
+
+  // Divider
+  dividerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginBottom: 16,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#e2e8f0',
+  },
+  dividerText: {
+    fontSize: 10,
+    fontWeight: '800',
+    color: '#94a3b8',
+    letterSpacing: 0.5,
   },
 
   // Help card

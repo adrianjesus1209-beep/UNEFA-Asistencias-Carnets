@@ -26,6 +26,7 @@ function RootNavigator() {
         <Stack.Screen name="landing" />
         <Stack.Screen name="login" />
         <Stack.Screen name="registro" />
+        <Stack.Screen name="dashboard" />
       </Stack>
     </>
   );
