@@ -548,13 +548,13 @@ export default function DashboardScreen() {
 
                 {[
                   {
-                    title: 'Pase de Lista Docente de Hoy',
+                    title: 'Asistencia de docentes',
                     val: '20 de 22 docentes en aula',
                     badge: '91% Cumplimiento',
                     desc: 'Registro validado en sistemas y laboratorios de computación.',
                   },
                   {
-                    title: 'Alertas de Inasistencia Estudiantil',
+                    title: 'Inasistencia Estudiantil',
                     val: '12 casos en seguimiento',
                     badge: 'Atención requerida',
                     desc: 'Aspirantes y estudiantes con más de 3 ausencias consecutivas.',
@@ -654,10 +654,10 @@ export default function DashboardScreen() {
                   <Text style={styles.directorCareerTitle}>Asistencia consolidada por facultad</Text>
 
                   {[
-                    { fac: 'Facultad de Ingeniería (Sistemas, Telecom, Civil)', rate: '96.2%', pct: 96 },
-                    { fac: 'Facultad de Ciencias Sociales (Administración, Economía)', rate: '93.5%', pct: 93 },
-                    { fac: 'Técnico Superior Universitario (TSU Análisis, Turismo)', rate: '95.0%', pct: 95 },
-                    { fac: 'Curso Integral de Nivelación Universitaria (CINU)', rate: '97.4%', pct: 97 },
+                    { fac: 'Facultad de Ingeniería', rate: '96.2%', pct: 96 },
+                    { fac: 'Facultad de Ciencias Sociales', rate: '93.5%', pct: 93 },
+                    { fac: 'Técnico Superior Universitario', rate: '95.0%', pct: 95 },
+                    { fac: 'Curso Integral de Nivelación Universitaria', rate: '97.4%', pct: 97 },
                   ].map((f, i) => (
                     <View key={i} style={styles.progressRow}>
                       <View style={styles.progressTextRow}>
