@@ -30,6 +30,7 @@ import {
 import { UnefaColors, MaxContentWidth } from '@/constants/theme';
 import { Header } from '@/components/Header';
 import { BottomNav } from '@/components/BottomNav';
+import { StudentBottomNav } from '@/components/StudentBottomNav';
 import { QrModal } from '@/components/QrModal';
 
 export type EntityRole = 'estudiante' | 'profesor' | 'coordinador' | 'director';
@@ -736,8 +737,18 @@ export default function DashboardScreen() {
         </View>
       </ScrollView>
 
-      {/* Barra Inferior */}
-      <BottomNav activeTab="siceu" onOpenQr={() => setQrOpen(true)} />
+      {/* Barra Inferior — diferenciada por rol */}
+      {activeRole === 'estudiante' ? (
+        <StudentBottomNav
+          activeTab="inicio"
+          onPressInicio={() => {}}
+          onPressCarnet={() => {}}
+          onPressEscanear={() => {}}
+          onPressPerfil={() => {}}
+        />
+      ) : (
+        <BottomNav activeTab="siceu" onOpenQr={() => setQrOpen(true)} />
+      )}
       <QrModal visible={qrOpen} onClose={() => setQrOpen(false)} />
     </SafeAreaView>
   );
