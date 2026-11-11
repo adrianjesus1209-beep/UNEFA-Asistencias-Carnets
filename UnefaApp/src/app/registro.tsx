@@ -2,13 +2,11 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   ScrollView,
   TextInput,
   Pressable,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { UnefaColors, MaxContentWidth } from '@/constants/theme';
 import { Header } from '@/components/Header';
 import { BottomNav } from '@/components/BottomNav';
 import { QrModal } from '@/components/QrModal';
@@ -117,109 +115,77 @@ export default function RegistroScreen() {
   };
 
   return (
-    <SafeAreaView style={[styles.root, styles.rootLight]}>
+    <SafeAreaView className="flex-1 bg-white">
       <Header subtitle="Registro CINU" showBack={true} />
 
       <ScrollView
-        style={styles.scroll}
-        contentContainerStyle={styles.scrollContent}
+        className="flex-1"
+        contentContainerClassName="items-center pb-10"
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled">
-        <View style={styles.centerContainer}>
+        <View className="w-full max-w-[480px] px-4 pt-4">
           {/* Banner */}
-          <View style={[styles.banner, styles.bannerLight]}>
-            <Text style={[styles.bannerSub, styles.subLight]}>
+          <View className="p-3.5 rounded-[14px] mb-4 border bg-slate-50 border-slate-200">
+            <Text className="text-[11px] font-semibold mb-0.5 text-slate-600">
               Admisiones · Curso de nivelación
             </Text>
-            <Text style={[styles.bannerTitle, styles.textDark]}>
+            <Text className="text-base font-black text-neutral-950">
               CINU 2026-I
             </Text>
           </View>
 
           {/* Auth Card */}
-          <View style={[styles.authCard, styles.cardLight]}>
-            <View style={styles.cardHead}>
-              <View style={styles.badgeRow}>
-                <View style={styles.badgeGold}>
-                  <Text style={styles.badgeGoldText}>Nuevo ingreso</Text>
+          <View className="rounded-[22px] p-5 border shadow-lg mb-5 bg-white border-slate-200">
+            <View className="mb-[18px]">
+              <View className="flex-row gap-2 mb-3">
+                <View className="bg-[rgba(242,184,7,0.16)] px-2.5 py-1 rounded-lg">
+                  <Text className="text-unefa-goldDark text-[11px] font-extrabold">Nuevo ingreso</Text>
                 </View>
-                <View style={[styles.badgeNeutral, styles.badgeLight]}>
-                  <Text style={[styles.badgeNeutralText, styles.subLight]}>
+                <View className="px-2.5 py-1 rounded-lg border bg-slate-100 border-slate-200">
+                  <Text className="text-[11px] font-bold text-slate-600">
                     Expediente digital
                   </Text>
                 </View>
               </View>
 
-              <Text style={[styles.authTitle, styles.textDark]}>
+              <Text className="text-[26px] font-black mb-1.5 text-neutral-950">
                 Preinscripción CINU
               </Text>
-              <Text style={[styles.authSub, styles.subLight]}>
+              <Text className="text-[13px] leading-[18px] text-slate-600">
                 Completa las 3 secciones para formalizar tu solicitud de ingreso universitario.
               </Text>
             </View>
 
             {/* Stepper (only when not submitted) */}
             {!isSubmitted && (
-              <View style={styles.stepper}>
-                <View
-                  style={[
-                    styles.stepInd,
-                    currentStep === 1 && styles.stepIndActive,
-                    currentStep > 1 && styles.stepIndCompleted,
-                  ]}>
+              <View className="flex-row gap-2 mb-5 py-1">
+                <View className="flex-1">
                   <View
-                    style={[
-                      styles.stepBar,
-                      (currentStep >= 1) && styles.stepBarActive,
-                    ]}
+                    className={`h-1 rounded-sm bg-slate-200 mb-1.5 ${currentStep >= 1 ? 'bg-unefa-gold' : ''}`}
                   />
                   <Text
-                    style={[
-                      styles.stepLabel,
-                      currentStep === 1 && styles.stepLabelActive,
-                    ]}>
-                    <Text style={styles.boldIdx}>01.</Text> Acceso
+                    className={`text-[11px] text-slate-500 font-semibold ${currentStep === 1 ? 'text-unefa-blue font-extrabold' : ''}`}>
+                    <Text className="font-black">01.</Text> Acceso
                   </Text>
                 </View>
 
-                <View
-                  style={[
-                    styles.stepInd,
-                    currentStep === 2 && styles.stepIndActive,
-                    currentStep > 2 && styles.stepIndCompleted,
-                  ]}>
+                <View className="flex-1">
                   <View
-                    style={[
-                      styles.stepBar,
-                      (currentStep >= 2) && styles.stepBarActive,
-                    ]}
+                    className={`h-1 rounded-sm bg-slate-200 mb-1.5 ${currentStep >= 2 ? 'bg-unefa-gold' : ''}`}
                   />
                   <Text
-                    style={[
-                      styles.stepLabel,
-                      currentStep === 2 && styles.stepLabelActive,
-                    ]}>
-                    <Text style={styles.boldIdx}>02.</Text> Académico
+                    className={`text-[11px] text-slate-500 font-semibold ${currentStep === 2 ? 'text-unefa-blue font-extrabold' : ''}`}>
+                    <Text className="font-black">02.</Text> Académico
                   </Text>
                 </View>
 
-                <View
-                  style={[
-                    styles.stepInd,
-                    currentStep === 3 && styles.stepIndActive,
-                  ]}>
+                <View className="flex-1">
                   <View
-                    style={[
-                      styles.stepBar,
-                      (currentStep === 3) && styles.stepBarActive,
-                    ]}
+                    className={`h-1 rounded-sm bg-slate-200 mb-1.5 ${currentStep === 3 ? 'bg-unefa-gold' : ''}`}
                   />
                   <Text
-                    style={[
-                      styles.stepLabel,
-                      currentStep === 3 && styles.stepLabelActive,
-                    ]}>
-                    <Text style={styles.boldIdx}>03.</Text> Residencia
+                    className={`text-[11px] text-slate-500 font-semibold ${currentStep === 3 ? 'text-unefa-blue font-extrabold' : ''}`}>
+                    <Text className="font-black">03.</Text> Residencia
                   </Text>
                 </View>
               </View>
@@ -227,37 +193,37 @@ export default function RegistroScreen() {
 
             {/* Error Message */}
             {errorMsg ? (
-              <View style={styles.alertError}>
-                <Text style={styles.alertErrorText}>⚠️ {errorMsg}</Text>
+              <View className="bg-red-100 border border-red-300 p-3 rounded-xl mb-4">
+                <Text className="text-unefa-red text-[13px] font-bold">⚠️ {errorMsg}</Text>
               </View>
             ) : null}
 
             {/* SUCCESS PANEL */}
             {isSubmitted ? (
-              <View style={[styles.successPanel, styles.successPanelLight]}>
-                <View style={styles.successIconWrap}>
-                  <Text style={styles.successIconCheck}>✓</Text>
+              <View className="p-6 rounded-[18px] items-center border mb-5 bg-slate-50 border-slate-200">
+                <View className="w-16 h-16 rounded-full bg-green-100 items-center justify-center mb-4">
+                  <Text className="text-[32px] text-unefa-green font-black">✓</Text>
                 </View>
-                <View style={styles.badgeBlue}>
-                  <Text style={styles.badgeBlueText}>Expediente registrado</Text>
+                <View className="bg-[rgba(4,15,217,0.1)] px-2.5 py-1 rounded-lg self-center mb-2">
+                  <Text className="text-unefa-blue text-[11px] font-extrabold">Expediente registrado</Text>
                 </View>
-                <Text style={[styles.successTitle, styles.textDark]}>
+                <Text className="text-[22px] font-black mb-2.5 text-center text-neutral-950">
                   ¡Preinscripción exitosa!
                 </Text>
-                <Text style={[styles.successDesc, styles.subLight]}>
-                  Tu solicitud para el <Text style={{ fontWeight: '800' }}>Curso Integral de Nivelación Universitaria (CINU 2026-I)</Text> fue registrada. Recibirás por correo la fecha para consignar tus documentos en Control de Estudios.
+                <Text className="text-sm leading-5 text-center mb-5 text-slate-600">
+                  Tu solicitud para el <Text className="font-extrabold">Curso Integral de Nivelación Universitaria (CINU 2026-I)</Text> fue registrada. Recibirás por correo la fecha para consignar tus documentos en Control de Estudios.
                 </Text>
 
-                <View style={styles.successActions}>
+                <View className="w-full gap-2.5">
                   <Pressable
-                    style={[styles.btn, styles.btnGold]}
+                    className="py-3 rounded-[14px] items-center justify-center flex-row gap-2 bg-unefa-gold"
                     onPress={() => router.push('/login')}>
-                    <Text style={styles.btnGoldText}>Ir al portal SICEU</Text>
+                    <Text className="text-unefa-navy font-black text-sm">Ir al portal SICEU</Text>
                   </Pressable>
                   <Pressable
-                    style={[styles.btn, styles.btnOutline]}
+                    className="py-3 rounded-[14px] items-center justify-center flex-row gap-2 border border-slate-300 bg-transparent"
                     onPress={() => router.push('/landing')}>
-                    <Text style={[styles.btnOutlineText, styles.textDark]}>
+                    <Text className="font-bold text-[13px] text-neutral-950">
                       Volver a la página principal
                     </Text>
                   </Pressable>
@@ -265,16 +231,16 @@ export default function RegistroScreen() {
               </View>
             ) : (
               /* FORM STEPS */
-              <View style={styles.formContent}>
+              <View className="mb-2.5">
                 {/* ── PASO 1 ────────────────────────────────────────── */}
                 {currentStep === 1 && (
-                  <View style={styles.stepContainer}>
-                    <View style={styles.field}>
-                      <Text style={[styles.label, styles.textDark]}>
+                  <View className="gap-1">
+                    <View className="mb-4">
+                      <Text className="text-[13px] font-bold mb-1.5 text-neutral-950">
                         Primer nombre *
                       </Text>
                       <TextInput
-                        style={[styles.input, styles.inputLight]}
+                        className="h-12 rounded-xl px-3.5 text-sm border bg-slate-50 border-slate-300 text-neutral-950"
                         placeholder="Ej. Carlos"
                         placeholderTextColor="#94a3b8"
                         value={firstName}
@@ -282,12 +248,12 @@ export default function RegistroScreen() {
                       />
                     </View>
 
-                    <View style={styles.field}>
-                      <Text style={[styles.label, styles.textDark]}>
+                    <View className="mb-4">
+                      <Text className="text-[13px] font-bold mb-1.5 text-neutral-950">
                         Segundo nombre
                       </Text>
                       <TextInput
-                        style={[styles.input, styles.inputLight]}
+                        className="h-12 rounded-xl px-3.5 text-sm border bg-slate-50 border-slate-300 text-neutral-950"
                         placeholder="Ej. Eduardo"
                         placeholderTextColor="#94a3b8"
                         value={middleName}
@@ -295,12 +261,12 @@ export default function RegistroScreen() {
                       />
                     </View>
 
-                    <View style={styles.field}>
-                      <Text style={[styles.label, styles.textDark]}>
+                    <View className="mb-4">
+                      <Text className="text-[13px] font-bold mb-1.5 text-neutral-950">
                         Primer apellido *
                       </Text>
                       <TextInput
-                        style={[styles.input, styles.inputLight]}
+                        className="h-12 rounded-xl px-3.5 text-sm border bg-slate-50 border-slate-300 text-neutral-950"
                         placeholder="Ej. Mendoza"
                         placeholderTextColor="#94a3b8"
                         value={lastName}
@@ -308,12 +274,12 @@ export default function RegistroScreen() {
                       />
                     </View>
 
-                    <View style={styles.field}>
-                      <Text style={[styles.label, styles.textDark]}>
+                    <View className="mb-4">
+                      <Text className="text-[13px] font-bold mb-1.5 text-neutral-950">
                         Segundo apellido
                       </Text>
                       <TextInput
-                        style={[styles.input, styles.inputLight]}
+                        className="h-12 rounded-xl px-3.5 text-sm border bg-slate-50 border-slate-300 text-neutral-950"
                         placeholder="Ej. Gómez"
                         placeholderTextColor="#94a3b8"
                         value={secondLastName}
@@ -321,47 +287,31 @@ export default function RegistroScreen() {
                       />
                     </View>
 
-                    <View style={styles.field}>
-                      <Text style={[styles.label, styles.textDark]}>
+                    <View className="mb-4">
+                      <Text className="text-[13px] font-bold mb-1.5 text-neutral-950">
                         Documento de identidad *
                       </Text>
-                      <View style={styles.cedulaGroup}>
-                        <View style={styles.nationalityToggle}>
+                      <View className="flex-row gap-2">
+                        <View className="flex-row rounded-xl bg-slate-100 p-[3px]">
                           <Pressable
-                            style={[
-                              styles.natBtn,
-                              nacionalidad === 'V' && styles.natBtnActive,
-                            ]}
+                            className={`px-3 py-2.5 rounded-[10px] justify-center items-center ${nacionalidad === 'V' ? 'bg-unefa-blue' : ''}`}
                             onPress={() => setNacionalidad('V')}>
                             <Text
-                              style={[
-                                styles.natBtnText,
-                                nacionalidad === 'V' && styles.natBtnTextActive,
-                              ]}>
+                              className={`text-[13px] font-extrabold text-slate-500 ${nacionalidad === 'V' ? 'text-white' : ''}`}>
                               V-
                             </Text>
                           </Pressable>
                           <Pressable
-                            style={[
-                              styles.natBtn,
-                              nacionalidad === 'E' && styles.natBtnActive,
-                            ]}
+                            className={`px-3 py-2.5 rounded-[10px] justify-center items-center ${nacionalidad === 'E' ? 'bg-unefa-blue' : ''}`}
                             onPress={() => setNacionalidad('E')}>
                             <Text
-                              style={[
-                                styles.natBtnText,
-                                nacionalidad === 'E' && styles.natBtnTextActive,
-                              ]}>
+                              className={`text-[13px] font-extrabold text-slate-500 ${nacionalidad === 'E' ? 'text-white' : ''}`}>
                               E-
                             </Text>
                           </Pressable>
                         </View>
                         <TextInput
-                          style={[
-                            styles.input,
-                            styles.cedulaInput,
-                            styles.inputLight,
-                          ]}
+                          className="h-12 rounded-xl px-3.5 text-sm border flex-1 bg-slate-50 border-slate-300 text-neutral-950"
                           keyboardType="numeric"
                           placeholder="Ej. 29123456"
                           placeholderTextColor="#94a3b8"
@@ -371,12 +321,12 @@ export default function RegistroScreen() {
                       </View>
                     </View>
 
-                    <View style={styles.field}>
-                      <Text style={[styles.label, styles.textDark]}>
+                    <View className="mb-4">
+                      <Text className="text-[13px] font-bold mb-1.5 text-neutral-950">
                         Correo electrónico *
                       </Text>
                       <TextInput
-                        style={[styles.input, styles.inputLight]}
+                        className="h-12 rounded-xl px-3.5 text-sm border bg-slate-50 border-slate-300 text-neutral-950"
                         keyboardType="email-address"
                         autoCapitalize="none"
                         placeholder="nombre@correo.com"
@@ -386,13 +336,13 @@ export default function RegistroScreen() {
                       />
                     </View>
 
-                    <View style={styles.field}>
-                      <Text style={[styles.label, styles.textDark]}>
+                    <View className="mb-4">
+                      <Text className="text-[13px] font-bold mb-1.5 text-neutral-950">
                         Contraseña *
                       </Text>
-                      <View style={styles.passwordWrap}>
+                      <View className="relative justify-center">
                         <TextInput
-                          style={[styles.input, styles.inputLight]}
+                          className="h-12 rounded-xl px-3.5 text-sm border bg-slate-50 border-slate-300 text-neutral-950"
                           secureTextEntry={!showPass}
                           placeholder="Mínimo 8 caracteres"
                           placeholderTextColor="#94a3b8"
@@ -400,20 +350,20 @@ export default function RegistroScreen() {
                           onChangeText={setPassword}
                         />
                         <Pressable
-                          style={styles.togglePassBtn}
+                          className="absolute right-3 px-2 py-1"
                           onPress={() => setShowPass((p) => !p)}>
-                          <Text style={styles.togglePassText}>{showPass ? 'Ocultar' : 'Ver'}</Text>
+                          <Text className="text-xs text-unefa-blue font-bold">{showPass ? 'Ocultar' : 'Ver'}</Text>
                         </Pressable>
                       </View>
                     </View>
 
-                    <View style={styles.field}>
-                      <Text style={[styles.label, styles.textDark]}>
+                    <View className="mb-4">
+                      <Text className="text-[13px] font-bold mb-1.5 text-neutral-950">
                         Confirmar contraseña *
                       </Text>
-                      <View style={styles.passwordWrap}>
+                      <View className="relative justify-center">
                         <TextInput
-                          style={[styles.input, styles.inputLight]}
+                          className="h-12 rounded-xl px-3.5 text-sm border bg-slate-50 border-slate-300 text-neutral-950"
                           secureTextEntry={!showConfirmPass}
                           placeholder="Repite la contraseña"
                           placeholderTextColor="#94a3b8"
@@ -421,9 +371,9 @@ export default function RegistroScreen() {
                           onChangeText={setConfirmPassword}
                         />
                         <Pressable
-                          style={styles.togglePassBtn}
+                          className="absolute right-3 px-2 py-1"
                           onPress={() => setShowConfirmPass((p) => !p)}>
-                          <Text style={styles.togglePassText}>
+                          <Text className="text-xs text-unefa-blue font-bold">
                             {showConfirmPass ? 'Ocultar' : 'Ver'}
                           </Text>
                         </Pressable>
@@ -434,13 +384,13 @@ export default function RegistroScreen() {
 
                 {/* ── PASO 2 ────────────────────────────────────────── */}
                 {currentStep === 2 && (
-                  <View style={styles.stepContainer}>
-                    <View style={styles.field}>
-                      <Text style={[styles.label, styles.textDark]}>
+                  <View className="gap-1">
+                    <View className="mb-4">
+                      <Text className="text-[13px] font-bold mb-1.5 text-neutral-950">
                         Fecha de nacimiento *
                       </Text>
                       <TextInput
-                        style={[styles.input, styles.inputLight]}
+                        className="h-12 rounded-xl px-3.5 text-sm border bg-slate-50 border-slate-300 text-neutral-950"
                         placeholder="AAAA-MM-DD (Ej. 2005-08-14)"
                         placeholderTextColor="#94a3b8"
                         value={birthDate}
@@ -448,12 +398,12 @@ export default function RegistroScreen() {
                       />
                     </View>
 
-                    <View style={styles.field}>
-                      <Text style={[styles.label, styles.textDark]}>
+                    <View className="mb-4">
+                      <Text className="text-[13px] font-bold mb-1.5 text-neutral-950">
                         Teléfono de contacto *
                       </Text>
                       <TextInput
-                        style={[styles.input, styles.inputLight]}
+                        className="h-12 rounded-xl px-3.5 text-sm border bg-slate-50 border-slate-300 text-neutral-950"
                         keyboardType="phone-pad"
                         placeholder="Ej. 0414-1234567"
                         placeholderTextColor="#94a3b8"
@@ -462,11 +412,11 @@ export default function RegistroScreen() {
                       />
                     </View>
 
-                    <View style={styles.field}>
-                      <Text style={[styles.label, styles.textDark]}>
+                    <View className="mb-4">
+                      <Text className="text-[13px] font-bold mb-1.5 text-neutral-950">
                         Género *
                       </Text>
-                      <View style={styles.pickerRow}>
+                      <View className="flex-row gap-2">
                         {[
                           { val: 'Male', lbl: 'Masculino' },
                           { val: 'Female', lbl: 'Femenino' },
@@ -474,17 +424,10 @@ export default function RegistroScreen() {
                         ].map((g) => (
                           <Pressable
                             key={g.val}
-                            style={[
-                              styles.pickerOption,
-                              gender === g.val && styles.pickerOptionActive,
-                              styles.cardLight,
-                            ]}
+                            className={`flex-1 py-2.5 px-2 rounded-[10px] border items-center bg-white border-slate-200 ${gender === g.val ? 'border-unefa-blue bg-[rgba(4,15,217,0.08)]' : ''}`}
                             onPress={() => setGender(g.val as any)}>
                             <Text
-                              style={[
-                                styles.pickerOptionText,
-                                gender === g.val && styles.pickerOptionTextActive,
-                              ]}>
+                              className={`text-xs font-bold ${gender === g.val ? 'text-unefa-blue font-extrabold' : ''}`}>
                               {g.lbl}
                             </Text>
                           </Pressable>
@@ -492,11 +435,11 @@ export default function RegistroScreen() {
                       </View>
                     </View>
 
-                    <View style={styles.field}>
-                      <Text style={[styles.label, styles.textDark]}>
+                    <View className="mb-4">
+                      <Text className="text-[13px] font-bold mb-1.5 text-neutral-950">
                         Nivel de instrucción *
                       </Text>
-                      <View style={styles.pickerColumn}>
+                      <View className="gap-1.5">
                         {[
                           { val: 'Bachiller', lbl: 'Bachiller en Ciencias' },
                           { val: 'TecnicoMedio', lbl: 'Técnico Medio Industrial' },
@@ -504,17 +447,10 @@ export default function RegistroScreen() {
                         ].map((lvl) => (
                           <Pressable
                             key={lvl.val}
-                            style={[
-                              styles.pickerBlock,
-                              level === lvl.val && styles.pickerBlockActive,
-                              styles.cardLight,
-                            ]}
+                            className={`py-2.5 px-3.5 rounded-[10px] border bg-white border-slate-200 ${level === lvl.val ? 'border-unefa-blue bg-[rgba(4,15,217,0.08)]' : ''}`}
                             onPress={() => setLevel(lvl.val as any)}>
                             <Text
-                              style={[
-                                styles.pickerOptionText,
-                                level === lvl.val && styles.pickerOptionTextActive,
-                              ]}>
+                              className={`text-xs font-bold ${level === lvl.val ? 'text-unefa-blue font-extrabold' : ''}`}>
                               {lvl.lbl}
                             </Text>
                           </Pressable>
@@ -522,12 +458,12 @@ export default function RegistroScreen() {
                       </View>
                     </View>
 
-                    <View style={styles.field}>
-                      <Text style={[styles.label, styles.textDark]}>
+                    <View className="mb-4">
+                      <Text className="text-[13px] font-bold mb-1.5 text-neutral-950">
                         Año de egreso de bachillerato *
                       </Text>
                       <TextInput
-                        style={[styles.input, styles.inputLight]}
+                        className="h-12 rounded-xl px-3.5 text-sm border bg-slate-50 border-slate-300 text-neutral-950"
                         keyboardType="numeric"
                         placeholder="Ej. 2025"
                         placeholderTextColor="#94a3b8"
@@ -536,11 +472,11 @@ export default function RegistroScreen() {
                       />
                     </View>
 
-                    <View style={styles.field}>
-                      <Text style={[styles.label, styles.textDark]}>
+                    <View className="mb-4">
+                      <Text className="text-[13px] font-bold mb-1.5 text-neutral-950">
                         Carrera de preferencia *
                       </Text>
-                      <View style={styles.pickerColumn}>
+                      <View className="gap-1.5">
                         {[
                           { val: 'ING-SIS', lbl: 'Ingeniería de Sistemas' },
                           { val: 'ING-TEL', lbl: 'Ingeniería de Telecomunicaciones' },
@@ -553,17 +489,10 @@ export default function RegistroScreen() {
                         ].map((c) => (
                           <Pressable
                             key={c.val}
-                            style={[
-                              styles.pickerBlock,
-                              carrera === c.val && styles.pickerBlockActive,
-                              styles.cardLight,
-                            ]}
+                            className={`py-2.5 px-3.5 rounded-[10px] border bg-white border-slate-200 ${carrera === c.val ? 'border-unefa-blue bg-[rgba(4,15,217,0.08)]' : ''}`}
                             onPress={() => setCarrera(c.val)}>
                             <Text
-                              style={[
-                                styles.pickerOptionText,
-                                carrera === c.val && styles.pickerOptionTextActive,
-                              ]}>
+                              className={`text-xs font-bold ${carrera === c.val ? 'text-unefa-blue font-extrabold' : ''}`}>
                               {c.lbl}
                             </Text>
                           </Pressable>
@@ -575,12 +504,12 @@ export default function RegistroScreen() {
 
                 {/* ── PASO 3 ────────────────────────────────────────── */}
                 {currentStep === 3 && (
-                  <View style={styles.stepContainer}>
-                    <View style={styles.field}>
-                      <Text style={[styles.label, styles.textDark]}>
+                  <View className="gap-1">
+                    <View className="mb-4">
+                      <Text className="text-[13px] font-bold mb-1.5 text-neutral-950">
                         Estado *
                       </Text>
-                      <View style={styles.pickerColumn}>
+                      <View className="gap-1.5">
                         {[
                           'Distrito Capital',
                           'Miranda',
@@ -595,17 +524,10 @@ export default function RegistroScreen() {
                         ].map((est) => (
                           <Pressable
                             key={est}
-                            style={[
-                              styles.pickerBlock,
-                              state === est && styles.pickerBlockActive,
-                              styles.cardLight,
-                            ]}
+                            className={`py-2.5 px-3.5 rounded-[10px] border bg-white border-slate-200 ${state === est ? 'border-unefa-blue bg-[rgba(4,15,217,0.08)]' : ''}`}
                             onPress={() => setState(est)}>
                             <Text
-                              style={[
-                                styles.pickerOptionText,
-                                state === est && styles.pickerOptionTextActive,
-                              ]}>
+                              className={`text-xs font-bold ${state === est ? 'text-unefa-blue font-extrabold' : ''}`}>
                               {est}
                             </Text>
                           </Pressable>
@@ -613,12 +535,12 @@ export default function RegistroScreen() {
                       </View>
                     </View>
 
-                    <View style={styles.field}>
-                      <Text style={[styles.label, styles.textDark]}>
+                    <View className="mb-4">
+                      <Text className="text-[13px] font-bold mb-1.5 text-neutral-950">
                         Municipio *
                       </Text>
                       <TextInput
-                        style={[styles.input, styles.inputLight]}
+                        className="h-12 rounded-xl px-3.5 text-sm border bg-slate-50 border-slate-300 text-neutral-950"
                         placeholder="Ej. Libertador"
                         placeholderTextColor="#94a3b8"
                         value={municipality}
@@ -626,12 +548,12 @@ export default function RegistroScreen() {
                       />
                     </View>
 
-                    <View style={styles.field}>
-                      <Text style={[styles.label, styles.textDark]}>
+                    <View className="mb-4">
+                      <Text className="text-[13px] font-bold mb-1.5 text-neutral-950">
                         Parroquia *
                       </Text>
                       <TextInput
-                        style={[styles.input, styles.inputLight]}
+                        className="h-12 rounded-xl px-3.5 text-sm border bg-slate-50 border-slate-300 text-neutral-950"
                         placeholder="Ej. Sucre / El Valle"
                         placeholderTextColor="#94a3b8"
                         value={parish}
@@ -639,12 +561,12 @@ export default function RegistroScreen() {
                       />
                     </View>
 
-                    <View style={styles.field}>
-                      <Text style={[styles.label, styles.textDark]}>
+                    <View className="mb-4">
+                      <Text className="text-[13px] font-bold mb-1.5 text-neutral-950">
                         Urbanización / sector *
                       </Text>
                       <TextInput
-                        style={[styles.input, styles.inputLight]}
+                        className="h-12 rounded-xl px-3.5 text-sm border bg-slate-50 border-slate-300 text-neutral-950"
                         placeholder="Ej. Casalta / Chuao"
                         placeholderTextColor="#94a3b8"
                         value={urbanizacion}
@@ -652,12 +574,12 @@ export default function RegistroScreen() {
                       />
                     </View>
 
-                    <View style={styles.field}>
-                      <Text style={[styles.label, styles.textDark]}>
+                    <View className="mb-4">
+                      <Text className="text-[13px] font-bold mb-1.5 text-neutral-950">
                         Calle o avenida *
                       </Text>
                       <TextInput
-                        style={[styles.input, styles.inputLight]}
+                        className="h-12 rounded-xl px-3.5 text-sm border bg-slate-50 border-slate-300 text-neutral-950"
                         placeholder="Ej. Av. Principal con Calle 3"
                         placeholderTextColor="#94a3b8"
                         value={calleAv}
@@ -665,12 +587,12 @@ export default function RegistroScreen() {
                       />
                     </View>
 
-                    <View style={styles.field}>
-                      <Text style={[styles.label, styles.textDark]}>
+                    <View className="mb-4">
+                      <Text className="text-[13px] font-bold mb-1.5 text-neutral-950">
                         Nro. casa / edificio *
                       </Text>
                       <TextInput
-                        style={[styles.input, styles.inputLight]}
+                        className="h-12 rounded-xl px-3.5 text-sm border bg-slate-50 border-slate-300 text-neutral-950"
                         placeholder="Ej. 14-B"
                         placeholderTextColor="#94a3b8"
                         value={nroCasa}
@@ -678,7 +600,7 @@ export default function RegistroScreen() {
                       />
                     </View>
 
-                    <Text style={styles.consent}>
+                    <Text className="text-[11px] leading-4 text-slate-500 italic mt-1.5 mb-2.5">
                       Al enviar este formulario certifico bajo fe de juramento que todos los datos
                       consignados son fidedignos y me comprometo a cumplir el reglamento disciplinario
                       del CINU y la doctrina cívico-militar unefista.
@@ -687,25 +609,25 @@ export default function RegistroScreen() {
                 )}
 
                 {/* Form Actions Footer */}
-                <View style={styles.formActions}>
-                  <Text style={styles.stepCount}>Paso {currentStep} / 3</Text>
-                  <View style={styles.btnRow}>
+                <View className="flex-row items-center justify-between pt-4 border-t-[0.5px] border-slate-300 mt-2.5">
+                  <Text className="text-xs font-bold text-slate-500">Paso {currentStep} / 3</Text>
+                  <View className="flex-row gap-2">
                     {currentStep > 1 && (
                       <Pressable
-                        style={[styles.btn, styles.btnOutline, styles.btnSm]}
+                        className="py-3 rounded-[14px] items-center justify-center flex-row gap-2 border border-slate-300 bg-transparent py-2.5 px-4"
                         onPress={handlePrev}>
-                        <Text style={[styles.btnOutlineText, styles.textDark]}>
+                        <Text className="font-bold text-[13px] text-neutral-950">
                           ← Atrás
                         </Text>
                       </Pressable>
                     )}
                     {currentStep < 3 ? (
-                      <Pressable style={[styles.btn, styles.btnGold, styles.btnSm]} onPress={handleNext}>
-                        <Text style={styles.btnGoldText}>Continuar </Text>
+                      <Pressable className="py-3 rounded-[14px] items-center justify-center flex-row gap-2 bg-unefa-gold py-2.5 px-4" onPress={handleNext}>
+                        <Text className="text-unefa-navy font-black text-sm">Continuar →</Text>
                       </Pressable>
                     ) : (
-                      <Pressable style={[styles.btn, styles.btnBlue, styles.btnSm]} onPress={handleSubmit}>
-                        <Text style={styles.btnBlueText}>Finalizar </Text>
+                      <Pressable className="py-3 rounded-[14px] items-center justify-center flex-row gap-2 bg-unefa-blue py-2.5 px-4" onPress={handleSubmit}>
+                        <Text className="text-white font-black text-sm">Finalizar ✓</Text>
                       </Pressable>
                     )}
                   </View>
@@ -714,14 +636,14 @@ export default function RegistroScreen() {
             )}
 
             {/* Auth Switch */}
-            <View style={styles.authSwitch}>
-              <Text style={[styles.switchPrompt, styles.subLight]}>
+            <View className="mt-5 pt-4 border-t-[0.5px] border-slate-300 gap-2.5">
+              <Text className="text-xs text-center font-semibold text-slate-600">
                 ¿Ya posees matrícula o usuario activo?
               </Text>
               <Pressable
-                style={[styles.btn, styles.btnOutline]}
+                className="py-3 rounded-[14px] items-center justify-center flex-row gap-2 border border-slate-300 bg-transparent"
                 onPress={() => router.push('/login')}>
-                <Text style={[styles.btnOutlineText, styles.textDark]}>
+                <Text className="font-bold text-[13px] text-neutral-950">
                   Iniciar sesión en SICEU
                 </Text>
               </Pressable>
@@ -735,447 +657,3 @@ export default function RegistroScreen() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-  },
-  rootLight: {
-    backgroundColor: '#ffffff',
-  },
-  rootDark: {
-    backgroundColor: '#0a0e17',
-  },
-  scroll: {
-    flex: 1,
-  },
-  scrollContent: {
-    paddingBottom: 40,
-    alignItems: 'center',
-  },
-  centerContainer: {
-    width: '100%',
-    maxWidth: MaxContentWidth,
-    paddingHorizontal: 16,
-    paddingTop: 16,
-  },
-
-  // Banner
-  banner: {
-    padding: 14,
-    borderRadius: 14,
-    marginBottom: 16,
-    borderWidth: 1,
-  },
-  bannerLight: {
-    backgroundColor: '#f8fafc',
-    borderColor: '#e2e8f0',
-  },
-  bannerDark: {
-    backgroundColor: '#0f1d33',
-    borderColor: 'rgba(255, 255, 255, 0.08)',
-  },
-  bannerSub: {
-    fontSize: 11,
-    fontWeight: '600',
-    marginBottom: 2,
-  },
-  bannerTitle: {
-    fontSize: 16,
-    fontWeight: '900',
-  },
-
-  // Auth Card
-  authCard: {
-    borderRadius: 22,
-    padding: 20,
-    borderWidth: 1,
-    shadowColor: '#06152a',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.1,
-    shadowRadius: 20,
-    elevation: 4,
-    marginBottom: 20,
-  },
-  cardHead: {
-    marginBottom: 18,
-  },
-  badgeRow: {
-    flexDirection: 'row',
-    gap: 8,
-    marginBottom: 12,
-  },
-  badgeGold: {
-    backgroundColor: UnefaColors.goldSoft,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 8,
-  },
-  badgeGoldText: {
-    color: UnefaColors.goldDark,
-    fontSize: 11,
-    fontWeight: '800',
-  },
-  badgeBlue: {
-    backgroundColor: 'rgba(4, 15, 217, 0.1)',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 8,
-    alignSelf: 'center',
-    marginBottom: 8,
-  },
-  badgeBlueText: {
-    color: UnefaColors.blue,
-    fontSize: 11,
-    fontWeight: '800',
-  },
-  badgeNeutral: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 8,
-    borderWidth: 1,
-  },
-  badgeLight: {
-    backgroundColor: '#f1f5f9',
-    borderColor: '#e2e8f0',
-  },
-  badgeDark: {
-    backgroundColor: '#13233c',
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  badgeNeutralText: {
-    fontSize: 11,
-    fontWeight: '700',
-  },
-  authTitle: {
-    fontSize: 26,
-    fontWeight: '900',
-    marginBottom: 6,
-  },
-  authSub: {
-    fontSize: 13,
-    lineHeight: 18,
-  },
-
-  // Stepper
-  stepper: {
-    flexDirection: 'row',
-    gap: 8,
-    marginBottom: 20,
-    paddingVertical: 4,
-  },
-  stepInd: {
-    flex: 1,
-  },
-  stepIndActive: {},
-  stepIndCompleted: {},
-  stepBar: {
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: '#e2e8f0',
-    marginBottom: 6,
-  },
-  stepBarActive: {
-    backgroundColor: UnefaColors.gold,
-  },
-  stepLabel: {
-    fontSize: 11,
-    color: '#64748b',
-    fontWeight: '600',
-  },
-  stepLabelActive: {
-    color: UnefaColors.blue,
-    fontWeight: '800',
-  },
-  boldIdx: {
-    fontWeight: '900',
-  },
-
-  // Alert
-  alertError: {
-    backgroundColor: '#fee2e2',
-    borderColor: '#fca5a5',
-    borderWidth: 1,
-    padding: 12,
-    borderRadius: 12,
-    marginBottom: 16,
-  },
-  alertErrorText: {
-    color: UnefaColors.red,
-    fontSize: 13,
-    fontWeight: '700',
-  },
-
-  // Success Panel
-  successPanel: {
-    padding: 24,
-    borderRadius: 18,
-    alignItems: 'center',
-    borderWidth: 1,
-    marginBottom: 20,
-  },
-  successPanelLight: {
-    backgroundColor: '#f8fafc',
-    borderColor: '#e2e8f0',
-  },
-  successPanelDark: {
-    backgroundColor: '#0f1d33',
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  successIconWrap: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: '#dcfce7',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 16,
-  },
-  successIconCheck: {
-    fontSize: 32,
-    color: UnefaColors.green,
-    fontWeight: '900',
-  },
-  successTitle: {
-    fontSize: 22,
-    fontWeight: '900',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  successDesc: {
-    fontSize: 14,
-    lineHeight: 20,
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  successActions: {
-    width: '100%',
-    gap: 10,
-  },
-
-  // Form
-  formContent: {
-    marginBottom: 10,
-  },
-  stepContainer: {
-    gap: 4,
-  },
-  field: {
-    marginBottom: 16,
-  },
-  label: {
-    fontSize: 13,
-    fontWeight: '700',
-    marginBottom: 6,
-  },
-  cedulaGroup: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-  nationalityToggle: {
-    flexDirection: 'row',
-    borderRadius: 12,
-    backgroundColor: '#f1f5f9',
-    padding: 3,
-  },
-  natBtn: {
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  natBtnDark: {
-    backgroundColor: '#13233c',
-  },
-  natBtnActive: {
-    backgroundColor: UnefaColors.blue,
-  },
-  natBtnText: {
-    fontSize: 13,
-    fontWeight: '800',
-    color: '#64748b',
-  },
-  natBtnTextActive: {
-    color: '#ffffff',
-  },
-  input: {
-    height: 48,
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    fontSize: 14,
-    borderWidth: 1,
-  },
-  cedulaInput: {
-    flex: 1,
-  },
-  inputLight: {
-    backgroundColor: '#f8fafc',
-    borderColor: '#cbd5e1',
-    color: '#0a0a0a',
-  },
-  inputDark: {
-    backgroundColor: '#06152a',
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-    color: '#f8fafc',
-  },
-  passwordWrap: {
-    position: 'relative',
-    justifyContent: 'center',
-  },
-  togglePassBtn: {
-    position: 'absolute',
-    right: 12,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-  },
-  togglePassText: {
-    fontSize: 12,
-    color: UnefaColors.blue,
-    fontWeight: '700',
-  },
-
-  // Selectors / Picker simulations
-  pickerRow: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-  pickerOption: {
-    flex: 1,
-    paddingVertical: 10,
-    paddingHorizontal: 8,
-    borderRadius: 10,
-    borderWidth: 1,
-    alignItems: 'center',
-  },
-  pickerOptionActive: {
-    borderColor: UnefaColors.blue,
-    backgroundColor: 'rgba(4, 15, 217, 0.08)',
-  },
-  pickerOptionText: {
-    fontSize: 12,
-    fontWeight: '700',
-  },
-  pickerOptionTextActive: {
-    color: UnefaColors.blue,
-    fontWeight: '800',
-  },
-  pickerColumn: {
-    gap: 6,
-  },
-  pickerBlock: {
-    paddingVertical: 10,
-    paddingHorizontal: 14,
-    borderRadius: 10,
-    borderWidth: 1,
-  },
-  pickerBlockActive: {
-    borderColor: UnefaColors.blue,
-    backgroundColor: 'rgba(4, 15, 217, 0.08)',
-  },
-
-  consent: {
-    fontSize: 11,
-    lineHeight: 16,
-    color: '#64748b',
-    fontStyle: 'italic',
-    marginTop: 6,
-    marginBottom: 10,
-  },
-
-  // Actions
-  formActions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingTop: 16,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: '#cbd5e1',
-    marginTop: 10,
-  },
-  stepCount: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: '#64748b',
-  },
-  btnRow: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-  btn: {
-    paddingVertical: 12,
-    borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    gap: 8,
-  },
-  btnSm: {
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-  },
-  btnGold: {
-    backgroundColor: UnefaColors.gold,
-  },
-  btnGoldText: {
-    color: UnefaColors.navy,
-    fontWeight: '900',
-    fontSize: 14,
-  },
-  btnBlue: {
-    backgroundColor: UnefaColors.blue,
-  },
-  btnBlueText: {
-    color: '#ffffff',
-    fontWeight: '900',
-    fontSize: 14,
-  },
-  btnOutline: {
-    borderWidth: 1,
-    borderColor: '#cbd5e1',
-    backgroundColor: 'transparent',
-  },
-  btnOutlineDark: {
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-  },
-  btnOutlineText: {
-    fontWeight: '700',
-    fontSize: 13,
-  },
-
-  // Auth Switch
-  authSwitch: {
-    marginTop: 20,
-    paddingTop: 16,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: '#cbd5e1',
-    gap: 10,
-  },
-  switchPrompt: {
-    fontSize: 12,
-    textAlign: 'center',
-    fontWeight: '600',
-  },
-
-  // Card themes
-  cardLight: {
-    backgroundColor: '#ffffff',
-    borderColor: '#e2e8f0',
-  },
-  cardDark: {
-    backgroundColor: '#0d1829',
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  textLight: {
-    color: '#f8fafc',
-  },
-  textDark: {
-    color: '#0a0a0a',
-  },
-  subLight: {
-    color: '#475569',
-  },
-  subDark: {
-    color: '#cbd5e1',
-  },
-});

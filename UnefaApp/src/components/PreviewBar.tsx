@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { UnefaColors } from '@/constants/theme';
+import { View, Text } from 'react-native';
 
 interface PreviewBarProps {
   viewName: string;
@@ -8,47 +7,14 @@ interface PreviewBarProps {
 
 export function PreviewBar({ viewName }: PreviewBarProps) {
   return (
-    <View style={styles.bar}>
-      <View style={styles.left}>
-        <View style={styles.dot} />
-        <Text style={styles.boldText}>Propuesta móvil · Clay</Text>
+    <View className="z-[100] flex-row items-center justify-between bg-unefa-navy px-4 py-1.5">
+      <View className="flex-row items-center gap-1.5">
+        <View className="h-[7px] w-[7px] rounded-full bg-emerald-500" />
+        <Text className="text-[11px] font-bold tracking-[0.2px] text-slate-50">
+          Propuesta móvil · Clay
+        </Text>
       </View>
-      <Text style={styles.rightText}>{viewName}</Text>
+      <Text className="text-[11px] font-medium text-slate-400">{viewName}</Text>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  bar: {
-    backgroundColor: UnefaColors.navy,
-    paddingHorizontal: 16,
-    paddingVertical: 6,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    zIndex: 100,
-  },
-  left: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  dot: {
-    width: 7,
-    height: 7,
-    borderRadius: 4,
-    backgroundColor: '#10b981',
-  },
-  boldText: {
-    color: '#f8fafc',
-    fontSize: 11,
-    fontWeight: '700',
-    letterSpacing: 0.2,
-  },
-  rightText: {
-    color: '#94a3b8',
-    fontSize: 11,
-    fontWeight: '500',
-  },
-});
-

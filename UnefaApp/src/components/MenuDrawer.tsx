@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   Modal,
   Pressable,
   ScrollView,
@@ -87,102 +86,152 @@ export function MenuDrawer({ visible, onClose, onNavigateSection }: MenuDrawerPr
 
   return (
     <Modal visible={modalVisible} transparent animationType="none" onRequestClose={onClose}>
-      <Animated.View style={[styles.backdrop, { opacity: backdropOpacity }]}>
-        <Pressable style={styles.dismissOverlay} onPress={onClose} />
+      <Animated.View
+        className="flex-1 flex-row bg-[rgba(6,21,42,0.65)]"
+        style={{ opacity: backdropOpacity }}>
+        <Pressable className="h-full flex-1" onPress={onClose} />
         <Animated.View
-          style={[
-            styles.sheet,
-            { width: drawerWidth, transform: [{ translateX: drawerTranslateX }] },
-          ]}>
-          <View style={styles.header}>
-            <View style={styles.brand}>
-              <View style={styles.logoWrap}>
+          className="h-full bg-white px-5 pb-6 pt-4"
+          style={{ width: drawerWidth, transform: [{ translateX: drawerTranslateX }] }}>
+          <View className="flex-row items-center justify-between border-b border-slate-300 pb-4">
+            <View className="flex-row items-center gap-2.5">
+              <View className="h-[34px] w-[34px] items-center justify-center rounded-lg border border-slate-200 bg-white">
                 <Image
                   source={require('@/assets/images/unefa-logo.png')}
-                  style={styles.logo}
+                  style={{ width: 28, height: 28 }}
                   contentFit="contain"
                 />
               </View>
               <View>
-                <Text style={styles.brandName}>UNEFA</Text>
-                <Text style={styles.brandSub}>Menú institucional</Text>
+                <Text className="text-base font-black text-neutral-950">
+                  UNEFA
+                </Text>
+                <Text className="text-[10px] font-semibold text-slate-500">
+                  Menú institucional
+                </Text>
               </View>
             </View>
-            <Pressable style={styles.closeBtn} onPress={onClose}>
+            <Pressable
+              className="h-8 w-8 items-center justify-center rounded-full bg-slate-100"
+              onPress={onClose}>
               <X size={18} color="#0f172a" strokeWidth={2.5} />
             </Pressable>
           </View>
 
-          <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-            <View style={styles.navLinks}>
-              <Pressable style={styles.navLink} onPress={() => handleLink('inicio')}>
-                <Text style={styles.idx}>[01]</Text>
-                <Text style={styles.navText}>Inicio</Text>
+          <ScrollView className="mt-4 flex-1" showsVerticalScrollIndicator={false}>
+            <View className="mb-5 gap-1.5">
+              <Pressable
+                className="flex-row items-center border-b border-[rgba(148,163,184,0.2)] py-3"
+                onPress={() => handleLink('inicio')}>
+                <Text className="w-[38px] font-mono text-xs font-bold text-unefa-blue">
+                  [01]
+                </Text>
+                <Text className="flex-1 text-base font-bold text-neutral-950">
+                  Inicio
+                </Text>
                 <ArrowRight size={16} color={UnefaColors.gold} strokeWidth={2.5} />
               </Pressable>
 
-              <Pressable style={styles.navLink} onPress={() => handleLink('nosotros')}>
-                <Text style={styles.idx}>[02]</Text>
-                <Text style={styles.navText}>Doctrina</Text>
+              <Pressable
+                className="flex-row items-center border-b border-[rgba(148,163,184,0.2)] py-3"
+                onPress={() => handleLink('nosotros')}>
+                <Text className="w-[38px] font-mono text-xs font-bold text-unefa-blue">
+                  [02]
+                </Text>
+                <Text className="flex-1 text-base font-bold text-neutral-950">
+                  Doctrina
+                </Text>
                 <ArrowRight size={16} color={UnefaColors.gold} strokeWidth={2.5} />
               </Pressable>
 
-              <Pressable style={styles.navLink} onPress={() => handleLink('carreras')}>
-                <Text style={styles.idx}>[03]</Text>
-                <Text style={styles.navText}>Carreras</Text>
+              <Pressable
+                className="flex-row items-center border-b border-[rgba(148,163,184,0.2)] py-3"
+                onPress={() => handleLink('carreras')}>
+                <Text className="w-[38px] font-mono text-xs font-bold text-unefa-blue">
+                  [03]
+                </Text>
+                <Text className="flex-1 text-base font-bold text-neutral-950">
+                  Carreras
+                </Text>
                 <ArrowRight size={16} color={UnefaColors.gold} strokeWidth={2.5} />
               </Pressable>
 
-              <Pressable style={styles.navLink} onPress={() => handleLink('admisiones')}>
-                <Text style={styles.idx}>[04]</Text>
-                <Text style={styles.navText}>Admisiones CINU</Text>
+              <Pressable
+                className="flex-row items-center border-b border-[rgba(148,163,184,0.2)] py-3"
+                onPress={() => handleLink('admisiones')}>
+                <Text className="w-[38px] font-mono text-xs font-bold text-unefa-blue">
+                  [04]
+                </Text>
+                <Text className="flex-1 text-base font-bold text-neutral-950">
+                  Admisiones CINU
+                </Text>
                 <ArrowRight size={16} color={UnefaColors.gold} strokeWidth={2.5} />
               </Pressable>
 
-              <Pressable style={styles.navLink} onPress={() => handleLink('servicios')}>
-                <Text style={styles.idx}>[05]</Text>
-                <Text style={styles.navText}>Servicios</Text>
+              <Pressable
+                className="flex-row items-center border-b border-[rgba(148,163,184,0.2)] py-3"
+                onPress={() => handleLink('servicios')}>
+                <Text className="w-[38px] font-mono text-xs font-bold text-unefa-blue">
+                  [05]
+                </Text>
+                <Text className="flex-1 text-base font-bold text-neutral-950">
+                  Servicios
+                </Text>
                 <ArrowRight size={16} color={UnefaColors.gold} strokeWidth={2.5} />
               </Pressable>
             </View>
 
-            <View style={styles.featureCard}>
-              <Text style={styles.featureKicker}>[+] Institución</Text>
-              <Text style={styles.featureDesc}>
+            <View className="mb-5 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <Text className="mb-1.5 text-[11px] font-extrabold uppercase text-unefa-blue">
+                [+] Institución
+              </Text>
+              <Text className="mb-3 text-xs leading-[18px] text-slate-600">
                 Formación politécnica, investigación aplicada y doctrina cívico-militar al servicio de la República.
               </Text>
-              <View style={styles.featureStats}>
-                <View style={styles.statBox}>
-                  <Text style={styles.statNum}>100%</Text>
-                  <Text style={styles.statLabel}>Gratuidad</Text>
+              <View className="flex-row gap-4">
+                <View className="flex-1 items-center rounded-[10px] bg-white/15 p-2">
+                  <Text className="text-base font-black text-neutral-950">
+                    100%
+                  </Text>
+                  <Text className="text-[10px] font-semibold text-slate-500">
+                    Gratuidad
+                  </Text>
                 </View>
-                <View style={styles.statBox}>
-                  <Text style={styles.statNum}>24</Text>
-                  <Text style={styles.statLabel}>Estados</Text>
+                <View className="flex-1 items-center rounded-[10px] bg-white/15 p-2">
+                  <Text className="text-base font-black text-neutral-950">
+                    24
+                  </Text>
+                  <Text className="text-[10px] font-semibold text-slate-500">
+                    Estados
+                  </Text>
                 </View>
               </View>
             </View>
 
-            <View style={styles.actions}>
+            <View className="mb-5 gap-2.5">
               <Pressable
-                style={[styles.btn, styles.btnGold]}
+                className="items-center justify-center rounded-[14px] bg-unefa-gold py-[13px]"
                 onPress={() => {
                   onClose();
                   router.push('/registro');
                 }}>
-                <Text style={styles.btnGoldText}>Preinscripción CINU</Text>
+                <Text className="text-sm font-extrabold text-unefa-navy">
+                  Preinscripción CINU
+                </Text>
               </Pressable>
               <Pressable
-                style={[styles.btn, styles.btnOutline]}
+                className="items-center justify-center rounded-[14px] border border-slate-300 py-[13px]"
                 onPress={() => {
                   onClose();
                   router.push('/login');
                 }}>
-                <Text style={styles.btnOutlineText}>Portal SICEU</Text>
+                <Text className="text-sm font-bold text-neutral-950">
+                  Portal SICEU
+                </Text>
               </Pressable>
             </View>
 
-            <Text style={styles.footText}>
+            <Text className="mb-6 text-center text-[10px] leading-[15px] text-slate-500">
               Periodo académico 2026-I · Presencia en los 24 estados{'\n'}República Bolivariana de Venezuela
             </Text>
           </ScrollView>
@@ -191,182 +240,3 @@ export function MenuDrawer({ visible, onClose, onNavigateSection }: MenuDrawerPr
     </Modal>
   );
 }
-
-const styles = StyleSheet.create({
-  backdrop: {
-    flex: 1,
-    backgroundColor: 'rgba(6, 21, 42, 0.65)',
-    flexDirection: 'row',
-  },
-  dismissOverlay: {
-    flex: 1,
-    height: '100%',
-  },
-  sheet: {
-    height: '100%',
-    paddingTop: 16,
-    paddingHorizontal: 20,
-    paddingBottom: 24,
-    backgroundColor: '#ffffff',
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingBottom: 16,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#cbd5e1',
-  },
-  brand: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
-  logoWrap: {
-    width: 34,
-    height: 34,
-    borderRadius: 8,
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#e2e8f0',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  logo: {
-    width: 28,
-    height: 28,
-  },
-  brandName: {
-    fontSize: 16,
-    fontWeight: '900',
-    color: '#0a0a0a',
-  },
-  brandSub: {
-    fontSize: 10,
-    color: '#64748b',
-    fontWeight: '600',
-  },
-  closeBtn: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#f1f5f9',
-  },
-  closeText: {
-    fontSize: 15,
-    fontWeight: '700',
-    color: '#0f172a',
-  },
-  content: {
-    flex: 1,
-    marginTop: 16,
-  },
-  navLinks: {
-    gap: 6,
-    marginBottom: 20,
-  },
-  navLink: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: 'rgba(148, 163, 184, 0.2)',
-  },
-  idx: {
-    fontSize: 12,
-    fontFamily: 'monospace',
-    color: UnefaColors.blue,
-    fontWeight: '700',
-    width: 38,
-  },
-  navText: {
-    flex: 1,
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#0a0a0a',
-  },
-  arrow: {
-    fontSize: 16,
-    color: UnefaColors.gold,
-    fontWeight: '800',
-  },
-  featureCard: {
-    padding: 16,
-    borderRadius: 16,
-    marginBottom: 20,
-    backgroundColor: '#f8fafc',
-    borderWidth: 1,
-    borderColor: '#e2e8f0',
-  },
-  featureKicker: {
-    fontSize: 11,
-    fontWeight: '800',
-    color: UnefaColors.blue,
-    textTransform: 'uppercase',
-    marginBottom: 6,
-  },
-  featureDesc: {
-    fontSize: 12,
-    lineHeight: 18,
-    marginBottom: 12,
-    color: '#475569',
-  },
-  featureStats: {
-    flexDirection: 'row',
-    gap: 16,
-  },
-  statBox: {
-    flex: 1,
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
-    padding: 8,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  statNum: {
-    fontSize: 16,
-    fontWeight: '900',
-    color: '#0a0a0a',
-  },
-  statLabel: {
-    fontSize: 10,
-    color: '#64748b',
-    fontWeight: '600',
-  },
-  actions: {
-    gap: 10,
-    marginBottom: 20,
-  },
-  btn: {
-    paddingVertical: 13,
-    borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  btnGold: {
-    backgroundColor: UnefaColors.gold,
-  },
-  btnGoldText: {
-    color: UnefaColors.navy,
-    fontWeight: '800',
-    fontSize: 14,
-  },
-  btnOutline: {
-    borderWidth: 1,
-    borderColor: '#cbd5e1',
-    backgroundColor: 'transparent',
-  },
-  btnOutlineText: {
-    fontWeight: '700',
-    fontSize: 14,
-    color: '#0a0a0a',
-  },
-  footText: {
-    fontSize: 10,
-    color: '#64748b',
-    textAlign: 'center',
-    lineHeight: 15,
-    marginBottom: 24,
-  },
-});
