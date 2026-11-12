@@ -1,0 +1,17 @@
+# prohive listar archiuvos de una carpeta
+Options -Indexes
+
+# bloqueo de archivos ocultos 
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# encine para sobre escribir
+RewriteEngine On
+
+# reglas para las carpetas y archivos
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# iniciar desde el index
+RewriteRule ^(.*)$ index.php [L,QSA]
