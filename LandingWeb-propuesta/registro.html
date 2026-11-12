@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preinscripción CINU — Portal UNEFA</title>
+  <meta name="description" content="Registro oficial de aspirantes para el Curso Integral de Nivelación Universitaria (CINU) de la UNEFA.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Barra institucional -->
+  <div class="sys-status-bar">
+    <div class="container">
+      <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+        <span style="font-weight: 600; color: var(--accent-ink);">Admisiones CINU 2026-I</span>
+        <span style="opacity: 0.45;">·</span>
+        <span>Curso Integral de Nivelación Universitaria</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+        <span>Convocatoria abierta</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Encabezado -->
+  <header class="main-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand-group">
+        <div class="brand-logo-wrap">
+          <img src="https://images.seeklogo.com/logo-png/14/1/unefa-logo-png_seeklogo-144842.png" alt="Logo UNEFA" width="34" height="34" style="border-radius: 50%;">
+        </div>
+        <div class="brand-title">
+          <span class="brand-title-main">UNEFA</span>
+          <span class="brand-title-sub">Registro CINU</span>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <a href="index.html" class="nav-link" style="font-size: 0.85rem; display: flex; align-items: center; gap: 0.35rem;">
+          <span>←</span>
+          <span>Volver al inicio</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido principal -->
+  <main class="auth-page-wrap">
+    <div class="auth-card" style="max-width: 44rem;">
+      
+      <div class="auth-header">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 0.9rem;">
+          <span class="badge-tag accent-gold">Nuevo ingreso</span>
+          <span class="badge-tag">Registro en línea</span>
+        </div>
+        <h1 class="text-title-card" style="font-size: 1.6rem;">
+          Preinscripción al CINU
+        </h1>
+        <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.4rem; line-height: 1.6;">
+          Completa las tres secciones para formalizar tu solicitud de ingreso.
+        </p>
+      </div>
+
+      <!-- Indicador de pasos -->
+      <div class="step-indicator-bar">
+        <div class="step-pill active" data-step="1">
+          <span>Datos de acceso</span>
+        </div>
+        <div class="step-pill" data-step="2">
+          <span>Datos académicos</span>
+        </div>
+        <div class="step-pill" data-step="3">
+          <span>Residencia</span>
+        </div>
+      </div>
+
+      <!-- Aviso de error -->
+      <div id="signupFormError" style="display: none; padding: 0.75rem 1rem; background: rgba(217, 41, 41, 0.1); border: 1px solid var(--unefa-red); color: var(--unefa-red); font-size: 0.8rem; font-weight: 700; margin-bottom: 1.5rem;">
+        <!-- Error text -->
+      </div>
+
+      <!-- Confirmación de registro -->
+      <div id="signupSuccessMessage" style="display: none; padding: 2rem; border: 1px solid #16a34a; border-radius: 12px; background: var(--bg-secondary); text-align: center;">
+        <span class="badge-tag accent-blue" style="margin-bottom: 1rem;">Expediente registrado</span>
+        <h2 class="text-title-card" style="color: #16a34a; margin-bottom: 0.75rem;">Preinscripción registrada</h2>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem;">
+          Tu solicitud para el <strong>Curso Integral de Nivelación Universitaria (CINU 2026-I)</strong> ha sido registrada en el sistema central de la UNEFA.<br>
+          Recibirás en tu correo electrónico la confirmación con la fecha para consignar tus documentos en Control de Estudios.
+        </p>
+        <div style="display: flex; justify-content: center; gap: 1rem;">
+          <a href="login.html" class="btn btn-gold">
+            <span>Ir al portal SICEU</span>
+          </a>
+          <a href="index.html" class="btn btn-outline">
+            <span>Volver al inicio</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Formulario de preinscripción -->
+      <form id="signupMultiForm">
+        
+        <!-- ── Paso 1: datos de acceso ──────────────────────────────────────── -->
+        <div class="signup-step-container" data-step="1">
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="reg_firstName">Primer Nombre *</label>
+              <input type="text" id="reg_firstName" class="form-input" placeholder="Ej. Carlos" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg_middleName">Segundo Nombre</label>
+              <input type="text" id="reg_middleName" class="form-input" placeholder="Ej. Eduardo">
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="reg_lastName">Primer Apellido *</label>
+              <input type="text" id="reg_lastName" class="form-input" placeholder="Ej. Mendoza" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg_secondLastName">Segundo Apellido</label>
+              <input type="text" id="reg_secondLastName" class="form-input" placeholder="Ej. Gómez">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="reg_cedula">Documento de Identidad (Cédula) *</label>
+            <div class="cedula-input-group">
+              <select class="form-select" id="reg_nacionalidad">
+                <option value="V">V-</option>
+                <option value="E">E-</option>
+              </select>
+              <input type="text" id="reg_cedula" class="form-input" placeholder="Ej. 29123456" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="reg_email">Correo Electrónico *</label>
+            <input type="email" id="reg_email" class="form-input" placeholder="nombre@correo.com" required>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="reg_password">Contraseña *</label>
+              <div class="input-password-wrap">
+                <input type="password" id="reg_password" class="form-input" placeholder="Mínimo 8 caracteres" required>
+                <button type="button" class="toggle-password-btn" data-target="reg_password" style="font-size: 0.76rem; font-weight: 600;">Ver</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg_confirmPassword">Confirmar Contraseña *</label>
+              <div class="input-password-wrap">
+                <input type="password" id="reg_confirmPassword" class="form-input" placeholder="Repite contraseña" required>
+                <button type="button" class="toggle-password-btn" data-target="reg_confirmPassword" style="font-size: 0.76rem; font-weight: 600;">Ver</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ── Paso 2: datos personales y académicos ────────────────────────── -->
+        <div class="signup-step-container" data-step="2" style="display: none;">
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="reg_fechaNacimiento">Fecha de Nacimiento *</label>
+              <input type="date" id="reg_fechaNacimiento" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg_telefono">Teléfono de Contacto *</label>
+              <input type="tel" id="reg_telefono" class="form-input" placeholder="Ej. 0414-1234567" required>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="reg_genero">Género *</label>
+              <select id="reg_genero" class="form-select" required>
+                <option value="Male">Masculino</option>
+                <option value="Female">Femenino</option>
+                <option value="Other">Otro</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg_nivelGrado">Nivel de Instrucción *</label>
+              <select id="reg_nivelGrado" class="form-select" required>
+                <option value="Bachiller">Bachiller en Ciencias</option>
+                <option value="TecnicoMedio">Técnico Medio Industrial</option>
+                <option value="BachillerHumanidades">Bachiller en Humanidades</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="reg_anoEgreso">Año de Egreso de Bachillerato *</label>
+              <input type="number" id="reg_anoEgreso" class="form-input" placeholder="Ej. 2025" min="1970" max="2026" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg_carreraInteres">Carrera de Preferencia *</label>
+              <select id="reg_carreraInteres" class="form-select" required>
+                <option value="ING-SIS">Ingeniería de Sistemas</option>
+                <option value="ING-TEL">Ingeniería de Telecomunicaciones</option>
+                <option value="ING-MEC">Ingeniería Mecánica</option>
+                <option value="ING-ELE">Ingeniería Electrónica</option>
+                <option value="LIC-AGM">Lic. Administración y Gestión Municipal</option>
+                <option value="LIC-ENF">Licenciatura en Enfermería</option>
+                <option value="TSU-SIS">TSU en Análisis de Sistemas</option>
+                <option value="TSU-ENF">TSU en Enfermería</option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ── Paso 3: dirección y ubicación ────────────────────────────────── -->
+        <div class="signup-step-container" data-step="3" style="display: none;">
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="reg_state">Estado *</label>
+              <select id="reg_state" class="form-select" required>
+                <option value="Distrito Capital">Distrito Capital</option>
+                <option value="Miranda">Miranda</option>
+                <option value="Aragua">Aragua</option>
+                <option value="Carabobo">Carabobo</option>
+                <option value="Zulia">Zulia</option>
+                <option value="Lara">Lara</option>
+                <option value="Anzoátegui">Anzoátegui</option>
+                <option value="Bolívar">Bolívar</option>
+                <option value="Táchira">Táchira</option>
+                <option value="Otro">Otro Estado de Venezuela</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg_municipality">Municipio *</label>
+              <input type="text" id="reg_municipality" class="form-input" placeholder="Ej. Libertador" required>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="reg_parish">Parroquia *</label>
+              <input type="text" id="reg_parish" class="form-input" placeholder="Ej. Sucre / El Valle" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg_urbanizacion">Urbanización / Sector *</label>
+              <input type="text" id="reg_urbanizacion" class="form-input" placeholder="Ej. Casalta / Chuao" required>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="reg_calleAv">Calle o Avenida *</label>
+              <input type="text" id="reg_calleAv" class="form-input" placeholder="Ej. Av. Principal con Calle 3" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg_nroCasa">Nro. Casa / Edif. *</label>
+              <input type="text" id="reg_nroCasa" class="form-input" placeholder="Ej. 14-B" required>
+            </div>
+          </div>
+
+          <div style="padding: 1rem; background: var(--bg-secondary); border: 1px solid var(--border-subtle); font-size: 0.75rem; color: var(--text-secondary); line-height: 1.5; margin-top: 1rem;">
+            Al enviar este formulario, certifico bajo fe de juramento que todos los datos consignados son fidedignos y me comprometo a cumplir el reglamento disciplinario del CINU y la doctrina cívico-militar unefista.
+          </div>
+
+        </div>
+
+        <!-- ── Controles de navegación ─────────────────────────────────────── -->
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-subtle);">
+          <button type="button" id="btnStepPrev" class="btn btn-outline" style="display: none;">
+            <span>Atrás</span>
+          </button>
+          
+          <div style="margin-left: auto; display: flex; gap: 0.75rem;">
+            <button type="button" id="btnStepNext" class="btn btn-gold">
+              <span>Continuar</span>
+            </button>
+            <button type="submit" id="btnStepSubmit" class="btn btn-blue" style="display: none;">
+              <span>Completar preinscripción</span>
+            </button>
+          </div>
+        </div>
+
+      </form>
+
+      <!-- Enlace a inicio de sesión -->
+      <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+        <span style="font-size: 0.85rem; color: var(--text-secondary);">
+          ¿Ya tienes matrícula o un usuario activo?
+        </span>
+        <a href="login.html" class="btn btn-sm btn-outline">
+          <span>Iniciar sesión en el SICEU</span>
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

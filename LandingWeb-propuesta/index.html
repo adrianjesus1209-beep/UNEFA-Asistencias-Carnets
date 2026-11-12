@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UNEFA — Universidad Nacional Experimental Politécnica de la FANB</title>
+  <meta name="description" content="Portal oficial de la UNEFA. Formación politécnica y cívico-militar con excelencia académica, disciplina y gratuidad de matrícula.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Barra institucional -->
+  <div class="sys-status-bar">
+    <div class="container">
+      <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+        <span style="font-weight: 600; color: var(--accent-ink);">República Bolivariana de Venezuela</span>
+        <span style="opacity: 0.45;">·</span>
+        <span>Universidad Nacional Experimental Politécnica de la FANB</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+        <span>Periodo académico 2026-I</span>
+        <span style="opacity: 0.45;">·</span>
+        <span>SICEU en línea</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Encabezado -->
+  <header class="main-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand-group">
+        <div class="brand-logo-wrap">
+          <img src="https://images.seeklogo.com/logo-png/14/1/unefa-logo-png_seeklogo-144842.png" alt="Logo UNEFA" width="34" height="34" style="border-radius: 50%;">
+        </div>
+        <div class="brand-title">
+          <span class="brand-title-main">UNEFA</span>
+          <span class="brand-title-sub">Portal institucional</span>
+        </div>
+      </a>
+
+      <!-- Navegación de escritorio -->
+      <nav class="nav-desktop">
+        <a href="#inicio" class="nav-link active">Inicio</a>
+        <a href="#nosotros" class="nav-link">La UNEFA</a>
+        <a href="#carreras" class="nav-link">Carreras</a>
+        <a href="#admisiones" class="nav-link">Admisiones</a>
+        <a href="#servicios" class="nav-link">Servicios</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="login.html" class="btn btn-sm btn-gold">
+          SICEU
+        </a>
+        <button class="mobile-toggle" aria-label="Abrir menú">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Menú móvil -->
+    <div class="mobile-menu">
+      <a href="#inicio" class="nav-link">Inicio</a>
+      <a href="#nosotros" class="nav-link">La UNEFA</a>
+      <a href="#carreras" class="nav-link">Carreras</a>
+      <a href="#admisiones" class="nav-link">Admisiones</a>
+      <a href="#servicios" class="nav-link">Servicios</a>
+      <div style="padding-top: 0.5rem; display: flex; gap: 0.5rem;">
+        <a href="login.html" class="btn btn-sm btn-outline" style="flex: 1;">Portal SICEU</a>
+        <a href="registro.html" class="btn btn-sm btn-gold" style="flex: 1;">Registro CINU</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Presentación principal -->
+    <section id="inicio" class="hero-section">
+      <div class="container">
+        <div class="hero-grid">
+
+          <div class="hero-statement">
+            <span class="hero-kicker">Institución politécnica cívico-militar</span>
+            <h1 class="text-title-monumental">
+              Educación técnica<br>
+              al servicio<br>
+              <span style="color: var(--accent-ink);">del país</span>
+            </h1>
+
+            <p class="hero-desc">
+              Formamos ingenieros, licenciados y técnicos superiores en las áreas que necesita Venezuela.
+              Una carrera universitaria pública y gratuita, con formación científica rigurosa y valores cívico-militares.
+            </p>
+
+            <div class="hero-metrics-strip">
+              <div class="metric-unit">
+                <span class="metric-value">100%</span>
+                <span class="metric-label">Matrícula gratuita</span>
+              </div>
+              <div class="metric-unit">
+                <span class="metric-value">24</span>
+                <span class="metric-label">Estados con sedes</span>
+              </div>
+              <div class="metric-unit">
+                <span class="metric-value" style="color: var(--accent-ink);">CINU</span>
+                <span class="metric-label">Curso de ingreso</span>
+              </div>
+            </div>
+
+            <div class="hero-cta-group">
+              <a href="registro.html" class="btn btn-gold">
+                <span>Preinscríbete al CINU</span>
+              </a>
+              <a href="login.html" class="btn btn-outline">
+                <span>Ingresar al SICEU</span>
+              </a>
+              <a href="#carreras" class="btn btn-outline">
+                <span>Ver carreras</span>
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <div class="hero-photo-card">
+              <div class="photo-wrapper">
+                <img
+                  src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80"
+                  alt="Estudiantes en un laboratorio de ingeniería de la UNEFA"
+                >
+              </div>
+              <div class="photo-caption-bar">
+                <div>
+                  <div class="photo-caption-title">Laboratorio de electrónica y automatización</div>
+                  <div class="photo-caption-meta">Prácticas de robótica, control y sistemas aplicados</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-photo-subgrid">
+              <div class="subgrid-badge">
+                <div class="subgrid-badge-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg>
+                </div>
+                <div class="subgrid-badge-text">
+                  <strong>Ingenierías</strong>
+                  <span>10 semestres</span>
+                </div>
+              </div>
+              <div class="subgrid-badge">
+                <div class="subgrid-badge-icon gold">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
+                </div>
+                <div class="subgrid-badge-text">
+                  <strong>Formación cívico-militar</strong>
+                  <span>Doctrina integral</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Doctrina y pilares -->
+    <section id="nosotros" class="section" style="background-color: var(--bg-secondary);">
+      <div class="container">
+
+        <div class="section-header">
+          <div class="section-number">Doctrina y fundamentos</div>
+          <h2 class="text-title-section">Los pilares de la formación unefista</h2>
+          <p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.75rem; max-width: 42rem; line-height: 1.7;">
+            Un modelo educativo que combina el rigor del método científico con la disciplina y la responsabilidad
+            cívico-militar, para formar profesionales comprometidos con el desarrollo del país.
+          </p>
+        </div>
+
+        <div class="calc-grid">
+
+          <div style="border: 1px solid var(--border-subtle); border-radius: 14px; background: var(--bg-card); display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--shadow-soft);">
+            <button class="pillar-selector-btn active career-item-btn" data-pillar="ingenieria">
+              <div class="career-item-code"><span>Formación académica</span><span>01</span></div>
+              <div class="career-item-name">Investigación e innovación</div>
+            </button>
+            <button class="pillar-selector-btn career-item-btn" data-pillar="doctrina">
+              <div class="career-item-code"><span>Defensa integral</span><span>02</span></div>
+              <div class="career-item-name">Doctrina cívico-militar y liderazgo</div>
+            </button>
+            <button class="pillar-selector-btn career-item-btn" data-pillar="extension">
+              <div class="career-item-code"><span>Vinculación</span><span>03</span></div>
+              <div class="career-item-name">Extensión y compromiso comunitario</div>
+            </button>
+            <button class="pillar-selector-btn career-item-btn" data-pillar="gratuidad">
+              <div class="career-item-code"><span>Igualdad de oportunidades</span><span>04</span></div>
+              <div class="career-item-name">Inclusión y cobertura nacional</div>
+            </button>
+
+            <div style="padding: 1.5rem; background: var(--bg-secondary); border-top: 1px solid var(--border-subtle);">
+              <span style="font-size: 0.75rem; font-weight: 700; color: var(--accent-ink); display: block; margin-bottom: 0.3rem;">Lema institucional</span>
+              <span style="font-style: italic; color: var(--text-secondary);">"Excelencia educativa abierta al pueblo"</span>
+            </div>
+          </div>
+
+          <div style="border: 1px solid var(--border-subtle); border-radius: 14px; background: var(--bg-card); display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--shadow-card);">
+            <div style="position: relative; aspect-ratio: 16 / 9; background: var(--bg-tertiary); overflow: hidden; border-bottom: 1px solid var(--border-subtle);">
+              <img
+                id="pillarImg"
+                src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80"
+                alt="Laboratorio de la UNEFA"
+                style="width: 100%; height: 100%; object-fit: cover;"
+              >
+              <div id="pillarCaption" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(11, 28, 51, 0.88); color: #fff; padding: 0.55rem 1rem; font-size: 0.76rem;">
+                Laboratorio de electrónica y mecatrónica
+              </div>
+            </div>
+
+            <div style="padding: 2rem; display: flex; flex-direction: column; gap: 1.25rem;">
+              <span id="pillarArea" class="badge-tag accent-blue" style="align-self: flex-start;">Pilar 01</span>
+              <h3 id="pillarTitle" class="text-title-card" style="font-size: 1.45rem;">
+                Investigación e innovación
+              </h3>
+              <p id="pillarDesc" style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.7;">
+                Programas orientados a la soberanía científica: desarrollo de software crítico, automatización,
+                diseño mecánico y telecomunicaciones satelitales que atienden las necesidades estratégicas del país.
+              </p>
+
+              <div style="border-top: 1px solid var(--border-subtle); padding-top: 1.25rem;">
+                <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.75rem;">
+                  Aspectos destacados
+                </span>
+                <div id="pillarHighlights" class="competencies-list">
+                  <div class="competency-item"><span class="competency-bullet"></span><span>Laboratorios equipados para prácticas de hardware y redes</span></div>
+                  <div class="competency-item"><span class="competency-bullet"></span><span>Proyectos de grado orientados a problemas industriales reales</span></div>
+                  <div class="competency-item"><span class="competency-bullet"></span><span>Docencia a cargo de especialistas con experiencia comprobada</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Oferta académica -->
+    <section id="carreras" class="section">
+      <div class="container">
+
+        <div class="section-header section-header-flex">
+          <div>
+            <div class="section-number">Oferta académica y pensum</div>
+            <h2 class="text-title-section">Nuestra oferta de carreras</h2>
+          </div>
+          <a href="registro.html" class="btn btn-sm btn-outline">
+            Preinscripción CINU
+          </a>
+        </div>
+
+        <div class="faculty-nav-strip">
+          <button class="faculty-tab-btn active" data-faculty="ingenieria">Ingenierías (10 semestres)</button>
+          <button class="faculty-tab-btn" data-faculty="licenciaturas">Licenciaturas (8 semestres)</button>
+          <button class="faculty-tab-btn" data-faculty="tsu">Técnico Superior (6 semestres)</button>
+        </div>
+
+        <div class="explorer-grid">
+
+          <div id="careersList" class="explorer-list">
+            <!-- Generado por app.js -->
+          </div>
+
+          <div class="explorer-dossier">
+            <div class="dossier-photo-bar">
+              <img id="dossierImg" src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1200&q=80" alt="Área académica">
+              <div id="dossierCode" class="dossier-photo-tag">ING-SIS-10</div>
+              <div class="dossier-photo-footer">
+                <span id="dossierDegree">Ingeniero de Sistemas</span>
+                <span id="dossierDuration" style="color: var(--unefa-gold); font-weight: 700;">10 Semestres</span>
+              </div>
+            </div>
+
+            <div class="dossier-content">
+              <div>
+                <h3 id="dossierTitle" class="text-title-card" style="font-size: 1.5rem; margin-bottom: 0.5rem;">
+                  Ingeniería de Sistemas
+                </h3>
+                <p id="dossierDesc" style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.7;">
+                  Formación en ingeniería de software crítico, arquitectura de sistemas distribuidos, bases de datos
+                  masivas, ciberseguridad y computación para la defensa y el desarrollo soberano.
+                </p>
+              </div>
+
+              <div>
+                <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.6rem;">
+                  Competencias del egresado
+                </span>
+                <div id="dossierCompetencies" class="competencies-list">
+                  <!-- Generado por app.js -->
+                </div>
+              </div>
+
+              <div>
+                <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.6rem;">
+                  Asignaturas principales
+                </span>
+                <div id="dossierSubjects" class="subjects-wrap">
+                  <!-- Generado por app.js -->
+                </div>
+              </div>
+
+              <div style="padding-top: 1.5rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <span style="font-size: 0.8rem; color: var(--text-muted);">
+                  Modalidad presencial · Sede central y núcleos regionales
+                </span>
+                <a href="registro.html" class="btn btn-sm btn-gold">
+                  <span>Inscribirme en esta carrera</span>
+                </a>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Admisiones -->
+    <section id="admisiones" class="section" style="background-color: var(--bg-secondary);">
+      <div class="container">
+
+        <div class="section-header">
+          <div class="section-number">Admisiones y nivelación</div>
+          <h2 class="text-title-section">Cómo ingresar a la UNEFA</h2>
+          <p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.75rem; max-width: 42rem; line-height: 1.7;">
+            Todo aspirante ingresa a través del Curso Integral de Nivelación Universitaria.
+            Revisa los recaudos y completa tu registro antes de acudir a Control de Estudios.
+          </p>
+        </div>
+
+        <div class="calc-grid">
+
+          <div>
+            <h3 style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.75rem;">
+              Etapas del proceso
+            </h3>
+            <div class="timeline-dossier">
+              <div class="timeline-step">
+                <span class="timeline-num">01</span>
+                <div class="timeline-body">
+                  <strong>Registro en línea</strong>
+                  <p>Creación del expediente en el portal, selección de la carrera y de la sede regional.</p>
+                </div>
+              </div>
+              <div class="timeline-step">
+                <span class="timeline-num">02</span>
+                <div class="timeline-body">
+                  <strong>Entrega de recaudos</strong>
+                  <p>Revisión de los documentos en la Unidad de Control de Estudios de tu núcleo UNEFA.</p>
+                </div>
+              </div>
+              <div class="timeline-step">
+                <span class="timeline-num">03</span>
+                <div class="timeline-body">
+                  <strong>Cursado del CINU</strong>
+                  <p>14 semanas en Matemática, Habilidades de Comunicación y Doctrina Cívico-Militar.</p>
+                </div>
+              </div>
+              <div class="timeline-step">
+                <span class="timeline-num">04</span>
+                <div class="timeline-body">
+                  <strong>Activación en el SICEU</strong>
+                  <p>Asignación de la matrícula e inicio del primer semestre académico regular.</p>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top: 1.5rem; border: 1px solid var(--border-subtle); border-radius: 14px; overflow: hidden; position: relative; aspect-ratio: 21 / 9; background: var(--bg-tertiary);">
+              <img
+                src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1200&q=80"
+                alt="Sede central de la UNEFA"
+                style="width: 100%; height: 100%; object-fit: cover;"
+              >
+              <div style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(11, 28, 51, 0.88); color: #fff; padding: 0.5rem 0.9rem; font-size: 0.72rem; display: flex; justify-content: space-between; gap: 1rem;">
+                <span>Sede central, Caracas</span>
+                <span style="color: var(--unefa-gold); font-weight: 700;">Presencia en los 24 estados</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="interactive-box">
+            <div class="calc-progress-header">
+              <div>
+                <span style="font-size: 0.75rem; font-weight: 700; color: var(--accent-ink); display: block; margin-bottom: 0.25rem;">
+                  Para el aspirante
+                </span>
+                <h3 class="text-title-card">Lista de recaudos</h3>
+              </div>
+              <div style="text-align: right;">
+                <span id="calcPercentage" class="calc-percentage">33%</span>
+                <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">
+                  documentos listos
+                </span>
+              </div>
+            </div>
+
+            <div class="calc-progress-bar-bg">
+              <div id="calcProgressBar" class="calc-progress-bar-fill" style="width: 33%;"></div>
+            </div>
+
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.6;">
+              Marca los documentos que ya tienes en físico para conocer tu avance:
+            </p>
+
+            <div class="checklist-group">
+              <div class="check-item-label checked">
+                <div style="display: flex; align-items: center;">
+                  <span class="custom-checkbox"></span>
+                  <span>Cédula de identidad laminada y 2 fotocopias legibles</span>
+                </div>
+                <span class="badge-tag" style="font-size: 0.65rem;">Fase 1</span>
+              </div>
+              <div class="check-item-label checked">
+                <div style="display: flex; align-items: center;">
+                  <span class="custom-checkbox"></span>
+                  <span>Título de bachiller autenticado por Zona Educativa</span>
+                </div>
+                <span class="badge-tag" style="font-size: 0.65rem;">Fase 2</span>
+              </div>
+              <div class="check-item-label">
+                <div style="display: flex; align-items: center;">
+                  <span class="custom-checkbox"></span>
+                  <span>Notas certificadas de 1º a 5º año de educación media</span>
+                </div>
+                <span class="badge-tag" style="font-size: 0.65rem;">Fase 2</span>
+              </div>
+              <div class="check-item-label">
+                <div style="display: flex; align-items: center;">
+                  <span class="custom-checkbox"></span>
+                  <span>Certificado de participación en el SNI / OPSU</span>
+                </div>
+                <span class="badge-tag" style="font-size: 0.65rem;">Fase 1</span>
+              </div>
+              <div class="check-item-label">
+                <div style="display: flex; align-items: center;">
+                  <span class="custom-checkbox"></span>
+                  <span>Partida de nacimiento en formato reciente legible</span>
+                </div>
+                <span class="badge-tag" style="font-size: 0.65rem;">Fase 2</span>
+              </div>
+              <div class="check-item-label">
+                <div style="display: flex; align-items: center;">
+                  <span class="custom-checkbox"></span>
+                  <span>2 fotografías recientes de frente, fondo blanco</span>
+                </div>
+                <span class="badge-tag" style="font-size: 0.65rem;">Fase 3</span>
+              </div>
+            </div>
+
+            <div id="calcFeedbackMessage" style="padding: 0.75rem 1rem; border: 1px solid var(--border-subtle); border-radius: 10px; background: var(--bg-secondary); font-size: 0.82rem; margin-bottom: 1.5rem;">
+              Tienes <strong>2 de 6</strong> recaudos completados.
+            </div>
+
+            <a href="registro.html" class="btn btn-gold" style="width: 100%;">
+              <span>Iniciar preinscripción</span>
+            </a>
+
+            <div style="margin-top: 1rem; text-align: center; font-size: 0.76rem; color: var(--text-muted); line-height: 1.5;">
+              Trámite público y gratuito. No requiere intermediarios.
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Servicios -->
+    <section id="servicios" class="section">
+      <div class="container">
+
+        <div class="section-header section-header-flex">
+          <div>
+            <div class="section-number">Plataformas y servicios</div>
+            <h2 class="text-title-section">Servicios digitales</h2>
+          </div>
+          <a href="login.html" class="btn btn-sm btn-blue">
+            Ingreso SICEU
+          </a>
+        </div>
+
+        <div class="services-quad-grid">
+
+          <div class="service-quad-cell highlight">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                <span class="badge-tag accent-blue">Estudiantes</span>
+                <span class="badge-tag">Sistema central</span>
+              </div>
+              <h3 class="text-title-card" style="margin-bottom: 0.75rem;">Portal SICEU</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.65; margin-bottom: 2rem;">
+                Consulta de calificaciones, récord académico, inscripción de asignaturas, control de asistencia y aulas asignadas.
+              </p>
+            </div>
+            <div>
+              <a href="login.html" class="btn btn-sm btn-gold" style="width: 100%;">
+                Acceder al SICEU
+              </a>
+            </div>
+          </div>
+
+          <div class="service-quad-cell">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                <span class="badge-tag">Calendario</span>
+                <span class="badge-tag">Semestre 2026-I</span>
+              </div>
+              <h3 class="text-title-card" style="margin-bottom: 0.75rem;">Calendario académico</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.65; margin-bottom: 2rem;">
+                Fechas de inicio de clases, cortes de notas parciales, solicitudes de retiro o adición y actos de grado.
+              </p>
+            </div>
+            <div>
+              <a href="#inicio" class="btn btn-sm btn-outline" style="width: 100%;">
+                Consultar fechas
+              </a>
+            </div>
+          </div>
+
+          <div class="service-quad-cell">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                <span class="badge-tag">Trámites</span>
+                <span class="badge-tag">En línea</span>
+              </div>
+              <h3 class="text-title-card" style="margin-bottom: 0.75rem;">Constancias de estudio</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.65; margin-bottom: 2rem;">
+                Generación de constancias de estudio, notas certificadas y cartas de culminación con firma digital.
+              </p>
+            </div>
+            <div>
+              <a href="login.html" class="btn btn-sm btn-outline" style="width: 100%;">
+                Gestionar trámites
+              </a>
+            </div>
+          </div>
+
+          <div class="service-quad-cell">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                <span class="badge-tag">Investigación</span>
+                <span class="badge-tag">Acceso abierto</span>
+              </div>
+              <h3 class="text-title-card" style="margin-bottom: 0.75rem;">Repositorio de tesis</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.65; margin-bottom: 2rem;">
+                Consulta de trabajos especiales de grado, guías metodológicas de ingeniería y revistas de investigación.
+              </p>
+            </div>
+            <div>
+              <a href="#carreras" class="btn btn-sm btn-outline" style="width: 100%;">
+                Abrir repositorio
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Pie de página -->
+  <footer class="main-footer">
+    <div class="container">
+      <div class="footer-grid">
+
+        <div class="footer-col">
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem;">
+            <div class="brand-logo-wrap" style="background: #fff;">
+              <img src="https://images.seeklogo.com/logo-png/14/1/unefa-logo-png_seeklogo-144842.png" alt="Logo UNEFA" width="32" height="32" style="border-radius: 50%;">
+            </div>
+            <span style="font-weight: 800; letter-spacing: 0.08em; font-size: 1.2rem;">UNEFA</span>
+          </div>
+          <p style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.7;">
+            Universidad Nacional Experimental Politécnica de la Fuerza Armada Nacional Bolivariana.
+            Institución de educación superior pública, formadora de profesionales con excelencia técnica,
+            disciplina y compromiso con el país.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navegación</h4>
+          <ul class="footer-links">
+            <li><a href="#inicio">Página principal</a></li>
+            <li><a href="#nosotros">Doctrina institucional</a></li>
+            <li><a href="#carreras">Catálogo de carreras</a></li>
+            <li><a href="#admisiones">Proceso de admisión CINU</a></li>
+            <li><a href="#servicios">Servicios digitales</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Plataformas</h4>
+          <ul class="footer-links">
+            <li><a href="login.html">SICEU estudiantes</a></li>
+            <li><a href="login.html">SICEU docentes</a></li>
+            <li><a href="registro.html">Preinscripción CINU 2026-I</a></li>
+            <li><a href="#servicios">Biblioteca digital</a></li>
+            <li><a href="#admisiones">Reglamento disciplinario</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Sede central</h4>
+          <p style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.7;">
+            Edificio Sede UNEFA, Chuao.<br>
+            Caracas, República Bolivariana de Venezuela.<br>
+            Teléfono: +58 (0212) 908-2000
+          </p>
+        </div>
+
+      </div>
+
+      <div class="footer-sub">
+        <span>© 2026 UNEFA — Universidad Nacional Experimental Politécnica de la FANB. Todos los derechos reservados.</span>
+        <span>Caracas, Venezuela</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
