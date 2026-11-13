@@ -6,7 +6,7 @@
 @import url('common.css');
 
 .auth-page-wrap {
-  min-height: calc(100vh - 4.8rem);
+  min-height: calc(100vh - 4rem);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -16,18 +16,18 @@
 
 .auth-card {
   width: 100%;
-  max-width: 48rem; /* Mayor amplitud para los pasos y formularios */
+  max-width: 42rem;
   background: var(--bg-card);
-  border: 2px solid var(--border-grid);
+  border: 1.5px solid var(--border-grid);
   border-radius: var(--radius-lg);
-  padding: 3rem 2.5rem;
-  box-shadow: 0 16px 40px -8px rgba(6, 21, 42, 0.16);
+  padding: 2rem 1.75rem;
+  box-shadow: 0 10px 25px -5px rgba(6, 21, 42, 0.1);
 }
 
 .auth-header {
-  border-bottom: 2px solid var(--border-subtle);
-  padding-bottom: 1.6rem;
-  margin-bottom: 2rem;
+  border-bottom: 1.5px solid var(--border-subtle);
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
   text-align: left;
 }
 
@@ -35,49 +35,49 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.1rem;
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
   flex-wrap: wrap;
 }
 
 .auth-title {
-  font-size: 2.1rem;
+  font-size: 1.45rem;
   font-weight: 900;
   letter-spacing: -0.02em;
   color: var(--unefa-navy);
-  line-height: 1.15;
+  line-height: 1.2;
 }
 
 .auth-subtitle {
-  font-size: 1.05rem;
+  font-size: 0.85rem;
   color: var(--text-secondary);
-  margin-top: 0.5rem;
-  line-height: 1.6;
+  margin-top: 0.4rem;
+  line-height: 1.55;
 }
 
 /* ── Barra Indicadora de Pasos ──────────────────────────────────────────── */
 .step-indicator-bar {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.85rem;
-  margin-bottom: 2.5rem;
+  gap: 0.65rem;
+  margin-bottom: 1.75rem;
 }
 
 .step-pill {
-  border-top: 4px solid var(--border-grid);
-  padding-top: 0.85rem;
-  font-size: 0.95rem;
+  border-top: 3px solid var(--border-grid);
+  padding-top: 0.6rem;
+  font-size: 0.82rem;
   font-weight: 700;
   color: var(--text-muted);
   transition: all 0.2s ease;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.2rem;
 }
 
 .step-pill-num {
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.75rem;
   font-weight: 800;
   text-transform: uppercase;
 }
@@ -94,11 +94,11 @@
   font-weight: 800;
 }
 
-/* ── Campos de Entrada de Gran Tamaño ───────────────────────────────────── */
+/* ── Campos de Entrada Moderados ────────────────────────────────────────── */
 .form-grid-2 {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.25rem;
+  gap: 1rem;
 }
 
 @media (min-width: 640px) {
@@ -110,7 +110,7 @@
 .form-grid-address {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.25rem;
+  gap: 1rem;
 }
 
 @media (min-width: 640px) {
@@ -120,33 +120,33 @@
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .form-label {
   display: block;
-  font-size: 1rem;
-  font-weight: 800;
-  margin-bottom: 0.55rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
   color: var(--unefa-navy);
 }
 
 .cedula-input-group {
   display: grid;
-  grid-template-columns: 6.8rem 1fr;
-  gap: 0.75rem;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 0.5rem;
 }
 
 .form-input, .form-select {
   width: 100%;
-  height: 3.4rem; /* Alto accesible */
-  padding: 0 1.15rem;
+  height: 2.6rem;
+  padding: 0 0.9rem;
   background: var(--bg-primary);
-  border: 2.5px solid var(--border-grid);
+  border: 1.5px solid var(--border-grid);
   color: var(--text-primary);
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   outline: none;
   transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
@@ -158,7 +158,7 @@
 
 .form-input:focus, .form-select:focus {
   border-color: var(--unefa-blue);
-  box-shadow: 0 0 0 4px rgba(0, 40, 85, 0.18);
+  box-shadow: 0 0 0 3px rgba(0, 40, 85, 0.15);
 }
 
 .input-password-wrap {
@@ -168,19 +168,19 @@
 }
 
 .input-password-wrap .form-input {
-  padding-right: 5rem;
+  padding-right: 4.5rem;
 }
 
 .toggle-password-btn {
   position: absolute;
-  right: 0.65rem;
+  right: 0.5rem;
   background: var(--bg-tertiary);
-  border: 1.5px solid var(--border-primary);
-  border-radius: 6px;
+  border: 1px solid var(--border-primary);
+  border-radius: 4px;
   color: var(--unefa-blue);
   cursor: pointer;
-  padding: 0.45rem 0.85rem;
-  font-size: 0.88rem;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.02em;
   transition: all 0.15s ease;
@@ -193,57 +193,57 @@
 
 /* ── Avisos y Alertas ───────────────────────────────────────────────────── */
 .auth-alert-box {
-  padding: 1.1rem 1.4rem;
+  padding: 0.85rem 1rem;
   border-radius: var(--radius-md);
-  font-size: 1rem;
+  font-size: 0.88rem;
   font-weight: 700;
-  margin-bottom: 2rem;
+  margin-bottom: 1.25rem;
   display: flex;
   align-items: flex-start;
-  gap: 0.75rem;
+  gap: 0.65rem;
   line-height: 1.5;
 }
 
 .auth-alert-error {
   background: #fee2e2;
-  border: 2.5px solid #ef4444;
+  border: 1.5px solid #ef4444;
   color: #991b1b;
 }
 
 /* ── Confirmación de Registro ───────────────────────────────────────────── */
 .signup-success-card {
-  padding: 2.5rem 2rem;
-  border: 2.5px solid #10b981;
+  padding: 1.75rem 1.5rem;
+  border: 2px solid #10b981;
   border-radius: var(--radius-lg);
   background: #f0fdf4;
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .signup-success-card h2 {
-  font-size: 1.85rem;
+  font-size: 1.45rem;
   font-weight: 900;
   color: #065f46;
-  margin: 0.9rem 0;
+  margin: 0.65rem 0;
 }
 
 .signup-success-card p {
-  font-size: 1.05rem;
+  font-size: 0.92rem;
   color: #1f2937;
-  line-height: 1.7;
-  max-width: 38rem;
-  margin: 0 auto 2rem auto;
+  line-height: 1.6;
+  max-width: 34rem;
+  margin: 0 auto 1.5rem auto;
 }
 
 .terms-banner {
-  padding: 1.25rem 1.4rem;
+  padding: 1rem 1.15rem;
   background: var(--bg-secondary);
-  border: 2px solid var(--border-subtle);
+  border: 1.5px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  font-size: 0.92rem;
+  font-size: 0.85rem;
   color: var(--text-secondary);
-  line-height: 1.6;
-  margin-top: 1.5rem;
+  line-height: 1.55;
+  margin-top: 1.25rem;
 }
 
 /* ── Controles de Pasos y Acciones ──────────────────────────────────────── */
@@ -251,20 +251,20 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1.25rem;
-  margin-top: 2.5rem;
-  padding-top: 1.8rem;
-  border-top: 2px solid var(--border-subtle);
+  gap: 1rem;
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1.5px solid var(--border-subtle);
   flex-wrap: wrap;
 }
 
 .auth-switch-section {
-  margin-top: 2.5rem;
-  padding-top: 1.8rem;
-  border-top: 2px solid var(--border-subtle);
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1.5px solid var(--border-subtle);
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.75rem;
 }

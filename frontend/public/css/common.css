@@ -58,7 +58,7 @@
 
 html {
   font-family: var(--font-sans);
-  font-size: 17px; /* Aumentado de 16px para mejor legibilidad */
+  font-size: 16px;
   line-height: 1.55;
   scroll-behavior: smooth;
   background-color: var(--bg-primary);
@@ -101,15 +101,15 @@ button, input, select, textarea {
 .font-sans { font-family: var(--font-sans); }
 
 .text-title-monumental {
-  font-size: clamp(2.6rem, 5.8vw, 4.4rem);
+  font-size: clamp(2.2rem, 4.5vw, 3.5rem);
   font-weight: 900;
-  line-height: 1.05;
+  line-height: 1.08;
   letter-spacing: -0.03em;
   color: var(--unefa-navy);
 }
 
 .text-title-section {
-  font-size: clamp(1.85rem, 3.6vw, 2.6rem);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
   font-weight: 800;
   line-height: 1.2;
   letter-spacing: -0.02em;
@@ -117,7 +117,7 @@ button, input, select, textarea {
 }
 
 .text-title-card {
-  font-size: 1.35rem;
+  font-size: 1.2rem;
   font-weight: 800;
   line-height: 1.35;
   letter-spacing: -0.01em;
@@ -127,16 +127,16 @@ button, input, select, textarea {
 .badge-tag {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  font-size: 0.82rem;
+  gap: 0.4rem;
+  font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  padding: 0.4rem 0.85rem;
+  padding: 0.3rem 0.7rem;
   border-radius: 999px;
   background-color: var(--bg-tertiary);
   color: var(--text-primary);
-  border: 1.5px solid var(--border-grid);
+  border: 1px solid var(--border-grid);
   white-space: nowrap;
 }
 
@@ -214,31 +214,31 @@ button, input, select, textarea {
 }
 
 .header-inner {
-  height: 4.8rem; /* Mayor altura para elementos más grandes */
+  height: 3.8rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.75rem;
+  gap: 1.5rem;
 }
 
 .brand-group {
   display: flex;
   align-items: center;
-  gap: 0.9rem;
+  gap: 0.75rem;
   text-decoration: none;
 }
 
 .brand-logo-wrap {
-  width: 3rem;
-  height: 3rem;
+  width: 2.35rem;
+  height: 2.35rem;
   border-radius: 50%;
-  padding: 3px;
-  border: 2px solid var(--unefa-gold);
+  padding: 2px;
+  border: 1.5px solid var(--unefa-gold);
   background: var(--bg-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 .brand-title {
@@ -248,19 +248,19 @@ button, input, select, textarea {
 
 .brand-title-main {
   font-weight: 900;
-  letter-spacing: 0.14em;
-  font-size: 1.35rem;
+  letter-spacing: 0.12em;
+  font-size: 1.15rem;
   line-height: 1;
   color: var(--unefa-navy);
 }
 
 .brand-title-sub {
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
   font-weight: 800;
   color: var(--unefa-gold-dark);
   text-transform: uppercase;
-  margin-top: 0.2rem;
+  margin-top: 0.15rem;
 }
 
 .nav-desktop {
@@ -274,7 +274,7 @@ button, input, select, textarea {
 }
 
 .nav-link {
-  font-size: 1.05rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.01em;
   color: var(--text-secondary);
@@ -299,19 +299,19 @@ button, input, select, textarea {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.65rem;
+  gap: 0.5rem;
   font-family: var(--font-sans);
-  font-size: 1.05rem;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  padding: 0.95rem 1.85rem;
-  min-height: 3.25rem; /* Mínimo 52px para fácil interacción táctil */
-  border: 2.5px solid transparent;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  padding: 0.65rem 1.35rem;
+  min-height: 2.5rem;
+  border: 1.5px solid transparent;
   cursor: pointer;
   transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-  border-radius: var(--radius-md);
+  border-radius: 8px;
   text-decoration: none;
-  box-shadow: var(--shadow-btn);
+  box-shadow: 0 2px 6px rgba(6, 21, 42, 0.12);
   user-select: none;
 }
 
@@ -320,18 +320,18 @@ button, input, select, textarea {
 }
 
 .btn-sm {
-  min-height: 2.75rem;
-  padding: 0.65rem 1.35rem;
-  font-size: 0.95rem;
-  font-weight: 800;
+  min-height: 2.2rem;
+  padding: 0.45rem 0.95rem;
+  font-size: 0.8rem;
+  font-weight: 700;
 }
 
 .btn-lg {
-  min-height: 3.75rem;
-  padding: 1.15rem 2.35rem;
-  font-size: 1.2rem;
-  font-weight: 900;
-  border-radius: 12px;
+  min-height: 2.75rem;
+  padding: 0.75rem 1.65rem;
+  font-size: 0.95rem;
+  font-weight: 800;
+  border-radius: 9px;
 }
 
 /* Botón Dorado UNEFA — Máximo contraste y notoriedad */

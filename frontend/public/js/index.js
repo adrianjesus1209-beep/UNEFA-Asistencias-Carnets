@@ -35,7 +35,7 @@
         title: "Ingeniería de Sistemas",
         duration: "10 Semestres (5 Años)",
         degree: "Ingeniero de Sistemas",
-        image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1200&q=80",
+        image: "../public/img/carrera-sistemas.webp",
         description: "Formación en ingeniería de software crítico, arquitectura de sistemas distribuidos, bases de datos masivas, ciberseguridad y computación para la defensa y el desarrollo soberano de la nación.",
         competencies: [
           "Desarrollo de software de misión crítica",
@@ -282,7 +282,7 @@
       tag: "Pilar 01",
       title: "Excelencia Educativa y Disciplina Cívico-Militar",
       desc: "Una propuesta pedagógica única que une la disciplina del método científico con el sentido patrio y la responsabilidad ciudadana, formando ingenieros y profesionales de carácter inquebrantable.",
-      image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1200&q=80",
+      image: "../public/img/sede-central.webp",
       caption: "Patio de Honor · Aula Magna de la UNEFA",
       highlights: [
         "Formación integral cívico-militar y ética patriótica",
@@ -296,7 +296,7 @@
       tag: "Pilar 02",
       title: "Educación Universitaria Pública y 100% Gratuita",
       desc: "Garantizamos el acceso democrático y universal a la educación técnica y superior sin aranceles de matrícula. El talento y la vocación son los únicos requisitos para ingresar y graduarse.",
-      image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80",
+      image: "../public/img/laboratorio-electronica.webp",
       caption: "Comunidad Universitaria · Acceso Universal",
       highlights: [
         "Cero aranceles de inscripción o mensualidades",
@@ -310,7 +310,7 @@
       tag: "Pilar 03",
       title: "Presencia Estratégica en los 24 Estados del País",
       desc: "Nuestra red de núcleos y extensiones abraza toda la geografía nacional, llevando carreras politécnicas de punta a comunidades urbanas, rurales, costeras y fronterizas.",
-      image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1200&q=80",
+      image: "../public/img/laboratorio-mecatronica.webp",
       caption: "Red Nacional de Núcleos · Presencia Soberana",
       highlights: [
         "Más de 60 sedes entre núcleos, extensiones y aulas anexas",

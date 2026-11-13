@@ -6,7 +6,7 @@
 @import url('common.css');
 
 .auth-page-wrap {
-  min-height: calc(100vh - 4.8rem);
+  min-height: calc(100vh - 4rem);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -16,38 +16,38 @@
 
 .auth-card {
   width: 100%;
-  max-width: 36rem; /* Tarjeta más amplia para mayor ergonomía */
+  max-width: 28rem;
   background: var(--bg-card);
-  border: 2px solid var(--border-grid);
+  border: 1.5px solid var(--border-grid);
   border-radius: var(--radius-lg);
-  padding: 2.8rem 2.4rem;
-  box-shadow: 0 16px 40px -8px rgba(6, 21, 42, 0.16);
+  padding: 2rem 1.75rem;
+  box-shadow: 0 10px 25px -5px rgba(6, 21, 42, 0.1);
 }
 
 /* ── Selector de Canales Dual (Estudiantes / Profesional) ───────────────── */
 .channel-selector-wrap {
-  margin-bottom: 2rem;
-  border-bottom: 2px solid var(--border-subtle);
-  padding-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1.5px solid var(--border-subtle);
+  padding-bottom: 1rem;
 }
 
 .channel-selector-label {
   display: block;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-muted);
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .channel-tabs-nav {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.65rem;
+  gap: 0.5rem;
   background: var(--bg-tertiary);
-  padding: 0.45rem;
-  border-radius: 12px;
+  padding: 0.35rem;
+  border-radius: 10px;
   border: 1.5px solid var(--border-primary);
 }
 
@@ -55,15 +55,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.65rem;
-  padding: 0.95rem 1rem;
-  min-height: 3.4rem;
-  border-radius: 9px;
-  border: 2px solid transparent;
+  gap: 0.5rem;
+  padding: 0.55rem 0.85rem;
+  min-height: 2.5rem;
+  border-radius: 7px;
+  border: 1.5px solid transparent;
   background: transparent;
   color: var(--text-secondary);
   font-family: var(--font-sans);
-  font-size: 1.05rem;
+  font-size: 0.88rem;
   font-weight: 800;
   cursor: pointer;
   transition: all 0.18s ease;
@@ -78,28 +78,28 @@
   background: #ffffff;
   color: var(--unefa-navy);
   border-color: var(--unefa-gold);
-  box-shadow: 0 4px 14px rgba(242, 184, 7, 0.25);
+  box-shadow: 0 2px 8px rgba(242, 184, 7, 0.2);
 }
 
 .channel-tab-btn.active[data-target-channel="profesional"] {
   background: var(--unefa-blue);
   color: #ffffff;
   border-color: var(--unefa-blue-deep);
-  box-shadow: 0 4px 14px rgba(0, 40, 85, 0.35);
+  box-shadow: 0 2px 8px rgba(0, 40, 85, 0.25);
 }
 
 .channel-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
+  font-size: 1.1rem;
 }
 
 /* ── Encabezado de la Tarjeta ───────────────────────────────────────────── */
 .auth-header {
-  border-bottom: 2px solid var(--border-subtle);
-  padding-bottom: 1.6rem;
-  margin-bottom: 2.2rem;
+  border-bottom: 1.5px solid var(--border-subtle);
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
   text-align: left;
 }
 
@@ -107,81 +107,81 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.1rem;
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
   flex-wrap: wrap;
 }
 
 .auth-title {
-  font-size: 2rem;
+  font-size: 1.45rem;
   font-weight: 900;
   letter-spacing: -0.02em;
   color: var(--unefa-navy);
-  line-height: 1.15;
+  line-height: 1.2;
 }
 
 .auth-subtitle {
-  font-size: 1.05rem;
+  font-size: 0.85rem;
   color: var(--text-secondary);
-  margin-top: 0.5rem;
-  line-height: 1.6;
+  margin-top: 0.4rem;
+  line-height: 1.55;
   font-weight: 500;
 }
 
 /* ── Mensajes de Alerta y Estado ────────────────────────────────────────── */
 .auth-alert-box {
-  padding: 1rem 1.25rem;
+  padding: 0.85rem 1rem;
   border-radius: var(--radius-md);
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   font-weight: 700;
-  margin-bottom: 1.75rem;
+  margin-bottom: 1.25rem;
   display: flex;
   align-items: flex-start;
-  gap: 0.75rem;
+  gap: 0.65rem;
   line-height: 1.5;
 }
 
 .auth-alert-error {
   background: #fee2e2;
-  border: 2px solid #ef4444;
+  border: 1.5px solid #ef4444;
   color: #991b1b;
 }
 
 .auth-alert-success {
   background: #dcfce7;
-  border: 2px solid #10b981;
+  border: 1.5px solid #10b981;
   color: #065f46;
 }
 
-/* ── Campos de Entrada de Gran Tamaño ───────────────────────────────────── */
+/* ── Campos de Entrada Moderados ────────────────────────────────────────── */
 .form-group {
-  margin-bottom: 1.6rem;
+  margin-bottom: 1.25rem;
 }
 
 .form-label {
   display: block;
-  font-size: 1rem;
-  font-weight: 800;
-  margin-bottom: 0.6rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
   color: var(--unefa-navy);
 }
 
 .cedula-input-group {
   display: grid;
-  grid-template-columns: 6.8rem 1fr;
-  gap: 0.75rem;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 0.5rem;
 }
 
 .form-input, .form-select {
   width: 100%;
-  height: 3.5rem; /* 56px de alto según auditoría de ergonomía */
-  padding: 0 1.2rem;
+  height: 2.6rem;
+  padding: 0 0.9rem;
   background: var(--bg-primary);
-  border: 2.5px solid var(--border-grid);
+  border: 1.5px solid var(--border-grid);
   color: var(--text-primary);
-  font-size: 1.15rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   outline: none;
   transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
@@ -193,7 +193,7 @@
 
 .form-input:focus, .form-select:focus {
   border-color: var(--unefa-blue);
-  box-shadow: 0 0 0 4px rgba(0, 40, 85, 0.18);
+  box-shadow: 0 0 0 3px rgba(0, 40, 85, 0.15);
 }
 
 .input-password-wrap {
@@ -203,19 +203,19 @@
 }
 
 .input-password-wrap .form-input {
-  padding-right: 5rem;
+  padding-right: 4.5rem;
 }
 
 .toggle-password-btn {
   position: absolute;
-  right: 0.65rem;
+  right: 0.5rem;
   background: var(--bg-tertiary);
-  border: 1.5px solid var(--border-primary);
-  border-radius: 6px;
+  border: 1px solid var(--border-primary);
+  border-radius: 4px;
   color: var(--unefa-blue);
   cursor: pointer;
-  padding: 0.45rem 0.85rem;
-  font-size: 0.88rem;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.02em;
   transition: all 0.15s ease;
@@ -228,39 +228,39 @@
 
 /* ── Botón Principal de Envío ───────────────────────────────────────────── */
 .auth-submit-wrap {
-  margin-top: 2.4rem;
+  margin-top: 1.75rem;
 }
 
 .auth-submit-btn {
   width: 100%;
-  min-height: 3.75rem; /* 60px para mayor notoriedad */
-  font-size: 1.25rem;
-  font-weight: 900;
-  border-radius: 12px;
+  min-height: 2.75rem;
+  font-size: 0.95rem;
+  font-weight: 800;
+  border-radius: 8px;
 }
 
 /* ── Enlaces y Opciones Inferiores ──────────────────────────────────────── */
 .auth-switch-section {
-  margin-top: 2.4rem;
-  padding-top: 1.8rem;
-  border-top: 2px solid var(--border-subtle);
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1.5px solid var(--border-subtle);
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
   text-align: center;
 }
 
 .auth-switch-prompt {
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   color: var(--text-secondary);
   font-weight: 600;
 }
 
 .auth-security-footer {
-  margin-top: 2rem;
+  margin-top: 1.5rem;
   text-align: center;
-  font-size: 0.86rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
-  line-height: 1.6;
+  line-height: 1.5;
   font-weight: 500;
 }
