@@ -40,8 +40,6 @@
     const cedulaInput = document.getElementById("login_cedula");
     const natSelectWrap = document.getElementById("nacionalidadSelectWrap");
     const submitBtn = document.getElementById("loginSubmitBtn");
-    const registerPrompt = document.getElementById("studentRegisterPrompt");
-    const professionalSupportNote = document.getElementById("professionalSupportNote");
     const errorBox = document.getElementById("loginErrorMsg");
 
     function setChannel(channel) {
@@ -88,9 +86,6 @@
           submitBtn.innerHTML = "<span>Acceder como Estudiante</span> <span>→</span>";
         }
 
-        if (registerPrompt) registerPrompt.style.display = "flex";
-        if (professionalSupportNote) professionalSupportNote.style.display = "none";
-
       } else {
         // Canal Profesional (Docente / Administrativo / Directivo)
         if (channelTag) {
@@ -102,22 +97,18 @@
           channelSub.textContent =
             "Acceso para Profesores, Coordinadores, Directores de Núcleo y Personal Administrativo autorizado.";
         }
-        if (cedulaLabel) cedulaLabel.textContent = "Cédula o Correo institucional (@unefa.edu.ve)";
+        if (cedulaLabel) cedulaLabel.textContent = "Cédula de identidad profesional";
         if (cedulaInput) {
-          cedulaInput.placeholder = "Ej. 14567890 o docente@unefa.edu.ve";
+          cedulaInput.placeholder = "Ej. 14567890";
           cedulaInput.type = "text";
-          cedulaInput.inputMode = "text";
+          cedulaInput.inputMode = "numeric";
         }
-        // En acceso profesional el correo o cédula puede ir directo
         if (natSelectWrap) natSelectWrap.style.display = "block";
 
         if (submitBtn) {
           submitBtn.className = "btn btn-blue btn-lg auth-submit-btn";
           submitBtn.innerHTML = "<span>Acceder como Profesional</span> <span>→</span>";
         }
-
-        if (registerPrompt) registerPrompt.style.display = "none";
-        if (professionalSupportNote) professionalSupportNote.style.display = "block";
       }
     }
 

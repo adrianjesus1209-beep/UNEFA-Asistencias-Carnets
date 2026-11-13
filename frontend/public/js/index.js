@@ -51,7 +51,7 @@
         title: "Ingeniería de Telecomunicaciones",
         duration: "10 Semestres (5 Años)",
         degree: "Ingeniero de Telecomunicaciones",
-        image: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1200&q=80",
+        image: "../public/img/carrera-telecomunicaciones.webp",
         description: "Especialistas en transmisión por fibra óptica, microondas, enlaces satelitales civiles y militares, antenas y procesamiento digital de señales para redes estratégicas.",
         competencies: [
           "Diseño de redes de comunicación nacional",
@@ -67,7 +67,7 @@
         title: "Ingeniería Mecánica",
         duration: "10 Semestres (5 Años)",
         degree: "Ingeniero Mecánico",
-        image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80",
+        image: "../public/img/laboratorio-mecatronica.webp",
         description: "Diseño, manufactura y mantenimiento de maquinaria pesada, sistemas térmicos, turbinas y estructuras mecánicas para la industria petrolera, naval e industrial venezolana.",
         competencies: [
           "Diseño asistido por computadora (CAD/CAM)",
@@ -83,7 +83,7 @@
         title: "Ingeniería Aeronáutica",
         duration: "10 Semestres (5 Años)",
         degree: "Ingeniero Aeronáutico",
-        image: "https://images.unsplash.com/photo-1519074069444-1ba4ea16e864?auto=format&fit=crop&w=1200&q=80",
+        image: "../public/img/laboratorio-electronica.webp",
         description: "Mantenimiento mayor de aeronaves, propulsión a reacción, aviónica y certificación aeroespacial con enfoque en soberanía de la aviación militar y comercial.",
         competencies: [
           "Mantenimiento de aeronaves y turbinas",
@@ -101,7 +101,7 @@
         title: "Licenciatura en Administración y Gestión Municipal",
         duration: "8 Semestres (4 Años)",
         degree: "Licenciado en Administración y Gestión Municipal",
-        image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80",
+        image: "../public/img/carrera-administracion.webp",
         description: "Planificación pública, presupuestos estatales, auditoría gubernamental y gobernanza de corporaciones municipales con probidad y transparencia bolivariana.",
         competencies: [
           "Formulación presupuestaria del sector público",
@@ -117,7 +117,7 @@
         title: "Licenciatura en Economía Social",
         duration: "8 Semestres (4 Años)",
         degree: "Licenciado en Economía Social",
-        image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=1200&q=80",
+        image: "../public/img/carrera-administracion.webp",
         description: "Análisis macroeconómico, proyectos socioproductivos, soberanía agroalimentaria y modelos alternativos de distribución de riqueza comunitaria.",
         competencies: [
           "Evaluación de proyectos de inversión",
@@ -133,7 +133,7 @@
         title: "Licenciatura en Turismo",
         duration: "8 Semestres (4 Años)",
         degree: "Licenciado en Turismo",
-        image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+        image: "../public/img/sede-central.webp",
         description: "Gestión sustentable de patrimonios naturales, hotelería ecosocialista, guiatura especializada y mercadotecnia turística internacional.",
         competencies: [
           "Diseño de rutas ecoturísticas patrimoniales",
@@ -151,7 +151,7 @@
         title: "TSU en Análisis y Diseño de Sistemas",
         duration: "6 Semestres (3 Años)",
         degree: "Técnico Superior Universitario en Sistemas",
-        image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80",
+        image: "../public/img/carrera-tsu-sistemas.webp",
         description: "Desarrollo rápido de aplicaciones, administración de redes locales, soporte de servidores Linux y mantenimiento de parques informáticos institucionales.",
         competencies: [
           "Programación web y bases de datos SQL",
@@ -167,7 +167,7 @@
         title: "TSU en Enfermería",
         duration: "6 Semestres (3 Años)",
         degree: "Técnico Superior Universitario en Enfermería",
-        image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80",
+        image: "../public/img/carrera-enfermeria.webp",
         description: "Atención primaria en salud, enfermería comunitaria, soporte de urgencias en hospitales militares y red de salud pública nacional.",
         competencies: [
           "Atención directa al paciente en sala",
@@ -367,65 +367,10 @@
     renderPillar("doctrina");
   }
 
-  /* ── 4. Calculadora Interactiva de Requisitos CINU ────────────────────── */
-  function initAdmissionsChecklist() {
-    const checkItems = document.querySelectorAll(".check-item-label input[type='checkbox']");
-    const percentageEl = document.getElementById("calcPercentage");
-    const progressBar = document.getElementById("calcProgressBar");
-    const feedbackMsg = document.getElementById("calcFeedbackMessage");
-
-    if (!checkItems.length || !percentageEl || !progressBar) return;
-
-    function updateChecklist() {
-      let checkedCount = 0;
-      checkItems.forEach((ch) => {
-        const parent = ch.closest(".check-item-label");
-        if (ch.checked) {
-          checkedCount++;
-          if (parent) parent.classList.add("checked");
-        } else {
-          if (parent) parent.classList.remove("checked");
-        }
-      });
-
-      const total = checkItems.length;
-      const pct = Math.round((checkedCount / total) * 100);
-
-      percentageEl.textContent = `${pct}%`;
-      progressBar.style.width = `${pct}%`;
-
-      if (feedbackMsg) {
-        if (pct === 100) {
-          feedbackMsg.style.borderColor = "#10b981";
-          feedbackMsg.style.background = "#f0fdf4";
-          feedbackMsg.innerHTML =
-            "<strong style='color: #065f46;'>¡Expediente 100% Completo!</strong> Tienes todos los recaudos para formalizar tu inscripción en el CINU 2026-I.";
-        } else if (pct >= 50) {
-          feedbackMsg.style.borderColor = "var(--unefa-gold)";
-          feedbackMsg.style.background = "#fffbeb";
-          feedbackMsg.innerHTML =
-            "<strong style='color: #92400e;'>Avance intermedio:</strong> Posees los recaudos básicos. Asegúrate de obtener los restantes antes de la fecha de corte.";
-        } else {
-          feedbackMsg.style.borderColor = "var(--border-subtle)";
-          feedbackMsg.style.background = "var(--bg-secondary)";
-          feedbackMsg.innerHTML =
-            "Marca los documentos que ya tienes listos para calcular tu solvencia de ingreso.";
-        }
-      }
-    }
-
-    checkItems.forEach((ch) => {
-      ch.addEventListener("change", updateChecklist);
-    });
-
-    updateChecklist();
-  }
-
   /* ── Inicialización ───────────────────────────────────────────────────── */
   document.addEventListener("DOMContentLoaded", () => {
     initMobileMenu();
     initCareerExplorer();
     initPillars();
-    initAdmissionsChecklist();
   });
 })();
