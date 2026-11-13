@@ -1,0 +1,27 @@
+# ═══════════════════════════════════════════════════════════════
+#  configuracion apache para el proyecto UNEFA-Asistencias-Carnets
+# ═══════════════════════════════════════════════════════════════
+#
+#  instrucciones:
+#    1. copia este archivo a .htaccess en la raíz del proyecto:
+#         cp .htaccess.example .htaccess
+#    2. ajusta RewriteBase si tu proyecto no está en /UNEFA-Asistencias-Carnets/
+#    3. no edites este archivo; edita tu copia local .htaccess
+# ═══════════════════════════════════════════════════════════════
+
+#  Motor de reescritura #
+RewriteEngine On
+RewriteBase /UNEFA-Asistencias-Carnets/
+
+#  Bloquear archivos sensibles #
+<FilesMatch "\.(env|json|lock|md|sql|log|ini|yml|yaml)$">
+    Require all denied
+</FilesMatch>
+
+#  Bloquear archivos ocultos #
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+#  frontend/public/index.php  #
+RewriteRule ^(.*)$ frontend/public/index.php [L,QSA]

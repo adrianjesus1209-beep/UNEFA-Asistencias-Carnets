@@ -2,93 +2,93 @@
 
 namespace Core;
 
-class Router
-{
-    private array $rutas = [];
-    private array $rutasNombradas = [];
+class Router {
+    private array $routes = [];
+    private array $namedRoutes = [];
     private Container $container;
 
-    public function __construct(?Container $container = null)
-    {
+    public function __construct(?Container $container = null) {
         $this->container = $container ?? new Container();
     }
 
-    public function get(string $url, array $accion, string $nombre = ''): void
-    {
-        $this->addRuta('GET', $url, $accion, $nombre);
+    // agrega una ruta GET //
+    public function get(string $url, array $action, string $name = ''): void {
+        $this->addRoute('GET', $url, $action, $name);
     }
 
-    public function post(string $url, array $accion, string $nombre = ''): void
-    {
-        $this->addRuta('POST', $url, $accion, $nombre);
+    // agrega una ruta POST //
+    public function post(string $url, array $action, string $name = ''): void {
+        $this->addRoute('POST', $url, $action, $name);
     }
 
-    private function addRuta(string $metodo, string $url, array $accion, string $nombre): void
-    {
+    // agrega una ruta con el metodo HTTP especificado //
+    private function addRoute(string $method, string $url, array $action, string $name): void {
         $url = trim($url, '/');
 
-        $this->rutas[$metodo][$url] = [
-            'controlador' => $accion[0],
-            'metodo'      => $accion[1],
+        $this->routes[$method][$url] = [
+            'controller' => $action[0],
+            'method'     => $action[1],
         ];
 
-        if ($nombre !== '') {
-            $this->rutasNombradas[$nombre] = $url;
+        if ($name !== '') {
+            $this->namedRoutes[$name] = $url;
         }
     }
 
-    public function getUrl(string $nombre): ?string
-    {
-        return $this->rutasNombradas[$nombre] ?? null;
+    // obtiene la URL de una ruta nombrada, o null si no existe //
+    public function getUrl(string $name): ?string {
+        return $this->namedRoutes[$name] ?? null;
     }
 
-    public function dispatch(string $uri, string $metodoHttp): void
-    {
+    // despacha la ruta correspondiente segun la URI y el metodo HTTP //
+    public function dispatch(string $uri, string $httpMethod): void {
         $uri = trim($uri, '/');
-        $metodoHttp = strtoupper($metodoHttp);
+        $httpMethod = strtoupper($httpMethod);
 
-        // 1. Match exacto
-        if (isset($this->rutas[$metodoHttp][$uri])) {
-            $this->ejecutar($this->rutas[$metodoHttp][$uri], []);
+        // match exacto //
+        if (isset($this->routes[$httpMethod][$uri])) {
+            $this->execute($this->routes[$httpMethod][$uri], []);
             return;
         }
 
-        // 2. Match con parámetros {id}
-        foreach ($this->rutas[$metodoHttp] ?? [] as $ruta => $accion) {
-            $patron = preg_replace('#\{[a-zA-Z_]+\}#', '([^/]+)', $ruta);
-            $patron = '#^' . $patron . '$#';
+        // match con parametros {id} //
+        foreach ($this->routes[$httpMethod] ?? [] as $route => $action) {
+            $pattern = preg_replace('#\{[a-zA-Z_]+\}#', '([^/]+)', $route);
+            $pattern = '#^' . $pattern . '$#';
 
-            if (preg_match($patron, $uri, $coincidencias)) {
-                array_shift($coincidencias);
-                $this->ejecutar($accion, $coincidencias);
+            if (preg_match($pattern, $uri, $matches)) {
+                array_shift($matches);
+                $this->execute($action, $matches);
                 return;
             }
         }
 
-        // 3. 404
+        // 404 //
         http_response_code(404);
-        $vista404 = BASE_PATH . '/frontend/views/404.php';
-        if (is_file($vista404)) {
-            require $vista404;
+        $view404 = BASE_PATH . '/frontend/views/404.php';
+        if (is_file($view404)) {
+            require $view404;
         } else {
             echo "404 — Ruta no encontrada: $uri";
         }
     }
 
-    private function ejecutar(array $accion, array $params): void
-    {
-        $controlador = $accion['controlador'];
-        $metodo      = $accion['metodo'];
-        $clase       = "\\Controllers\\" . $controlador;
+    // ejecuta el controlador y metodo correspondiente a la ruta //
+    private function execute(array $action, array $params): void {
+        $controller = $action['controller'];
+        $method     = $action['method'];
+        $class      = "\\Controllers\\" . $controller;
 
-        if (!class_exists($clase)) {
+        // verificar si la clase existe //
+        if (!class_exists($class)) {
             http_response_code(500);
-            echo "Controlador no encontrado: $clase";
+            echo "Controlador no encontrado: $class";
             return;
         }
 
+        // instanciar el controlador usando el contenedor de dependencias //
         try {
-            $objeto = $this->container->make($clase);
+            $instance = $this->container->make($class);
         } catch (\Throwable $e) {
             error_log('[Router] ' . $e->getMessage());
             http_response_code(500);
@@ -98,21 +98,23 @@ class Router
                 'msg'   => $e->getMessage(),
                 'file'  => $e->getFile(),
                 'line'  => $e->getLine(),
-                'class' => $clase,
+                'class' => $class,
             ]);
             return;
         }
 
-        if (!method_exists($objeto, $metodo)) {
+        // verificar si el metodo existe //
+        if (!method_exists($instance, $method)) {
             http_response_code(500);
-            echo "Método no encontrado: $metodo";
+            echo "Método no encontrado: $method";
             return;
         }
 
+        // ejecutar el metodo con los parametros //
         try {
-            call_user_func_array([$objeto, $metodo], $params);
+            call_user_func_array([$instance, $method], $params);
         } catch (\Throwable $e) {
-            error_log('[Router] Excepción en ' . $metodo . '(): ' . $e->getMessage());
+            error_log('[Router] Excepción en ' . $method . '(): ' . $e->getMessage());
             http_response_code(500);
             header('Content-Type: application/json');
             echo json_encode([
