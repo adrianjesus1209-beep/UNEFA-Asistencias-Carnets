@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acceso SICEU — Portal Oficial UNEFA</title>
+  <meta name="description" content="Acceso diferenciado al Sistema de Control de Estudios Universitarios (SICEU) de la UNEFA para Estudiantes y Personal Docente / Administrativo.">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+
+  <!-- Barra institucional superior -->
+  <div class="sys-status-bar">
+    <div class="container">
+      <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+        <span style="font-weight: 800; color: var(--unefa-gold);">SICEU · UNEFA</span>
+        <span style="opacity: 0.6;">|</span>
+        <span>Sistema de Control de Estudios y Gestión Académica</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+        <span class="sys-status-badge">Conexión SSL Segura</span>
+        <span>Periodo 2026-I</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Encabezado del sitio -->
+  <header class="main-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand-group" aria-label="Ir a la página de inicio">
+        <div class="brand-logo-wrap">
+          <img src="img/unefa-logo.png" alt="Escudo oficial de la UNEFA" width="40" height="40" style="border-radius: 50%;">
+        </div>
+        <div class="brand-title">
+          <span class="brand-title-main">UNEFA</span>
+          <span class="brand-title-sub">Portal institucional</span>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <a href="index.html" class="btn btn-sm btn-outline" style="gap: 0.5rem;">
+          <span aria-hidden="true">←</span>
+          <span>Volver al inicio</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido principal -->
+  <main class="auth-page-wrap">
+    <div class="auth-card">
+      
+      <!-- Selector de Canales Dual: Estudiantes vs Profesional -->
+      <div class="channel-selector-wrap">
+        <span class="channel-selector-label">Selecciona tu canal de acceso institucional:</span>
+        <div class="channel-tabs-nav" role="tablist" aria-label="Canal de inicio de sesión">
+          
+          <button
+            type="button"
+            class="channel-tab-btn active"
+            data-target-channel="estudiante"
+            role="tab"
+            aria-selected="true"
+            id="tabEstudiante"
+          >
+            <span class="channel-icon" aria-hidden="true">🎓</span>
+            <span>Estudiantes</span>
+          </button>
+
+          <button
+            type="button"
+            class="channel-tab-btn"
+            data-target-channel="profesional"
+            role="tab"
+            aria-selected="false"
+            id="tabProfesional"
+          >
+            <span class="channel-icon" aria-hidden="true">💼</span>
+            <span>Profesional</span>
+          </button>
+
+        </div>
+      </div>
+
+      <!-- Encabezado dinámico de la tarjeta -->
+      <div class="auth-header">
+        <div class="auth-header-tagrow">
+          <span id="channelBadgeTag" class="badge-tag accent-gold">Acceso Estudiantes</span>
+          <span class="badge-tag">Periodo 2026-I</span>
+        </div>
+        <h1 id="loginTitle" class="auth-title">
+          Portal Estudiantil SICEU
+        </h1>
+        <p id="loginSubtitle" class="auth-subtitle">
+          Ingresa con tu cédula de identidad y contraseña para consultar tus asignaturas, notas, horarios y carnet digital.
+        </p>
+      </div>
+
+      <!-- Alerta de validación o error -->
+      <div id="loginErrorMsg" class="auth-alert-box auth-alert-error" style="display: none;" role="alert" aria-live="polite">
+        <!-- Rellenado por JS -->
+      </div>
+
+      <!-- Formulario de acceso -->
+      <form id="loginForm" novalidate>
+        
+        <!-- Identificación -->
+        <div class="form-group">
+          <label id="identifierLabel" class="form-label" for="login_cedula">
+            Cédula de identidad estudiantil
+          </label>
+          <div class="cedula-input-group">
+            <div id="nacionalidadSelectWrap">
+              <select class="form-select" id="login_nacionalidad" aria-label="Nacionalidad del documento">
+                <option value="V">V-</option>
+                <option value="E">E-</option>
+              </select>
+            </div>
+            <input
+              type="text"
+              id="login_cedula"
+              class="form-input"
+              placeholder="Ej. 28123456"
+              required
+              autocomplete="username"
+            >
+          </div>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="form-group">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem;">
+            <label class="form-label" for="login_password" style="margin-bottom: 0;">
+              Contraseña institucional
+            </label>
+            <a href="#" style="font-size: 0.92rem; font-weight: 700; color: var(--unefa-blue); text-decoration: underline;" onclick="alert('Contacta al departamento de Control de Estudios o a la Coordinación Académica de tu núcleo para el restablecimiento de tu clave institucional.'); return false;">
+              ¿Olvidaste tu contraseña?
+            </a>
+          </div>
+          <div class="input-password-wrap">
+            <input
+              type="password"
+              id="login_password"
+              class="form-input"
+              placeholder="••••••••••••"
+              required
+              autocomplete="current-password"
+            >
+            <button
+              type="button"
+              class="toggle-password-btn"
+              data-target="login_password"
+              aria-label="Mostrar contraseña"
+            >
+              Mostrar
+            </button>
+          </div>
+        </div>
+
+        <!-- Botón de acceso de alta notoriedad -->
+        <div class="auth-submit-wrap">
+          <button type="submit" id="loginSubmitBtn" class="btn btn-gold btn-lg auth-submit-btn">
+            <span>Acceder como Estudiante</span>
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
+
+      </form>
+
+      <!-- Alternativa de Preinscripción para Estudiantes -->
+      <div id="studentRegisterPrompt" class="auth-switch-section">
+        <span class="auth-switch-prompt">
+          ¿Eres aspirante de nuevo ingreso a la universidad?
+        </span>
+        <a href="registro.html" class="btn btn-outline" style="font-size: 1.05rem;">
+          <span>Preinscripción al CINU 2026-I</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <!-- Nota de Soporte para el Canal Profesional -->
+      <div id="professionalSupportNote" class="auth-switch-section" style="display: none;">
+        <span class="auth-switch-prompt" style="color: var(--text-muted); font-size: 0.92rem;">
+          Módulo reservado para Docentes ordinarios/contratados, Coordinadores de Carrera y Dirección de Núcleo. Protegido con verificación institucional y doble factor.
+        </span>
+      </div>
+
+      <!-- Pie de seguridad -->
+      <div class="auth-security-footer">
+        Conexión cifrada institucional con los servidores de la UNEFA.<br>
+        Uso reservado exclusivamente para la comunidad universitaria autorizada.
+      </div>
+
+    </div>
+  </main>
+
+  <script src="js/login.js"></script>
+</body>
+</html>
