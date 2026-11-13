@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de Nuevo Estudiante — Portal Oficial UNEFA</title>
+  <meta name="description" content="Registro oficial para nuevos aspirantes de Pregrado y Postgrado de la UNEFA.">
+  <link rel="stylesheet" href="../public/css/common.css">
+  <link rel="stylesheet" href="../public/css/registro.css">
+</head>
+<body class="registro-page">
+
+  <!-- Barra de Navegación Superior -->
+  <header class="registro-header">
+    <div class="registro-brand">
+      <img src="../public/img/unefa-logo.webp" alt="Logo UNEFA">
+      <span class="registro-brand-text">Portal Oficial de Admisión</span>
+    </div>
+    <div class="registro-nav-actions">
+      <a href="login.html" class="registro-nav-link registro-nav-link-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        <span>Acceso SICEU</span>
+      </a>
+      <a href="index.html" class="registro-nav-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Inicio</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Contenedor Principal Simétrico -->
+  <main class="registro-main">
+    <div class="registro-card">
+      <div class="registro-grid">
+        
+        <!-- PANEL IZQUIERDO: Identidad & Guía de Registro -->
+        <div class="registro-panel-left">
+          <div class="panel-left-decor"></div>
+
+          <!-- Jerarquía Institucional -->
+          <div class="panel-left-content">
+            <div class="institution-badge">
+              <div class="institution-logo-wrap">
+                <img src="../public/img/unefa-logo.webp" alt="Escudo UNEFA">
+              </div>
+              <div class="institution-text-wrap">
+                <span class="institution-country">República Bolivariana de Venezuela</span>
+                <span class="institution-name">UNEFA</span>
+              </div>
+            </div>
+
+            <div class="institution-divider"></div>
+
+            <div class="panel-left-titles">
+              <p class="panel-left-sub">Vicerrectorado Académico</p>
+              <h1 class="panel-left-title">
+                Registro de Nuevo Estudiante
+              </h1>
+              <span class="badge-periodo">
+                Pregrado y Postgrado 2026-I
+              </span>
+              <p class="panel-left-desc">
+                Formulario centralizado para la asignación de matrícula estudiantil, selección de programa académico y acreditación digital en el SICEU.
+              </p>
+            </div>
+
+            <!-- Resumen de Pasos en Columna Izquierda -->
+            <div class="left-steps-wrap">
+              <div class="left-step-item active" id="leftStepIndicator1">
+                <span class="circle-step">1</span>
+                <div>
+                  <p class="step-text-title">Datos de Acceso e Identidad</p>
+                  <p class="step-text-desc">Cédula, correo y contraseña de seguridad</p>
+                </div>
+              </div>
+
+              <div class="left-step-item pending" id="leftStepIndicator2">
+                <span class="circle-step">2</span>
+                <div>
+                  <p class="step-text-title">Programa Académico</p>
+                  <p class="step-text-desc">Selección de carrera o postgrado</p>
+                </div>
+              </div>
+
+              <div class="left-step-item pending" id="leftStepIndicator3">
+                <span class="circle-step">3</span>
+                <div>
+                  <p class="step-text-title">Sede y Ubicación</p>
+                  <p class="step-text-desc">Núcleo regional y domicilio</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tira Fotográfica del Campus (Local WebP) -->
+            <div class="campus-photo-strip">
+              <img 
+                src="../public/img/laboratorio-electronica.webp" 
+                alt="Laboratorios de la UNEFA"
+              >
+              <div class="campus-photo-overlay">
+                <div class="campus-photo-tag">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                  <span>Excelencia Educativa Gratuita</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Metadatos del Sistema -->
+          <div class="panel-left-footer">
+            <div class="panel-left-meta-row">
+              <span class="panel-left-meta-label">Módulo de Admisión</span>
+              <span class="panel-left-meta-version">REG-UNEFA V2.4.0</span>
+            </div>
+            <p class="panel-left-legal-text">
+              Trámite universitario oficial. La información suministrada tiene carácter de Declaración Jurada conforme a las leyes de la República.
+            </p>
+          </div>
+        </div>
+
+        <!-- PANEL DERECHO: Terminal Multi-Paso de Registro -->
+        <div class="registro-panel-right">
+          <div>
+            <!-- Estado del Terminal -->
+            <div class="terminal-header">
+              <span class="terminal-indicator-dot"></span>
+              <span class="terminal-title">Terminal de Registro Académico</span>
+            </div>
+
+            <!-- Indicador de Pasos (Pills) -->
+            <div class="step-pills-grid" id="stepPillsContainer">
+              <div class="step-pill active" id="stepPill1">
+                <span class="step-pill-number">Paso 01</span>
+                <span class="step-pill-title">Identidad</span>
+              </div>
+              <div class="step-pill pending" id="stepPill2">
+                <span class="step-pill-number">Paso 02</span>
+                <span class="step-pill-title">Académico</span>
+              </div>
+              <div class="step-pill pending" id="stepPill3">
+                <span class="step-pill-number">Paso 03</span>
+                <span class="step-pill-title">Sede</span>
+              </div>
+            </div>
+
+            <!-- Alerta de validación dinámica -->
+            <div id="signupAlertBox" class="alert-box hidden" role="alert">
+              <!-- Rellenado por JS -->
+            </div>
+
+            <!-- Tarjeta de Confirmación de Registro Exitoso -->
+            <div id="signupSuccessCard" class="success-card hidden">
+              <div class="success-icon-wrap">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11.5 14.5 16 9.5"/></svg>
+              </div>
+              <div>
+                <span class="success-badge">
+                  Expediente Validado
+                </span>
+                <h2 class="success-title">¡Registro Completado con Éxito!</h2>
+                <p class="success-desc">
+                  Su solicitud ha sido asentada correctamente en los servidores de la UNEFA. Conserve su código de trámite para formalizar la entrega de recaudos en Control de Estudios.
+                </p>
+              </div>
+
+              <div class="success-code-box">
+                <span class="success-code-label">Código Único de Pre-Inscripción</span>
+                <span class="success-code-value" id="registrationCodeBadge">UNEFA-2026-I-PRE-849201</span>
+              </div>
+
+              <div>
+                <a 
+                  href="login.html" 
+                  class="btn-step-submit"
+                  style="display: inline-flex; text-decoration: none;"
+                >
+                  <span>Ir al Inicio de Sesión SICEU</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Formulario Multi-Paso -->
+            <form id="signupMultiForm" novalidate>
+
+              <!-- ── PASO 01: Identidad y Acceso ────────────────────────────── -->
+              <div class="form-step" id="stepContainer1">
+                <div class="form-grid-2">
+                  <div class="form-group">
+                    <label class="form-label" for="reg_cedula">Cédula de Identidad *</label>
+                    <div class="input-cedula-group">
+                      <select id="reg_docType" aria-label="Nacionalidad del documento">
+                        <option value="V">V-</option>
+                        <option value="E">E-</option>
+                      </select>
+                      <input 
+                        type="text" 
+                        id="reg_cedula" 
+                        inputmode="numeric" 
+                        maxlength="9" 
+                        placeholder="28450123" 
+                        pattern="[0-9]*" 
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '');" 
+                        required
+                        autocomplete="username"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="reg_nombres">Nombres Completos *</label>
+                    <input 
+                      type="text" 
+                      id="reg_nombres" 
+                      class="form-input" 
+                      placeholder="Ej. Carlos Eduardo" 
+                      required
+                      autocomplete="given-name"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-grid-2">
+                  <div class="form-group">
+                    <label class="form-label" for="reg_apellidos">Apellidos Completos *</label>
+                    <input 
+                      type="text" 
+                      id="reg_apellidos" 
+                      class="form-input" 
+                      placeholder="Ej. González Márquez" 
+                      required
+                      autocomplete="family-name"
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="reg_email">Correo Electrónico *</label>
+                    <input 
+                      type="email" 
+                      id="reg_email" 
+                      class="form-input" 
+                      placeholder="estudiante@correo.com" 
+                      required
+                      autocomplete="email"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-grid-2">
+                  <div class="form-group">
+                    <label class="form-label" for="reg_telefono">Teléfono Celular *</label>
+                    <input 
+                      type="tel" 
+                      id="reg_telefono" 
+                      class="form-input" 
+                      placeholder="04121234567" 
+                      maxlength="11" 
+                      oninput="this.value = this.value.replace(/[^0-9]/g, '');" 
+                      required
+                      autocomplete="tel"
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="reg_password">Contraseña (Mínimo 8 caracteres) *</label>
+                    <div class="input-password-group">
+                      <input 
+                        type="password" 
+                        id="reg_password" 
+                        placeholder="••••••••••••" 
+                        required
+                        autocomplete="new-password"
+                      />
+                      <button 
+                        type="button" 
+                        class="btn-toggle-pwd" 
+                        aria-label="Alternar visibilidad de contraseña" 
+                        onclick="toggleFieldPassword('reg_password', this)"
+                      >
+                        <svg class="icon-eye" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg class="icon-eye-off" style="display: none;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="reg_confirmPassword">Confirmar Contraseña *</label>
+                  <div class="input-password-group">
+                    <input 
+                      type="password" 
+                      id="reg_confirmPassword" 
+                      placeholder="Repita la contraseña institucional" 
+                      required
+                      autocomplete="new-password"
+                    />
+                    <button 
+                      type="button" 
+                      class="btn-toggle-pwd" 
+                      aria-label="Alternar visibilidad de confirmación de contraseña" 
+                      onclick="toggleFieldPassword('reg_confirmPassword', this)"
+                    >
+                      <svg class="icon-eye" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      <svg class="icon-eye-off" style="display: none;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ── PASO 02: Programa Académico ───────────────────────────── -->
+              <div class="form-step hidden" id="stepContainer2">
+                <div class="form-group">
+                  <label class="form-label" for="reg_nivel">Nivel de Estudio Académico *</label>
+                  <select id="reg_nivel" class="form-select" onchange="updateCareerOptions()" required>
+                    <option value="pregrado">Pregrado (Ingeniería / Licenciatura / TSU)</option>
+                    <option value="postgrado">Postgrado (Especialización / Maestría / Doctorado)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="reg_carrera">Carrera o Programa a Cursar *</label>
+                  <select id="reg_carrera" class="form-select" required>
+                    <optgroup label="Ingenierías (10 Semestres)">
+                      <option value="ING-SIS">Ingeniería de Sistemas</option>
+                      <option value="ING-TEL">Ingeniería de Telecomunicaciones</option>
+                      <option value="ING-MEC">Ingeniería Mecánica</option>
+                      <option value="ING-AER">Ingeniería Aeronáutica</option>
+                      <option value="ING-CIV">Ingeniería Civil</option>
+                    </optgroup>
+                    <optgroup label="Licenciaturas (8 Semestres)">
+                      <option value="LIC-ADM">Licenciatura en Administración y Gestión Municipal</option>
+                      <option value="LIC-ECO">Licenciatura en Economía Social</option>
+                      <option value="LIC-TUR">Licenciatura en Turismo</option>
+                      <option value="LIC-ENF">Licenciatura en Enfermería</option>
+                    </optgroup>
+                    <optgroup label="Técnico Superior Universitario (6 Semestres)">
+                      <option value="TSU-SIS">TSU en Análisis y Diseño de Sistemas</option>
+                      <option value="TSU-ENF">TSU en Enfermería</option>
+                      <option value="TSU-HOT">TSU en Hotelería</option>
+                    </optgroup>
+                  </select>
+                </div>
+
+                <div class="form-grid-2">
+                  <div class="form-group">
+                    <label class="form-label" for="reg_turno">Turno / Régimen Preferido *</label>
+                    <select id="reg_turno" class="form-select" required>
+                      <option value="diurno">Diurno (Lunes a Viernes 7:00 AM - 1:00 PM)</option>
+                      <option value="nocturno">Nocturno (Lunes a Viernes 5:00 PM - 9:30 PM)</option>
+                      <option value="sabados">Sabatino (Concentrado para Postgrado)</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="reg_condicion">Modalidad de Ingreso *</label>
+                    <select id="reg_condicion" class="form-select" required>
+                      <option value="nuevo_ingreso">Nuevo Ingreso (Asignación OPSU / Bachiller)</option>
+                      <option value="equivalencia">Equivalencia / Traslado Institucional</option>
+                      <option value="convenio_fanb">Convenio Militar FANB / Personal Activo</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="reg_promedio">Promedio de Notas de Bachillerato / Pregrado (Escala 1 al 20) *</label>
+                  <input 
+                    type="number" 
+                    id="reg_promedio" 
+                    class="form-input" 
+                    placeholder="16.50" 
+                    step="0.01" 
+                    min="1" 
+                    max="20" 
+                    required
+                  />
+                </div>
+              </div>
+
+              <!-- ── PASO 03: Sede y Ubicación ──────────────────────────────── -->
+              <div class="form-step hidden" id="stepContainer3">
+                <div class="form-group">
+                  <label class="form-label" for="reg_sede">Núcleo / Sede de la UNEFA a Inscribirse *</label>
+                  <select id="reg_sede" class="form-select" required>
+                    <option value="caracas_chuao">Sede Central Caracas (Chuao)</option>
+                    <option value="miranda_los_teques">Núcleo Miranda — Los Teques</option>
+                    <option value="miranda_guatire">Extensión Miranda — Guatire</option>
+                    <option value="aragua_maracay">Núcleo Aragua — Maracay</option>
+                    <option value="carabobo_valencia">Núcleo Carabobo — Valencia</option>
+                    <option value="zulia_maracaibo">Núcleo Zulia — Maracaibo</option>
+                    <option value="lara_barquisimeto">Núcleo Lara — Barquisimeto</option>
+                    <option value="tachira_san_cristobal">Núcleo Táchira — San Cristóbal</option>
+                    <option value="anzoategui_san_tome">Núcleo Anzoátegui — San Tomé</option>
+                    <option value="bolivar_puerto_ordaz">Núcleo Bolívar — Puerto Ordaz</option>
+                  </select>
+                </div>
+
+                <div class="form-grid-2">
+                  <div class="form-group">
+                    <label class="form-label" for="reg_estado">Estado de Residencia *</label>
+                    <select id="reg_estado" class="form-select" required>
+                      <option value="distrito_capital">Distrito Capital</option>
+                      <option value="miranda">Miranda</option>
+                      <option value="la_guaira">La Guaira</option>
+                      <option value="aragua">Aragua</option>
+                      <option value="carabobo">Carabobo</option>
+                      <option value="zulia">Zulia</option>
+                      <option value="lara">Lara</option>
+                      <option value="otro">Otro Estado de Venezuela</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="reg_municipio">Municipio / Parroquia *</label>
+                    <input 
+                      type="text" 
+                      id="reg_municipio" 
+                      class="form-input" 
+                      placeholder="Ej. Municipio Baruta, Parroquia Minas" 
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="reg_direccion">Dirección de Habitación Completa *</label>
+                  <textarea 
+                    id="reg_direccion" 
+                    rows="2" 
+                    class="form-textarea" 
+                    placeholder="Av., calle, edificio o casa, punto de referencia exacto" 
+                    required
+                  ></textarea>
+                </div>
+              </div>
+
+              <!-- ── Botones de Navegación del Asistente ─────────────────────── -->
+              <div class="step-actions">
+                <button 
+                  type="button" 
+                  id="btnPrevStep" 
+                  class="btn-step-prev hidden" 
+                  onclick="navigateStep(-1)"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                  <span>Anterior</span>
+                </button>
+
+                <button 
+                  type="button" 
+                  id="btnNextStep" 
+                  class="btn-step-next" 
+                  onclick="navigateStep(1)"
+                >
+                  <span>Continuar</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </button>
+
+                <button 
+                  type="submit" 
+                  id="btnSubmitRegistration" 
+                  class="btn-step-submit hidden"
+                >
+                  <span>Completar Registro</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                </button>
+              </div>
+
+            </form>
+          </div>
+
+          <!-- Pie del Terminal: Retorno a Login y Regulador -->
+          <div class="terminal-footer">
+            <div class="terminal-cross-link">
+              <span class="terminal-cross-text">¿Ya posees cuenta de usuario o eres estudiante regular?</span>
+              <a href="login.html" class="terminal-cross-action">Iniciar Sesión</a>
+            </div>
+
+            <div class="terminal-legal-row">
+              <span>Universidad Nacional Experimental Politécnica de la Fuerza Armada Nacional Bolivariana</span>
+              <span class="terminal-legal-mono">UNEFA TELEMÁTICA • CARACAS, VENEZUELA</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="../public/js/registro.js"></script>
+</body>
+</html>

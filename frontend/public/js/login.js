@@ -1,183 +1,115 @@
 /**
  * UNIVERSIDAD NACIONAL EXPERIMENTAL POLITÉCNICA DE LA FANB (UNEFA)
- * Controlador de Inicio de Sesión Diferenciado por Canales (Estudiante / Profesional)
+ * Controlador de Autenticación Institucional SICEU
+ * 100% JavaScript Local — Sin Dependencias Externas
  */
 
 (function () {
   "use strict";
 
-  let currentChannel = "estudiante"; // 'estudiante' | 'profesional'
+  let currentRole = "student";
 
-  /* ── 1. Alternador de Visibilidad de Contraseña ───────────────────────── */
-  function initPasswordToggles() {
-    const buttons = document.querySelectorAll(".toggle-password-btn");
-    buttons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const targetId = btn.getAttribute("data-target");
-        const input = document.getElementById(targetId);
-        if (!input) return;
+  window.switchRole = function (role) {
+    currentRole = role;
+    const tabStudent = document.getElementById("tabStudent");
+    const tabAdmin = document.getElementById("tabAdmin");
+    const identifierLabelText = document.getElementById("identifierLabelText");
+    const identifierHint = document.getElementById("identifierHint");
+    const cedulaInput = document.getElementById("cedulaInput");
+    const submitBtnText = document.getElementById("submitBtnText");
+    const alertBox = document.getElementById("loginAlertBox");
+    const registerPromptRow = document.getElementById("registerPromptRow");
 
-        if (input.type === "password") {
-          input.type = "text";
-          btn.textContent = "Ocultar";
-          btn.setAttribute("aria-label", "Ocultar contraseña");
-        } else {
-          input.type = "password";
-          btn.textContent = "Mostrar";
-          btn.setAttribute("aria-label", "Mostrar contraseña");
-        }
-      });
-    });
-  }
+    if (alertBox) alertBox.classList.add("hidden");
 
-  /* ── 2. Conmutador de Canales (Estudiante vs Profesional) ─────────────── */
-  function initChannelSwitch() {
-    const tabButtons = document.querySelectorAll(".channel-tab-btn");
-    const channelTag = document.getElementById("channelBadgeTag");
-    const channelTitle = document.getElementById("loginTitle");
-    const channelSub = document.getElementById("loginSubtitle");
-    const cedulaLabel = document.getElementById("identifierLabel");
-    const cedulaInput = document.getElementById("login_cedula");
-    const natSelectWrap = document.getElementById("nacionalidadSelectWrap");
-    const submitBtn = document.getElementById("loginSubmitBtn");
-    const errorBox = document.getElementById("loginErrorMsg");
+    if (role === "student") {
+      if (tabStudent) tabStudent.classList.add("active");
+      if (tabAdmin) tabAdmin.classList.remove("active");
+      if (identifierLabelText) identifierLabelText.textContent = "Cédula de Identidad";
+      if (identifierHint) identifierHint.textContent = "Estudiantes";
+      if (cedulaInput) cedulaInput.placeholder = "27450892";
+      if (submitBtnText) submitBtnText.textContent = "Ingresar como Estudiante";
+      // El enlace de registro es exclusivo para Estudiantes
+      if (registerPromptRow) registerPromptRow.style.display = "flex";
+    } else {
+      if (tabAdmin) tabAdmin.classList.add("active");
+      if (tabStudent) tabStudent.classList.remove("active");
+      if (identifierLabelText) identifierLabelText.textContent = "Cédula de Identidad";
+      if (identifierHint) identifierHint.textContent = "Personal Docente / Administrativo";
+      if (cedulaInput) cedulaInput.placeholder = "14230890";
+      if (submitBtnText) submitBtnText.textContent = "Ingresar como Personal";
+      // El personal institucional es registrado internamente por RRHH y Telemática
+      if (registerPromptRow) registerPromptRow.style.display = "none";
+    }
+  };
 
-    function setChannel(channel) {
-      currentChannel = channel;
+  window.togglePasswordVisibility = function () {
+    const passwordInput = document.getElementById("passwordInput");
+    if (!passwordInput) return;
 
-      // Actualizar botones de pestaña
-      tabButtons.forEach((btn) => {
-        const target = btn.getAttribute("data-target-channel");
-        if (target === channel) {
-          btn.classList.add("active");
-          btn.setAttribute("aria-selected", "true");
-        } else {
-          btn.classList.remove("active");
-          btn.setAttribute("aria-selected", "false");
-        }
-      });
+    const btn = document.querySelector(".btn-toggle-pwd");
+    const eyeOpen = btn ? btn.querySelector(".icon-eye") : null;
+    const eyeOff = btn ? btn.querySelector(".icon-eye-off") : null;
 
-      // Limpiar errores previos
-      if (errorBox) {
-        errorBox.style.display = "none";
-        errorBox.textContent = "";
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+      if (eyeOpen && eyeOff) {
+        eyeOpen.style.display = "none";
+        eyeOff.style.display = "block";
       }
-
-      if (channel === "estudiante") {
-        if (channelTag) {
-          channelTag.textContent = "Acceso Estudiantes";
-          channelTag.className = "badge-tag accent-gold";
-        }
-        if (channelTitle) channelTitle.textContent = "Portal Estudiantil SICEU";
-        if (channelSub) {
-          channelSub.textContent =
-            "Ingresa con tu cédula de identidad y contraseña para consultar tus asignaturas, notas, horarios y carnet digital.";
-        }
-        if (cedulaLabel) cedulaLabel.textContent = "Cédula de identidad estudiantil";
-        if (cedulaInput) {
-          cedulaInput.placeholder = "Ej. 28123456";
-          cedulaInput.type = "text";
-          cedulaInput.inputMode = "numeric";
-        }
-        if (natSelectWrap) natSelectWrap.style.display = "block";
-
-        if (submitBtn) {
-          submitBtn.className = "btn btn-gold btn-lg auth-submit-btn";
-          submitBtn.innerHTML = "<span>Acceder como Estudiante</span> <span>→</span>";
-        }
-
-      } else {
-        // Canal Profesional (Docente / Administrativo / Directivo)
-        if (channelTag) {
-          channelTag.textContent = "Acceso Personal / Docente";
-          channelTag.className = "badge-tag accent-blue";
-        }
-        if (channelTitle) channelTitle.textContent = "Portal Docente y Personal";
-        if (channelSub) {
-          channelSub.textContent =
-            "Acceso para Profesores, Coordinadores, Directores de Núcleo y Personal Administrativo autorizado.";
-        }
-        if (cedulaLabel) cedulaLabel.textContent = "Cédula de identidad profesional";
-        if (cedulaInput) {
-          cedulaInput.placeholder = "Ej. 14567890";
-          cedulaInput.type = "text";
-          cedulaInput.inputMode = "numeric";
-        }
-        if (natSelectWrap) natSelectWrap.style.display = "block";
-
-        if (submitBtn) {
-          submitBtn.className = "btn btn-blue btn-lg auth-submit-btn";
-          submitBtn.innerHTML = "<span>Acceder como Profesional</span> <span>→</span>";
-        }
+    } else {
+      passwordInput.type = "password";
+      if (eyeOpen && eyeOff) {
+        eyeOpen.style.display = "block";
+        eyeOff.style.display = "none";
       }
     }
+  };
 
-    tabButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const target = btn.getAttribute("data-target-channel");
-        if (target) setChannel(target);
-      });
-    });
+  window.handleLogin = function () {
+    const docType = document.getElementById("docType");
+    const cedulaInput = document.getElementById("cedulaInput");
+    const passwordInput = document.getElementById("passwordInput");
+    const alertBox = document.getElementById("loginAlertBox");
+    const submitBtn = document.getElementById("submitBtn");
 
-    // Iniciar por defecto en canal Estudiante
-    setChannel("estudiante");
-  }
+    const cedula = cedulaInput ? cedulaInput.value.trim() : "";
+    const pass = passwordInput ? passwordInput.value.trim() : "";
+    const nationality = docType ? docType.value : "V";
 
-  /* ── 3. Manejo del Formulario de Acceso ───────────────────────────────── */
-  function initLoginForm() {
-    const loginForm = document.getElementById("loginForm");
-    if (!loginForm) return;
-
-    loginForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      const identifierInput = document.getElementById("login_cedula");
-      const passwordInput = document.getElementById("login_password");
-      const errorMsg = document.getElementById("loginErrorMsg");
-      const submitBtn = document.getElementById("loginSubmitBtn");
-
-      const identifier = identifierInput ? identifierInput.value.trim() : "";
-      const password = passwordInput ? passwordInput.value.trim() : "";
-
-      if (!identifier || !password) {
-        if (errorMsg) {
-          errorMsg.className = "auth-alert-box auth-alert-error";
-          errorMsg.innerHTML = "<strong>⚠️ Error de validación:</strong> Por favor complete su identificación y contraseña institucional.";
-          errorMsg.style.display = "flex";
-          errorMsg.scrollIntoView({ behavior: "smooth", block: "center" });
-        }
-        return;
+    if (!cedula || !pass) {
+      if (alertBox) {
+        alertBox.innerHTML =
+          "<strong>Error de autenticación:</strong> Ingrese su número de cédula y contraseña institucional.";
+        alertBox.classList.remove("hidden");
       }
+      return;
+    }
 
-      if (errorMsg) {
-        errorMsg.style.display = "none";
-      }
+    if (alertBox) alertBox.classList.add("hidden");
 
-      const originalBtnHTML = submitBtn ? submitBtn.innerHTML : "";
+    const originalContent = submitBtn ? submitBtn.innerHTML : "";
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = "<span>Validando credenciales...</span>";
+    }
+
+    setTimeout(() => {
       if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = "<span>Verificando credenciales...</span>";
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalContent;
       }
 
-      setTimeout(() => {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = originalBtnHTML;
-        }
-
-        if (currentChannel === "estudiante") {
-          alert(`✅ [Canal Estudiantes] Credenciales verificadas exitosamente para: ${identifier}.\n\nAcceso al panel estudiantil SICEU concedido.`);
-        } else {
-          alert(`✅ [Canal Profesional] Credenciales verificadas exitosamente para: ${identifier}.\n\nAcceso a la consola de cátedra y gestión académica concedido.`);
-        }
-      }, 750);
-    });
-  }
-
-  /* ── Inicialización ───────────────────────────────────────────────────── */
-  document.addEventListener("DOMContentLoaded", () => {
-    initPasswordToggles();
-    initChannelSwitch();
-    initLoginForm();
-  });
+      const fullId = `${nationality}-${cedula}`;
+      if (currentRole === "student") {
+        alert(
+          `[Acceso SICEU concedido]\n\nUsuario: ${fullId}\nRol: Estudiantes\nConexión autorizada en los servidores centrales de la UNEFA.`
+        );
+      } else {
+        alert(
+          `[Consola Institucional SICEU]\n\nUsuario: ${fullId}\nRol: Personal\nSesión iniciada con privilegios institucionales.`
+        );
+      }
+    }, 700);
+  };
 })();

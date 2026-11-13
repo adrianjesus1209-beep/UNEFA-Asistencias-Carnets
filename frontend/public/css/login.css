@@ -1,266 +1,659 @@
 /* ═══════════════════════════════════════════════════════════════════════════════
    UNIVERSIDAD NACIONAL EXPERIMENTAL POLITÉCNICA DE LA FANB (UNEFA)
-   Estilos de Inicio de Sesión Diferenciado por Canales (Estudiante / Profesional)
+   Estilos Institucionales de Acceso SICEU (Estudiantes y Personal)
+   100% CSS Local — Sin Dependencias Externas
    ═══════════════════════════════════════════════════════════════════════════════ */
 
 @import url('common.css');
 
-.auth-page-wrap {
-  min-height: calc(100vh - 4rem);
+/* ── Página y Estructura Principal ────────────────────────────────────────── */
+.login-page {
+  min-height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 3.5rem 1.5rem;
-  background: var(--bg-secondary);
-}
-
-.auth-card {
-  width: 100%;
-  max-width: 28rem;
-  background: var(--bg-card);
-  border: 1.5px solid var(--border-grid);
-  border-radius: var(--radius-lg);
-  padding: 2rem 1.75rem;
-  box-shadow: 0 10px 25px -5px rgba(6, 21, 42, 0.1);
-}
-
-/* ── Selector de Canales Dual (Estudiantes / Profesional) ───────────────── */
-.channel-selector-wrap {
-  margin-bottom: 1.5rem;
-  border-bottom: 1.5px solid var(--border-subtle);
-  padding-bottom: 1rem;
-}
-
-.channel-selector-label {
-  display: block;
-  font-size: 0.78rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
-  margin-bottom: 0.5rem;
-}
-
-.channel-tabs-nav {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem;
-  background: var(--bg-tertiary);
-  padding: 0.35rem;
-  border-radius: 10px;
-  border: 1.5px solid var(--border-primary);
-}
-
-.channel-tab-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.55rem 0.85rem;
-  min-height: 2.5rem;
-  border-radius: 7px;
-  border: 1.5px solid transparent;
-  background: transparent;
-  color: var(--text-secondary);
-  font-family: var(--font-sans);
-  font-size: 0.88rem;
-  font-weight: 800;
-  cursor: pointer;
-  transition: all 0.18s ease;
-}
-
-.channel-tab-btn:hover {
-  background: rgba(255, 255, 255, 0.7);
+  flex-direction: column;
+  background-color: #f4f6fa;
   color: var(--text-primary);
+  font-family: var(--font-sans);
 }
 
-.channel-tab-btn.active[data-target-channel="estudiante"] {
-  background: #ffffff;
-  color: var(--unefa-navy);
-  border-color: var(--unefa-gold);
-  box-shadow: 0 2px 8px rgba(242, 184, 7, 0.2);
-}
-
-.channel-tab-btn.active[data-target-channel="profesional"] {
-  background: var(--unefa-blue);
-  color: #ffffff;
-  border-color: var(--unefa-blue-deep);
-  box-shadow: 0 2px 8px rgba(0, 40, 85, 0.25);
-}
-
-.channel-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
-}
-
-/* ── Encabezado de la Tarjeta ───────────────────────────────────────────── */
-.auth-header {
-  border-bottom: 1.5px solid var(--border-subtle);
-  padding-bottom: 1.25rem;
-  margin-bottom: 1.5rem;
-  text-align: left;
-}
-
-.auth-header-tagrow {
+/* ── Encabezado Institucional Superior ────────────────────────────────────── */
+.login-header {
+  width: 100%;
+  background: var(--unefa-navy);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.75rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.85rem;
-  flex-wrap: wrap;
-}
-
-.auth-title {
-  font-size: 1.45rem;
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  color: var(--unefa-navy);
-  line-height: 1.2;
-}
-
-.auth-subtitle {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  margin-top: 0.4rem;
-  line-height: 1.55;
-  font-weight: 500;
-}
-
-/* ── Mensajes de Alerta y Estado ────────────────────────────────────────── */
-.auth-alert-box {
-  padding: 0.85rem 1rem;
-  border-radius: var(--radius-md);
-  font-size: 0.88rem;
-  font-weight: 700;
-  margin-bottom: 1.25rem;
-  display: flex;
-  align-items: flex-start;
-  gap: 0.65rem;
-  line-height: 1.5;
-}
-
-.auth-alert-error {
-  background: #fee2e2;
-  border: 1.5px solid #ef4444;
-  color: #991b1b;
-}
-
-.auth-alert-success {
-  background: #dcfce7;
-  border: 1.5px solid #10b981;
-  color: #065f46;
-}
-
-/* ── Campos de Entrada Moderados ────────────────────────────────────────── */
-.form-group {
-  margin-bottom: 1.25rem;
-}
-
-.form-label {
-  display: block;
-  font-size: 0.82rem;
-  font-weight: 700;
-  margin-bottom: 0.4rem;
-  color: var(--unefa-navy);
-}
-
-.cedula-input-group {
-  display: grid;
-  grid-template-columns: 5.5rem 1fr;
-  gap: 0.5rem;
-}
-
-.form-input, .form-select {
-  width: 100%;
-  height: 2.6rem;
-  padding: 0 0.9rem;
-  background: var(--bg-primary);
-  border: 1.5px solid var(--border-grid);
-  color: var(--text-primary);
-  font-size: 0.9rem;
-  font-weight: 600;
-  border-radius: var(--radius-sm);
-  outline: none;
-  transition: border-color 0.18s ease, box-shadow 0.18s ease;
-}
-
-.form-input::placeholder {
-  color: #94a3b8;
-  font-weight: 500;
-}
-
-.form-input:focus, .form-select:focus {
-  border-color: var(--unefa-blue);
-  box-shadow: 0 0 0 3px rgba(0, 40, 85, 0.15);
-}
-
-.input-password-wrap {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.input-password-wrap .form-input {
-  padding-right: 4.5rem;
-}
-
-.toggle-password-btn {
-  position: absolute;
-  right: 0.5rem;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-primary);
-  border-radius: 4px;
-  color: var(--unefa-blue);
-  cursor: pointer;
-  padding: 0.3rem 0.65rem;
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  transition: all 0.15s ease;
-}
-
-.toggle-password-btn:hover {
-  background: var(--unefa-blue);
   color: #ffffff;
 }
 
-/* ── Botón Principal de Envío ───────────────────────────────────────────── */
-.auth-submit-wrap {
-  margin-top: 1.75rem;
+.login-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
 }
 
-.auth-submit-btn {
+.login-brand-logo {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: 2px solid var(--unefa-gold);
+  background: #ffffff;
+  padding: 0.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.login-brand-logo img {
   width: 100%;
-  min-height: 2.75rem;
-  font-size: 0.95rem;
-  font-weight: 800;
-  border-radius: 8px;
+  height: 100%;
+  object-fit: contain;
 }
 
-/* ── Enlaces y Opciones Inferiores ──────────────────────────────────────── */
-.auth-switch-section {
-  margin-top: 1.75rem;
-  padding-top: 1.25rem;
-  border-top: 1.5px solid var(--border-subtle);
+.login-brand-text {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  text-align: center;
 }
 
-.auth-switch-prompt {
-  font-size: 0.88rem;
-  color: var(--text-secondary);
+.login-brand-name {
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.login-brand-sub {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--unefa-gold);
+  text-transform: uppercase;
+}
+
+.login-nav-back {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #d8e3fb;
+  background: rgba(11, 37, 69, 0.6);
+  padding: 0.45rem 0.85rem;
+  border-radius: 6px;
+  border: 1px solid rgba(222, 232, 255, 0.15);
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.login-nav-back:hover {
+  background: #0b2545;
+  color: #ffffff;
+}
+
+/* ── Contenedor Central ─────────────────────────────────────────────────── */
+.login-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.login-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 1024px) {
+  .login-grid {
+    grid-template-columns: 5fr 7fr;
+  }
+}
+
+/* ── Panel Izquierdo: Identidad Institucional ───────────────────────────── */
+.login-panel-left {
+  background: var(--unefa-navy);
+  color: #ffffff;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .login-panel-left {
+    padding: 2.5rem;
+  }
+}
+
+.panel-left-decor {
+  position: absolute;
+  right: -4rem;
+  top: -4rem;
+  width: 16rem;
+  height: 16rem;
+  background: rgba(56, 92, 166, 0.15);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.panel-left-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.institution-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.institution-logo-wrap {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 2px solid var(--unefa-gold);
+  background: #ffffff;
+  padding: 0.15rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.institution-logo-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.institution-text-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.institution-country {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--unefa-gold);
+}
+
+.institution-name {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.institution-divider {
+  width: 3.5rem;
+  height: 2px;
+  background: var(--unefa-gold);
+}
+
+.panel-left-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.panel-left-sub {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #b0c6ff;
+}
+
+.panel-left-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.3;
+  color: #ffffff;
+}
+
+@media (min-width: 768px) {
+  .panel-left-title {
+    font-size: 1.4rem;
+  }
+}
+
+.panel-left-desc {
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: #d8e3fb;
+}
+
+/* ── Tira Fotográfica del Campus ────────────────────────────────────────── */
+.campus-photo-strip {
+  position: relative;
+  width: 100%;
+  height: 9rem;
+  background: #0b2545;
+  border-radius: 6px;
+  border: 1px solid rgba(222, 232, 255, 0.15);
+  overflow: hidden;
+}
+
+.campus-photo-strip img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.65;
+  filter: grayscale(40%);
+  transition: transform 0.5s ease;
+}
+
+.campus-photo-strip:hover img {
+  transform: scale(1.04);
+}
+
+.campus-photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 16, 38, 0.95), rgba(0, 16, 38, 0.3), transparent);
+  display: flex;
+  align-items: flex-end;
+  padding: 0.75rem;
+}
+
+.campus-photo-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #ffffff;
+}
+
+.campus-photo-tag svg {
+  color: var(--unefa-gold);
+}
+
+/* ── Pie del Panel Izquierdo ────────────────────────────────────────────── */
+.panel-left-footer {
+  padding-top: 1.25rem;
+  margin-top: 1.25rem;
+  border-top: 1px solid rgba(222, 232, 255, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  position: relative;
+  z-index: 10;
+}
+
+.panel-left-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+}
+
+.panel-left-meta-label {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #d8e3fb;
   font-weight: 600;
 }
 
-.auth-security-footer {
-  margin-top: 1.5rem;
+.panel-left-meta-version {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: #b0c6ff;
+}
+
+.panel-left-legal-text {
+  font-size: 0.68rem;
+  line-height: 1.45;
+  color: #d8e3fb;
+}
+
+/* ── Panel Derecho: Terminal de Autenticación ───────────────────────────── */
+.login-panel-right {
+  background: #ffffff;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@media (min-width: 768px) {
+  .login-panel-right {
+    padding: 2.5rem;
+  }
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0.85rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.terminal-indicator-dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: #4edea3;
+  display: inline-block;
+}
+
+.terminal-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: #44474e;
+}
+
+/* ── Selector de Modalidad (Estudiantes / Personal) ─────────────────────── */
+.role-selector-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1.5rem;
+}
+
+.role-selector-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #44474e;
+}
+
+.role-selector-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem;
+  background: #f0f3ff;
+  padding: 0.25rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-subtle);
+}
+
+.role-tab-btn {
+  padding: 0.55rem 0.75rem;
+  border-radius: 4px;
+  border: none;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: transparent;
+  color: #44474e;
+  transition: all 0.18s ease;
   text-align: center;
+}
+
+.role-tab-btn:hover {
+  color: var(--text-primary);
+}
+
+.role-tab-btn.active {
+  background: #0b2545;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ── Formulario de Acceso ───────────────────────────────────────────────── */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.form-label-hint {
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: #74777f;
+}
+
+.form-link-forgot {
+  font-size: 0.7rem;
+  color: var(--unefa-blue);
+  text-decoration: underline;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.form-link-forgot:hover {
+  color: var(--unefa-navy);
+}
+
+/* Grupo Cédula con Prefijo */
+.input-cedula-group {
+  display: flex;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  background: #f0f3ff;
+  transition: border-color 0.15s ease;
+}
+
+.input-cedula-group:focus-within {
+  border-color: var(--unefa-blue);
+  background: #ffffff;
+}
+
+.input-cedula-group select {
+  height: 2.75rem;
+  padding: 0 0.85rem;
+  border: none;
+  border-right: 1px solid var(--border-subtle);
+  background: transparent;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  outline: none;
+}
+
+.input-cedula-group input {
+  flex: 1;
+  height: 2.75rem;
+  padding: 0 0.85rem;
+  border: none;
+  background: transparent;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  letter-spacing: 0.05em;
+  outline: none;
+}
+
+/* Grupo Contraseña con Toggle */
+.input-password-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  background: #f0f3ff;
+  transition: border-color 0.15s ease;
+}
+
+.input-password-group:focus-within {
+  border-color: var(--unefa-blue);
+  background: #ffffff;
+}
+
+.input-password-group input {
+  width: 100%;
+  height: 2.75rem;
+  padding: 0 2.75rem 0 0.85rem;
+  border: none;
+  background: transparent;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  outline: none;
+}
+
+.btn-toggle-pwd {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 2.75rem;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #74777f;
+  transition: color 0.15s ease;
+}
+
+.btn-toggle-pwd:hover {
+  color: var(--text-primary);
+}
+
+/* ── Alerta de Validación Dinámica ──────────────────────────────────────── */
+.alert-box {
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
   font-size: 0.8rem;
-  color: var(--text-muted);
-  line-height: 1.5;
+  line-height: 1.45;
   font-weight: 500;
+  border: 1px solid var(--unefa-red);
+  background: #ffdad6;
+  color: #93000a;
+}
+
+.alert-box.hidden,
+.hidden {
+  display: none !important;
+}
+
+/* ── Botón de Ingreso Principal ─────────────────────────────────────────── */
+.btn-submit-login {
+  width: 100%;
+  height: 2.75rem;
+  background: #0b2545;
+  border: 1px solid #0b2545;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.15s ease;
+}
+
+.btn-submit-login:hover {
+  background: var(--unefa-blue);
+  border-color: var(--unefa-blue);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
+}
+
+.btn-submit-login:active {
+  transform: scale(0.99);
+}
+
+/* ── Pie del Terminal Derecho ───────────────────────────────────────────── */
+.terminal-footer {
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.terminal-cross-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.78rem;
+  transition: opacity 0.2s ease;
+}
+
+.terminal-cross-text {
+  color: #44474e;
+}
+
+.terminal-cross-action {
+  color: var(--unefa-blue);
+  font-weight: 700;
+  text-decoration: none;
+  transition: underline 0.15s ease;
+}
+
+.terminal-cross-action:hover {
+  text-decoration: underline;
+}
+
+.terminal-legal-row {
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-subtle);
+  font-size: 0.68rem;
+  color: #74777f;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  justify-content: space-between;
+}
+
+@media (min-width: 640px) {
+  .terminal-legal-row {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.terminal-legal-mono {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: #74777f;
+  flex-shrink: 0;
 }

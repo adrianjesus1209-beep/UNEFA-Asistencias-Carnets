@@ -1,0 +1,876 @@
+/* ═══════════════════════════════════════════════════════════════════════════════
+   UNIVERSIDAD NACIONAL EXPERIMENTAL POLITÉCNICA DE LA FANB (UNEFA)
+   Estilos Institucionales de Registro de Nuevo Estudiante (Pregrado y Postgrado)
+   100% CSS Local — Sin Dependencias Externas
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+@import url('common.css');
+
+/* ── Página y Estructura Principal ────────────────────────────────────────── */
+.registro-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f4f6fa;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+}
+
+/* ── Encabezado Institucional Superior ────────────────────────────────────── */
+.registro-header {
+  width: 100%;
+  background: var(--unefa-navy);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #ffffff;
+}
+
+.registro-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.registro-brand img {
+  width: 2rem;
+  height: 2rem;
+  object-contain: contain;
+}
+
+.registro-brand-text {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #d8e3fb;
+}
+
+.registro-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.registro-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  color: #d8e3fb;
+  transition: color 0.15s ease;
+}
+
+.registro-nav-link:hover {
+  color: #ffffff;
+}
+
+.registro-nav-link-primary {
+  color: var(--unefa-gold);
+  font-weight: 700;
+}
+
+.registro-nav-link-primary:hover {
+  color: #ffffff;
+}
+
+/* ── Contenedor Central ─────────────────────────────────────────────────── */
+.registro-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.registro-card {
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.registro-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 1024px) {
+  .registro-grid {
+    grid-template-columns: 5fr 7fr;
+  }
+}
+
+/* ── Panel Izquierdo: Identidad y Guía ──────────────────────────────────── */
+.registro-panel-left {
+  background: var(--unefa-navy);
+  color: #ffffff;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .registro-panel-left {
+    padding: 2.5rem;
+  }
+}
+
+.panel-left-decor {
+  position: absolute;
+  right: -4rem;
+  top: -4rem;
+  width: 16rem;
+  height: 16rem;
+  background: rgba(56, 92, 166, 0.15);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.panel-left-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.institution-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.institution-logo-wrap {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 2px solid var(--unefa-gold);
+  background: #ffffff;
+  padding: 0.15rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.institution-logo-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.institution-text-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.institution-country {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--unefa-gold);
+}
+
+.institution-name {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.institution-divider {
+  width: 3.5rem;
+  height: 2px;
+  background: var(--unefa-gold);
+}
+
+.panel-left-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.panel-left-sub {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #b0c6ff;
+}
+
+.panel-left-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.3;
+  color: #ffffff;
+}
+
+@media (min-width: 768px) {
+  .panel-left-title {
+    font-size: 1.4rem;
+  }
+}
+
+.badge-periodo {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  background: var(--unefa-gold);
+  color: var(--unefa-navy);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-top: 0.15rem;
+}
+
+.panel-left-desc {
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: #d8e3fb;
+}
+
+/* ── Resumen de Pasos Lateral ────────────────────────────────────────────── */
+.left-steps-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+}
+
+.left-step-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(11, 37, 69, 0.2);
+}
+
+.left-step-item .circle-step {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgba(222, 232, 255, 0.3);
+  color: #d8e3fb;
+}
+
+.left-step-item .step-text-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #d8e3fb;
+}
+
+.left-step-item .step-text-desc {
+  font-size: 0.65rem;
+  color: rgba(216, 227, 251, 0.7);
+}
+
+/* Estados de los pasos laterales */
+.left-step-item.active {
+  background: rgba(11, 37, 69, 0.8);
+  border-color: rgba(242, 184, 7, 0.5);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+.left-step-item.active .circle-step {
+  background: var(--unefa-gold);
+  color: var(--unefa-navy);
+}
+.left-step-item.active .step-text-title {
+  color: #ffffff;
+}
+
+.left-step-item.completed {
+  background: rgba(11, 37, 69, 0.5);
+  border-color: rgba(56, 92, 166, 0.4);
+}
+.left-step-item.completed .circle-step {
+  background: #b0c6ff;
+  color: var(--unefa-navy);
+}
+.left-step-item.completed .step-text-title {
+  color: #d9e2ff;
+}
+
+/* ── Tira Fotográfica del Campus ────────────────────────────────────────── */
+.campus-photo-strip {
+  position: relative;
+  width: 100%;
+  height: 8rem;
+  background: #0b2545;
+  border-radius: 6px;
+  border: 1px solid rgba(222, 232, 255, 0.15);
+  overflow: hidden;
+}
+
+.campus-photo-strip img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.65;
+  filter: grayscale(40%);
+  transition: transform 0.5s ease;
+}
+
+.campus-photo-strip:hover img {
+  transform: scale(1.04);
+}
+
+.campus-photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 16, 38, 0.95), rgba(0, 16, 38, 0.3), transparent);
+  display: flex;
+  align-items: flex-end;
+  padding: 0.65rem;
+}
+
+.campus-photo-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #ffffff;
+}
+
+.campus-photo-tag svg {
+  color: var(--unefa-gold);
+}
+
+/* ── Pie del Panel Izquierdo ────────────────────────────────────────────── */
+.panel-left-footer {
+  padding-top: 1.25rem;
+  margin-top: 1.25rem;
+  border-top: 1px solid rgba(222, 232, 255, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  position: relative;
+  z-index: 10;
+}
+
+.panel-left-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+}
+
+.panel-left-meta-label {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #d8e3fb;
+  font-weight: 600;
+}
+
+.panel-left-meta-version {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: #b0c6ff;
+}
+
+.panel-left-legal-text {
+  font-size: 0.68rem;
+  line-height: 1.45;
+  color: #d8e3fb;
+}
+
+/* ── Panel Derecho: Terminal de Registro ────────────────────────────────── */
+.registro-panel-right {
+  background: #ffffff;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@media (min-width: 768px) {
+  .registro-panel-right {
+    padding: 2.5rem;
+  }
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0.85rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.terminal-indicator-dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: #4edea3;
+  display: inline-block;
+}
+
+.terminal-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: #44474e;
+}
+
+/* ── Píldoras de Progreso (Step Pills) ──────────────────────────────────── */
+.step-pills-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.step-pill {
+  padding: 0.55rem 0.65rem;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid var(--border-subtle);
+  background: #f0f3ff;
+  color: #44474e;
+  transition: all 0.2s ease;
+}
+
+.step-pill-number {
+  display: block;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #74777f;
+}
+
+.step-pill-title {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.step-pill.active {
+  background: #0b2545;
+  color: #ffffff;
+  border-color: #0b2545;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+.step-pill.active .step-pill-number {
+  color: var(--unefa-gold);
+}
+
+.step-pill.completed {
+  background: #e7eeff;
+  color: var(--unefa-blue);
+  border-color: #dee8ff;
+}
+.step-pill.completed .step-pill-number {
+  color: var(--unefa-blue);
+}
+
+/* ── Alerta de Validación Dinámica ──────────────────────────────────────── */
+.alert-box {
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  font-weight: 500;
+  border: 1px solid var(--unefa-red);
+  background: #ffdad6;
+  color: #93000a;
+}
+
+.alert-box.hidden,
+.hidden {
+  display: none !important;
+}
+
+/* ── Tarjeta de Éxito de Inscripción ────────────────────────────────────── */
+.success-card {
+  padding: 1.75rem 1.5rem;
+  border-radius: 8px;
+  border: 2px solid var(--unefa-green);
+  background: rgba(16, 185, 129, 0.06);
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.success-icon-wrap {
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 50%;
+  background: #d1fae5;
+  color: #047857;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem auto;
+}
+
+.success-badge {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  background: #a7f3d0;
+  color: #065f46;
+  margin-bottom: 0.5rem;
+}
+
+.success-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.success-desc {
+  font-size: 0.82rem;
+  color: #374151;
+  max-width: 28rem;
+  margin: 0 auto 1.25rem auto;
+  line-height: 1.5;
+}
+
+.success-code-box {
+  background: #ffffff;
+  padding: 0.85rem;
+  border-radius: 6px;
+  border: 1px dashed #10b981;
+  max-width: 20rem;
+  margin: 0 auto 1.5rem auto;
+}
+
+.success-code-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  color: #6b7280;
+  font-weight: 600;
+  display: block;
+}
+
+.success-code-value {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--unefa-navy);
+  letter-spacing: 0.05em;
+  display: block;
+  margin-top: 0.2rem;
+}
+
+/* ── Formulario y Campos ────────────────────────────────────────────────── */
+.form-step {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .form-grid-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  height: 2.6rem;
+  padding: 0 0.75rem;
+  background: #f0f3ff;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  font-family: inherit;
+  transition: all 0.15s ease;
+}
+
+.form-textarea {
+  height: auto;
+  min-height: 4.5rem;
+  padding: 0.6rem 0.75rem;
+  resize: vertical;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  background: #ffffff;
+  border-color: var(--unefa-blue);
+  outline: none;
+}
+
+.form-input::placeholder {
+  color: #74777f;
+}
+
+/* Grupo Cédula con Prefijo */
+.input-cedula-group {
+  display: flex;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  background: #f0f3ff;
+  transition: border-color 0.15s ease;
+}
+
+.input-cedula-group:focus-within {
+  border-color: var(--unefa-blue);
+  background: #ffffff;
+}
+
+.input-cedula-group select {
+  height: 2.6rem;
+  padding: 0 0.75rem;
+  border: none;
+  border-right: 1px solid var(--border-subtle);
+  background: transparent;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  outline: none;
+}
+
+.input-cedula-group input {
+  flex: 1;
+  height: 2.6rem;
+  padding: 0 0.75rem;
+  border: none;
+  background: transparent;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  letter-spacing: 0.05em;
+  outline: none;
+}
+
+/* Grupo de Contraseña con Toggle */
+.input-password-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  background: #f0f3ff;
+  transition: border-color 0.15s ease;
+}
+
+.input-password-group:focus-within {
+  border-color: var(--unefa-blue);
+  background: #ffffff;
+}
+
+.input-password-group input {
+  width: 100%;
+  height: 2.6rem;
+  padding: 0 2.5rem 0 0.75rem;
+  border: none;
+  background: transparent;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  outline: none;
+}
+
+.btn-toggle-pwd {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 2.5rem;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #74777f;
+  transition: color 0.15s ease;
+}
+
+.btn-toggle-pwd:hover {
+  color: var(--text-primary);
+}
+
+/* ── Botones de Acción de Paso ──────────────────────────────────────────── */
+.step-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 0.75rem;
+}
+
+.btn-step-prev {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.15rem;
+  background: #f0f3ff;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-step-prev:hover {
+  background: #e7eeff;
+}
+
+.btn-step-next {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.35rem;
+  background: #0b2545;
+  border: 1px solid #0b2545;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.15s ease;
+  margin-left: auto;
+}
+
+.btn-step-next:hover {
+  background: var(--unefa-blue);
+  border-color: var(--unefa-blue);
+}
+
+.btn-step-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.35rem;
+  background: var(--unefa-gold);
+  border: 1px solid var(--unefa-gold-dark);
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--unefa-navy);
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(242, 184, 7, 0.25);
+  transition: all 0.15s ease;
+  margin-left: auto;
+}
+
+.btn-step-submit:hover {
+  background: var(--unefa-gold-light);
+}
+
+/* ── Pie del Terminal Derecho ───────────────────────────────────────────── */
+.terminal-footer {
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.terminal-cross-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.78rem;
+}
+
+.terminal-cross-text {
+  color: #44474e;
+}
+
+.terminal-cross-action {
+  color: var(--unefa-blue);
+  font-weight: 700;
+  transition: underline 0.15s ease;
+}
+
+.terminal-cross-action:hover {
+  text-decoration: underline;
+}
+
+.terminal-legal-row {
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-subtle);
+  font-size: 0.68rem;
+  color: #74777f;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  justify-content: space-between;
+}
+
+@media (min-width: 640px) {
+  .terminal-legal-row {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.terminal-legal-mono {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: #74777f;
+  flex-shrink: 0;
+}
