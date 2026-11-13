@@ -44,8 +44,7 @@ CREATE TABLE IF NOT EXISTS profile (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     UNIQUE KEY uniq_id_number (id_number),
-    KEY idx_profile_career (career_id),
-    CONSTRAINT fk_profile_career FOREIGN KEY (career_id) REFERENCES career (id) ON DELETE SET NULL
+    KEY idx_profile_career (career_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Cuentas de acceso y credenciales --
@@ -156,6 +155,9 @@ CREATE TABLE IF NOT EXISTS career (
     KEY idx_career_coordinator (coordinator_id),
     CONSTRAINT fk_career_coordinator FOREIGN KEY (coordinator_id) REFERENCES user_account (id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE profile
+    ADD CONSTRAINT fk_profile_career FOREIGN KEY (career_id) REFERENCES career (id) ON DELETE SET NULL;
 
 -- Asignaturas --
 CREATE TABLE IF NOT EXISTS subject (
