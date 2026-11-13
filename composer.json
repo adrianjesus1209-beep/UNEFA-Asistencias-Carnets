@@ -1,0 +1,28 @@
+{
+    "name": "educativo/asistencias-carnets",
+    "description": "Sistema de asistencias y carnets",
+    "type": "project",
+    
+    "require": {
+        "php": ">=8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Core\\":        "backend/core/",
+            "Config\\":      "backend/config/",
+            "Controllers\\": "backend/controllers/",
+            "Dao\\":         "backend/dao/",
+            "Models\\":      "backend/models/",
+            "Services\\":    "backend/services/"
+        },
+        "files": [
+            "backend/core/helpers.php"
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
