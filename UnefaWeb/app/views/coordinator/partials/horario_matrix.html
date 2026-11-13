@@ -1,0 +1,325 @@
+<style>
+/* ============================================================ */
+/* TABLA DE CRONOGRAMA SEMANAL UNEFA - DISEÑO COMPACTO Y NÍTIDO */
+/* ============================================================ */
+.unefa-timetable-wrapper {
+    overflow-x: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #ffffff;
+}
+
+.unefa-timetable-table {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+    background: #ffffff;
+    font-size: 0.68rem;
+}
+
+.unefa-timetable-table th, 
+.unefa-timetable-table td {
+    border: 1px solid #e2e8f0;
+    padding: 0;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Cabeceras de días */
+.unefa-timetable-header-col {
+    background: #f8fafc;
+    color: #475569;
+    font-weight: 700;
+    font-size: 0.64rem;
+    padding: 5px 3px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    width: 80px;
+    border: 1px solid #e2e8f0;
+}
+
+.unefa-timetable-header-day {
+    background: #f8fafc;
+    color: #1e293b;
+    font-weight: 700;
+    font-size: 0.68rem;
+    padding: 5px 4px;
+    letter-spacing: 0.2px;
+    width: calc((100% - 80px) / 6);
+    border: 1px solid #e2e8f0;
+    border-bottom: 2px solid #cbd5e1;
+}
+
+.unefa-timetable-table tbody tr {
+    height: 30px;
+}
+
+.unefa-timetable-slot-label {
+    background: #f8fafc;
+    font-weight: 700;
+    font-size: 0.58rem;
+    color: #475569;
+    padding: 2px 4px;
+    white-space: nowrap;
+    line-height: 1.15;
+    user-select: none;
+    border-right: 2px solid #e2e8f0;
+    text-align: center;
+}
+
+/* Celda individual compacta y rítmica */
+.unefa-timetable-cell {
+    height: 30px;
+    min-height: 30px;
+    position: relative;
+    background: #ffffff;
+    transition: background 0.12s ease;
+}
+
+.unefa-timetable-cell.is-empty {
+    cursor: ;
+}
+
+.unefa-timetable-cell.is-empty:hover {
+    background: ;
+}
+
+/* SELECCIÓN MANUAL INTERACTIVA ESTILO SICEU */
+.unefa-timetable-cell.is-selection-start {
+    background: #bfdbfe !important;
+    border: 2px solid #1d4ed8 !important;
+    position: relative;
+    z-index: 5;
+}
+
+.unefa-timetable-cell.is-selection-start::before {
+    content: '1. Inicio';
+    position: absolute;
+    top: 1px;
+    left: 3px;
+    font-size: 0.54rem;
+    font-weight: 800;
+    color: #1e40af;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 1px 4px;
+    border-radius: 3px;
+    z-index: 6;
+}
+
+.unefa-timetable-cell.is-selection-range {
+    background: #dbeafe !important;
+    border: 2px dashed #2563eb !important;
+    position: relative;
+    z-index: 4;
+}
+
+.unefa-timetable-cell.is-selection-range::before {
+    content: 'Seleccionado';
+    position: absolute;
+    top: 1px;
+    left: 3px;
+    font-size: 0.52rem;
+    font-weight: 700;
+    color: #1d4ed8;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 1px 3px;
+    border-radius: 3px;
+    z-index: 5;
+}
+
+/* Tarjeta de Materia: Diseño armónico compacto */
+.unefa-timetable-block {
+    height: calc(100% - 4px);
+    width: calc(100% - 4px);
+    margin: 2px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    padding: 3px 6px;
+    border-radius: 6px;
+    font-weight: 600;
+    line-height: 1.15;
+    cursor: ;
+    border: 1px solid #e2e8f0;
+    border-left-width: 3px !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    user-select: none;
+    overflow: hidden;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.unefa-timetable-block:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
+
+.unefa-timetable-block .subject-title {
+    font-weight: 800;
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+    line-height: 1.2;
+    margin-bottom: 2px;
+    text-align: center;
+    width: 100%;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.unefa-timetable-block .subject-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    margin-top: 2px;
+}
+
+.unefa-timetable-block .subject-teacher {
+    font-size: 0.58rem;
+    font-weight: 600;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    width: 100%;
+}
+
+/* Mini chip cuando hay múltiples secciones en una celda consolidada */
+.unefa-chip-mini {
+    display: block;
+    border-radius: 4px;
+    padding: 2px 4px;
+    margin: 1px 0;
+    font-size: 0.56rem;
+    line-height: 1.15;
+    font-weight: 600;
+    background: #ffffff;
+    color: #1e293b;
+    border: 1px solid #e2e8f0;
+    border-left: 3px solid;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    cursor: ;
+}
+
+@media print {
+    .d-print-none, .btn, .card-header, nav, footer, .welcome-banner { display: none !important; }
+    .unefa-timetable-wrapper { max-height: none !important; overflow: visible !important; border: 1px solid #000 !important; }
+    .unefa-timetable-table { border: 1px solid #000 !important; width: 100% !important; font-size: 7pt !important; }
+    .unefa-timetable-table th, .unefa-timetable-table td { border: 1px solid #000 !important; }
+    .unefa-timetable-block { -webkit-print-color-adjust: exact; print-color-adjust: exact; box-shadow: none !important; }
+}
+</style>
+
+<div id="card-cronograma-matrix" class="" style="border-color:#e2e8f0 !important;">
+    
+        <div class="card-header bg-white py-3 px-3.5 border-bottom d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <div class="d-flex align-items-center gap-2.5">
+                <span class="rounded-circle d-flex align-items-center justify-content-center text-white shadow-xs" style="width:34px;height:34px;background:#003366;font-size:0.85rem;">
+                    <i class="fas fa-calendar-alt"></i>
+                </span>
+                <div>
+                    <h6 class="fw-bold mb-0 text-dark" style="font-size:0.98rem; letter-spacing:-0.2px;"></h6>
+                    <small class="text-muted" style="font-size:0.75rem;">Matriz oficial en bloques de 45 min · Lunes a Sábado (07:00 a 17:30)</small>
+                </div>
+            </div>
+
+            <div class="d-flex flex-wrap align-items-center gap-2 d-print-none">
+                <button type="button" class="btn btn-sm btn-outline-dark rounded-pill px-3 py-1.5 fw-bold shadow-xs" style="font-size:0.76rem;">
+                    <i class="fas fa-print me-1.5"></i>Imprimir Horario
+                </button>
+            </div>
+        </div>
+    
+
+    <!-- Barra de Filtros y Acciones Organizada y Limpia -->
+    <div class="px-3 py-2.5 bg-light border-bottom d-print-none">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2.5">
+            <!-- 1. Izquierda: Filtro de Sección -->
+            <div class="d-flex align-items-center gap-2 flex-grow-1" style="max-width: 480px;">
+                <div class="input-group input-group-sm rounded-pill overflow-hidden border bg-white shadow-xs w-100">
+                    <span class="input-group-text bg-white border-0 text-primary px-2.5">
+                        <i class="fas fa-layer-group"></i>
+                    </span>
+                    <select id="filtro-seccion-matriz" class="form-select form-select-sm border-0 fw-bold text-dark bg-white" style="font-size:0.78rem;">
+                        
+                            <option value="__TODAS__" >Todas las Secciones (Vista Consolidada)</option>
+                        
+                        
+                            <optgroup label="">
+                                
+                                    <option value="" >
+                                        Sección:  ·  clases
+                                    </option>
+                                
+                            </optgroup>
+                        
+                    </select>
+                </div>
+            </div>
+
+            <!-- 2. Derecha: Buscador y Contador de Clases -->
+            <div class="d-flex align-items-center gap-2 flex-shrink-0">
+                <div class="input-group input-group-sm rounded-pill overflow-hidden border bg-white shadow-xs" style="width: 185px;">
+                    <span class="input-group-text bg-white border-0 px-2 text-muted"><i class="fas fa-search"></i></span>
+                    <input type="text" id="filtro-texto-matriz" class="form-control form-control-sm border-0 bg-white" placeholder="Buscar materia..." style="font-size:0.75rem;">
+                </div>
+
+                <span class="badge bg-white text-dark border px-2.5 py-1.5 rounded-pill shadow-xs fw-bold" id="badge-contador-matriz" style="font-size:0.72rem;">
+                    <i class="fas fa-book-open me-1 text-primary"></i><span id="contador-secciones-txt"></span> clases
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Banner interactivo de selección manual de bloques (Estilo SICEU) -->
+    <div id="banner-seleccion-horario" class="alert alert-primary py-2 px-3 mx-3 mt-2 mb-1 rounded-3 d-none align-items-center justify-content-between shadow-xs border-primary-subtle" style="background:#eff6ff; font-size:0.75rem;">
+        <div class="d-flex align-items-center gap-2">
+            <span class="spinner-grow spinner-grow-sm text-primary" role="status" style="width:0.75rem;height:0.75rem;"></span>
+            <span id="txt-banner-seleccion">Paso 1: Bloque de inicio fijado. Haz clic en la casilla de abajo donde termina la clase.</span>
+        </div>
+        <div class="d-flex gap-2">
+            <button type="button" class="btn btn-xs btn-outline-danger rounded-pill px-2.5 py-0.5 fw-bold">
+                <i class="fas fa-times me-1"></i>Cancelar
+            </button>
+        </div>
+    </div>
+
+    <!-- Tabla Matriz Estilo Cronograma Semanal Oficial UNEFA -->
+    <div class="unefa-timetable-wrapper p-0" id="wrapper-tabla-horario">
+        <table class="unefa-timetable-table" id="tabla-cronograma-semanal">
+            <thead>
+                <tr>
+                    <th class="unefa-timetable-header-col">Hora</th>
+                    
+                        <th class="unefa-timetable-header-day col-dia-" id="th-dia-">
+                            
+                        </th>
+                    
+                </tr>
+            </thead>
+            <tbody id="tbody-cronograma-matriz">
+                <!-- Se renderiza dinámicamente vía JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pie Informativo Compacto -->
+    <div class="bg-white py-2 px-3 border-top text-muted d-flex flex-wrap justify-content-between align-items-center" style="font-size:0.68rem;">
+        <span><i class="fas fa-info-circle me-1 text-primary"></i>Selección manual de bloques: haz clic en el bloque inicial y luego en el bloque final para asignar la materia.</span>
+        
+            <span class="text-primary fw-bold"><i class="fas fa-mouse-pointer me-1"></i>Clic en cualquier clase registrada para modificar o eliminar.</span>
+        
+            <span><i class="fas fa-check me-1 text-success"></i>Horario académico oficial sincronizado.</span>
+        
+    </div>
+</div>
