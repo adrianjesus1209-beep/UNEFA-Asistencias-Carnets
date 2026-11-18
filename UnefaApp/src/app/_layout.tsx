@@ -6,7 +6,11 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AppThemeProvider } from '@/context/ThemeContext';
 
+// Previene el ocultamiento automatico de la pantalla de inicio
 SplashScreen.preventAutoHideAsync();
+
+
+// Configuracion del navegador principal y transicion de pantallas.
 
 function RootNavigator() {
   useEffect(() => {
@@ -32,6 +36,9 @@ function RootNavigator() {
   );
 }
 
+/**
+ * Componente raiz con proveedores de contexto y tema global.
+ */
 export default function RootLayout() {
   return (
     <SafeAreaProvider>

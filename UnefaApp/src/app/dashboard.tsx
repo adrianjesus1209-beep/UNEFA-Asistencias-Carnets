@@ -23,7 +23,6 @@ import {
   LogOut,
   Building2,
   Users,
-  AlertTriangle,
   ChevronRight,
   Sparkles,
 } from 'lucide-react-native';

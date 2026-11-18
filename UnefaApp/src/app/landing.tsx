@@ -28,19 +28,22 @@ import {
 
 cssInterop(Image, { className: 'style' });
 
-// ScrollView imperative handle type
+// Tipo para la referencia imperativa del componente ScrollView
 type ScrollViewHandle = React.ElementRef<typeof ScrollView>;
 
+/**
+ * Pantalla principal y portal informativo de la aplicacion UNEFA.
+ */
 export default function LandingScreen() {
   const router = useRouter();
   const scrollRef = useRef<ScrollViewHandle>(null);
 
-  // Modals
+  // Control de visibilidad de modales y pestana activa
   const [menuOpen, setMenuOpen] = useState(false);
   const [qrOpen, setQrOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'inicio' | 'carreras' | 'cinu' | 'siceu'>('inicio');
 
-  // Section Y positions for smooth scrolling
+  // Posiciones verticales de cada seccion para desplazamiento suave
   const sectionPositions = useRef<{ [key: string]: number }>({});
   const sectionTabs: Record<string, 'inicio' | 'carreras' | 'cinu' | 'siceu'> = {
     inicio: 'inicio',
@@ -50,10 +53,12 @@ export default function LandingScreen() {
     servicios: 'siceu',
   };
 
-  const handleLayoutSection = (key: string) => (event: LayoutChangeEvent) => {
+  // Almacena la posicion vertical de una seccion al renderizarse
+  const handleLayoutSection = (key: string, event: LayoutChangeEvent) => {
     sectionPositions.current[key] = event.nativeEvent.layout.y;
   };
 
+  // Desplaza la pantalla hacia la seccion indicada
   const scrollToSection = (key: string) => {
     const nextTab = sectionTabs[key] ?? 'inicio';
     setActiveTab((currentTab) => (currentTab === nextTab ? currentTab : nextTab));
@@ -63,6 +68,7 @@ export default function LandingScreen() {
     }
   };
 
+  // Sincroniza la pestana inferior con la seccion visible durante el desplazamiento
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const scrollY = event.nativeEvent.contentOffset.y + 100;
     const visibleSections = Object.entries(sectionPositions.current)
@@ -76,11 +82,11 @@ export default function LandingScreen() {
     }
   };
 
-  // Section 02 - Doctrina
+  // Gestion del pilar doctrinal seleccionado
   const [selectedPillarKey, setSelectedPillarKey] = useState<string>('ingenieria');
   const activePillar: Pillar = PILLARS_DATA[selectedPillarKey] || PILLARS_DATA.ingenieria;
 
-  // Section 03 - Carreras
+  // Gestion de facultad y carrera seleccionada
   const [selectedFaculty, setSelectedFaculty] = useState<string>('ingenieria');
   const careersInFaculty: Career[] = CAREERS_DATA[selectedFaculty] || [];
   const [selectedCareerId, setSelectedCareerId] = useState<string>(
@@ -91,12 +97,13 @@ export default function LandingScreen() {
     careersInFaculty[0] ||
     CAREERS_DATA.ingenieria[0];
 
-  // Section 04 - Verificador de recaudos
+  // Gestion de recaudos verificados para admision
   const [checkedItems, setCheckedItems] = useState<{ [id: number]: boolean }>({
     1: true,
     2: true,
   });
 
+  // Alterna el estado de un recaudo individual
   const toggleCheckItem = (id: number) => {
     setCheckedItems((prev) => ({
       ...prev,
@@ -104,6 +111,7 @@ export default function LandingScreen() {
     }));
   };
 
+  // Calculo del porcentaje de preparacion de recaudos
   const completedCount = CHECKLIST_ITEMS.filter((item) => checkedItems[item.id]).length;
   const percentage = Math.round((completedCount / CHECKLIST_ITEMS.length) * 100);
 
@@ -122,10 +130,10 @@ export default function LandingScreen() {
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}>
         <View className="w-full max-w-[480px]">
-          {/* ── 01. HERO SECTION ─────────────────────────────────────────── */}
+          {/* Seccion 01: Presentacion principal */}
           <View
             className="px-4 pt-5 pb-8 bg-white"
-            onLayout={handleLayoutSection('inicio')}>
+            onLayout={(event) => handleLayoutSection('inicio', event)}>
             <Text className="mb-2 text-[11px] font-extrabold uppercase tracking-[0.5px] text-unefa-blue">[01] — Institución politécnica cívico-militar</Text>
             <Text className="mb-3 text-[36px] leading-[40px] font-black tracking-[-0.5px] text-neutral-950">
               Vanguardia{'\n'}Técnica &{'\n'}
@@ -225,10 +233,10 @@ export default function LandingScreen() {
             </View>
           </View>
 
-          {/* ── 02. DOCTRINA SECTION ─────────────────────────────────────── */}
+          {/* Seccion 02: Doctrina y fundamentos unefistas */}
           <View
             className="px-4 py-8 border-y border-slate-200 bg-slate-50"
-            onLayout={handleLayoutSection('nosotros')}>
+            onLayout={(event) => handleLayoutSection('nosotros', event)}>
             <View className="mb-5">
               <Text className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.5px] text-unefa-blue">[02] — Doctrina &amp; fundamentos</Text>
               <Text className="mb-1.5 text-2xl font-black text-neutral-950">
@@ -273,7 +281,7 @@ export default function LandingScreen() {
               })}
             </ScrollView>
 
-            {/* Dossier Card */}
+            {/* Ficha informativa del pilar doctrinal */}
             <View className="mb-5 overflow-hidden rounded-[20px] border border-slate-200 shadow-md bg-white border-slate-200">
               <View className="relative h-[180px]">
                 <Image
@@ -321,10 +329,10 @@ export default function LandingScreen() {
             </View>
           </View>
 
-          {/* ── 03. CARRERAS SECTION ─────────────────────────────────────── */}
+          {/* Seccion 03: Oferta academica y carreras */}
           <View
             className="px-4 py-8 bg-white"
-            onLayout={handleLayoutSection('carreras')}>
+            onLayout={(event) => handleLayoutSection('carreras', event)}>
             <View className="mb-5 flex-row items-start justify-between">
               <View>
                 <Text className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.5px] text-unefa-blue">[03] — Oferta académica</Text>
@@ -337,7 +345,7 @@ export default function LandingScreen() {
               </Pressable>
             </View>
 
-            {/* Segmented control */}
+            {/* Control segmentado por tipo de facultad */}
             <View className="mb-4 flex-row rounded-[14px] border p-1 bg-slate-100 border-slate-200">
               <Pressable
                 className={['flex-1 items-center rounded-[10px] py-2', selectedFaculty === 'ingenieria' && '!bg-unefa-blue'].filter(Boolean).join(' ')}
@@ -388,7 +396,7 @@ export default function LandingScreen() {
               </Pressable>
             </View>
 
-            {/* Career buttons list */}
+            {/* Listado de carreras disponibles */}
             <View className="mb-5 gap-2">
               {careersInFaculty.map((item) => {
                 const isSelected = activeCareer.id === item.id;
@@ -420,7 +428,7 @@ export default function LandingScreen() {
               })}
             </View>
 
-            {/* Career Detailed Dossier */}
+            {/* Ficha detallada de la carrera seleccionada */}
             <View className="mb-5 overflow-hidden rounded-[20px] border border-slate-200 shadow-md bg-white border-slate-200">
               <View className="relative h-[180px]">
                 <Image
@@ -487,10 +495,10 @@ export default function LandingScreen() {
             </View>
           </View>
 
-          {/* ── 04. ADMISIONES & VERIFICADOR CINU ─────────────────────────── */}
+          {/* Seccion 04: Admisiones y verificador CINU */}
           <View
             className="px-4 py-8 border-y border-slate-200 bg-slate-50"
-            onLayout={handleLayoutSection('admisiones')}>
+            onLayout={(event) => handleLayoutSection('admisiones', event)}>
             <View className="mb-5">
               <Text className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.5px] text-unefa-blue">[04] — Admisiones &amp; nivelación</Text>
               <Text className="mb-1.5 text-2xl font-black text-neutral-950">
@@ -502,7 +510,7 @@ export default function LandingScreen() {
               </Text>
             </View>
 
-            {/* Timeline */}
+            {/* Cronologia de fases del proceso */}
             <View className="mb-5 gap-3">
               {[
                 {
@@ -542,7 +550,7 @@ export default function LandingScreen() {
               ))}
             </View>
 
-            {/* Sede central photo */}
+            {/* Fotografia de la sede institucional */}
             <View className="mb-5 overflow-hidden rounded-[18px] border border-slate-200">
               <Image
                 source={{
@@ -559,7 +567,7 @@ export default function LandingScreen() {
               </View>
             </View>
 
-            {/* Interactive Verificador */}
+            {/* Herramienta de verificacion de recaudos */}
             <View className="rounded-[20px] border border-slate-200 p-[18px] bg-white border-slate-200">
               <View className="mb-3.5 flex-row items-center justify-between">
                 <View>
@@ -574,7 +582,7 @@ export default function LandingScreen() {
                 </View>
               </View>
 
-              {/* Progress bar */}
+              {/* Barra de progreso de recaudos */}
               <View className="mb-3.5 h-2 overflow-hidden rounded bg-slate-200">
                 <View className="h-full bg-unefa-gold" style={{ width: `${percentage}%` }} />
               </View>
@@ -583,7 +591,7 @@ export default function LandingScreen() {
                 Marca los recaudos que ya posees en físico para calcular tu preparación:
               </Text>
 
-              {/* Checklist items */}
+              {/* Lista interactiva de recaudos requeridos */}
               <View className="mb-4 gap-2">
                 {CHECKLIST_ITEMS.map((item) => {
                   const isChecked = !!checkedItems[item.id];
@@ -644,10 +652,10 @@ export default function LandingScreen() {
             </View>
           </View>
 
-          {/* ── 05. SERVICIOS DIGITALES ──────────────────────────────────── */}
+          {/* Seccion 05: Plataformas y servicios digitales */}
           <View
             className="px-4 py-8 bg-white"
-            onLayout={handleLayoutSection('servicios')}>
+            onLayout={(event) => handleLayoutSection('servicios', event)}>
             <View className="mb-5 flex-row items-start justify-between">
               <View>
                 <Text className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.5px] text-unefa-blue">[05] — Plataformas &amp; servicios</Text>
@@ -661,7 +669,7 @@ export default function LandingScreen() {
             </View>
 
             <View className="gap-3.5">
-              {/* Service 01 */}
+              {/* Servicio 01: Portal SICEU */}
               <View
                 className="rounded-[18px] border border-slate-200 p-[18px] border-[1.5px] border-unefa-gold bg-white border-slate-200">
                 <View className="mb-2.5 flex-row gap-2">
@@ -686,7 +694,7 @@ export default function LandingScreen() {
                 </Pressable>
               </View>
 
-              {/* Service 02 */}
+              {/* Servicio 02: Calendario academico */}
               <View className="rounded-[18px] border border-slate-200 p-[18px] bg-white border-slate-200">
                 <View className="mb-2.5 flex-row gap-2">
                   <View className="rounded-md bg-slate-100 px-2 py-[3px]">
@@ -713,7 +721,7 @@ export default function LandingScreen() {
                 </Pressable>
               </View>
 
-              {/* Service 03 */}
+              {/* Servicio 03: Tramites y constancias */}
               <View className="rounded-[18px] border border-slate-200 p-[18px] bg-white border-slate-200">
                 <View className="mb-2.5 flex-row gap-2">
                   <View className="rounded-md bg-slate-100 px-2 py-[3px]">
@@ -740,7 +748,7 @@ export default function LandingScreen() {
                 </Pressable>
               </View>
 
-              {/* Service 04 */}
+              {/* Servicio 04: Repositorio institucional */}
               <View className="rounded-[18px] border border-slate-200 p-[18px] bg-white border-slate-200">
                 <View className="mb-2.5 flex-row gap-2">
                   <View className="rounded-md bg-slate-100 px-2 py-[3px]">
@@ -769,7 +777,7 @@ export default function LandingScreen() {
             </View>
           </View>
 
-          {/* ── FOOTER ─────────────────────────────────────────────────── */}
+          {/* Pie de pagina con enlaces e informacion institucional */}
           <View className="border-t px-4 py-8 border-t-slate-200 bg-slate-50">
             <View className="mb-3 flex-row items-center gap-2.5">
               <View className="h-8 w-8 items-center justify-center rounded-md border border-slate-200 bg-white">
@@ -847,7 +855,7 @@ export default function LandingScreen() {
         </View>
       </ScrollView>
 
-      {/* ── NAVEGACIÓN INFERIOR ─────────────────────────────────────────── */}
+      {/* Barra de navegacion inferior */}
       <BottomNav
         activeTab={activeTab}
         onPressInicio={() => scrollToSection('inicio')}
@@ -855,7 +863,7 @@ export default function LandingScreen() {
         onOpenQr={() => setQrOpen(true)}
       />
 
-      {/* ── MODALES ────────────────────────────────────────────────────── */}
+      {/* Modales de navegacion y codigo QR */}
       <MenuDrawer
         visible={menuOpen}
         onClose={() => setMenuOpen(false)}

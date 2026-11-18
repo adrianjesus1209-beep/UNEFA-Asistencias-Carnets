@@ -614,7 +614,7 @@ export default function RegistroScreen() {
                   <View className="flex-row gap-2">
                     {currentStep > 1 && (
                       <Pressable
-                        className="py-3 rounded-[14px] items-center justify-center flex-row gap-2 border border-slate-300 bg-transparent py-2.5 px-4"
+                        className="rounded-[14px] items-center justify-center flex-row gap-2 border border-slate-300 bg-transparent py-2.5 px-4"
                         onPress={handlePrev}>
                         <Text className="font-bold text-[13px] text-neutral-950">
                           ← Atrás
@@ -622,11 +622,11 @@ export default function RegistroScreen() {
                       </Pressable>
                     )}
                     {currentStep < 3 ? (
-                      <Pressable className="py-3 rounded-[14px] items-center justify-center flex-row gap-2 bg-unefa-gold py-2.5 px-4" onPress={handleNext}>
+                      <Pressable className="rounded-[14px] items-center justify-center flex-row gap-2 bg-unefa-gold py-2.5 px-4" onPress={handleNext}>
                         <Text className="text-unefa-navy font-black text-sm">Continuar →</Text>
                       </Pressable>
                     ) : (
-                      <Pressable className="py-3 rounded-[14px] items-center justify-center flex-row gap-2 bg-unefa-blue py-2.5 px-4" onPress={handleSubmit}>
+                      <Pressable className="rounded-[14px] items-center justify-center flex-row gap-2 bg-unefa-blue py-2.5 px-4" onPress={handleSubmit}>
                         <Text className="text-white font-black text-sm">Finalizar ✓</Text>
                       </Pressable>
                     )}
