@@ -10,3 +10,10 @@ Thumbs.db
 *.swp
 *.log
 *.zip
+
+# Dependencias del generador de estilos
+node_modules/
+
+# Herramientas locales de vista previa (no forman parte del portal)
+preview.php
+iniciar-vista-previa.bat
