@@ -12,63 +12,108 @@ USE attendance_credential_db;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ========================================================
--- 1. MODULO DE SEGURIDAD, AUTENTICACION Y ROLES
+-- 1. MODULO DE SEGURIDAD, ROLES, PERMISOS Y AUTENTICACION
 -- ========================================================
 
 -- Roles del sistema --
 CREATE TABLE IF NOT EXISTS system_role (
     id INT NOT NULL AUTO_INCREMENT,
     role_name VARCHAR(50) NOT NULL,
-    hierarchy_level INT NOT NULL,
+    hierarchy_level TINYINT UNSIGNED NOT NULL,
     description VARCHAR(255) NOT NULL,
     PRIMARY KEY (id),
-    UNIQUE KEY uniq_role_name (role_name)
+    UNIQUE KEY uniq_role_name (role_name),
+    KEY idx_role_hierarchy (hierarchy_level)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Perfiles de usuario --
+-- Catalogo de permisos del sistema --
+CREATE TABLE IF NOT EXISTS permission (
+    id INT NOT NULL AUTO_INCREMENT,
+    permission_key VARCHAR(80) NOT NULL,
+    permission_name VARCHAR(100) NOT NULL,
+    module VARCHAR(50) NOT NULL,
+    description VARCHAR(255) DEFAULT NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uniq_permission_key (permission_key),
+    KEY idx_permission_module (module)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Permisos asignados a cada rol --
+CREATE TABLE IF NOT EXISTS role_permission (
+    id INT NOT NULL AUTO_INCREMENT,
+    role_id INT NOT NULL,
+    permission_id INT NOT NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uniq_role_permission (role_id, permission_id),
+    KEY idx_rp_permission (permission_id),
+    CONSTRAINT fk_rp_role FOREIGN KEY (role_id) REFERENCES system_role (id) ON DELETE CASCADE,
+    CONSTRAINT fk_rp_permission FOREIGN KEY (permission_id) REFERENCES permission (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Perfiles de usuario y control de avance de semestre --
 CREATE TABLE IF NOT EXISTS profile (
     id INT NOT NULL AUTO_INCREMENT,
     career_id INT DEFAULT NULL,
     id_number VARCHAR(20) NOT NULL,
-    id_type VARCHAR(2) DEFAULT 'V',
+    id_type VARCHAR(2) NOT NULL DEFAULT 'V',
     first_name VARCHAR(50) NOT NULL,
     middle_name VARCHAR(50) DEFAULT NULL,
     last_name VARCHAR(50) NOT NULL,
     second_last_name VARCHAR(50) DEFAULT NULL,
-    current_semester INT NOT NULL DEFAULT 1,
-    address TEXT DEFAULT NULL,
+    current_semester TINYINT UNSIGNED NOT NULL DEFAULT 1,
+    has_dragged_subjects TINYINT(1) NOT NULL DEFAULT 0,
+    address VARCHAR(255) DEFAULT NULL,
     phone VARCHAR(20) DEFAULT NULL,
     job_title VARCHAR(100) DEFAULT NULL,
     profile_picture VARCHAR(255) DEFAULT NULL,
-    credential_issued_at DATETIME DEFAULT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     UNIQUE KEY uniq_id_number (id_number),
-    KEY idx_profile_career (career_id)
+    KEY idx_profile_career (career_id),
+    KEY idx_profile_semester (current_semester, has_dragged_subjects)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Cuentas de acceso y credenciales --
+-- Cuentas de acceso y QR unico permanente --
 CREATE TABLE IF NOT EXISTS user_account (
     id INT NOT NULL AUTO_INCREMENT,
     profile_id INT NOT NULL,
-    role_id INT NOT NULL,
     username VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
+    qr_token VARCHAR(128) NOT NULL,
     security_pin_hash VARCHAR(255) DEFAULT NULL,
     pin_expires_at DATETIME DEFAULT NULL,
     pin_updated_at DATETIME DEFAULT NULL,
     status ENUM('Pending', 'Approved', 'Rejected', 'Inactive') NOT NULL DEFAULT 'Pending',
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     UNIQUE KEY uniq_username (username),
     UNIQUE KEY uniq_email (email),
     UNIQUE KEY uniq_profile_id (profile_id),
-    KEY idx_user_role (role_id),
+    UNIQUE KEY uniq_user_qr_token (qr_token),
     KEY idx_user_status (status),
     KEY idx_user_pin_expiration (pin_expires_at),
-    CONSTRAINT fk_user_profile FOREIGN KEY (profile_id) REFERENCES profile (id) ON DELETE CASCADE,
-    CONSTRAINT fk_user_role FOREIGN KEY (role_id) REFERENCES system_role (id) ON DELETE RESTRICT
+    CONSTRAINT fk_user_profile FOREIGN KEY (profile_id) REFERENCES profile (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Roles asignados por usuario y emision de carnet por cada rol --
+CREATE TABLE IF NOT EXISTS user_role (
+    id INT NOT NULL AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    role_id INT NOT NULL,
+    is_active TINYINT(1) NOT NULL DEFAULT 1,
+    credential_number VARCHAR(50) DEFAULT NULL,
+    credential_issued_at DATETIME DEFAULT NULL,
+    credential_expires_at DATETIME DEFAULT NULL,
+    assigned_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE KEY uniq_user_role (user_id, role_id),
+    UNIQUE KEY uniq_credential_number (credential_number),
+    KEY idx_ur_role_active (role_id, is_active),
+    CONSTRAINT fk_ur_user FOREIGN KEY (user_id) REFERENCES user_account (id) ON DELETE CASCADE,
+    CONSTRAINT fk_ur_role FOREIGN KEY (role_id) REFERENCES system_role (id) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Preguntas de seguridad --
@@ -86,7 +131,6 @@ CREATE TABLE IF NOT EXISTS user_security_answer (
     answer_hash VARCHAR(255) NOT NULL,
     PRIMARY KEY (id),
     UNIQUE KEY uniq_user_question (user_id, question_id),
-    KEY idx_answer_user (user_id),
     KEY idx_answer_question (question_id),
     CONSTRAINT fk_answer_user FOREIGN KEY (user_id) REFERENCES user_account (id) ON DELETE CASCADE,
     CONSTRAINT fk_answer_question FOREIGN KEY (question_id) REFERENCES security_question (id) ON DELETE CASCADE
@@ -102,26 +146,9 @@ CREATE TABLE IF NOT EXISTS verification_code (
     is_used TINYINT(1) NOT NULL DEFAULT 0,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    KEY idx_vc_user (user_id),
+    KEY idx_vc_lookup (user_id, code_type, is_used, expires_at),
     KEY idx_vc_code (code),
-    KEY idx_vc_type (code_type),
-    KEY idx_vc_status (is_used, expires_at),
     CONSTRAINT fk_vc_user FOREIGN KEY (user_id) REFERENCES user_account (id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Credenciales QR --
-CREATE TABLE IF NOT EXISTS qr_credential (
-    id INT NOT NULL AUTO_INCREMENT,
-    user_id INT NOT NULL,
-    qr_token VARCHAR(128) NOT NULL,
-    status ENUM('Active', 'Inactive', 'Revoked') NOT NULL DEFAULT 'Active',
-    issued_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    expires_at DATETIME DEFAULT NULL,
-    PRIMARY KEY (id),
-    UNIQUE KEY uniq_qr_user (user_id),
-    UNIQUE KEY uniq_qr_token (qr_token),
-    KEY idx_qr_status (status),
-    CONSTRAINT fk_qr_user FOREIGN KEY (user_id) REFERENCES user_account (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Documentos de estudiantes --
@@ -132,10 +159,10 @@ CREATE TABLE IF NOT EXISTS document_registration (
     file_path VARCHAR(255) NOT NULL,
     file_type ENUM('Word', 'PDF', 'Image', 'Excel') NOT NULL DEFAULT 'PDF',
     status ENUM('Pending', 'Approved', 'Rejected') NOT NULL DEFAULT 'Pending',
-    observations TEXT DEFAULT NULL,
+    observations VARCHAR(500) DEFAULT NULL,
     uploaded_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    KEY idx_doc_user (user_id),
+    KEY idx_doc_user_status (user_id, status),
     KEY idx_doc_status (status),
     CONSTRAINT fk_doc_user FOREIGN KEY (user_id) REFERENCES user_account (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -162,14 +189,17 @@ ALTER TABLE profile
 -- Asignaturas --
 CREATE TABLE IF NOT EXISTS subject (
     id INT NOT NULL AUTO_INCREMENT,
+    career_id INT DEFAULT 1,
     subject_code VARCHAR(20) NOT NULL,
     subject_name VARCHAR(100) NOT NULL,
-    semester INT DEFAULT NULL,
-    credit_units INT DEFAULT 3,
-    display_order INT DEFAULT 1,
+    semester TINYINT UNSIGNED DEFAULT NULL,
+    credit_units TINYINT UNSIGNED NOT NULL DEFAULT 3,
+    display_order TINYINT UNSIGNED NOT NULL DEFAULT 1,
     PRIMARY KEY (id),
     UNIQUE KEY uniq_subject_code (subject_code),
-    KEY idx_subject_semester (semester)
+    KEY idx_subject_career_semester (career_id, semester),
+    KEY idx_subject_semester (semester),
+    CONSTRAINT fk_subject_career FOREIGN KEY (career_id) REFERENCES career (id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Prelaciones --
@@ -179,7 +209,6 @@ CREATE TABLE IF NOT EXISTS course_prerequisite (
     prerequisite_id INT NOT NULL,
     PRIMARY KEY (id),
     UNIQUE KEY uniq_subject_prereq (subject_id, prerequisite_id),
-    KEY idx_prereq_subject (subject_id),
     KEY idx_prereq_required (prerequisite_id),
     CONSTRAINT fk_prereq_subject FOREIGN KEY (subject_id) REFERENCES subject (id) ON DELETE CASCADE,
     CONSTRAINT fk_prereq_required FOREIGN KEY (prerequisite_id) REFERENCES subject (id) ON DELETE CASCADE
@@ -191,10 +220,11 @@ CREATE TABLE IF NOT EXISTS academic_period (
     period_name VARCHAR(50) NOT NULL,
     start_date DATE NOT NULL,
     end_date DATE DEFAULT NULL,
-    duration_weeks INT NOT NULL DEFAULT 16,
+    duration_weeks TINYINT UNSIGNED NOT NULL DEFAULT 16,
     status ENUM('Active', 'Closed', 'Planned') NOT NULL DEFAULT 'Active',
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
+    UNIQUE KEY uniq_period_name (period_name),
     KEY idx_period_status (status)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -202,15 +232,14 @@ CREATE TABLE IF NOT EXISTS academic_period (
 CREATE TABLE IF NOT EXISTS calendar_event (
     id INT NOT NULL AUTO_INCREMENT,
     period_id INT NOT NULL,
-    year INT NOT NULL,
+    year SMALLINT UNSIGNED NOT NULL,
     category VARCHAR(50) NOT NULL,
     description VARCHAR(300) NOT NULL,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    KEY idx_event_period (period_id),
-    KEY idx_event_dates (start_date, end_date),
+    KEY idx_event_period_dates (period_id, start_date, end_date),
     CONSTRAINT fk_event_period FOREIGN KEY (period_id) REFERENCES academic_period (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -227,7 +256,6 @@ CREATE TABLE IF NOT EXISTS teacher_subject (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     UNIQUE KEY uniq_teacher_subject (teacher_id, subject_id),
-    KEY idx_ts_teacher (teacher_id),
     KEY idx_ts_subject (subject_id),
     KEY idx_ts_assigned_by (assigned_by_id),
     CONSTRAINT fk_ts_teacher FOREIGN KEY (teacher_id) REFERENCES user_account (id) ON DELETE CASCADE,
@@ -245,36 +273,38 @@ CREATE TABLE IF NOT EXISTS section (
     day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NOT NULL DEFAULT 'Monday',
     start_time TIME NOT NULL DEFAULT '08:00:00',
     end_time TIME NOT NULL DEFAULT '10:00:00',
-    tolerance_minutes INT NOT NULL DEFAULT 15,
+    tolerance_minutes TINYINT UNSIGNED NOT NULL DEFAULT 15,
     classroom VARCHAR(50) NOT NULL DEFAULT 'Aula 01',
     status ENUM('Active', 'Inactive') NOT NULL DEFAULT 'Active',
     PRIMARY KEY (id),
     KEY idx_section_subject (subject_id),
     KEY idx_section_teacher (teacher_id),
-    KEY idx_section_period (period_id),
+    KEY idx_section_period_status (period_id, status),
     KEY idx_section_schedule (day_of_week, start_time),
     CONSTRAINT fk_section_subject FOREIGN KEY (subject_id) REFERENCES subject (id) ON DELETE CASCADE,
     CONSTRAINT fk_section_teacher FOREIGN KEY (teacher_id) REFERENCES user_account (id) ON DELETE CASCADE,
     CONSTRAINT fk_section_period FOREIGN KEY (period_id) REFERENCES academic_period (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Inscripciones por seccion --
+-- Inscripciones por seccion y control de materias arrastradas --
 CREATE TABLE IF NOT EXISTS section_enrollment (
     id INT NOT NULL AUTO_INCREMENT,
     student_id INT NOT NULL,
     section_id INT NOT NULL,
     period_id INT NOT NULL,
-    status ENUM('Pending', 'Enrolled', 'Withdrawn', 'Rejected') NOT NULL DEFAULT 'Pending',
-    final_grade INT DEFAULT 0,
-    validated_by_coordinator TINYINT(1) DEFAULT 0,
+    status ENUM('Pending', 'Enrolled', 'Approved', 'Failed', 'Withdrawn', 'Rejected') NOT NULL DEFAULT 'Pending',
+    is_dragged TINYINT(1) NOT NULL DEFAULT 0,
+    final_grade TINYINT UNSIGNED NOT NULL DEFAULT 0,
+    validated_by_coordinator TINYINT(1) NOT NULL DEFAULT 0,
     is_cycle_closed TINYINT(1) NOT NULL DEFAULT 0,
     assigned_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     UNIQUE KEY uniq_student_section (student_id, section_id),
-    KEY idx_enrollment_student (student_id),
     KEY idx_enrollment_section (section_id),
     KEY idx_enrollment_period (period_id),
     KEY idx_enrollment_status (status),
+    KEY idx_enrollment_dragged (student_id, status, is_dragged),
     CONSTRAINT fk_enroll_student FOREIGN KEY (student_id) REFERENCES user_account (id) ON DELETE CASCADE,
     CONSTRAINT fk_enroll_section FOREIGN KEY (section_id) REFERENCES section (id) ON DELETE CASCADE,
     CONSTRAINT fk_enroll_period FOREIGN KEY (period_id) REFERENCES academic_period (id) ON DELETE CASCADE
@@ -293,18 +323,17 @@ CREATE TABLE IF NOT EXISTS class_session (
     session_date DATE NOT NULL,
     start_time TIME DEFAULT NULL,
     end_time TIME DEFAULT NULL,
-    tolerance_minutes INT NOT NULL DEFAULT 15,
+    tolerance_minutes TINYINT UNSIGNED NOT NULL DEFAULT 15,
     session_type ENUM('Regular', 'Extraordinary') NOT NULL DEFAULT 'Regular',
-    week_number INT DEFAULT NULL,
+    week_number TINYINT UNSIGNED DEFAULT NULL,
     status ENUM('Open', 'Closed') NOT NULL DEFAULT 'Open',
     observations VARCHAR(255) DEFAULT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    KEY idx_session_section (section_id),
+    KEY idx_session_section_status (section_id, status, session_date),
     KEY idx_session_period (period_id),
     KEY idx_session_date (session_date),
     KEY idx_session_opener (opened_by_id),
-    KEY idx_session_status (status),
     CONSTRAINT fk_session_section FOREIGN KEY (section_id) REFERENCES section (id) ON DELETE CASCADE,
     CONSTRAINT fk_session_period FOREIGN KEY (period_id) REFERENCES academic_period (id) ON DELETE CASCADE,
     CONSTRAINT fk_session_opener FOREIGN KEY (opened_by_id) REFERENCES user_account (id) ON DELETE CASCADE
@@ -322,10 +351,8 @@ CREATE TABLE IF NOT EXISTS attendance (
     recorded_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     UNIQUE KEY uniq_session_student (session_id, student_id),
-    KEY idx_attendance_session (session_id),
-    KEY idx_attendance_student (student_id),
+    KEY idx_attendance_student_status (student_id, attendance_status),
     KEY idx_attendance_registrar (registered_by_id),
-    KEY idx_attendance_status (attendance_status),
     KEY idx_attendance_method (registration_method),
     CONSTRAINT fk_attendance_session FOREIGN KEY (session_id) REFERENCES class_session (id) ON DELETE CASCADE,
     CONSTRAINT fk_attendance_student FOREIGN KEY (student_id) REFERENCES user_account (id) ON DELETE CASCADE,
@@ -341,11 +368,11 @@ CREATE TABLE IF NOT EXISTS audit_log (
     id INT NOT NULL AUTO_INCREMENT,
     user_id INT DEFAULT NULL,
     action VARCHAR(100) NOT NULL,
-    detail TEXT DEFAULT NULL,
+    detail VARCHAR(500) DEFAULT NULL,
     ip_address VARCHAR(45) DEFAULT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    KEY idx_audit_user (user_id),
+    KEY idx_audit_user_date (user_id, created_at),
     KEY idx_audit_timestamp (created_at),
     KEY idx_audit_action (action),
     CONSTRAINT fk_audit_user FOREIGN KEY (user_id) REFERENCES user_account (id) ON DELETE SET NULL
@@ -359,9 +386,7 @@ CREATE TABLE IF NOT EXISTS failed_attempt (
     identifier VARCHAR(100) DEFAULT NULL,
     attempted_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    KEY idx_failed_ip (ip_address),
-    KEY idx_failed_type (attempt_type),
-    KEY idx_failed_timestamp (attempted_at)
+    KEY idx_failed_lookup (ip_address, attempt_type, attempted_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ========================================================
@@ -375,6 +400,28 @@ INSERT INTO system_role (id, role_name, hierarchy_level, description) VALUES
 (3, 'Academic Coordinator', 3, 'Control de Estudios - Valida Expedientes, Registra Horarios y Emite Carnets Digitales'),
 (4, 'Teacher', 4, 'Docente / Titular de Materia - Gestiona Sesiones de Clase y Asistencias mediante Escaneo QR'),
 (5, 'Student', 5, 'Alumno Regular Aprobado - Acceso a Carnet Digital, QR y Horario Academico');
+
+-- Permisos del sistema --
+INSERT INTO permission (id, permission_key, permission_name, module, description) VALUES
+(1, 'audit.view', 'Ver Bitacora y Auditoria', 'Seguridad', 'Acceso al registro de auditoria del sistema'),
+(2, 'system.backup', 'Gestionar Respaldos', 'Seguridad', 'Ejecutar y descargar respaldos de base de datos'),
+(3, 'coordinator.assign', 'Asignar Coordinadores', 'Direccion', 'Asignar coordinadores de carrera con clave secundaria'),
+(4, 'metrics.global', 'Ver Metricas Globales', 'Direccion', 'Visualizar estadisticas institucionales'),
+(5, 'student.validate_docs', 'Validar Expedientes', 'Coordinacion', 'Aprobar o rechazar documentos de estudiantes'),
+(6, 'credential.issue', 'Emitir Carnets', 'Coordinacion', 'Autorizar y emitir carnets por rol'),
+(7, 'schedule.manage', 'Gestionar Horarios y Secciones', 'Coordinacion', 'Crear secciones, asignar docentes e inscribir alumnos'),
+(8, 'session.manage', 'Abrir y Cerrar Clases', 'Docencia', 'Iniciar y finalizar sesiones de clase'),
+(9, 'attendance.scan', 'Escanear QR y Registrar Asistencia', 'Docencia', 'Pasar asistencia mediante lector QR o manual'),
+(10, 'credential.view_own', 'Ver Carnets Propios y QR', 'General', 'Visualizar carnets activos asociados a sus roles'),
+(11, 'schedule.view_own', 'Ver Horario y Materias', 'Estudiantes', 'Consultar horario inscrito y record de materias');
+
+-- Asignacion de permisos por rol --
+INSERT INTO role_permission (role_id, permission_id) VALUES
+(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8), (1, 9), (1, 10), (1, 11),
+(2, 3), (2, 4), (2, 10),
+(3, 4), (3, 5), (3, 6), (3, 7), (3, 10),
+(4, 8), (4, 9), (4, 10),
+(5, 10), (5, 11);
 
 -- Preguntas de seguridad --
 INSERT INTO security_question (id, question_text) VALUES
@@ -394,10 +441,13 @@ INSERT INTO academic_period (id, period_name, start_date, end_date, duration_wee
 
 -- Usuario Administrador Base --
 -- Usuario: admin | Clave: admin123 --
-INSERT INTO profile (id, career_id, id_number, id_type, first_name, middle_name, last_name, second_last_name, current_semester, address, phone, job_title, profile_picture) VALUES
-(1, 1, '00000000', 'V', 'Administrador', 'Principal', 'Sistemas', 'UNEFA', 1, 'Sede Central UNEFA', '04120000000', 'Super Administrador TI', 'default.svg');
+INSERT INTO profile (id, career_id, id_number, id_type, first_name, middle_name, last_name, second_last_name, current_semester, has_dragged_subjects, address, phone, job_title, profile_picture) VALUES
+(1, 1, '00000000', 'V', 'Administrador', 'Principal', 'Sistemas', 'UNEFA', 1, 0, 'Sede Central UNEFA', '04120000000', 'Super Administrador TI', 'default.svg');
 
-INSERT INTO user_account (id, profile_id, role_id, username, email, password_hash, security_pin_hash, pin_expires_at, pin_updated_at, status) VALUES
-(1, 1, 1, 'admin', 'admin@unefa.edu.ve', '$2y$10$peaPjpuh3tDAveT2cTWmYuiAZETwJgHADt26P.O71DxxGoN/Be0D.', NULL, NULL, NULL, 'Approved');
+INSERT INTO user_account (id, profile_id, username, email, password_hash, qr_token, security_pin_hash, pin_expires_at, pin_updated_at, status) VALUES
+(1, 1, 'admin', 'admin@unefa.edu.ve', '$2y$10$peaPjpuh3tDAveT2cTWmYuiAZETwJgHADt26P.O71DxxGoN/Be0D.', 'UNEFA-QR-V00000000', NULL, NULL, NULL, 'Approved');
+
+INSERT INTO user_role (id, user_id, role_id, is_active, credential_number, credential_issued_at, credential_expires_at) VALUES
+(1, 1, 1, 1, 'CARNET-ADMIN-0001', NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR));
 
 SET FOREIGN_KEY_CHECKS = 1;
