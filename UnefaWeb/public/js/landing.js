@@ -1,184 +1,432 @@
 /**
- * Interactividad de la landing: pestanas de pilares, explorador de carreras
- * y verificador de recaudos CINU. Equivalente web de src/app/landing.tsx.
+ * UNIVERSIDAD NACIONAL EXPERIMENTAL POLITÉCNICA DE LA FANB (UNEFA)
+ * Controlador de la Página Principal / Landing (Blade UNEFA)
  */
+
 (function () {
-    'use strict';
+  "use strict";
 
-    /**
-     * Pestanas de pilares (seccion 02): muestra la ficha del pilar activo y
-     * resalta el boton correspondiente. Replica los tabs de data.ts.
-     */
-    var pestañasPilar = document.querySelectorAll('[data-pilar-tab]');
-    var fichasPilar = document.querySelectorAll('[data-pilar-ficha]');
+  /* ── 1. Menú Móvil ─────────────────────────────────────────────────────── */
+  function initMobileMenu() {
+    const toggle = document.querySelector(".mobile-toggle");
+    const menu = document.querySelector(".mobile-menu");
+    if (!toggle || !menu) return;
 
-    function activarPilar(clave) {
-        pestañasPilar.forEach(function (boton) {
-            var activo = boton.getAttribute('data-pilar-tab') === clave;
-            boton.setAttribute('aria-selected', activo ? 'true' : 'false');
-            // Bordes y colores del boton activo.
-            boton.classList.toggle('!border-unefa-blue', activo);
-            boton.classList.toggle('!bg-unefa-blue/[0.06]', activo);
-            boton.querySelectorAll('[data-pilar-num], [data-pilar-titulo]').forEach(function (texto) {
-                texto.classList.toggle('!text-unefa-blue', activo);
-                texto.classList.toggle('text-slate-500', !activo);
-                texto.classList.toggle('text-neutral-950', !activo);
-            });
-        });
-        fichasPilar.forEach(function (ficha) {
-            ficha.classList.toggle('hidden', ficha.getAttribute('data-pilar-ficha') !== clave);
-        });
-    }
-
-    pestañasPilar.forEach(function (boton) {
-        boton.addEventListener('click', function () {
-            activarPilar(boton.getAttribute('data-pilar-tab'));
-        });
+    toggle.addEventListener("click", () => {
+      const isOpen = menu.classList.toggle("open");
+      toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
     });
 
-    /**
-     * Explorador de carreras (seccion 03): segmento por facultad y ficha por
-     * carrera. Replica los controles segmentados de landing.tsx.
-     */
-    var pestañasFacultad = document.querySelectorAll('[data-facultad-tab]');
-    var listasFacultad = document.querySelectorAll('[data-facultad-lista]');
-    var fichasCarrera = document.querySelectorAll('[data-carrera-ficha]');
+    const links = menu.querySelectorAll("a");
+    links.forEach((l) => {
+      l.addEventListener("click", () => {
+        menu.classList.remove("open");
+        toggle.setAttribute("aria-expanded", "false");
+      });
+    });
+  }
 
-    function activarFacultad(clave) {
-        pestañasFacultad.forEach(function (boton) {
-            var activo = boton.getAttribute('data-facultad-tab') === clave;
-            boton.setAttribute('aria-selected', activo ? 'true' : 'false');
-            boton.classList.toggle('!bg-unefa-blue', activo);
-            var titulo = boton.querySelector('[data-facultad-titulo]');
-            if (titulo) {
-                titulo.classList.toggle('!text-white', activo);
-                titulo.classList.toggle('text-neutral-950', !activo);
-            }
-            var nota = boton.querySelector('span:last-child');
-            if (nota) {
-                nota.classList.toggle('text-slate-400', activo);
-                nota.classList.toggle('text-slate-500', !activo);
-            }
+  /* ── 2. Datos y Lógica del Explorador de Carreras ──────────────────────── */
+  const CAREERS_DATA = {
+    ingenieria: [
+      {
+        id: "sistemas",
+        code: "ING-SIS-10",
+        title: "Ingeniería de Sistemas",
+        duration: "10 Semestres (5 Años)",
+        degree: "Ingeniero de Sistemas",
+        image: "/img/carrera-sistemas.webp",
+        description: "Formación en ingeniería de software crítico, arquitectura de sistemas distribuidos, bases de datos masivas, ciberseguridad y computación para la defensa y el desarrollo soberano de la nación.",
+        competencies: [
+          "Desarrollo de software de misión crítica",
+          "Ciberseguridad y soberanía tecnológica",
+          "Modelado matemático e inteligencia artificial",
+          "Gestión de infraestructuras del Estado"
+        ],
+        subjects: ["Algoritmos y Estructuras", "Bases de Datos Masivas", "Redes y Teleproceso", "Ingeniería de Software", "Sistemas Operativos"]
+      },
+      {
+        id: "telecom",
+        code: "ING-TEL-10",
+        title: "Ingeniería de Telecomunicaciones",
+        duration: "10 Semestres (5 Años)",
+        degree: "Ingeniero de Telecomunicaciones",
+        image: "/img/carrera-telecomunicaciones.webp",
+        description: "Especialistas en transmisión por fibra óptica, microondas, enlaces satelitales civiles y militares, antenas y procesamiento digital de señales para redes estratégicas.",
+        competencies: [
+          "Diseño de redes de comunicación nacional",
+          "Operación de estaciones terrenas y satélites",
+          "Propagación electromagnética y microondas",
+          "Protocolos seguros de enrutamiento"
+        ],
+        subjects: ["Líneas de Transmisión", "Comunicaciones Digitales", "Sistemas Satelitales", "Fibra Óptica", "Telefonía IP"]
+      },
+      {
+        id: "mecanica",
+        code: "ING-MEC-10",
+        title: "Ingeniería Mecánica",
+        duration: "10 Semestres (5 Años)",
+        degree: "Ingeniero Mecánico",
+        image: "/img/laboratorio-mecatronica.webp",
+        description: "Diseño, manufactura y mantenimiento de maquinaria pesada, sistemas térmicos, turbinas y estructuras mecánicas para la industria petrolera, naval e industrial venezolana.",
+        competencies: [
+          "Diseño asistido por computadora (CAD/CAM)",
+          "Termodinámica aplicada y fluidodinámica",
+          "Mantenimiento de plantas industriales",
+          "Metalurgia y resistencia de materiales"
+        ],
+        subjects: ["Termodinámica", "Mecánica de Fluidos", "Diseño de Elementos", "Plantas de Potencia", "Vibraciones Mecánicas"]
+      },
+      {
+        id: "aeronautica",
+        code: "ING-AER-10",
+        title: "Ingeniería Aeronáutica",
+        duration: "10 Semestres (5 Años)",
+        degree: "Ingeniero Aeronáutico",
+        image: "/img/laboratorio-electronica.webp",
+        description: "Mantenimiento mayor de aeronaves, propulsión a reacción, aviónica y certificación aeroespacial con enfoque en soberanía de la aviación militar y comercial.",
+        competencies: [
+          "Mantenimiento de aeronaves y turbinas",
+          "Sistemas de navegación y aviónica",
+          "Aerodinámica teórica y experimental",
+          "Regulaciones aeronáuticas INAC/OACI"
+        ],
+        subjects: ["Aerodinámica", "Estructuras Aeronáuticas", "Turborreactores", "Aviónica", "Instrumentación de Vuelo"]
+      }
+    ],
+    sociales: [
+      {
+        id: "administracion",
+        code: "LIC-AGM-08",
+        title: "Licenciatura en Administración y Gestión Municipal",
+        duration: "8 Semestres (4 Años)",
+        degree: "Licenciado en Administración y Gestión Municipal",
+        image: "/img/carrera-administracion.webp",
+        description: "Planificación pública, presupuestos estatales, auditoría gubernamental y gobernanza de corporaciones municipales con probidad y transparencia bolivariana.",
+        competencies: [
+          "Formulación presupuestaria del sector público",
+          "Control de gestión y auditoría fiscal",
+          "Desarrollo socioeconómico comunal",
+          "Administración de personal y talento"
+        ],
+        subjects: ["Contabilidad Pública", "Presupuesto Nacional", "Derecho Administrativo", "Planificación Estratégica", "Políticas Públicas"]
+      },
+      {
+        id: "economia",
+        code: "LIC-ECO-08",
+        title: "Licenciatura en Economía Social",
+        duration: "8 Semestres (4 Años)",
+        degree: "Licenciado en Economía Social",
+        image: "/img/carrera-administracion.webp",
+        description: "Análisis macroeconómico, proyectos socioproductivos, soberanía agroalimentaria y modelos alternativos de distribución de riqueza comunitaria.",
+        competencies: [
+          "Evaluación de proyectos de inversión",
+          "Modelos económicos comunitarios",
+          "Econometría y estadística social",
+          "Comercio exterior soberano"
+        ],
+        subjects: ["Microeconomía", "Macroeconomía", "Econometría", "Desarrollo Endógeno", "Finanzas Públicas"]
+      },
+      {
+        id: "turismo",
+        code: "LIC-TUR-08",
+        title: "Licenciatura en Turismo",
+        duration: "8 Semestres (4 Años)",
+        degree: "Licenciado en Turismo",
+        image: "/img/sede-central.webp",
+        description: "Gestión sustentable de patrimonios naturales, hotelería ecosocialista, guiatura especializada y mercadotecnia turística internacional.",
+        competencies: [
+          "Diseño de rutas ecoturísticas patrimoniales",
+          "Administración hotelera y recreativa",
+          "Planificación de destinos sustentables",
+          "Idiomas y relaciones públicas"
+        ],
+        subjects: ["Geografía Turística", "Patrimonio Cultural", "Gestión Hotelera", "Ecoturismo", "Comercialización Turística"]
+      }
+    ],
+    tsu: [
+      {
+        id: "tsu-sistemas",
+        code: "TSU-SIS-06",
+        title: "TSU en Análisis y Diseño de Sistemas",
+        duration: "6 Semestres (3 Años)",
+        degree: "Técnico Superior Universitario en Sistemas",
+        image: "/img/carrera-tsu-sistemas.webp",
+        description: "Desarrollo rápido de aplicaciones, administración de redes locales, soporte de servidores Linux y mantenimiento de parques informáticos institucionales.",
+        competencies: [
+          "Programación web y bases de datos SQL",
+          "Soporte técnico y cableado estructurado",
+          "Configuración de servidores de red",
+          "Seguridad en puestos de trabajo"
+        ],
+        subjects: ["Algorítmica", "Base de Datos", "Redes de Datos", "Sistemas Operativos", "Desarrollo de Software"]
+      },
+      {
+        id: "tsu-enfermeria",
+        code: "TSU-ENF-06",
+        title: "TSU en Enfermería",
+        duration: "6 Semestres (3 Años)",
+        degree: "Técnico Superior Universitario en Enfermería",
+        image: "/img/carrera-enfermeria.webp",
+        description: "Atención primaria en salud, enfermería comunitaria, soporte de urgencias en hospitales militares y red de salud pública nacional.",
+        competencies: [
+          "Atención directa al paciente en sala",
+          "Primeros auxilios y soporte de trauma",
+          "Salud comunitaria y programas de inmunización",
+          "Ética profesional y bioética médica"
+        ],
+        subjects: ["Anatomía Humana", "Farmacología Básica", "Enfermería Comunitaria", "Atención de Emergencias", "Materno Infantil"]
+      }
+    ]
+  };
+
+  function initCareerExplorer() {
+    let currentFaculty = "ingenieria";
+    let currentCareerId = "sistemas";
+
+    const facultyBtns = document.querySelectorAll(".faculty-tab-btn");
+    const careersList = document.getElementById("careersList");
+    const dossierImg = document.getElementById("dossierImg");
+    const dossierCode = document.getElementById("dossierCode");
+    const dossierDegree = document.getElementById("dossierDegree");
+    const dossierDuration = document.getElementById("dossierDuration");
+    const dossierTitle = document.getElementById("dossierTitle");
+    const dossierDesc = document.getElementById("dossierDesc");
+    const dossierCompetencies = document.getElementById("dossierCompetencies");
+    const dossierSubjects = document.getElementById("dossierSubjects");
+
+    if (!careersList) return;
+
+    function renderCareersList() {
+      const careers = CAREERS_DATA[currentFaculty] || [];
+      careersList.innerHTML = "";
+
+      careers.forEach((career) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.setAttribute("role", "tab");
+        btn.setAttribute("aria-selected", career.id === currentCareerId ? "true" : "false");
+        btn.className = `career-item-btn ${career.id === currentCareerId ? "active" : ""}`;
+        btn.dataset.id = career.id;
+
+        btn.innerHTML = `
+          <div class="career-item-code">
+            <span>${career.code}</span>
+            <span>${career.duration.split(" ")[0]} Sem.</span>
+          </div>
+          <div class="career-item-name">${career.title}</div>
+        `;
+
+        btn.addEventListener("click", () => {
+          currentCareerId = career.id;
+          renderCareersList();
+          renderDossier();
         });
-        // Las listas alternan hidden y grid (todas usan grid en escritorio).
-        listasFacultad.forEach(function (lista) {
-            var activa = lista.getAttribute('data-facultad-lista') === clave;
-            lista.classList.toggle('hidden', !activa);
-            lista.classList.toggle('grid', activa);
-        });
+
+        careersList.appendChild(btn);
+      });
     }
 
-    pestañasFacultad.forEach(function (boton) {
-        boton.addEventListener('click', function () {
-            activarFacultad(boton.getAttribute('data-facultad-tab'));
+    function renderDossier() {
+      const careers = CAREERS_DATA[currentFaculty] || [];
+      const career = careers.find((c) => c.id === currentCareerId) || careers[0];
+      if (!career) return;
+
+      currentCareerId = career.id;
+
+      if (dossierImg) dossierImg.src = career.image;
+      if (dossierCode) dossierCode.textContent = career.code;
+      if (dossierDegree) dossierDegree.textContent = career.degree;
+      if (dossierDuration) dossierDuration.textContent = career.duration;
+      if (dossierTitle) dossierTitle.textContent = career.title;
+      if (dossierDesc) dossierDesc.textContent = career.description;
+
+      if (dossierCompetencies) {
+        dossierCompetencies.innerHTML = career.competencies
+          .map(
+            (comp) => `
+          <div class="competency-item">
+            <span class="competency-bullet"></span>
+            <span>${comp}</span>
+          </div>
+        `
+          )
+          .join("");
+      }
+
+      if (dossierSubjects) {
+        dossierSubjects.innerHTML = career.subjects
+          .map((sub) => `<span class="subject-chip">${sub}</span>`)
+          .join("");
+      }
+    }
+
+    facultyBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        currentFaculty = btn.dataset.faculty;
+        facultyBtns.forEach((b) => {
+          const isActive = b.dataset.faculty === currentFaculty;
+          b.classList.toggle("active", isActive);
+          b.setAttribute("aria-selected", isActive ? "true" : "false");
         });
+        const first = (CAREERS_DATA[currentFaculty] || [])[0];
+        if (first) currentCareerId = first.id;
+        renderCareersList();
+        renderDossier();
+      });
     });
 
-    function activarCarrera(clave) {
-        var esNuevaFacultad = false;
-        document.querySelectorAll('[data-carrera-item]').forEach(function (boton) {
-            var activo = boton.getAttribute('data-carrera-item') === clave;
-            boton.classList.toggle('!border-unefa-blue', activo);
-            boton.classList.toggle('!bg-unefa-blue/[0.05]', activo);
-            boton.querySelectorAll('[data-carrera-codigo], [data-carrera-titulo]').forEach(function (texto) {
-                texto.classList.toggle('!text-unefa-blue', activo);
-                texto.classList.toggle('text-slate-500', !activo && texto.hasAttribute('data-carrera-codigo'));
-                texto.classList.toggle('text-neutral-950', !activo && !texto.hasAttribute('data-carrera-codigo'));
-            });
+    renderCareersList();
+    renderDossier();
+  }
+
+  /* ── 3. Datos y Lógica de Doctrina y Pilares ──────────────────────────── */
+  const PILLARS_DATA = [
+    {
+      id: "doctrina",
+      tag: "Pilar 01",
+      title: "Excelencia Educativa y Disciplina Cívico-Militar",
+      desc: "Una propuesta pedagógica única que une la disciplina del método científico con el sentido patrio y la responsabilidad ciudadana, formando ingenieros y profesionales de carácter inquebrantable.",
+      image: "/img/sede-central.webp",
+      caption: "Patio de Honor · Aula Magna de la UNEFA",
+      highlights: [
+        "Formación integral cívico-militar y ética patriótica",
+        "Rigurosidad metodológica en ciencias aplicadas",
+        "Cátedra Bolivariana de liderazgo social y comunitario",
+        "Acatamiento del código de disciplina y orden cerrado"
+      ]
+    },
+    {
+      id: "gratuidad",
+      tag: "Pilar 02",
+      title: "Educación Universitaria Pública y 100% Gratuita",
+      desc: "Garantizamos el acceso democrático y universal a la educación técnica y superior sin aranceles de matrícula. El talento y la vocación son los únicos requisitos para ingresar y graduarse.",
+      image: "/img/laboratorio-electronica.webp",
+      caption: "Comunidad Universitaria · Acceso Universal",
+      highlights: [
+        "Cero aranceles de inscripción o mensualidades",
+        "Comedor universitario subsidiado en todos los núcleos",
+        "Laboratorios tecnológicos abiertos e internet institucional",
+        "Expedición de títulos y actas sin aranceles abusivos"
+      ]
+    },
+    {
+      id: "presencia",
+      tag: "Pilar 03",
+      title: "Presencia Estratégica en los 24 Estados del País",
+      desc: "Nuestra red de núcleos y extensiones abraza toda la geografía nacional, llevando carreras politécnicas de punta a comunidades urbanas, rurales, costeras y fronterizas.",
+      image: "/img/laboratorio-mecatronica.webp",
+      caption: "Red Nacional de Núcleos · Presencia Soberana",
+      highlights: [
+        "Más de 60 sedes entre núcleos, extensiones y aulas anexas",
+        "Planes de estudio adaptados al aparato productivo regional",
+        "Alianzas directas con empresas e industrias del Estado",
+        "Movilidad académica entre sedes de todo el país"
+      ]
+    }
+  ];
+
+  function initPillars() {
+    const tabBtns = document.querySelectorAll(".pillar-tab-btn");
+    const pillarImg = document.getElementById("pillarImg");
+    const pillarCaption = document.getElementById("pillarCaption");
+    const pillarArea = document.getElementById("pillarArea");
+    const pillarTitle = document.getElementById("pillarTitle");
+    const pillarDesc = document.getElementById("pillarDesc");
+    const pillarHighlights = document.getElementById("pillarHighlights");
+
+    if (!tabBtns.length) return;
+
+    function renderPillar(id) {
+      const data = PILLARS_DATA.find((p) => p.id === id) || PILLARS_DATA[0];
+      if (!data) return;
+
+      if (pillarImg) pillarImg.src = data.image;
+      if (pillarCaption) pillarCaption.textContent = data.caption;
+      if (pillarArea) pillarArea.textContent = data.tag;
+      if (pillarTitle) pillarTitle.textContent = data.title;
+      if (pillarDesc) pillarDesc.textContent = data.desc;
+
+      if (pillarHighlights) {
+        pillarHighlights.innerHTML = data.highlights
+          .map(
+            (h) => `
+          <div class="competency-item">
+            <span class="competency-bullet"></span>
+            <span>${h}</span>
+          </div>
+        `
+          )
+          .join("");
+      }
+    }
+
+    tabBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const pillarId = btn.dataset.pillar;
+        tabBtns.forEach((b) => {
+          const isActive = b.dataset.pillar === pillarId;
+          b.classList.toggle("active", isActive);
+          b.setAttribute("aria-selected", isActive ? "true" : "false");
         });
-        fichasCarrera.forEach(function (ficha) {
-            var visible = ficha.getAttribute('data-carrera-ficha') === clave;
-            ficha.classList.toggle('hidden', !visible);
-            if (visible) {
-                // Muestra la facultad correspondiente a la carrera elegida.
-                var mapa = {
-                    sistemas: 'ingenieria',
-                    telecom: 'ingenieria',
-                    mecanica: 'ingenieria',
-                    electronica: 'ingenieria',
-                    administracion: 'licenciaturas',
-                    enfermeria: 'licenciaturas',
-                    'tsu-sistemas': 'tsu',
-                    'tsu-enfermeria': 'tsu'
-                };
-                var facultad = mapa[clave];
-                if (facultad) {
-                    var listaVisible = document.querySelector(
-                        '[data-facultad-lista="' + facultad + '"]:not(.hidden)'
-                    );
-                    if (!listaVisible) esNuevaFacultad = true;
-                }
-            }
-        });
-        if (esNuevaFacultad) {
-            var mapaInverso = {
-                sistemas: 'ingenieria',
-                telecom: 'ingenieria',
-                mecanica: 'ingenieria',
-                electronica: 'ingenieria',
-                administracion: 'licenciaturas',
-                enfermeria: 'licenciaturas',
-                'tsu-sistemas': 'tsu',
-                'tsu-enfermeria': 'tsu'
-            };
-            var facultadClave = mapaInverso[clave];
-            if (facultadClave) activarFacultad(facultadClave);
+        renderPillar(pillarId);
+      });
+    });
+
+    renderPillar("doctrina");
+  }
+
+  /* ── 4. Verificador de Recaudos (Admisiones) ───────────────────────────── */
+  function initAdmissionsChecklist() {
+    const checkLabels = document.querySelectorAll(".check-item-label");
+    const bar = document.getElementById("barra-recaudos");
+    const percentage = document.getElementById("porcentaje-recaudos");
+    const message = document.getElementById("texto-mensaje-recaudos");
+
+    if (!checkLabels.length) return;
+
+    function updateProgress() {
+      let completed = 0;
+      checkLabels.forEach((label) => {
+        const input = label.querySelector('input[type="checkbox"]');
+        const customCheck = label.querySelector(".custom-checkbox");
+        if (input && input.checked) {
+          completed++;
+          label.classList.add("checked");
+          if (customCheck) customCheck.textContent = "✓";
+        } else {
+          label.classList.remove("checked");
+          if (customCheck) customCheck.textContent = "";
         }
+      });
+
+      const total = checkLabels.length;
+      const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+      if (bar) bar.style.width = pct + "%";
+      if (percentage) percentage.textContent = pct + "%";
+      if (message) {
+        message.textContent =
+          pct === 100
+            ? "Excelente. Ya tienes todos los recaudos completos para consignar."
+            : `Tienes ${completed} de ${total} recaudos completados.`;
+      }
     }
 
-    document.querySelectorAll('[data-carrera-item]').forEach(function (boton) {
-        boton.addEventListener('click', function () {
-            activarCarrera(boton.getAttribute('data-carrera-item'));
-        });
+    checkLabels.forEach((label) => {
+      const input = label.querySelector('input[type="checkbox"]');
+      if (input) {
+        input.addEventListener("change", updateProgress);
+      }
     });
 
-    /**
-     * Verificador de recaudos (seccion 04): recalcula el porcentaje y el
-     * mensaje al marcar o desmarcar cada casilla. Replica la logica de
-     * CHECKLIST_ITEMS de data.ts (items 1 y 2 marcados por defecto = 33%).
-     */
-    var casillas = document.querySelectorAll('[data-recaudo]');
-    var barra = document.getElementById('barra-recaudos');
-    var porcentaje = document.getElementById('porcentaje-recaudos');
-    var mensaje = document.getElementById('texto-mensaje-recaudos');
-    var total = casillas.length;
+    updateProgress();
+  }
 
-    function actualizarRecaudos() {
-        var marcadas = 0;
-        casillas.forEach(function (casilla) {
-            var caja = casilla.closest('label').querySelector('[data-caja-recaudo]');
-            var marca = casilla.closest('label').querySelector('[data-marca-recaudo]');
-            var texto = casilla.closest('label').querySelector('[data-texto-recaudo]');
-            var marcada = casilla.checked;
-            if (marcada) marcadas++;
-
-            caja.classList.toggle('!border-unefa-blue', marcada);
-            caja.classList.toggle('!bg-unefa-blue', marcada);
-            caja.classList.toggle('bg-white', !marcada);
-            marca.classList.toggle('hidden', !marcada);
-            texto.classList.toggle('!font-bold', marcada);
-            texto.classList.toggle('font-medium', !marcada);
-
-            var etiqueta = casilla.closest('label');
-            etiqueta.classList.toggle('!border-unefa-blue', marcada);
-            etiqueta.classList.toggle('!bg-unefa-blue/[0.04]', marcada);
-        });
-
-        var avance = total > 0 ? Math.round((marcadas / total) * 100) : 0;
-        if (barra) barra.style.width = avance + '%';
-        if (porcentaje) porcentaje.textContent = avance + '%';
-        if (mensaje) {
-            mensaje.textContent =
-                avance === 100
-                    ? 'Excelente. Ya puedes iniciar tu preinscripción digital.'
-                    : 'Tienes ' + marcadas + ' de ' + total + ' recaudos completados.';
-        }
-    }
-
-    casillas.forEach(function (casilla) {
-        casilla.addEventListener('change', actualizarRecaudos);
-    });
-
-    // Estado inicial coherente con los checkboxes marcados en el HTML.
-    actualizarRecaudos();
+  /* ── Inicialización ───────────────────────────────────────────────────── */
+  document.addEventListener("DOMContentLoaded", () => {
+    initMobileMenu();
+    initCareerExplorer();
+    initPillars();
+    initAdmissionsChecklist();
+  });
 })();
