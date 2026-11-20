@@ -11,6 +11,7 @@ import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import {
   GraduationCap,
+  Users,
   BookOpen,
   ClipboardCheck,
   ShieldCheck,
@@ -26,7 +27,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function LoginScreen() {
   const router = useRouter();
 
-  // Form state
+  // Estado del formulario y del tipo de usuario que inicia sesión.
+  const [activeTab, setActiveTab] = useState<'estudiante' | 'personal'>('estudiante');
+  const [staffRole, setStaffRole] = useState<'profesor' | 'coordinador' | 'director'>('profesor');
   const [nacionalidad, setNacionalidad] = useState<'V' | 'E'>('V');
   const [cedula, setCedula] = useState('');
   const [password, setPassword] = useState('');
@@ -54,19 +57,27 @@ export default function LoginScreen() {
     }
 
     setIsLoading(true);
+    const role = activeTab === 'estudiante' ? 'estudiante' : staffRole;
 
     setTimeout(() => {
       setIsLoading(false);
       setSuccessMsg(
-        `Acceso verificado para ${nacionalidad}-${cedula.trim()}. Redirigiendo al portal...`
+        `Acceso verificado para ${nacionalidad}-${cedula.trim()}. Redirigiendo al portal...`,
       );
       setTimeout(() => {
-        router.push({ pathname: '/dashboard' as any, params: { role: 'estudiante' } });
+        router.push({ pathname: '/dashboard' as any, params: { role } });
       }, 500);
     }, 800);
   };
 
-  const handleSimulatedLogin = (role: 'estudiante' | 'profesor' | 'coordinador' | 'director') => {
+  const selectTab = (tab: 'estudiante' | 'personal') => {
+    setActiveTab(tab);
+    setErrorMsg('');
+    setSuccessMsg('');
+  };
+
+  // Mantiene accesos directos de prueba para revisar cada panel por separado.
+  const handleTestLogin = (role: 'estudiante' | 'profesor' | 'coordinador' | 'director') => {
     router.push({ pathname: '/dashboard' as any, params: { role } });
   };
 
@@ -132,34 +143,62 @@ export default function LoginScreen() {
                 Iniciar sesión
               </Text>
               <Text className="text-[13px] leading-[18px] text-slate-600">
-                Ingresa con tu documento de identidad y clave institucional.
+                Selecciona tu tipo de usuario para continuar con el acceso.
               </Text>
             </View>
 
-            {/* Simulación Evaluativa de Entidades */}
-            <View className="mb-4 rounded-2xl border border-slate-200 bg-slate-50 p-3.5">
-              <View className="mb-3">
-                <View className="mb-1.5 flex-row items-center gap-1 self-start rounded-md bg-unefa-gold/20 px-2 py-0.5">
-                  <Sparkles size={11} color="#06152a" />
-                  <Text className="text-[9px] font-black tracking-wide text-unefa-navy">
-                    EVALUACIÓN DE ENTIDADES
+            {/* Selector de ingreso por tipo de usuario. */}
+            <View className="mb-5 flex-row rounded-xl bg-slate-100 p-1">
+              <Pressable
+                className={`flex-1 flex-row items-center justify-center gap-1.5 rounded-[10px] py-3 ${
+                  activeTab === 'estudiante' ? 'bg-unefa-blue' : ''
+                }`}
+                onPress={() => selectTab('estudiante')}
+                accessibilityRole="tab"
+                accessibilityState={{ selected: activeTab === 'estudiante' }}>
+                <GraduationCap
+                  size={17}
+                  color={activeTab === 'estudiante' ? '#ffffff' : '#475569'}
+                />
+                <Text
+                  className={`text-xs font-extrabold ${
+                    activeTab === 'estudiante' ? 'text-white' : 'text-slate-600'
+                  }`}>
+                  Estudiantes
+                </Text>
+              </Pressable>
+              <Pressable
+                className={`flex-1 flex-row items-center justify-center gap-1.5 rounded-[10px] py-3 ${
+                  activeTab === 'personal' ? 'bg-unefa-blue' : ''
+                }`}
+                onPress={() => selectTab('personal')}
+                accessibilityRole="tab"
+                accessibilityState={{ selected: activeTab === 'personal' }}>
+                <Users
+                  size={17}
+                  color={activeTab === 'personal' ? '#ffffff' : '#475569'}
+                />
+                <Text
+                  className={`text-xs font-extrabold ${
+                    activeTab === 'personal' ? 'text-white' : 'text-slate-600'
+                  }`}>
+                  Personal
+                </Text>
+              </Pressable>
+            </View>
+
+            {activeTab === 'estudiante' ? (
+              <View className="mb-5 rounded-2xl border border-slate-200 bg-slate-50 p-3.5">
+                <View className="mb-3">
+                  <Text className="text-sm font-black text-slate-900">
+                    Probar como estudiante
                   </Text>
                 </View>
-                <Text className="text-sm font-black text-slate-900 mb-0.5">
-                  Simular acceso por rol
-                </Text>
-                <Text className="text-[11px] leading-4 text-slate-500">
-                  Ingresa directamente al dashboard de cada entidad con su barra de navegación:
-                </Text>
-              </View>
-
-              <View className="gap-2">
-                {/* 1. Estudiante */}
                 <Pressable
-                  className="flex-row items-center rounded-xl border border-blue-200 bg-white p-2.5 active:bg-blue-50"
-                  onPress={() => handleSimulatedLogin('estudiante')}
+                  className="flex-row items-center rounded-xl border border-blue-200 bg-white p-2.5"
+                  onPress={() => handleTestLogin('estudiante')}
                   accessibilityRole="button"
-                  accessibilityLabel="Ingresar como Estudiante">
+                  accessibilityLabel="Iniciar sesión de prueba como estudiante">
                   <View className="mr-2.5 h-9 w-9 items-center justify-center rounded-lg bg-[rgba(4,15,217,0.1)]">
                     <GraduationCap size={18} color={UnefaColors.blue} />
                   </View>
@@ -173,77 +212,117 @@ export default function LoginScreen() {
                   </View>
                   <ChevronRight size={16} color={UnefaColors.blue} />
                 </Pressable>
-
-                {/* 2. Profesor */}
-                <Pressable
-                  className="flex-row items-center rounded-xl border border-teal-200 bg-white p-2.5 active:bg-teal-50"
-                  onPress={() => handleSimulatedLogin('profesor')}
-                  accessibilityRole="button"
-                  accessibilityLabel="Ingresar como Profesor">
-                  <View className="mr-2.5 h-9 w-9 items-center justify-center rounded-lg bg-[rgba(13,148,136,0.12)]">
-                    <BookOpen size={18} color="#0d9488" />
-                  </View>
-                  <View className="flex-1">
-                    <Text className="text-[13px] font-extrabold text-teal-700">
-                      Profesor / Docente
-                    </Text>
-                    <Text className="text-[10px] font-semibold text-slate-500">
-                      C.I. 14.567.890 · Docente Ordinario
-                    </Text>
-                  </View>
-                  <ChevronRight size={16} color="#0d9488" />
-                </Pressable>
-
-                {/* 3. Coordinador */}
-                <Pressable
-                  className="flex-row items-center rounded-xl border border-amber-200 bg-white p-2.5 active:bg-amber-50"
-                  onPress={() => handleSimulatedLogin('coordinador')}
-                  accessibilityRole="button"
-                  accessibilityLabel="Ingresar como Coordinador">
-                  <View className="mr-2.5 h-9 w-9 items-center justify-center rounded-lg bg-[rgba(180,83,9,0.12)]">
-                    <ClipboardCheck size={18} color="#b45309" />
-                  </View>
-                  <View className="flex-1">
-                    <Text className="text-[13px] font-extrabold text-amber-700">
-                      Coordinador de Carrera
-                    </Text>
-                    <Text className="text-[10px] font-semibold text-slate-500">
-                      C.I. 11.234.567 · Coord. Carrera
-                    </Text>
-                  </View>
-                  <ChevronRight size={16} color="#b45309" />
-                </Pressable>
-
-                {/* 4. Director */}
-                <Pressable
-                  className="flex-row items-center rounded-xl border border-slate-300 bg-white p-2.5 active:bg-slate-100"
-                  onPress={() => handleSimulatedLogin('director')}
-                  accessibilityRole="button"
-                  accessibilityLabel="Ingresar como Director">
-                  <View className="mr-2.5 h-9 w-9 items-center justify-center rounded-lg bg-[rgba(6,21,42,0.12)]">
-                    <ShieldCheck size={18} color={UnefaColors.navy} />
-                  </View>
-                  <View className="flex-1">
-                    <Text className="text-[13px] font-extrabold text-unefa-navy">
-                      Director de Núcleo
-                    </Text>
-                    <Text className="text-[10px] font-semibold text-slate-500">
-                      Cnel. Roberto Silva · Dir. General
-                    </Text>
-                  </View>
-                  <ChevronRight size={16} color={UnefaColors.navy} />
-                </Pressable>
               </View>
-            </View>
+            ) : (
+              <View className="mb-5 rounded-2xl border border-slate-200 bg-slate-50 p-3.5">
+                <View className="mb-3">
+                  <Text className="text-sm font-black text-slate-900">
+                    Probar panel de personal
+                  </Text>
+                </View>
+                <View className="gap-2">
+                  <Pressable
+                    className="flex-row items-center rounded-xl border border-teal-200 bg-white p-2.5"
+                    onPress={() => handleTestLogin('profesor')}
+                    accessibilityRole="button"
+                    accessibilityLabel="Iniciar sesión de prueba como docente">
+                    <View className="mr-2.5 h-9 w-9 items-center justify-center rounded-lg bg-[rgba(13,148,136,0.12)]">
+                      <BookOpen size={18} color="#0d9488" />
+                    </View>
+                    <View className="flex-1">
+                      <Text className="text-[13px] font-extrabold text-teal-700">
+                        Profesor / Docente
+                      </Text>
+                      <Text className="text-[10px] font-semibold text-slate-500">
+                        C.I. 14.567.890 · Docente Ordinario
+                      </Text>
+                    </View>
+                    <ChevronRight size={16} color="#0d9488" />
+                  </Pressable>
 
-            {/* Separador */}
-            <View className="mb-4 flex-row items-center gap-2.5">
-              <View className="h-px flex-1 bg-slate-200" />
-              <Text className="text-[10px] font-extrabold tracking-wider text-slate-400">
-                O INGRESO CON CREDENCIALES
-              </Text>
-              <View className="h-px flex-1 bg-slate-200" />
-            </View>
+                  <Pressable
+                    className="flex-row items-center rounded-xl border border-amber-200 bg-white p-2.5"
+                    onPress={() => handleTestLogin('coordinador')}
+                    accessibilityRole="button"
+                    accessibilityLabel="Iniciar sesión de prueba como coordinador">
+                    <View className="mr-2.5 h-9 w-9 items-center justify-center rounded-lg bg-[rgba(180,83,9,0.12)]">
+                      <ClipboardCheck size={18} color="#b45309" />
+                    </View>
+                    <View className="flex-1">
+                      <Text className="text-[13px] font-extrabold text-amber-700">
+                        Coordinador de Carrera
+                      </Text>
+                      <Text className="text-[10px] font-semibold text-slate-500">
+                        C.I. 11.234.567 · Coord. Carrera
+                      </Text>
+                    </View>
+                    <ChevronRight size={16} color="#b45309" />
+                  </Pressable>
+
+                  <Pressable
+                    className="flex-row items-center rounded-xl border border-slate-300 bg-white p-2.5"
+                    onPress={() => handleTestLogin('director')}
+                    accessibilityRole="button"
+                    accessibilityLabel="Iniciar sesión de prueba como director">
+                    <View className="mr-2.5 h-9 w-9 items-center justify-center rounded-lg bg-[rgba(6,21,42,0.12)]">
+                      <ShieldCheck size={18} color={UnefaColors.navy} />
+                    </View>
+                    <View className="flex-1">
+                      <Text className="text-[13px] font-extrabold text-unefa-navy">
+                        Director de Núcleo
+                      </Text>
+                      <Text className="text-[10px] font-semibold text-slate-500">
+                        Cnel. Roberto Silva · Dir. General
+                      </Text>
+                    </View>
+                    <ChevronRight size={16} color={UnefaColors.navy} />
+                  </Pressable>
+                </View>
+              </View>
+            )}
+
+            {activeTab === 'personal' && (
+              <View className="mb-5">
+                <Text className="mb-2 text-[13px] font-bold text-neutral-950">
+                  Tipo de personal
+                </Text>
+                <View className="flex-row flex-wrap gap-2">
+                  {([
+                    ['profesor', 'Docente'],
+                    ['coordinador', 'Coordinación'],
+                    ['director', 'Dirección'],
+                  ] as const).map(([role, label]) => (
+                    <Pressable
+                      key={role}
+                      className={`rounded-xl border px-3 py-2 ${
+                        staffRole === role
+                          ? 'border-unefa-blue bg-unefa-blue'
+                          : 'border-slate-300 bg-white'
+                      }`}
+                      onPress={() => {
+                        setStaffRole(role);
+                        setErrorMsg('');
+                        setSuccessMsg('');
+                      }}
+                      accessibilityRole="radio"
+                      accessibilityState={{ selected: staffRole === role }}>
+                      <Text
+                        className={`text-xs font-bold ${
+                          staffRole === role ? 'text-white' : 'text-slate-600'
+                        }`}>
+                        {label}
+                      </Text>
+                    </Pressable>
+                  ))}
+                </View>
+              </View>
+            )}
+
+            <Text className="mb-4 text-[13px] leading-[18px] text-slate-600">
+              {activeTab === 'estudiante'
+                ? 'Ingresa con tu documento de identidad y clave institucional de estudiante.'
+                : 'Ingresa con tu documento de identidad y clave institucional del personal.'}
+            </Text>
 
             {/* Error alert */}
             {errorMsg ? (
