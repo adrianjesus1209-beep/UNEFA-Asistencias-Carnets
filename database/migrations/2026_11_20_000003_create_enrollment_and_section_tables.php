@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * Migracion 3: Gestion de clases, secciones e inscripciones.
+ *
+ * Crea las tablas operativas de carga academica:
+ * - teacher_subject: relacion de docentes habilitados por materia.
+ * - section: secciones, horarios, aulas y minutos de tolerancia por periodo.
+ * - section_enrollment: inscripciones de estudiantes, notas, validacion y
+ *   control de materias aprobadas, reprobadas o arrastradas (is_dragged).
+ */
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

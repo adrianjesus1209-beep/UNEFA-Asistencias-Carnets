@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * Migracion 1: Modulo de seguridad, roles, permisos y autenticacion.
+ *
+ * Crea las tablas base del sistema de usuarios:
+ * - system_role, permission y role_permission: catalogo de roles y permisos.
+ * - profile: datos personales, semestre actual y bandera de materias arrastradas.
+ * - user_account: credenciales de acceso y codigo QR unico permanente por persona.
+ * - user_role: asignacion de multiples roles por usuario y carnet por cada rol.
+ * - security_question, user_security_answer y verification_code: recuperacion y 2FA.
+ * - document_registration: carga y validacion de expedientes de estudiantes.
+ */
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
