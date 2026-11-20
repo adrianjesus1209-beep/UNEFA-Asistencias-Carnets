@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * Seeder de datos iniciales del sistema UNEFA.
+ *
+ * Inserta de forma segura (sin duplicar si se vuelve a ejecutar) los datos base:
+ * - 5 roles jerarquicos (Super Administrator, Director, Academic Coordinator, Teacher, Student).
+ * - 11 permisos del sistema y sus 24 asignaciones por rol.
+ * - 5 preguntas de seguridad por defecto.
+ * - Carrera inicial (Ingenieria de Sistemas) y periodo academico activo (2026-1).
+ * - Cuenta de administrador base (usuario: admin / clave inicial: admin123) con su carnet.
+ */
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;

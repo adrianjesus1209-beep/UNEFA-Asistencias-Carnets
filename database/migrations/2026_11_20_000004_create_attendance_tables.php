@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Migracion 4: Control de sesiones de clase y asistencias.
+ *
+ * Crea las tablas para el pase de lista diario:
+ * - class_session: apertura y cierre de sesiones de clase por seccion y semana.
+ * - attendance: registro de asistencia por estudiante (Presente, Ausente,
+ *   Justificado o Retardo) mediante escaneo QR o registro manual.
+ */
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

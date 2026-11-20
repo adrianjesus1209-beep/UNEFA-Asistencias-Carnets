@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * Migracion 2: Modulo academico, pensum y calendario.
+ *
+ * Crea las tablas academicas principales:
+ * - career: carreras universitarias y su coordinador asignado.
+ * - Agrega la clave foranea fk_profile_career en la tabla profile.
+ * - subject y course_prerequisite: asignaturas por carrera, semestre y prelaciones.
+ * - academic_period y calendar_event: periodos academicos y cronograma de eventos.
+ */
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

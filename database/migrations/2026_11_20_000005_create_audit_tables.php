@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Migracion 5: Auditoria, bitacora y control de seguridad.
+ *
+ * Crea las tablas de trazabilidad del sistema:
+ * - audit_log: bitacora de acciones importantes realizadas por los usuarios.
+ * - failed_attempt: registro de intentos fallidos de acceso por IP para bloqueo.
+ */
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
