@@ -14,6 +14,6 @@ Thumbs.db
 # Dependencias del generador de estilos
 node_modules/
 
-# Herramientas locales de vista previa (no forman parte del portal)
-preview.php
-iniciar-vista-previa.bat
+# Vista previa Blade: dependencias y cache compilada (la herramienta si se versiona)
+tools/preview/vendor/
+tools/preview/cache/

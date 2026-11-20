@@ -18,6 +18,7 @@ rol: estudiante, profesor, coordinador y director).
 - `routes/web.php`: rutas estilo Laravel para el router propio del backend.
 - `resources/css/app.css`: directivas Tailwind y ajustes base.
 - `public/css/app.css`: CSS compilado (comprometido al repo, sin CDN).
+- `tools/preview/`: motor de vista previa Blade (illuminate/view, sin Laravel completo).
 - `public/js/`: vanilla JS minimo (cajon de menu, modal QR, tabs, wizard,
   validaciones y flujo simulado de login).
 - `public/assets/`: medios existentes (img, video, PDFs, carnet, uploads) y
@@ -33,6 +34,27 @@ npm install   (una sola vez)
 npm run build:css      compilacion unica
 npm run watch:css      modo observacion durante el desarrollo
 ```
+
+## Vista previa sin Laravel
+
+Las vistas se pueden revisar en el navegador con el compilador real de
+Blade (illuminate/view) sin instalar el framework completo:
+
+```
+cd tools/preview
+composer install      (una sola vez)
+```
+
+Luego, desde la raiz de `UnefaWeb`:
+
+- Windows: `iniciar-vista-previa.bat`
+- Linux/macOS: `./iniciar-vista-previa.sh`
+
+Abre http://127.0.0.1:8099 y se redirige a `/landing`. Estan disponibles
+las 7 vistas del mapa de rutas (`/landing`, `/login`, `/registro` y
+`/dashboard/estudiante|profesor|coordinador|director`), los archivos de
+`public/` se sirven con sus tipos MIME correctos y al guardar cualquier
+`.blade.php` la pagina se recarga sola. Detener con `Ctrl+C`.
 
 ## Vistas y rutas
 
