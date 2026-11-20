@@ -391,13 +391,13 @@ export default function LoginScreen() {
             {/* Auth Switch */}
             <View className="mt-6 gap-2.5 border-t border-slate-300 pt-4">
               <Text className="text-center text-xs font-semibold text-slate-600">
-                ¿Eres aspirante de nuevo ingreso?
+                ¿Todavía no tienes cuenta?
               </Text>
               <Pressable
                 className="flex-row items-center justify-center rounded-[14px] border border-slate-300 py-3.5"
                 onPress={() => router.push('/registro')}>
                 <Text className="text-[13px] font-bold text-neutral-950">
-                  Preinscripción al CINU 2026-I
+                  Crear cuenta UNEFA
                 </Text>
               </Pressable>
             </View>

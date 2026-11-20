@@ -21,7 +21,6 @@ import { QrModal } from '@/components/QrModal';
 import {
   PILLARS_DATA,
   CAREERS_DATA,
-  CHECKLIST_ITEMS,
   Career,
   Pillar,
 } from '@/constants/data';
@@ -41,15 +40,15 @@ export default function LandingScreen() {
   // Control de visibilidad de modales y pestana activa
   const [menuOpen, setMenuOpen] = useState(false);
   const [qrOpen, setQrOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'inicio' | 'carreras' | 'cinu' | 'siceu'>('inicio');
+  const [activeTab, setActiveTab] = useState<'inicio' | 'carreras' | 'registro' | 'siceu'>('inicio');
 
   // Posiciones verticales de cada seccion para desplazamiento suave
   const sectionPositions = useRef<{ [key: string]: number }>({});
-  const sectionTabs: Record<string, 'inicio' | 'carreras' | 'cinu' | 'siceu'> = {
+  const sectionTabs: Record<string, 'inicio' | 'carreras' | 'registro' | 'siceu'> = {
     inicio: 'inicio',
     nosotros: 'inicio',
     carreras: 'carreras',
-    admisiones: 'cinu',
+    registro: 'registro',
     servicios: 'siceu',
   };
 
@@ -97,24 +96,6 @@ export default function LandingScreen() {
     careersInFaculty[0] ||
     CAREERS_DATA.ingenieria[0];
 
-  // Gestion de recaudos verificados para admision
-  const [checkedItems, setCheckedItems] = useState<{ [id: number]: boolean }>({
-    1: true,
-    2: true,
-  });
-
-  // Alterna el estado de un recaudo individual
-  const toggleCheckItem = (id: number) => {
-    setCheckedItems((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
-
-  // Calculo del porcentaje de preparacion de recaudos
-  const completedCount = CHECKLIST_ITEMS.filter((item) => checkedItems[item.id]).length;
-  const percentage = Math.round((completedCount / CHECKLIST_ITEMS.length) * 100);
-
   return (
     <SafeAreaView className="flex-1 bg-white">
       <Header
@@ -159,8 +140,8 @@ export default function LandingScreen() {
                 <Text className="mt-0.5 text-[11px] font-semibold text-slate-500">Estados</Text>
               </View>
               <View className="flex-1 items-center rounded-[14px] bg-white p-3 shadow-sm bg-white border-slate-200">
-                <Text className="text-[22px] font-black text-unefa-blue">CINU</Text>
-                <Text className="mt-0.5 text-[11px] font-semibold text-slate-500">Convocatoria</Text>
+                <Text className="text-[22px] font-black text-unefa-blue">Registro</Text>
+                <Text className="mt-0.5 text-[11px] font-semibold text-slate-500">Cuenta</Text>
               </View>
             </View>
 
@@ -168,7 +149,7 @@ export default function LandingScreen() {
               <Pressable
                 className="flex-row items-center justify-center gap-2 rounded-[14px] py-3.5 bg-unefa-gold shadow-md py-4"
                 onPress={() => router.push('/registro')}>
-                <Text className="text-[15px] font-black text-unefa-navy">Preinscripción CINU</Text>
+                <Text className="text-[15px] font-black text-unefa-navy">Crear cuenta UNEFA</Text>
                 <Text className="text-base font-black text-unefa-navy">→</Text>
               </Pressable>
 
@@ -495,48 +476,45 @@ export default function LandingScreen() {
             </View>
           </View>
 
-          {/* Seccion 04: Admisiones y verificador CINU */}
+          {/* Seccion 04: registro convencional de cuenta */}
           <View
             className="px-4 py-8 border-y border-slate-200 bg-slate-50"
-            onLayout={(event) => handleLayoutSection('admisiones', event)}>
+            onLayout={(event) => handleLayoutSection('registro', event)}>
             <View className="mb-5">
-              <Text className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.5px] text-unefa-blue">[04] — Admisiones &amp; nivelación</Text>
+              <Text className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.5px] text-unefa-blue">
+                [04] — Cuenta universitaria
+              </Text>
               <Text className="mb-1.5 text-2xl font-black text-neutral-950">
-                Ruta de ingreso y verificador CINU
+                Regístrate para comenzar
               </Text>
               <Text className="text-sm leading-5 text-slate-600">
-                Todos los aspirantes formalizan su acceso a través del Curso Integral de
-                Nivelación Universitaria. Verifica tus recaudos antes de iniciar el registro.
+                Crea una cuenta con tus datos personales y un correo electrónico activo para acceder a los servicios digitales UNEFA.
               </Text>
             </View>
 
-            {/* Cronologia de fases del proceso */}
             <View className="mb-5 gap-3">
               {[
                 {
                   num: '01',
-                  title: 'Registro digital',
-                  desc: 'Creación de expediente en el portal, selección de carrera politécnica y sede regional asignada.',
+                  title: 'Completa tus datos',
+                  desc: 'Indica tu nombre, documento de identidad y correo electrónico.',
                 },
                 {
                   num: '02',
-                  title: 'Consignación de recaudos',
-                  desc: 'Revisión física de documentos en la Unidad de Control de Estudios de tu núcleo UNEFA.',
+                  title: 'Protege tu cuenta',
+                  desc: 'Elige una contraseña segura y confírmala antes de enviar el formulario.',
                 },
                 {
                   num: '03',
-                  title: 'Cursado del CINU',
-                  desc: '14 semanas intensivas en Matemática, Habilidades de Comunicación y Doctrina Cívico-Militar.',
+                  title: 'Accede a los servicios',
+                  desc: 'Usa el portal institucional para continuar con los trámites disponibles.',
                 },
-                {
-                  num: '04',
-                  title: 'Activación en SICEU',
-                  desc: 'Asignación definitiva de matrícula e inicio del primer semestre académico regular.',
-                },
-              ].map((step, idx) => (
-                <View key={idx} className="flex-row gap-3">
+              ].map((step) => (
+                <View key={step.num} className="flex-row gap-3">
                   <View className="h-8 w-8 items-center justify-center rounded-full bg-[rgba(242,184,7,0.16)]">
-                    <Text className="font-mono text-[13px] font-black text-[#c99106]">{step.num}</Text>
+                    <Text className="font-mono text-[13px] font-black text-[#c99106]">
+                      {step.num}
+                    </Text>
                   </View>
                   <View className="flex-1">
                     <Text className="mb-0.5 text-sm font-extrabold text-neutral-950">
@@ -550,105 +528,19 @@ export default function LandingScreen() {
               ))}
             </View>
 
-            {/* Fotografia de la sede institucional */}
-            <View className="mb-5 overflow-hidden rounded-[18px] border border-slate-200">
-              <Image
-                source={{
-                  uri: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1200&q=80',
-                }}
-                className="h-[180px] w-full"
-                contentFit="cover"
-              />
-              <View className="flex-row items-center justify-between p-3 bg-white">
-                <Text className="text-[10px] font-extrabold tracking-[0.4px] text-neutral-950">
-                  INSTALACIONES DE PREGRADO Y POSTGRADO
-                </Text>
-                <Text className="text-[10px] font-extrabold text-[#c99106]">SEDES EN 24 ESTADOS</Text>
-              </View>
-            </View>
-
-            {/* Herramienta de verificacion de recaudos */}
-            <View className="rounded-[20px] border border-slate-200 p-[18px] bg-white border-slate-200">
-              <View className="mb-3.5 flex-row items-center justify-between">
-                <View>
-                  <Text className="text-[10px] font-extrabold uppercase text-unefa-blue">Herramienta del aspirante</Text>
-                  <Text className="text-lg font-black text-neutral-950">
-                    Verificador de recaudos
-                  </Text>
-                </View>
-                <View className="items-end">
-                  <Text className="text-[22px] font-black text-[#c99106]">{percentage}%</Text>
-                  <Text className="text-[10px] font-semibold text-slate-500">Listo para consignar</Text>
-                </View>
-              </View>
-
-              {/* Barra de progreso de recaudos */}
-              <View className="mb-3.5 h-2 overflow-hidden rounded bg-slate-200">
-                <View className="h-full bg-unefa-gold" style={{ width: `${percentage}%` }} />
-              </View>
-
-              <Text className="mb-3 text-xs leading-[17px] text-slate-600">
-                Marca los recaudos que ya posees en físico para calcular tu preparación:
+            <View className="rounded-[20px] border border-slate-200 bg-white p-5">
+              <Text className="mb-1 text-lg font-black text-neutral-950">
+                ¿Listo para crear tu cuenta?
               </Text>
-
-              {/* Lista interactiva de recaudos requeridos */}
-              <View className="mb-4 gap-2">
-                {CHECKLIST_ITEMS.map((item) => {
-                  const isChecked = !!checkedItems[item.id];
-                  return (
-                    <Pressable
-                      key={item.id}
-                      className={[
-                        'flex-row items-center gap-2.5 rounded-xl border p-2.5',
-                        'bg-white border-slate-200',
-                        isChecked && '!border-unefa-blue !bg-unefa-blue/[0.04]',
-                      ].filter(Boolean).join(' ')}
-                      onPress={() => toggleCheckItem(item.id)}>
-                      <View className={['h-[22px] w-[22px] items-center justify-center rounded-md border-2 border-slate-300', isChecked && '!border-unefa-blue !bg-unefa-blue'].filter(Boolean).join(' ')}>
-                        {isChecked && <Text className="text-[13px] font-black text-white">✓</Text>}
-                      </View>
-                      <Text
-                        className={[
-                          'flex-1 text-xs leading-4 font-medium',
-                          'text-neutral-950',
-                          isChecked && '!font-bold',
-                        ].filter(Boolean).join(' ')}>
-                        {item.text}
-                      </Text>
-                      <View className="rounded-md bg-slate-100 px-1.5 py-0.5">
-                        <Text className="text-[9px] font-bold text-slate-500">{item.phase}</Text>
-                      </View>
-                    </Pressable>
-                  );
-                })}
-              </View>
-
-              <View
-                className={[
-                  'mb-3.5 rounded-xl p-3',
-                  percentage === 100 ? 'bg-green-100' : 'bg-unefa-blue/[0.06]',
-                ].filter(Boolean).join(' ')}>
-                <Text
-                  className={[
-                    'text-xs font-semibold text-center',
-                    percentage === 100 ? 'font-extrabold text-unefa-green' : 'text-unefa-blue',
-                  ].filter(Boolean).join(' ')}>
-                  {percentage === 100
-                    ? '¡100% de recaudos listos! Puedes formalizar tu expediente en Control de Estudios sin demoras.'
-                    : `Tienes ${completedCount} de ${CHECKLIST_ITEMS.length} recaudos completados.`}
-                </Text>
-              </View>
-
+              <Text className="mb-4 text-[13px] leading-5 text-slate-600">
+                Ten a mano tu documento de identidad y verifica que puedas acceder a tu correo.
+              </Text>
               <Pressable
-                className="flex-row items-center justify-center gap-2 rounded-[14px] py-3.5 bg-unefa-gold shadow-md"
+                className="flex-row items-center justify-center gap-2 rounded-[14px] bg-unefa-gold py-3.5 shadow-md"
                 onPress={() => router.push('/registro')}>
-                <Text className="text-[15px] font-black text-unefa-navy">Iniciar preinscripción digital</Text>
+                <Text className="text-[15px] font-black text-unefa-navy">Crear cuenta UNEFA</Text>
                 <Text className="text-base font-black text-unefa-navy">→</Text>
               </Pressable>
-
-              <Text className="mt-2.5 text-[11px] text-center text-slate-500">
-                🛡 Trámite 100% público y gratuito, sin intermediarios
-              </Text>
             </View>
           </View>
 
@@ -812,8 +704,8 @@ export default function LandingScreen() {
                 <Pressable onPress={() => scrollToSection('carreras')}>
                   <Text className="py-0.5 text-xs font-semibold text-unefa-blue">Catálogo carreras</Text>
                 </Pressable>
-                <Pressable onPress={() => scrollToSection('admisiones')}>
-                  <Text className="py-0.5 text-xs font-semibold text-unefa-blue">Admisión CINU</Text>
+                <Pressable onPress={() => scrollToSection('registro')}>
+                  <Text className="py-0.5 text-xs font-semibold text-unefa-blue">Registro de cuenta</Text>
                 </Pressable>
               </View>
 
@@ -828,7 +720,7 @@ export default function LandingScreen() {
                   <Text className="py-0.5 text-xs font-semibold text-unefa-blue">SICEU docentes</Text>
                 </Pressable>
                 <Pressable onPress={() => router.push('/registro')}>
-                  <Text className="py-0.5 text-xs font-semibold text-unefa-blue">Preinscripción CINU</Text>
+                  <Text className="py-0.5 text-xs font-semibold text-unefa-blue">Crear cuenta UNEFA</Text>
                 </Pressable>
                 <Pressable onPress={() => scrollToSection('servicios')}>
                   <Text className="py-0.5 text-xs font-semibold text-unefa-blue">Biblioteca digital</Text>

@@ -5,7 +5,7 @@ import { Home, GraduationCap, FileText, User } from 'lucide-react-native';
 import { UnefaColors } from '@/constants/theme';
 
 interface BottomNavProps {
-  activeTab?: 'inicio' | 'carreras' | 'cinu' | 'siceu';
+  activeTab?: 'inicio' | 'carreras' | 'registro' | 'siceu';
   onPressInicio?: () => void;
   onPressCarreras?: () => void;
   onOpenQr?: () => void;
@@ -77,25 +77,25 @@ export function BottomNav({
         </Text>
       </Pressable>
 
-      {/* Tab: CINU */}
+      {/* Tab: Registro */}
       <Pressable
         className="flex-1 items-center justify-center py-1 gap-0.5"
         accessibilityRole="tab"
-        accessibilityState={{ selected: activeTab === 'cinu' }}
-        accessibilityLabel="Preinscripción CINU"
+        accessibilityState={{ selected: activeTab === 'registro' }}
+        accessibilityLabel="Crear cuenta"
         onPress={() => router.replace('/registro')}>
         <FileText
           size={20}
-          color={getIconColor('cinu')}
-          strokeWidth={activeTab === 'cinu' ? 2.5 : 2}
+          color={getIconColor('registro')}
+          strokeWidth={activeTab === 'registro' ? 2.5 : 2}
         />
         <Text
           className={`text-[11px] ${
-            activeTab === 'cinu'
+            activeTab === 'registro'
               ? 'font-bold text-unefa-blue'
               : 'font-semibold text-slate-500'
           }`}>
-          CINU
+          Registro
         </Text>
       </Pressable>
 

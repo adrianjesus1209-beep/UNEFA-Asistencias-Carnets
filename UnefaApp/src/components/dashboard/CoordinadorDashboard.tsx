@@ -5,7 +5,7 @@ import { MetricsGrid } from './MetricsGrid';
 
 const SUPERVISION_ITEMS = [
   { title: 'Asistencia de docentes', val: '20 de 22 docentes en aula', badge: '91% Cumplimiento', desc: 'Registro validado en sistemas y laboratorios de computación.' },
-  { title: 'Inasistencia Estudiantil', val: '12 casos en seguimiento', badge: 'Atención requerida', desc: 'Aspirantes y estudiantes con más de 3 ausencias consecutivas.' },
+  { title: 'Inasistencia Estudiantil', val: '12 casos en seguimiento', badge: 'Atención requerida', desc: 'Estudiantes con más de 3 ausencias consecutivas.' },
   { title: 'Disponibilidad de Laboratorios', val: '5 salas y laboratorios operativos', badge: '100% Funcional', desc: 'Lab Telemática, Sistemas, Redes, Física y Electrónica en uso.' },
   { title: 'Consignación de Actas y Cortes', val: '18 de 24 actas registradas', badge: 'En progreso', desc: 'Cierre de actas parciales de evaluación continua 2026-I.' },
 ];
