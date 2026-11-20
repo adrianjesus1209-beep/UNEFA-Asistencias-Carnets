@@ -1,7 +1,7 @@
 @extends('layouts.public')
 
-@section('title', 'Preinscripción CINU 2026-I | UNEFA')
-@section('header-subtitle', 'Registro CINU')
+@section('title', 'Registro Estudiantil y Carnet Digital 2026-I | UNEFA')
+@section('header-subtitle', 'Activación de Carnet Digital')
 
 @push('scripts')
     <script src="{{ asset('js/registro.js') }}" defer></script>
@@ -14,21 +14,21 @@
 
             {{-- Banner --}}
             <div class="mb-4 rounded-[14px] border border-slate-200 bg-slate-50 p-3.5">
-                <p class="mb-0.5 text-[11px] font-semibold text-slate-600">Admisiones · Curso de nivelación</p>
-                <p class="text-base font-black text-neutral-950">CINU 2026-I</p>
+                <p class="mb-0.5 text-[11px] font-semibold text-slate-600">Carnetización · Periodo 2026-I</p>
+                <p class="text-base font-black text-neutral-950">Registro de Cursantes y Aprobados CINU</p>
             </div>
 
             {{-- Tarjeta del formulario --}}
             <div class="mb-5 rounded-[22px] border border-slate-200 bg-white p-5 shadow-lg">
                 <div class="mb-[18px]">
                     <div class="mb-3 flex flex-wrap gap-2">
-                        <span class="rounded-lg bg-[rgba(242,184,7,0.16)] px-2.5 py-1 text-[11px] font-extrabold text-unefa-goldDark">Nuevo ingreso</span>
+                        <span class="rounded-lg bg-[rgba(242,184,7,0.16)] px-2.5 py-1 text-[11px] font-extrabold text-unefa-goldDark">Estudiante Regular / Post-CINU</span>
                         <span class="rounded-lg border border-slate-200 bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-600">Expediente digital</span>
                     </div>
 
-                    <h1 class="mb-1.5 text-[26px] font-black text-neutral-950">Preinscripción CINU</h1>
+                    <h1 class="mb-1.5 text-[26px] font-black text-neutral-950">Registro y Carnet Digital</h1>
                     <p class="text-[13px] leading-[18px] text-slate-600">
-                        Completa las 3 secciones para formalizar tu solicitud de ingreso universitario.
+                        Completa las 3 secciones para formalizar tu expediente de asistencias y activar tu Carnet QR institucional.
                     </p>
                 </div>
 
@@ -65,13 +65,13 @@
                         <span class="text-[32px] font-black text-unefa-green">✓</span>
                     </div>
                     <span class="mb-2 inline-block rounded-lg bg-[rgba(4,15,217,0.1)] px-2.5 py-1 text-[11px] font-extrabold text-unefa-blue">Expediente registrado</span>
-                    <p class="mb-2.5 text-[22px] font-black text-neutral-950">¡Preinscripción exitosa!</p>
+                    <p class="mb-2.5 text-[22px] font-black text-neutral-950">¡Registro exitoso!</p>
                     <p class="mb-5 text-sm leading-5 text-slate-600">
-                        Tu solicitud para el <span class="font-extrabold">Curso Integral de Nivelación Universitaria (CINU 2026-I)</span> fue registrada. Recibirás por correo la fecha para consignar tus documentos en Control de Estudios.
+                        Tu expediente para el sistema de <span class="font-extrabold">Carnetización y Control de Asistencias (Periodo 2026-I)</span> fue registrado. Tu código QR institucional y credencial digital estarán habilitados en el Portal Académico.
                     </p>
                     <div class="flex flex-col gap-2.5">
                         <a href="{{ route('login') }}" class="flex items-center justify-center gap-2 rounded-[14px] bg-unefa-gold py-3 text-sm font-black text-unefa-navy transition hover:brightness-105">
-                            Ir al portal SICEU
+                            Ir al Portal
                         </a>
                         <a href="{{ route('landing') }}" class="flex items-center justify-center gap-2 rounded-[14px] border border-slate-300 py-3 text-[13px] font-bold text-neutral-950 transition hover:bg-slate-50">
                             Volver a la página principal
@@ -79,7 +79,7 @@
                     </div>
                 </div>
 
-                {{-- TODO(backend): conectar el envio del formulario a POST /registro al integrar la preinscripcion. --}}
+                {{-- TODO(backend): conectar el envio del formulario a POST /registro al integrar el registro de carnetizacion. --}}
                 <form id="formulario-registro" action="#" method="POST" novalidate>
 
                     {{-- PASO 1: Acceso --}}
@@ -196,7 +196,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <p class="mb-1.5 text-[13px] font-bold text-neutral-950">Carrera de preferencia *</p>
+                            <p class="mb-1.5 text-[13px] font-bold text-neutral-950">Carrera asignada / cursante *</p>
                             <div class="grid gap-1.5 sm:grid-cols-2">
                                 <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
                                     <input type="radio" name="carrera" value="Ingeniería de Sistemas" class="sr-only" checked />
@@ -219,16 +219,20 @@
                                     <span class="text-xs font-bold text-neutral-950">Lic. Administración y Gestión Municipal</span>
                                 </label>
                                 <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="carrera" value="Licenciatura en Enfermería" class="sr-only" />
-                                    <span class="text-xs font-bold text-neutral-950">Licenciatura en Enfermería</span>
+                                    <input type="radio" name="carrera" value="Lic. Administración de Desastres" class="sr-only" />
+                                    <span class="text-xs font-bold text-neutral-950">Lic. Administración de Desastres</span>
                                 </label>
                                 <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="carrera" value="TSU en Análisis de Sistemas" class="sr-only" />
-                                    <span class="text-xs font-bold text-neutral-950">TSU en Análisis de Sistemas</span>
+                                    <input type="radio" name="carrera" value="Lic. Economía Social" class="sr-only" />
+                                    <span class="text-xs font-bold text-neutral-950">Lic. Economía Social</span>
                                 </label>
                                 <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="carrera" value="TSU en Enfermería" class="sr-only" />
-                                    <span class="text-xs font-bold text-neutral-950">TSU en Enfermería</span>
+                                    <input type="radio" name="carrera" value="Lic. Educación Integral" class="sr-only" />
+                                    <span class="text-xs font-bold text-neutral-950">Lic. Educación Integral</span>
+                                </label>
+                                <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
+                                    <input type="radio" name="carrera" value="TSU en Análisis y Diseño de Sistemas / Datos" class="sr-only" />
+                                    <span class="text-xs font-bold text-neutral-950">TSU Análisis y Diseño de Sistemas / Datos</span>
                                 </label>
                             </div>
                         </div>
@@ -308,7 +312,7 @@
                         <p class="mb-2.5 mt-1.5 text-[11px] italic leading-4 text-slate-500">
                             Al enviar este formulario certifico bajo fe de juramento que todos los datos
                             consignados son fidedignos y me comprometo a cumplir el reglamento disciplinario
-                            del CINU y la doctrina cívico-militar unefista.
+                            del Curso Introductorio y la doctrina cívico-militar unefista.
                         </p>
                     </fieldset>
 
@@ -330,7 +334,7 @@
                 <div class="mt-5 flex flex-col gap-2.5 border-t border-slate-300 pt-4">
                     <p class="text-center text-xs font-semibold text-slate-600">¿Ya posees matrícula o usuario activo?</p>
                     <a href="{{ route('login') }}" class="flex items-center justify-center rounded-[14px] border border-slate-300 py-3 text-[13px] font-bold text-neutral-950 transition hover:bg-slate-50">
-                        Iniciar sesión en SICEU
+                        Iniciar sesión en el Portal
                     </a>
                 </div>
             </div>

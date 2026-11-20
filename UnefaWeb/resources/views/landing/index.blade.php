@@ -24,7 +24,7 @@
             <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
                 <span class="sys-status-badge">Periodo Académico 2026-I</span>
                 <span style="opacity: 0.6;">|</span>
-                <span style="font-weight: 700; color: #ffffff;">SICEU en Línea</span>
+                <span style="font-weight: 700; color: #ffffff;">Portal Institucional</span>
             </div>
         </div>
     </div>
@@ -47,18 +47,14 @@
                 <a href="#inicio" class="nav-link active">Inicio</a>
                 <a href="#nosotros" class="nav-link">La UNEFA</a>
                 <a href="#carreras" class="nav-link">Carreras</a>
-                <a href="#admisiones" class="nav-link">Admisiones</a>
+                <a href="#carnetizacion" class="nav-link">Carnetización</a>
                 <a href="#servicios" class="nav-link">Servicios</a>
             </nav>
 
             <!-- Acciones de encabezado con botones notorios -->
             <div class="header-actions">
-                <button type="button" data-abrir-qr class="btn btn-outline btn-sm" aria-label="Abrir escáner QR" style="display: inline-flex; align-items: center; gap: 0.4rem;">
-                    @include('partials.icon', ['name' => 'qr-code', 'clase' => 'h-4 w-4 text-unefa-navy'])
-                    <span>Carnet QR</span>
-                </button>
-                <a href="{{ route('login') }}" class="btn btn-gold btn-sm" aria-label="Acceder al portal SICEU">
-                    <span>Portal SICEU</span>
+                <a href="{{ route('login') }}" class="btn btn-gold btn-sm" aria-label="Acceder al Portal">
+                    <span>Portal Web</span>
                     <span aria-hidden="true">→</span>
                 </a>
                 <button class="mobile-toggle" aria-label="Abrir menú de navegación" aria-expanded="false">
@@ -73,17 +69,17 @@
                 <li><a href="#inicio" class="mobile-nav-link"><span>Inicio</span> <span>→</span></a></li>
                 <li><a href="#nosotros" class="mobile-nav-link"><span>La UNEFA y Doctrina</span> <span>→</span></a></li>
                 <li><a href="#carreras" class="mobile-nav-link"><span>Catálogo de Carreras</span> <span>→</span></a></li>
-                <li><a href="#admisiones" class="mobile-nav-link"><span>Admisiones CINU</span> <span>→</span></a></li>
+                <li><a href="#carnetizacion" class="mobile-nav-link"><span>Carnetización</span> <span>→</span></a></li>
                 <li><a href="#servicios" class="mobile-nav-link"><span>Servicios Digitales</span> <span>→</span></a></li>
                 <li style="padding-top: 0.5rem;">
                     <a href="{{ route('registro') }}" class="btn btn-outline btn-lg" style="width: 100%; justify-content: center; margin-bottom: 0.5rem;">
-                        <span>Preinscripción CINU</span>
+                        <span>Registro de Carnet</span>
                         <span>→</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('login') }}" class="btn btn-gold btn-lg" style="width: 100%; justify-content: center;">
-                        <span>Acceder al SICEU</span>
+                        <span>Acceder al Portal</span>
                         <span>→</span>
                     </a>
                 </li>
@@ -131,11 +127,11 @@
                 <!-- Botones de Acción con Alta Visibilidad -->
                 <div class="hero-cta-group">
                     <a href="{{ route('login') }}" class="btn btn-gold btn-lg">
-                        <span>Acceso al SICEU</span>
+                        <span>Acceso al Portal</span>
                         <span aria-hidden="true">→</span>
                     </a>
                     <a href="{{ route('registro') }}" class="btn btn-blue btn-lg">
-                        <span>Preinscripción CINU</span>
+                        <span>Preinscripción</span>
                         <span aria-hidden="true">→</span>
                     </a>
                     <a href="#carreras" class="btn btn-outline btn-lg">
@@ -194,7 +190,7 @@
             <div class="section-header">
                 <div class="section-header-flex">
                     <div>
-                        <div class="section-number">Sección 01 · Identidad Institucional</div>
+                        <div class="section-number">Identidad Institucional</div>
                         <h2 class="text-title-section">
                             Los pilares que forjan a nuestros profesionales
                         </h2>
@@ -246,8 +242,8 @@
                     </div>
 
                     <div style="margin-top: 1rem;">
-                        <a href="#admisiones" class="btn btn-outline" style="font-size: 1rem;">
-                            <span>Conocer requisitos de ingreso</span>
+                        <a href="#carnetizacion" class="btn btn-outline" style="font-size: 1rem;">
+                            <span>Conocer requisitos de carnetización</span>
                             <span aria-hidden="true">→</span>
                         </a>
                     </div>
@@ -257,14 +253,14 @@
         </div>
     </section>
 
-    <!-- ── Sección 3: Explorador de Carreras ──────────────────────────────── -->
+    <!-- ── Sección 3: Explorador de Carreras (Horizontal) ──────────────────── -->
     <section id="carreras" class="section">
         <div class="container">
             
             <div class="section-header">
                 <div class="section-header-flex">
                     <div>
-                        <div class="section-number">Sección 02 · Oferta Académica</div>
+                        <div class="section-number">Oferta Académica</div>
                         <h2 class="text-title-section">
                             Explora nuestras carreras politécnicas
                         </h2>
@@ -275,82 +271,75 @@
                 </div>
             </div>
 
-            <!-- Selector de Facultades -->
+            <!-- Selector de Facultades (Horizontal) -->
             <div class="faculty-nav-strip" role="tablist" aria-label="Facultades">
                 <button type="button" role="tab" aria-selected="true" class="faculty-tab-btn active" data-faculty="ingenieria">
-                    Facultad de Ingeniería
+                    Ingenierías
                 </button>
-                <button type="button" role="tab" aria-selected="false" class="faculty-tab-btn" data-faculty="sociales">
-                    Ciencias Sociales y Administrativas
-                </button>
-                <button type="button" role="tab" aria-selected="false" class="faculty-tab-btn" data-faculty="tsu">
-                    Técnico Superior Universitario (TSU)
+                <button type="button" role="tab" aria-selected="false" class="faculty-tab-btn" data-faculty="licenciaturas_tsu">
+                    Licenciaturas y TSU
                 </button>
             </div>
 
-            <!-- Módulo interactivo de carreras -->
-            <div class="explorer-grid">
+            <!-- Selector Horizontal de Carreras (Sin scroll vertical excesivo) -->
+            <div id="careersList" class="career-nav-strip" role="tablist" aria-orientation="horizontal" aria-label="Lista de carreras">
+                <!-- Rellenado por JS: Fichas horizontales compactas -->
+            </div>
+
+            <!-- Ficha / Dossier Horizontal de la Carrera -->
+            <div class="explorer-grid" role="tabpanel" tabindex="0" aria-label="Detalle de la carrera seleccionada">
                 
-                <!-- Lista izquierda de carreras -->
-                <div id="careersList" class="explorer-list" role="tablist" aria-orientation="vertical" aria-label="Lista de carreras">
-                    <!-- Rellenado por JS -->
+                <div class="dossier-photo-bar" style="aspect-ratio: 4 / 3;">
+                    <img id="dossierImg" src="{{ asset('img/carrera-sistemas.webp') }}" alt="Área académica de la carrera">
+                    <div id="dossierCode" class="dossier-photo-tag">ING-SIS-10</div>
+                    <div class="dossier-photo-footer">
+                        <span id="dossierDegree">Ingeniero de Sistemas</span>
+                        <span id="dossierDuration" style="color: var(--unefa-gold); font-weight: 800;">10 Semestres</span>
+                    </div>
                 </div>
 
-                <!-- Dossier detallado de la carrera seleccionada -->
-                <div class="explorer-dossier" role="tabpanel" tabindex="0" aria-label="Detalle de la carrera seleccionada">
-                    <div class="dossier-photo-bar">
-                        <img id="dossierImg" src="{{ asset('img/carrera-sistemas.webp') }}" alt="Área académica de la carrera">
-                        <div id="dossierCode" class="dossier-photo-tag">ING-SIS-10</div>
-                        <div class="dossier-photo-footer">
-                            <span id="dossierDegree">Ingeniero de Sistemas</span>
-                            <span id="dossierDuration" style="color: var(--unefa-gold); font-weight: 800;">10 Semestres</span>
+                <div class="dossier-content">
+                    <div>
+                        <span class="badge-tag accent-blue" style="margin-bottom: 0.6rem;">Pensum Oficial 2026</span>
+                        <h3 id="dossierTitle" class="text-title-card" style="font-size: 1.7rem; margin-bottom: 0.75rem;">
+                            Ingeniería de Sistemas
+                        </h3>
+                        <p id="dossierDesc" style="font-size: 1.05rem; color: var(--text-secondary); line-height: 1.7;">
+                            Formación en ingeniería de software crítico, arquitectura de sistemas distribuidos, bases de datos masivas, ciberseguridad y computación para la defensa y el desarrollo soberano de la nación.
+                        </p>
+                    </div>
+
+                    <div>
+                        <strong style="display: block; font-size: 1.05rem; margin-bottom: 0.85rem; color: var(--unefa-navy);">
+                            Competencias Principales del Egresado:
+                        </strong>
+                        <div id="dossierCompetencies" class="competencies-list">
+                            <!-- Inyectado por JS -->
                         </div>
                     </div>
 
-                    <div class="dossier-content">
-                        <div>
-                            <span class="badge-tag accent-blue" style="margin-bottom: 0.6rem;">Pensum Oficial 2026</span>
-                            <h3 id="dossierTitle" class="text-title-card" style="font-size: 1.8rem; margin-bottom: 0.75rem;">
-                                Ingeniería de Sistemas
-                            </h3>
-                            <p id="dossierDesc" style="font-size: 1.1rem; color: var(--text-secondary); line-height: 1.75;">
-                                Formación en ingeniería de software crítico, arquitectura de sistemas distribuidos, bases de datos masivas, ciberseguridad y computación para la defensa y el desarrollo soberano de la nación.
-                            </p>
-                        </div>
-
-                        <div>
-                            <strong style="display: block; font-size: 1.05rem; margin-bottom: 1rem; color: var(--unefa-navy);">
-                                Competencias Principales del Egresado:
-                            </strong>
-                            <div id="dossierCompetencies" class="competencies-list">
-                                <!-- Inyectado por JS -->
-                            </div>
-                        </div>
-
-                        <div>
-                            <strong style="display: block; font-size: 1.05rem; margin-bottom: 0.75rem; color: var(--unefa-navy);">
-                                Asignaturas Clave de la Malla:
-                            </strong>
-                            <div id="dossierSubjects" class="subjects-wrap">
-                                <!-- Inyectado por JS -->
-                            </div>
-                        </div>
-
-                        <div style="padding-top: 1.25rem; border-top: 2px solid var(--border-subtle); display: flex; gap: 1rem; flex-wrap: wrap;">
-                            <a href="{{ route('registro') }}" class="btn btn-gold btn-lg">
-                                <span>Postularme en esta carrera</span>
-                                <span aria-hidden="true">→</span>
-                            </a>
-                            <a href="{{ route('login') }}" class="btn btn-outline btn-lg">
-                                <span>Acceso SICEU</span>
-                                <span aria-hidden="true">→</span>
-                            </a>
-                            <a href="#servicios" class="btn btn-outline btn-lg">
-                                <span>Servicios estudiantiles</span>
-                            </a>
+                    <div>
+                        <strong style="display: block; font-size: 1.05rem; margin-bottom: 0.75rem; color: var(--unefa-navy);">
+                            Asignaturas Clave de la Malla:
+                        </strong>
+                        <div id="dossierSubjects" class="subjects-wrap">
+                            <!-- Inyectado por JS -->
                         </div>
                     </div>
 
+                    <div style="padding-top: 1.25rem; border-top: 2px solid var(--border-subtle); display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <a href="{{ route('registro') }}" class="btn btn-gold btn-lg">
+                            <span>Registrarme con esta carrera</span>
+                            <span aria-hidden="true">→</span>
+                        </a>
+                        <a href="{{ route('login') }}" class="btn btn-outline btn-lg">
+                            <span>Acceso al Portal</span>
+                            <span aria-hidden="true">→</span>
+                        </a>
+                        <a href="#servicios" class="btn btn-outline btn-lg">
+                            <span>Servicios estudiantiles</span>
+                        </a>
+                    </div>
                 </div>
 
             </div>
@@ -358,55 +347,55 @@
         </div>
     </section>
 
-    <!-- ── Sección 4: Admisiones y Verificador CINU ────────────────────────── -->
-    <section id="admisiones" class="section" style="background-color: var(--bg-secondary);">
+    <!-- ── Sección 4: Carnetización y Control de Asistencias ───────────────── -->
+    <section id="carnetizacion" class="section" style="background-color: var(--bg-secondary);">
         <div class="container">
             
             <div class="section-header">
                 <div class="section-header-flex">
                     <div>
-                        <div class="section-number">Sección 03 · Admisión &amp; Nivelación</div>
+                        <div class="section-number">Carnetización &amp; Asistencias</div>
                         <h2 class="text-title-section">
-                            Ruta de ingreso y verificador de recaudos CINU
+                            Activación de carnet digital y registro estudiantil
                         </h2>
                     </div>
-                    <p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 30rem; line-height: 1.7;">
-                        Todos los aspirantes formalizan su acceso a través del Curso Integral de Nivelación Universitaria. Verifica tus recaudos antes de iniciar el registro.
+                    <p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 32rem; line-height: 1.7;">
+                        Plataforma dirigida a estudiantes regulares y cursantes que ya aprobaron el Curso Introductorio (CINU). Verifica tus recaudos para emitir tu carnet digital con QR y habilitar el pase de asistencia.
                     </p>
                 </div>
             </div>
 
             <div class="calc-grid">
                 
-                <!-- Columna Izquierda: Fases del Proceso e Instalaciones -->
+                <!-- Columna Izquierda: Fases de Activación e Instalaciones -->
                 <div>
                     <div class="timeline-dossier">
                         <div class="timeline-step">
                             <span class="timeline-num">01</span>
                             <div class="timeline-body">
-                                <strong>Registro Digital</strong>
-                                <p>Creación de expediente en el portal, selección de carrera politécnica y sede regional asignada.</p>
+                                <strong>Aprobación de CINU / Estatus Regular</strong>
+                                <p>Haber aprobado satisfactoriamente el Curso Introductorio (CINU) o mantener condición de estudiante regular activo.</p>
                             </div>
                         </div>
                         <div class="timeline-step">
                             <span class="timeline-num">02</span>
                             <div class="timeline-body">
-                                <strong>Consignación de Recaudos</strong>
-                                <p>Revisión física de documentos en la Unidad de Control de Estudios de tu núcleo UNEFA.</p>
+                                <strong>Registro en la Plataforma</strong>
+                                <p>Carga de información personal, cédula de identidad, sede de estudio y carrera politécnica asignada.</p>
                             </div>
                         </div>
                         <div class="timeline-step">
                             <span class="timeline-num">03</span>
                             <div class="timeline-body">
-                                <strong>Cursado del CINU</strong>
-                                <p>14 semanas intensivas en Matemática, Habilidades de Comunicación y Doctrina Cívico-Militar.</p>
+                                <strong>Validación de Recaudos</strong>
+                                <p>Verificación de la constancia de aprobación de CINU y matrícula activa en la coordinación académica.</p>
                             </div>
                         </div>
                         <div class="timeline-step">
                             <span class="timeline-num">04</span>
                             <div class="timeline-body">
-                                <strong>Activación en SICEU</strong>
-                                <p>Asignación definitiva de matrícula e inicio del primer semestre académico regular.</p>
+                                <strong>Emisión de Carnet QR</strong>
+                                <p>Activación de tu credencial digital segura para el registro de asistencia en tiempo real en cada clase.</p>
                             </div>
                         </div>
                     </div>
@@ -414,8 +403,8 @@
                     <div class="dossier-photo-bar" style="margin-top: 1.5rem; border-radius: var(--radius-md); aspect-ratio: 16 / 9;">
                         <img src="{{ asset('img/sede-central.webp') }}" alt="Instalaciones de la UNEFA">
                         <div class="dossier-photo-footer">
-                            <span>Sedes en los 24 Estados</span>
-                            <span style="color: var(--unefa-gold); font-weight: 800;">100% Gratuidad</span>
+                            <span>Control de Asistencia Digital</span>
+                            <span style="color: var(--unefa-gold); font-weight: 800;">Código QR Seguro</span>
                         </div>
                     </div>
                 </div>
@@ -424,21 +413,21 @@
                 <div class="interactive-box">
                     <div class="calc-progress-header">
                         <div>
-                            <span class="badge-tag accent-blue" style="margin-bottom: 0.5rem;">Herramienta del Aspirante</span>
-                            <h3 class="text-title-card" style="font-size: 1.5rem;">Verificador de Recaudos</h3>
+                            <span class="badge-tag accent-blue" style="margin-bottom: 0.5rem;">Herramienta del Cursante</span>
+                            <h3 class="text-title-card" style="font-size: 1.5rem;">Verificador de Recaudos para Carnetización</h3>
                         </div>
                         <div class="text-right">
-                            <div id="porcentaje-recaudos" class="calc-percentage">33%</div>
+                            <div id="porcentaje-recaudos" class="calc-percentage">50%</div>
                             <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">Listo para consignar</span>
                         </div>
                     </div>
 
                     <div class="calc-progress-bar-bg">
-                        <div id="barra-recaudos" class="calc-progress-bar-fill" style="width: 33%;"></div>
+                        <div id="barra-recaudos" class="calc-progress-bar-fill" style="width: 50%;"></div>
                     </div>
 
                     <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
-                        Marca los recaudos que ya posees en físico para calcular tu preparación:
+                        Marca los recaudos que posees para tramitar tu carnet digital y habilitar tu control de asistencias:
                     </p>
 
                     <div class="checklist-group">
@@ -454,31 +443,15 @@
                             <div style="display: flex; align-items: center;">
                                 <input type="checkbox" style="display: none;" checked>
                                 <span class="custom-checkbox">✓</span>
-                                <span>Título de bachiller autenticado por Zona Educativa</span>
-                            </div>
-                            <span class="badge-tag" style="font-size: 0.75rem;">Fase 2</span>
-                        </label>
-                        <label class="check-item-label">
-                            <div style="display: flex; align-items: center;">
-                                <input type="checkbox" style="display: none;">
-                                <span class="custom-checkbox"></span>
-                                <span>Notas certificadas de 1º a 5º año de educación media</span>
-                            </div>
-                            <span class="badge-tag" style="font-size: 0.75rem;">Fase 2</span>
-                        </label>
-                        <label class="check-item-label">
-                            <div style="display: flex; align-items: center;">
-                                <input type="checkbox" style="display: none;">
-                                <span class="custom-checkbox"></span>
-                                <span>Certificado de participación en el SNI / OPSU</span>
+                                <span>Constancia o certificación de aprobación del CINU</span>
                             </div>
                             <span class="badge-tag" style="font-size: 0.75rem;">Fase 1</span>
                         </label>
-                        <label class="check-item-label">
+                        <label class="check-item-label checked">
                             <div style="display: flex; align-items: center;">
-                                <input type="checkbox" style="display: none;">
-                                <span class="custom-checkbox"></span>
-                                <span>Partida de nacimiento en formato reciente legible</span>
+                                <input type="checkbox" style="display: none;" checked>
+                                <span class="custom-checkbox">✓</span>
+                                <span>Planilla de asignación de carrera o comprobante de matrícula</span>
                             </div>
                             <span class="badge-tag" style="font-size: 0.75rem;">Fase 2</span>
                         </label>
@@ -486,24 +459,40 @@
                             <div style="display: flex; align-items: center;">
                                 <input type="checkbox" style="display: none;">
                                 <span class="custom-checkbox"></span>
-                                <span>2 fotografías recientes fondo blanco tipo carnet</span>
+                                <span>Fotografía digital fondo blanco para el carnet QR</span>
+                            </div>
+                            <span class="badge-tag" style="font-size: 0.75rem;">Fase 2</span>
+                        </label>
+                        <label class="check-item-label">
+                            <div style="display: flex; align-items: center;">
+                                <input type="checkbox" style="display: none;">
+                                <span class="custom-checkbox"></span>
+                                <span>Copia simple de partida de nacimiento y título de bachiller</span>
+                            </div>
+                            <span class="badge-tag" style="font-size: 0.75rem;">Fase 3</span>
+                        </label>
+                        <label class="check-item-label">
+                            <div style="display: flex; align-items: center;">
+                                <input type="checkbox" style="display: none;">
+                                <span class="custom-checkbox"></span>
+                                <span>Horario o constancia de materias inscritas del período</span>
                             </div>
                             <span class="badge-tag" style="font-size: 0.75rem;">Fase 3</span>
                         </label>
                     </div>
 
                     <p id="texto-mensaje-recaudos" style="text-align: center; font-size: 0.95rem; font-weight: 700; color: var(--unefa-blue); margin-bottom: 1.25rem;">
-                        Tienes 2 de 6 recaudos completados.
+                        Tienes 3 de 6 recaudos completados.
                     </p>
 
                     <a href="{{ route('registro') }}" class="btn btn-gold btn-lg" style="width: 100%; justify-content: center;">
-                        <span>Iniciar preinscripción digital</span>
+                        <span>Iniciar registro de carnetización</span>
                         <span aria-hidden="true">→</span>
                     </a>
 
                     <p style="text-align: center; font-size: 0.82rem; color: var(--text-muted); margin-top: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.4rem;">
                         @include('partials.icon', ['name' => 'shield-check', 'clase' => 'h-4 w-4 text-slate-500'])
-                        Trámite 100% público y gratuito, sin intermediarios
+                        Sistema de Carnetización y Asistencias Digitales · UNEFA
                     </p>
                 </div>
 
@@ -512,14 +501,14 @@
         </div>
     </section>
 
-    <!-- ── Sección 5: Servicios Digitales y SICEU ─────────────────────────── -->
+    <!-- ── Sección 5: Servicios Digitales ─────────────────────────────────── -->
     <section id="servicios" class="section">
         <div class="container">
             
             <div class="section-header">
                 <div class="section-header-flex">
                     <div>
-                        <div class="section-number">Sección 04 · Ecosistema Digital</div>
+                        <div class="section-number">Ecosistema Digital</div>
                         <h2 class="text-title-section">
                             Plataformas de gestión académica y estudiantil
                         </h2>
@@ -534,7 +523,7 @@
                 
                 <div class="service-quad-cell">
                     <div>
-                        <span class="badge-tag accent-gold" style="margin-bottom: 1.2rem;">Portal SICEU</span>
+                        <span class="badge-tag accent-gold" style="margin-bottom: 1.2rem;">Portal Académico</span>
                         <h3 class="text-title-card" style="font-size: 1.4rem; margin-bottom: 0.75rem;">
                             Control de Estudios en Línea
                         </h3>
@@ -543,7 +532,7 @@
                         </p>
                     </div>
                     <a href="{{ route('login') }}" class="btn btn-gold btn-sm" style="width: 100%; justify-content: center;">
-                        <span>Acceder a SICEU</span>
+                        <span>Acceder al Portal</span>
                         <span aria-hidden="true">→</span>
                     </a>
                 </div>
@@ -558,10 +547,10 @@
                             Identificación digital institucional con pase de lista en tiempo real mediante aplicación móvil y código QR seguro.
                         </p>
                     </div>
-                    <button type="button" data-abrir-qr class="btn btn-blue btn-sm" style="width: 100%; justify-content: center;">
+                    <a href="{{ route('login') }}" class="btn btn-blue btn-sm" style="width: 100%; justify-content: center;">
                         <span>Consultar Carnet</span>
                         <span aria-hidden="true">→</span>
-                    </button>
+                    </a>
                 </div>
 
                 <div class="service-quad-cell">
@@ -623,7 +612,7 @@
                         Universidad Nacional Experimental Politécnica de la Fuerza Armada Nacional Bolivariana. Excelencia educativa abierta al pueblo con presencia soberana en toda Venezuela.
                     </p>
                     <a href="{{ route('login') }}" class="btn btn-gold btn-sm">
-                        <span>Acceso al SICEU</span>
+                        <span>Acceso al Portal</span>
                         <span aria-hidden="true">→</span>
                     </a>
                 </div>
@@ -631,20 +620,20 @@
                 <div class="footer-col">
                     <h4>Navegación</h4>
                     <ul class="footer-links">
-                        <li><a href="#inicio">Página principal</a></li>
-                        <li><a href="#nosotros">Doctrina institucional</a></li>
-                        <li><a href="#carreras">Catálogo de carreras</a></li>
-                        <li><a href="#admisiones">Admisión CINU</a></li>
-                        <li><a href="#servicios">Servicios digitales</a></li>
+                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#nosotros">La UNEFA</a></li>
+                        <li><a href="#carreras">Carreras</a></li>
+                        <li><a href="#carnetizacion">Carnetización</a></li>
+                        <li><a href="#servicios">Servicios</a></li>
                     </ul>
                 </div>
 
                 <div class="footer-col">
-                    <h4>Plataformas SICEU</h4>
+                    <h4>Plataformas Académicas</h4>
                     <ul class="footer-links">
-                        <li><a href="{{ route('login') }}">SICEU Estudiantes</a></li>
-                        <li><a href="{{ route('login') }}">SICEU Docentes y Cátedras</a></li>
-                        <li><a href="{{ route('registro') }}">Preinscripción CINU</a></li>
+                        <li><a href="{{ route('login') }}">Portal Estudiantes</a></li>
+                        <li><a href="{{ route('login') }}">Portal Docentes y Cátedras</a></li>
+                        <li><a href="{{ route('registro') }}">Registro de Carnet Digital</a></li>
                         <li><a href="#servicios">Carnetización y Asistencia QR</a></li>
                         <li><a href="#servicios">Biblioteca virtual</a></li>
                     </ul>

@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Panel Estudiante | SICEU UNEFA')
+@section('title', 'Panel Estudiante | Portal UNEFA')
 @section('header-subtitle', 'Panel Estudiante')
 
 @section('content')
@@ -52,7 +52,7 @@
                             </span>
                             <span>
                                 <span class="block font-mono text-[10px] font-bold tracking-[2px] text-slate-900">||| | |||| || ||| |||| | |||</span>
-                                <span class="block font-mono text-[8px] font-bold text-slate-500">MAT: 2022-04921-SICEU</span>
+                                <span class="block font-mono text-[8px] font-bold text-slate-500">MAT: 2022-04921-UNEF</span>
                             </span>
                         </div>
                     </div>

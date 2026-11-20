@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@yield('title', 'UNEFA')</title>
-    <meta name="description" content="@yield('descripcion', 'Portal SICEU de la Universidad Nacional Experimental Politécnica de la Fuerza Armada Nacional Bolivariana.')" />
+    <meta name="description" content="@yield('descripcion', 'Portal web de la Universidad Nacional Experimental Politécnica de la Fuerza Armada Nacional Bolivariana.')" />
     <link rel="icon" type="image/png" href="{{ asset('assets/img/logos/logo_unefa.png') }}" />
     <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
 </head>
@@ -17,7 +17,7 @@
                 </span>
                 <span class="flex flex-col justify-center">
                     <span class="text-base font-black tracking-wider text-slate-900">UNEFA</span>
-                    <span class="text-[10px] font-semibold uppercase tracking-wide text-slate-500">@yield('header-subtitle', 'Portal SICEU')</span>
+                    <span class="text-[10px] font-semibold uppercase tracking-wide text-slate-500">@yield('header-subtitle', 'Portal Académico')</span>
                 </span>
             </a>
 

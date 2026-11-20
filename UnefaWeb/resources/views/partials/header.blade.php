@@ -15,21 +15,17 @@
             <a data-nav-link="inicio" href="{{ route('landing') }}#inicio" class="rounded-lg px-3.5 py-2.5 text-sm font-bold text-slate-800 transition-colors hover:bg-slate-100 hover:text-unefa-navy">Inicio</a>
             <a data-nav-link="nosotros" href="{{ route('landing') }}#nosotros" class="rounded-lg px-3.5 py-2.5 text-sm font-bold text-slate-800 transition-colors hover:bg-slate-100 hover:text-unefa-navy">Doctrina</a>
             <a data-nav-link="carreras" href="{{ route('landing') }}#carreras" class="rounded-lg px-3.5 py-2.5 text-sm font-bold text-slate-800 transition-colors hover:bg-slate-100 hover:text-unefa-navy">Carreras</a>
-            <a data-nav-link="admisiones" href="{{ route('landing') }}#admisiones" class="rounded-lg px-3.5 py-2.5 text-sm font-bold text-slate-800 transition-colors hover:bg-slate-100 hover:text-unefa-navy">Admisión CINU</a>
+            <a data-nav-link="carnetizacion" href="{{ route('landing') }}#carnetizacion" class="rounded-lg px-3.5 py-2.5 text-sm font-bold text-slate-800 transition-colors hover:bg-slate-100 hover:text-unefa-navy">Carnetización</a>
             <a data-nav-link="servicios" href="{{ route('landing') }}#servicios" class="rounded-lg px-3.5 py-2.5 text-sm font-bold text-slate-800 transition-colors hover:bg-slate-100 hover:text-unefa-navy">Servicios</a>
         </nav>
 
         <div class="flex items-center gap-2.5">
             <a href="{{ route('registro') }}" class="hidden items-center justify-center gap-2 rounded-[14px] bg-unefa-gold px-4 py-2.5 text-sm font-black text-unefa-navy shadow-md transition hover:brightness-105 md:flex">
-                Preinscripción CINU
+                Carnet Digital
             </a>
             <a href="{{ route('login') }}" class="hidden items-center justify-center gap-2 rounded-[14px] border-2 border-slate-300 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:border-unefa-navy hover:bg-slate-50 md:flex">
-                Portal SICEU
+                Portal Web
             </a>
-            <button type="button" data-abrir-qr class="flex h-10 items-center justify-center gap-1.5 rounded-full border border-slate-300 bg-slate-50 px-3.5 transition hover:bg-slate-100" aria-label="Abrir escáner QR">
-                @include('partials.icon', ['name' => 'qr-code', 'clase' => 'h-5 w-5 text-unefa-navy'])
-                <span class="hidden text-xs font-bold text-unefa-goldDark sm:inline">ScanerQR</span>
-            </button>
             <button type="button" id="boton-menu" class="flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 bg-slate-50 transition hover:bg-slate-100 lg:hidden" aria-label="Abrir menú" aria-expanded="false" aria-controls="cajon-menu">
                 @include('partials.icon', ['name' => 'menu', 'clase' => 'h-5 w-5 text-slate-900'])
             </button>
@@ -73,9 +69,9 @@
                     <span class="flex-1 text-base font-bold text-neutral-950">Carreras</span>
                     @include('partials.icon', ['name' => 'arrow-right', 'clase' => 'h-4 w-4 text-unefa-gold'])
                 </a>
-                <a href="{{ route('landing') }}#admisiones" data-cerrar-menu class="flex items-center border-b border-[rgba(148,163,184,0.2)] py-3.5">
+                <a href="{{ route('landing') }}#carnetizacion" data-cerrar-menu class="flex items-center border-b border-[rgba(148,163,184,0.2)] py-3.5">
                     <span class="w-[38px] font-mono text-xs font-bold text-unefa-blue">[04]</span>
-                    <span class="flex-1 text-base font-bold text-neutral-950">Admisiones CINU</span>
+                    <span class="flex-1 text-base font-bold text-neutral-950">Carnetización</span>
                     @include('partials.icon', ['name' => 'arrow-right', 'clase' => 'h-4 w-4 text-unefa-gold'])
                 </a>
                 <a href="{{ route('landing') }}#servicios" data-cerrar-menu class="flex items-center border-b border-[rgba(148,163,184,0.2)] py-3.5">
@@ -104,10 +100,10 @@
 
             <div class="mb-5 flex flex-col gap-2.5">
                 <a href="{{ route('registro') }}" data-cerrar-menu class="flex items-center justify-center rounded-[14px] bg-unefa-gold py-3.5 text-sm font-extrabold text-unefa-navy transition hover:brightness-105">
-                    Preinscripción CINU
+                    Preinscripción
                 </a>
                 <a href="{{ route('login') }}" data-cerrar-menu class="flex items-center justify-center rounded-[14px] border-2 border-slate-300 py-3.5 text-sm font-bold text-neutral-950 transition hover:bg-slate-50">
-                    Portal SICEU
+                    Portal Web
                 </a>
             </div>
 

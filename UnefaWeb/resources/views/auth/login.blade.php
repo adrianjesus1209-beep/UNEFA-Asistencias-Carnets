@@ -1,7 +1,7 @@
 @extends('layouts.public')
 
-@section('title', 'Portal SICEU — Iniciar sesión | UNEFA')
-@section('header-subtitle', 'SICEU en línea')
+@section('title', 'Portal Académico — Iniciar sesión | UNEFA')
+@section('header-subtitle', 'Portal en línea')
 
 @push('scripts')
     <script src="{{ asset('js/login.js') }}" defer></script>
@@ -22,7 +22,7 @@
                             </span>
                             <div>
                                 <p class="mb-[3px] text-[10px] font-semibold tracking-[1px] text-white/75">PORTAL ACADÉMICO</p>
-                                <p class="text-[17px] font-black text-white">SICEU en línea</p>
+                                <p class="text-[17px] font-black text-white">Portal en línea</p>
                             </div>
                         </div>
                         <span class="rounded-full bg-unefa-gold px-2.5 py-1.5 text-[11px] font-black text-unefa-navy">2026-I</span>
@@ -36,7 +36,7 @@
                 <div class="mb-5 rounded-[22px] border border-slate-200 bg-white p-5 shadow-lg">
                     <div class="mb-5">
                         <div class="mb-3 flex flex-wrap gap-2">
-                            <span class="rounded-lg bg-[rgba(4,15,217,0.1)] px-2.5 py-1 text-[11px] font-extrabold text-unefa-blue">SICEU / Acceso</span>
+                            <span class="rounded-lg bg-[rgba(4,15,217,0.1)] px-2.5 py-1 text-[11px] font-extrabold text-unefa-blue">Portal / Acceso</span>
                             <span class="rounded-lg border border-slate-200 bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-600">Periodo 2026-I</span>
                         </div>
 
@@ -156,8 +156,8 @@
                         </div>
 
                         {{-- Boton de envio --}}
-                        <button type="submit" id="boton-acceder" class="mt-1.5 flex w-full items-center justify-center gap-2 rounded-[14px] bg-unefa-gold py-4 text-[15px] font-black text-unefa-navy shadow-md transition hover:brightness-105 disabled:opacity-70" aria-label="Acceder al SICEU">
-                            <span data-texto-boton>Acceder al SICEU</span>
+                        <button type="submit" id="boton-acceder" class="mt-1.5 flex w-full items-center justify-center gap-2 rounded-[14px] bg-unefa-gold py-4 text-[15px] font-black text-unefa-navy shadow-md transition hover:brightness-105 disabled:opacity-70" aria-label="Acceder al Portal">
+                            <span data-texto-boton>Acceder al Portal</span>
                             <span class="text-base font-black text-unefa-navy">→</span>
                         </button>
 
@@ -165,7 +165,7 @@
                         <div class="mt-6 flex flex-col gap-2.5 border-t border-slate-300 pt-4">
                             <p class="text-center text-xs font-semibold text-slate-600">¿Eres aspirante de nuevo ingreso?</p>
                             <a href="{{ route('registro') }}" class="flex items-center justify-center rounded-[14px] border border-slate-300 py-3.5 text-[13px] font-bold text-neutral-950 transition hover:bg-slate-50">
-                                Preinscripción al CINU 2026-I
+                                Preinscripción en Línea 2026-I
                             </a>
                         </div>
 

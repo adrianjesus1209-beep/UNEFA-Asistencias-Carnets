@@ -1,5 +1,5 @@
 /**
- * Interactividad del login SICEU: selector V-/E-, campo numerico, mostrar
+ * Interactividad del login institucional: selector V-/E-, campo numerico, mostrar
  * clave y flujo de acceso simulado. Equivalente web de src/app/login.tsx.
  */
 (function () {
@@ -119,7 +119,7 @@
             ocultarAlertas();
             if (alertaExito && textoExito) {
                 textoExito.textContent =
-                    'Credenciales verificadas. Abriendo tu panel SICEU, ' +
+                    'Credenciales verificadas. Abriendo tu panel institucional, ' +
                     (nacionalidad ? nacionalidad.value : 'V') + '-' + cedula + '.';
                 alertaExito.classList.remove('hidden');
             }

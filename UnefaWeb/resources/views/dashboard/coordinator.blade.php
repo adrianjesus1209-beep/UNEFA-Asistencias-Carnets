@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Panel Coordinador | SICEU UNEFA')
+@section('title', 'Panel Coordinador | Portal UNEFA')
 @section('header-subtitle', 'Panel Coordinador')
 
 @section('content')

@@ -159,19 +159,33 @@
 .hero-photo-subgrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.25rem;
-  margin-top: 1.25rem;
+  border-top: 1.5px solid var(--border-subtle);
+  background: var(--bg-secondary);
 }
 
 .subgrid-badge {
-  border: 2px solid var(--border-primary);
-  border-radius: var(--radius-md);
-  background: var(--bg-card);
+  border: none;
+  border-radius: 0;
+  background: transparent;
   padding: 1rem 1.25rem;
   display: flex;
   align-items: center;
   gap: 0.9rem;
-  box-shadow: var(--shadow-soft);
+  box-shadow: none;
+}
+
+.subgrid-badge:first-child {
+  border-right: 1.5px solid var(--border-subtle);
+}
+
+@media (max-width: 640px) {
+  .hero-photo-subgrid {
+    grid-template-columns: 1fr;
+  }
+  .subgrid-badge:first-child {
+    border-right: none;
+    border-bottom: 1.5px solid var(--border-subtle);
+  }
 }
 
 .subgrid-badge-icon {
@@ -346,30 +360,49 @@
   }
 }
 
+.career-nav-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .career-nav-strip {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    scroll-snap-type: x mandatory;
+  }
+  .career-nav-strip .career-item-btn {
+    flex: 0 0 220px;
+    scroll-snap-align: start;
+  }
+}
+
 .career-item-btn {
-  padding: 1rem 1.25rem;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid var(--border-subtle);
+  padding: 0.85rem 1rem;
+  background: var(--bg-secondary);
+  border: 1.5px solid var(--border-primary);
+  border-radius: var(--radius-md);
   text-align: left;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
-  transition: background-color 0.15s ease;
-}
-
-.career-item-btn:last-child {
-  border-bottom: none;
+  transition: all 0.15s ease;
 }
 
 .career-item-btn:hover {
-  background-color: var(--bg-tertiary);
+  background-color: #ffffff;
+  border-color: var(--unefa-blue);
 }
 
 .career-item-btn.active {
   background-color: #ffffff;
-  box-shadow: inset 4px 0 0 var(--unefa-gold);
+  border-color: var(--unefa-blue);
+  box-shadow: 0 4px 12px rgba(0, 40, 85, 0.1);
+  border-top: 3px solid var(--unefa-gold);
 }
 
 .career-item-code {
@@ -589,7 +622,7 @@
 .calc-progress-bar-fill {
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--unefa-blue) 0%, var(--unefa-gold) 100%);
+  background-color: var(--unefa-gold);
   transition: width 0.3s ease;
 }
 

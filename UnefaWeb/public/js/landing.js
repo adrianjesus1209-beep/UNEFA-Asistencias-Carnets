@@ -78,27 +78,27 @@
         subjects: ["Termodinámica", "Mecánica de Fluidos", "Diseño de Elementos", "Plantas de Potencia", "Vibraciones Mecánicas"]
       },
       {
-        id: "aeronautica",
-        code: "ING-AER-10",
-        title: "Ingeniería Aeronáutica",
+        id: "electronica",
+        code: "ING-ELE-10",
+        title: "Ingeniería Electrónica",
         duration: "10 Semestres (5 Años)",
-        degree: "Ingeniero Aeronáutico",
+        degree: "Ingeniero Electrónico",
         image: "/img/laboratorio-electronica.webp",
-        description: "Mantenimiento mayor de aeronaves, propulsión a reacción, aviónica y certificación aeroespacial con enfoque en soberanía de la aviación militar y comercial.",
+        description: "Automatización industrial, instrumentación electrónica, sistemas embebidos, procesamiento de señales y desarrollo de hardware para la soberanía tecnológica e industrial.",
         competencies: [
-          "Mantenimiento de aeronaves y turbinas",
-          "Sistemas de navegación y aviónica",
-          "Aerodinámica teórica y experimental",
-          "Regulaciones aeronáuticas INAC/OACI"
+          "Diseño de sistemas electrónicos y microcontroladores",
+          "Automatización y control de procesos industriales",
+          "Mantenimiento de sistemas de radar y comunicaciones",
+          "Robótica e instrumentación biomédica e industrial"
         ],
-        subjects: ["Aerodinámica", "Estructuras Aeronáuticas", "Turborreactores", "Aviónica", "Instrumentación de Vuelo"]
+        subjects: ["Circuitos Electrónicos", "Sistemas de Control", "Microprocesadores", "Instrumentación Industrial", "Electrónica de Potencia"]
       }
     ],
-    sociales: [
+    licenciaturas_tsu: [
       {
         id: "administracion",
         code: "LIC-AGM-08",
-        title: "Licenciatura en Administración y Gestión Municipal",
+        title: "Administración y Gestión Municipal",
         duration: "8 Semestres (4 Años)",
         degree: "Licenciado en Administración y Gestión Municipal",
         image: "/img/carrera-administracion.webp",
@@ -112,70 +112,68 @@
         subjects: ["Contabilidad Pública", "Presupuesto Nacional", "Derecho Administrativo", "Planificación Estratégica", "Políticas Públicas"]
       },
       {
+        id: "desastres",
+        code: "LIC-ADD-08",
+        title: "Administración de Desastres",
+        duration: "8 Semestres (4 Años)",
+        degree: "Licenciado en Administración de Desastres",
+        image: "/img/sede-central.webp",
+        description: "Gestión integral del riesgo socio-natural y tecnológico, formulación de planes de contingencia, defensa civil, respuesta humanitaria y resiliencia territorial ante eventos adversos.",
+        competencies: [
+          "Evaluación y cartografía de riesgos y amenazas",
+          "Coordinación táctica de protección civil y rescate",
+          "Logística humanitaria y refugios temporales",
+          "Manejo de crisis y continuidad operativa institucional"
+        ],
+        subjects: ["Gestión Integral de Riesgo", "Protección Civil y Rescate", "Meteorología y Sismología", "Logística Humanitaria", "Primeros Auxilios Avanzados"]
+      },
+      {
         id: "economia",
         code: "LIC-ECO-08",
-        title: "Licenciatura en Economía Social",
+        title: "Economía Social",
         duration: "8 Semestres (4 Años)",
         degree: "Licenciado en Economía Social",
         image: "/img/carrera-administracion.webp",
         description: "Análisis macroeconómico, proyectos socioproductivos, soberanía agroalimentaria y modelos alternativos de distribución de riqueza comunitaria.",
         competencies: [
-          "Evaluación de proyectos de inversión",
-          "Modelos económicos comunitarios",
-          "Econometría y estadística social",
-          "Comercio exterior soberano"
+          "Evaluación de proyectos de inversión socioproductiva",
+          "Modelos económicos comunales y cooperativos",
+          "Econometría y estadística social aplicada",
+          "Comercio exterior e integración regional soberana"
         ],
-        subjects: ["Microeconomía", "Macroeconomía", "Econometría", "Desarrollo Endógeno", "Finanzas Públicas"]
+        subjects: ["Microeconomía", "Macroeconomía", "Econometría Social", "Desarrollo Endógeno", "Finanzas Públicas"]
       },
       {
-        id: "turismo",
-        code: "LIC-TUR-08",
-        title: "Licenciatura en Turismo",
+        id: "educacion",
+        code: "LIC-EDU-08",
+        title: "Educación Integral",
         duration: "8 Semestres (4 Años)",
-        degree: "Licenciado en Turismo",
+        degree: "Licenciado en Educación Integral",
         image: "/img/sede-central.webp",
-        description: "Gestión sustentable de patrimonios naturales, hotelería ecosocialista, guiatura especializada y mercadotecnia turística internacional.",
+        description: "Formación docente con sentido cívico, didáctica contemporánea, diseño curricular contextualizado e investigación pedagógica para la enseñanza en los niveles de educación básica.",
         competencies: [
-          "Diseño de rutas ecoturísticas patrimoniales",
-          "Administración hotelera y recreativa",
-          "Planificación de destinos sustentables",
-          "Idiomas y relaciones públicas"
+          "Didáctica aplicada y procesos cognitivos del aprendizaje",
+          "Planificación y evaluación curricular por competencias",
+          "Orientación educativa, vocacional y comunitaria",
+          "Promoción de valores éticos, cívicos y patrióticos"
         ],
-        subjects: ["Geografía Turística", "Patrimonio Cultural", "Gestión Hotelera", "Ecoturismo", "Comercialización Turística"]
-      }
-    ],
-    tsu: [
+        subjects: ["Pedagogía y Didáctica", "Psicología del Aprendizaje", "Enseñanza de la Lengua y Matemática", "Planificación Educativa", "Práctica Docente"]
+      },
       {
         id: "tsu-sistemas",
-        code: "TSU-SIS-06",
-        title: "TSU en Análisis y Diseño de Sistemas",
+        code: "TSU-ADS-06",
+        title: "TSU en Análisis y Diseño de Sistemas / Datos",
         duration: "6 Semestres (3 Años)",
-        degree: "Técnico Superior Universitario en Sistemas",
+        degree: "Técnico Superior Universitario en Sistemas y Datos",
         image: "/img/carrera-tsu-sistemas.webp",
-        description: "Desarrollo rápido de aplicaciones, administración de redes locales, soporte de servidores Linux y mantenimiento de parques informáticos institucionales.",
+        description: "Desarrollo ágil de software, modelado y análisis de datos relacionales y no estructurados, soporte de servidores Linux y administración de redes informáticas institucionales.",
         competencies: [
-          "Programación web y bases de datos SQL",
-          "Soporte técnico y cableado estructurado",
-          "Configuración de servidores de red",
-          "Seguridad en puestos de trabajo"
+          "Desarrollo web fullstack y consumo de APIs",
+          "Modelado, limpieza y análisis de bases de datos",
+          "Administración de redes locales y soporte técnico",
+          "Implementación de políticas de respaldo y seguridad"
         ],
-        subjects: ["Algorítmica", "Base de Datos", "Redes de Datos", "Sistemas Operativos", "Desarrollo de Software"]
-      },
-      {
-        id: "tsu-enfermeria",
-        code: "TSU-ENF-06",
-        title: "TSU en Enfermería",
-        duration: "6 Semestres (3 Años)",
-        degree: "Técnico Superior Universitario en Enfermería",
-        image: "/img/carrera-enfermeria.webp",
-        description: "Atención primaria en salud, enfermería comunitaria, soporte de urgencias en hospitales militares y red de salud pública nacional.",
-        competencies: [
-          "Atención directa al paciente en sala",
-          "Primeros auxilios y soporte de trauma",
-          "Salud comunitaria y programas de inmunización",
-          "Ética profesional y bioética médica"
-        ],
-        subjects: ["Anatomía Humana", "Farmacología Básica", "Enfermería Comunitaria", "Atención de Emergencias", "Materno Infantil"]
+        subjects: ["Algoritmos y Programación", "Bases de Datos y SQL", "Análisis y Modelado de Datos", "Redes de Computadoras", "Sistemas Operativos"]
       }
     ]
   };

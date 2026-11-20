@@ -19,19 +19,20 @@
             <div>
                 <p class="mb-1 text-[13px] font-extrabold text-neutral-950">Navegación</p>
                 <ul class="flex flex-col gap-1.5">
-                    <li><a href="{{ route('landing') }}#inicio" class="py-0.5 text-xs font-semibold text-unefa-blue hover:underline">Página principal</a></li>
-                    <li><a href="{{ route('landing') }}#nosotros" class="py-0.5 text-xs font-semibold text-unefa-blue hover:underline">Doctrina</a></li>
-                    <li><a href="{{ route('landing') }}#carreras" class="py-0.5 text-xs font-semibold text-unefa-blue hover:underline">Catálogo carreras</a></li>
-                    <li><a href="{{ route('landing') }}#admisiones" class="py-0.5 text-xs font-semibold text-unefa-blue hover:underline">Admisión CINU</a></li>
+                    <li><a href="{{ route('landing') }}#inicio" class="py-0.5 text-xs font-semibold text-unefa-blue hover:underline">Inicio</a></li>
+                    <li><a href="{{ route('landing') }}#nosotros" class="py-0.5 text-xs font-semibold text-unefa-blue hover:underline">La UNEFA</a></li>
+                    <li><a href="{{ route('landing') }}#carreras" class="py-0.5 text-xs font-semibold text-unefa-blue hover:underline">Carreras</a></li>
+                    <li><a href="{{ route('landing') }}#carnetizacion" class="py-0.5 text-xs font-semibold text-unefa-blue hover:underline">Carnetización</a></li>
+                    <li><a href="{{ route('landing') }}#servicios" class="py-0.5 text-xs font-semibold text-unefa-blue hover:underline">Servicios</a></li>
                 </ul>
             </div>
 
             <div>
                 <p class="mb-1 text-[13px] font-extrabold text-neutral-950">Plataformas</p>
                 <ul class="flex flex-col gap-1.5">
-                    <li><a href="{{ route('login') }}" class="py-0.5 text-xs font-semibold text-unefa-blue hover:underline">SICEU estudiantes</a></li>
-                    <li><a href="{{ route('login') }}" class="py-0.5 text-xs font-semibold text-unefa-blue hover:underline">SICEU docentes</a></li>
-                    <li><a href="{{ route('registro') }}" class="py-0.5 text-xs font-semibold text-unefa-blue hover:underline">Preinscripción CINU</a></li>
+                    <li><a href="{{ route('login') }}" class="py-0.5 text-xs font-semibold text-unefa-blue hover:underline">Portal Estudiantes</a></li>
+                    <li><a href="{{ route('login') }}" class="py-0.5 text-xs font-semibold text-unefa-blue hover:underline">Portal Docentes</a></li>
+                    <li><a href="{{ route('registro') }}" class="py-0.5 text-xs font-semibold text-unefa-blue hover:underline">Registro de Carnet Digital</a></li>
                     <li><a href="{{ route('landing') }}#servicios" class="py-0.5 text-xs font-semibold text-unefa-blue hover:underline">Biblioteca digital</a></li>
                 </ul>
             </div>

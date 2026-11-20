@@ -1,5 +1,5 @@
 /**
- * Interactividad del registro CINU: wizard de 3 pasos con las validaciones
+ * Interactividad del registro de nuevo ingreso: wizard de 3 pasos con las validaciones
  * exactas de UnefaApp (src/app/registro.tsx).
  */
 (function () {
