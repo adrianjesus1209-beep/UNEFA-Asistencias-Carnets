@@ -40,16 +40,16 @@ export default function LandingScreen() {
   // Control de visibilidad de modales y pestana activa
   const [menuOpen, setMenuOpen] = useState(false);
   const [qrOpen, setQrOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'inicio' | 'carreras' | 'registro' | 'siceu'>('inicio');
+  const [activeTab, setActiveTab] = useState<'inicio' | 'carreras' | 'registro' | 'portal'>('inicio');
 
   // Posiciones verticales de cada seccion para desplazamiento suave
   const sectionPositions = useRef<{ [key: string]: number }>({});
-  const sectionTabs: Record<string, 'inicio' | 'carreras' | 'registro' | 'siceu'> = {
+  const sectionTabs: Record<string, 'inicio' | 'carreras' | 'registro' | 'portal'> = {
     inicio: 'inicio',
     nosotros: 'inicio',
     carreras: 'carreras',
     registro: 'registro',
-    servicios: 'siceu',
+    servicios: 'portal',
   };
 
   // Almacena la posicion vertical de una seccion al renderizarse
@@ -157,7 +157,7 @@ export default function LandingScreen() {
                 className="flex-row items-center justify-center gap-2 rounded-[14px] py-3.5 border border-slate-300 bg-transparent"
                 onPress={() => router.push('/login')}>
                 <Text className="text-sm font-bold text-neutral-950">
-                  Portal SICEU
+                  Portal
                 </Text>
               </Pressable>
 
@@ -561,7 +561,7 @@ export default function LandingScreen() {
             </View>
 
             <View className="gap-3.5">
-              {/* Servicio 01: Portal SICEU */}
+              {/* Servicio 01: Portal institucional */}
               <View
                 className="rounded-[18px] border border-slate-200 p-[18px] border-[1.5px] border-unefa-gold bg-white border-slate-200">
                 <View className="mb-2.5 flex-row gap-2">
@@ -573,7 +573,7 @@ export default function LandingScreen() {
                   </View>
                 </View>
                 <Text className="mb-1.5 text-lg font-black text-neutral-950">
-                  Portal SICEU
+                  Portal
                 </Text>
                 <Text className="mb-3.5 text-[13px] leading-[18px] text-slate-600">
                   Consulta de calificaciones, récord académico, inscripción de asignaturas,
@@ -582,7 +582,7 @@ export default function LandingScreen() {
                 <Pressable
                   className="flex-row items-center justify-center gap-2 rounded-[14px] py-3.5 bg-unefa-gold shadow-md"
                   onPress={() => router.push('/login')}>
-                  <Text className="text-[15px] font-black text-unefa-navy">Acceder a SICEU</Text>
+                  <Text className="text-[15px] font-black text-unefa-navy">Acceder al portal</Text>
                 </Pressable>
               </View>
 
@@ -714,10 +714,10 @@ export default function LandingScreen() {
                   Plataformas
                 </Text>
                 <Pressable onPress={() => router.push('/login')}>
-                  <Text className="py-0.5 text-xs font-semibold text-unefa-blue">SICEU estudiantes</Text>
+                  <Text className="py-0.5 text-xs font-semibold text-unefa-blue">Portal estudiantes</Text>
                 </Pressable>
                 <Pressable onPress={() => router.push('/login')}>
-                  <Text className="py-0.5 text-xs font-semibold text-unefa-blue">SICEU docentes</Text>
+                  <Text className="py-0.5 text-xs font-semibold text-unefa-blue">Portal docentes</Text>
                 </Pressable>
                 <Pressable onPress={() => router.push('/registro')}>
                   <Text className="py-0.5 text-xs font-semibold text-unefa-blue">Crear cuenta UNEFA</Text>

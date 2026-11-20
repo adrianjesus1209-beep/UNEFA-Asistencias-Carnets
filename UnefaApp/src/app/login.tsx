@@ -58,7 +58,7 @@ export default function LoginScreen() {
     setTimeout(() => {
       setIsLoading(false);
       setSuccessMsg(
-        `Acceso verificado para ${nacionalidad}-${cedula.trim()}. Redirigiendo a SICEU...`
+        `Acceso verificado para ${nacionalidad}-${cedula.trim()}. Redirigiendo al portal...`
       );
       setTimeout(() => {
         router.push({ pathname: '/dashboard' as any, params: { role: 'estudiante' } });
@@ -72,7 +72,7 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <Header subtitle="SICEU en línea" showBack={true} />
+      <Header subtitle="Portal en línea" showBack={true} />
 
       <ScrollView
         className="flex-1"
@@ -97,7 +97,7 @@ export default function LoginScreen() {
                     PORTAL ACADÉMICO
                   </Text>
                   <Text className="text-[17px] font-black text-white">
-                    SICEU en línea
+                    Portal en línea
                   </Text>
                 </View>
               </View>
@@ -118,7 +118,7 @@ export default function LoginScreen() {
               <View className="mb-3 flex-row gap-2">
                 <View className="rounded-lg bg-[rgba(4,15,217,0.1)] px-2.5 py-1">
                   <Text className="text-[11px] font-extrabold text-unefa-blue">
-                    SICEU / Acceso
+                    Portal / Acceso
                   </Text>
                 </View>
                 <View className="rounded-lg border border-slate-200 bg-slate-100 px-2.5 py-1">
@@ -373,13 +373,13 @@ export default function LoginScreen() {
               onPress={handleSubmit}
               disabled={isLoading}
               accessibilityRole="button"
-              accessibilityLabel="Acceder al SICEU">
+              accessibilityLabel="Acceder al portal">
               {isLoading ? (
                 <ActivityIndicator color={UnefaColors.navy} size="small" />
               ) : (
                 <>
                   <Text className="text-[15px] font-black text-unefa-navy">
-                    Acceder al SICEU
+                    Acceder al portal
                   </Text>
                   <Text className="text-base font-black text-unefa-navy">
                     →
@@ -425,8 +425,8 @@ export default function LoginScreen() {
           </View>
         </View>
       </ScrollView>
-      {/* La barra y el modal QR se mantienen disponibles desde SICEU. */}
-      <BottomNav activeTab="siceu" onOpenQr={() => setQrOpen(true)} />
+      {/* La barra y el modal QR se mantienen disponibles desde el portal. */}
+      <BottomNav activeTab="portal" onOpenQr={() => setQrOpen(true)} />
       <QrModal visible={qrOpen} onClose={() => setQrOpen(false)} />
     </SafeAreaView>
   );

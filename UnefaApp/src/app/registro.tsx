@@ -95,7 +95,7 @@ export default function RegistroScreen() {
                 <Pressable
                   className="w-full items-center rounded-[14px] bg-unefa-gold py-3.5"
                   onPress={() => router.replace('/login')}>
-                  <Text className="font-extrabold text-unefa-navy">Ir al portal SICEU</Text>
+                  <Text className="font-extrabold text-unefa-navy">Ir al portal</Text>
                 </Pressable>
               </View>
             ) : (

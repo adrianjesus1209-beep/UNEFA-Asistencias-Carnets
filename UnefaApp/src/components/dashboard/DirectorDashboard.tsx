@@ -19,7 +19,7 @@ const STAT_BOXES = [
 
 const DIRECTOR_ACTIONS = [
   { title: 'Reporte al Vicerrectorado Académico', desc: 'Consolidado de auditoría semestral y rendimiento de núcleos' },
-  { title: 'Auditoría Integral SICEU', desc: 'Supervisión de actas de grado y récord académico nacional' },
+  { title: 'Auditoría Integral del Portal', desc: 'Supervisión de actas de grado y récord académico nacional' },
   { title: 'Plan Soberanía y Defensa 2026', desc: 'Seguimiento de convenios tecnológicos con la FANB' },
   { title: 'Aprobación de cupos de ingreso 2026-II', desc: 'Planificación de cupos para nuevos estudiantes' },
 ];

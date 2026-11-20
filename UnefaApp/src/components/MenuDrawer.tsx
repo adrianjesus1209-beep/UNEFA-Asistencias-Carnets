@@ -226,7 +226,7 @@ export function MenuDrawer({ visible, onClose, onNavigateSection }: MenuDrawerPr
                   router.push('/login');
                 }}>
                 <Text className="text-sm font-bold text-neutral-950">
-                  Portal SICEU
+                  Portal
                 </Text>
               </Pressable>
             </View>
