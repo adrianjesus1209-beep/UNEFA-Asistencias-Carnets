@@ -20,8 +20,6 @@ import { MenuDrawer } from '@/components/MenuDrawer';
 import { QrModal } from '@/components/QrModal';
 import {
   PILLARS_DATA,
-  CAREERS_DATA,
-  Career,
   Pillar,
 } from '@/constants/data';
 
@@ -40,15 +38,13 @@ export default function LandingScreen() {
   // Control de visibilidad de modales y pestana activa
   const [menuOpen, setMenuOpen] = useState(false);
   const [qrOpen, setQrOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'inicio' | 'carreras' | 'registro' | 'portal'>('inicio');
+  const [activeTab, setActiveTab] = useState<'inicio' | 'portal'>('inicio');
 
   // Posiciones verticales de cada seccion para desplazamiento suave
   const sectionPositions = useRef<{ [key: string]: number }>({});
-  const sectionTabs: Record<string, 'inicio' | 'carreras' | 'registro' | 'portal'> = {
+  const sectionTabs: Record<string, 'inicio' | 'portal'> = {
     inicio: 'inicio',
     nosotros: 'inicio',
-    carreras: 'carreras',
-    registro: 'registro',
     servicios: 'portal',
   };
 
@@ -84,17 +80,6 @@ export default function LandingScreen() {
   // Gestion del pilar doctrinal seleccionado
   const [selectedPillarKey, setSelectedPillarKey] = useState<string>('ingenieria');
   const activePillar: Pillar = PILLARS_DATA[selectedPillarKey] || PILLARS_DATA.ingenieria;
-
-  // Gestion de facultad y carrera seleccionada
-  const [selectedFaculty, setSelectedFaculty] = useState<string>('ingenieria');
-  const careersInFaculty: Career[] = CAREERS_DATA[selectedFaculty] || [];
-  const [selectedCareerId, setSelectedCareerId] = useState<string>(
-    careersInFaculty[0]?.id || 'sistemas'
-  );
-  const activeCareer: Career =
-    careersInFaculty.find((c) => c.id === selectedCareerId) ||
-    careersInFaculty[0] ||
-    CAREERS_DATA.ingenieria[0];
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -161,13 +146,6 @@ export default function LandingScreen() {
                 </Text>
               </Pressable>
 
-              <Pressable
-                className="items-center self-center py-1.5"
-                onPress={() => scrollToSection('carreras')}>
-                <Text className="text-[13px] font-bold text-slate-600">
-                  Explorar carreras ↓
-                </Text>
-              </Pressable>
             </View>
 
             <View className="mb-5 overflow-hidden rounded-[18px] border border-slate-200">
@@ -191,27 +169,6 @@ export default function LandingScreen() {
               </View>
             </View>
 
-            <View className="flex-row gap-2.5">
-              <View className="flex-1 flex-row items-center gap-2.5 rounded-[14px] p-3 bg-white border-slate-200">
-                <Text className="text-xl text-unefa-blue">⚙</Text>
-                <View>
-                  <Text className="text-[13px] font-extrabold text-neutral-950">
-                    Ingenierías
-                  </Text>
-                  <Text className="text-[10px] font-semibold text-slate-500">10 Semestres</Text>
-                </View>
-              </View>
-
-              <View className="flex-1 flex-row items-center gap-2.5 rounded-[14px] p-3 bg-white border-slate-200">
-                <Text className="text-xl text-unefa-blue text-unefa-gold">★</Text>
-                <View>
-                  <Text className="text-[13px] font-extrabold text-neutral-950">
-                    Cívico-Militar
-                  </Text>
-                  <Text className="text-[10px] font-semibold text-slate-500">Doctrina Integral</Text>
-                </View>
-              </View>
-            </View>
           </View>
 
           {/* Seccion 02: Doctrina y fundamentos unefistas */}
@@ -310,247 +267,13 @@ export default function LandingScreen() {
             </View>
           </View>
 
-          {/* Seccion 03: Oferta academica y carreras */}
-          <View
-            className="px-4 py-8 bg-white"
-            onLayout={(event) => handleLayoutSection('carreras', event)}>
-            <View className="mb-5 flex-row items-start justify-between">
-              <View>
-                <Text className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.5px] text-unefa-blue">[03] — Oferta académica</Text>
-                <Text className="mb-1.5 text-2xl font-black text-neutral-950">
-                  Explorador de carreras
-                </Text>
-              </View>
-              <Pressable onPress={() => router.push('/registro')}>
-                <Text className="text-[13px] font-extrabold text-unefa-blue">Inscripción →</Text>
-              </Pressable>
-            </View>
-
-            {/* Control segmentado por tipo de facultad */}
-            <View className="mb-4 flex-row rounded-[14px] border p-1 bg-slate-100 border-slate-200">
-              <Pressable
-                className={['flex-1 items-center rounded-[10px] py-2', selectedFaculty === 'ingenieria' && '!bg-unefa-blue'].filter(Boolean).join(' ')}
-                onPress={() => {
-                  setSelectedFaculty('ingenieria');
-                  setSelectedCareerId(CAREERS_DATA.ingenieria[0].id);
-                }}>
-                <Text
-                  className={[
-                    'text-xs font-extrabold',
-                    selectedFaculty === 'ingenieria' && '!text-white',
-                  ].filter(Boolean).join(' ')}>
-                  Ingenierías
-                </Text>
-                <Text className="text-[9px] text-slate-500">10 sem.</Text>
-              </Pressable>
-
-              <Pressable
-                className={['flex-1 items-center rounded-[10px] py-2', selectedFaculty === 'licenciaturas' && '!bg-unefa-blue'].filter(Boolean).join(' ')}
-                onPress={() => {
-                  setSelectedFaculty('licenciaturas');
-                  setSelectedCareerId(CAREERS_DATA.licenciaturas[0].id);
-                }}>
-                <Text
-                  className={[
-                    'text-xs font-extrabold',
-                    selectedFaculty === 'licenciaturas' && '!text-white',
-                  ].filter(Boolean).join(' ')}>
-                  Licenciaturas
-                </Text>
-                <Text className="text-[9px] text-slate-500">8 sem.</Text>
-              </Pressable>
-
-              <Pressable
-                className={['flex-1 items-center rounded-[10px] py-2', selectedFaculty === 'tsu' && '!bg-unefa-blue'].filter(Boolean).join(' ')}
-                onPress={() => {
-                  setSelectedFaculty('tsu');
-                  setSelectedCareerId(CAREERS_DATA.tsu[0].id);
-                }}>
-                <Text
-                  className={[
-                    'text-xs font-extrabold',
-                    selectedFaculty === 'tsu' && '!text-white',
-                  ].filter(Boolean).join(' ')}>
-                  Técnico Superior
-                </Text>
-                <Text className="text-[9px] text-slate-500">6 sem.</Text>
-              </Pressable>
-            </View>
-
-            {/* Listado de carreras disponibles */}
-            <View className="mb-5 gap-2">
-              {careersInFaculty.map((item) => {
-                const isSelected = activeCareer.id === item.id;
-                return (
-                  <Pressable
-                    key={item.id}
-                    className={[
-                      'rounded-[14px] border border-slate-200 p-3',
-                      'bg-white border-slate-200',
-                      isSelected && '!border-unefa-blue !bg-unefa-blue/[0.05]',
-                    ].filter(Boolean).join(' ')}
-                    onPress={() => setSelectedCareerId(item.id)}>
-                    <View className="mb-0.5 flex-row justify-between">
-                      <Text className={['font-mono text-[11px] font-extrabold text-slate-500', isSelected && '!text-unefa-blue'].filter(Boolean).join(' ')}>
-                        {item.code}
-                      </Text>
-                      <Text className="text-[11px] font-semibold text-slate-500">{item.duration}</Text>
-                    </View>
-                    <Text
-                      className={[
-                        'text-sm font-extrabold',
-                        'text-neutral-950',
-                        isSelected && '!text-unefa-blue',
-                      ].filter(Boolean).join(' ')}>
-                      {item.title}
-                    </Text>
-                  </Pressable>
-                );
-              })}
-            </View>
-
-            {/* Ficha detallada de la carrera seleccionada */}
-            <View className="mb-5 overflow-hidden rounded-[20px] border border-slate-200 shadow-md bg-white border-slate-200">
-              <View className="relative h-[180px]">
-                <Image
-                  source={{ uri: activeCareer.image }}
-                  className="h-full w-full"
-                  contentFit="cover"
-                />
-                <View className="absolute left-2.5 top-2.5 rounded-md bg-unefa-navy px-2 py-1">
-                  <Text className="font-mono text-[10px] font-extrabold text-white">{activeCareer.code}</Text>
-                </View>
-                <View className="absolute inset-x-0 bottom-0 flex-row justify-between bg-unefa-navy/[0.85] px-3 py-1.5">
-                  <Text className="text-[11px] font-bold text-white">{activeCareer.degree}</Text>
-                  <Text className="text-[11px] font-extrabold text-unefa-gold">{activeCareer.duration}</Text>
-                </View>
-              </View>
-
-              <View className="p-4">
-                <Text className="mb-2 text-xl font-black text-neutral-950">
-                  {activeCareer.title}
-                </Text>
-                <Text className="mb-4 text-[13px] leading-[19px] text-slate-600">
-                  {activeCareer.description}
-                </Text>
-
-                <View className="mb-4">
-                  <Text className="mb-2 text-[11px] font-extrabold uppercase tracking-[0.4px] text-slate-500">Competencias principales</Text>
-                  {activeCareer.competencies.map((c, i) => (
-                    <View key={i} className="mb-1.5 flex-row items-start gap-2">
-                      <Text className="text-[11px] text-unefa-gold">■</Text>
-                      <Text className="flex-1 text-xs leading-[18px] font-medium text-neutral-950">
-                        {c}
-                      </Text>
-                    </View>
-                  ))}
-                </View>
-
-                <View className="mb-4">
-                  <Text className="mb-2 text-[11px] font-extrabold uppercase tracking-[0.4px] text-slate-500">Materias troncales</Text>
-                  <View className="flex-row flex-wrap gap-1.5">
-                    {activeCareer.subjects.map((sub, i) => (
-                      <View
-                        key={i}
-                        className="rounded-[20px] border px-2.5 py-[5px] bg-slate-100 border-slate-200">
-                        <Text className="text-[11px] font-semibold text-neutral-950">
-                          {sub}
-                        </Text>
-                      </View>
-                    ))}
-                  </View>
-                </View>
-
-                <View className="mt-2 gap-2">
-                  <Text className="font-mono text-[10px] text-center text-slate-500">
-                    Modalidad presencial · Núcleo Central y sedes regionales
-                  </Text>
-                  <Pressable
-                    className="flex-row items-center justify-center gap-2 rounded-[14px] py-3.5 bg-unefa-gold shadow-md"
-                    onPress={() => router.push('/registro')}>
-                    <Text className="text-[15px] font-black text-unefa-navy">Postularme en esta carrera</Text>
-                    <Text className="text-base font-black text-unefa-navy">→</Text>
-                  </Pressable>
-                </View>
-              </View>
-            </View>
-          </View>
-
-          {/* Seccion 04: registro convencional de cuenta */}
-          <View
-            className="px-4 py-8 border-y border-slate-200 bg-slate-50"
-            onLayout={(event) => handleLayoutSection('registro', event)}>
-            <View className="mb-5">
-              <Text className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.5px] text-unefa-blue">
-                [04] — Cuenta universitaria
-              </Text>
-              <Text className="mb-1.5 text-2xl font-black text-neutral-950">
-                Regístrate para comenzar
-              </Text>
-              <Text className="text-sm leading-5 text-slate-600">
-                Crea una cuenta con tus datos personales y un correo electrónico activo para acceder a los servicios digitales UNEFA.
-              </Text>
-            </View>
-
-            <View className="mb-5 gap-3">
-              {[
-                {
-                  num: '01',
-                  title: 'Completa tus datos',
-                  desc: 'Indica tu nombre, documento de identidad y correo electrónico.',
-                },
-                {
-                  num: '02',
-                  title: 'Protege tu cuenta',
-                  desc: 'Elige una contraseña segura y confírmala antes de enviar el formulario.',
-                },
-                {
-                  num: '03',
-                  title: 'Accede a los servicios',
-                  desc: 'Usa el portal institucional para continuar con los trámites disponibles.',
-                },
-              ].map((step) => (
-                <View key={step.num} className="flex-row gap-3">
-                  <View className="h-8 w-8 items-center justify-center rounded-full bg-[rgba(242,184,7,0.16)]">
-                    <Text className="font-mono text-[13px] font-black text-[#c99106]">
-                      {step.num}
-                    </Text>
-                  </View>
-                  <View className="flex-1">
-                    <Text className="mb-0.5 text-sm font-extrabold text-neutral-950">
-                      {step.title}
-                    </Text>
-                    <Text className="text-xs leading-[17px] text-slate-600">
-                      {step.desc}
-                    </Text>
-                  </View>
-                </View>
-              ))}
-            </View>
-
-            <View className="rounded-[20px] border border-slate-200 bg-white p-5">
-              <Text className="mb-1 text-lg font-black text-neutral-950">
-                ¿Listo para crear tu cuenta?
-              </Text>
-              <Text className="mb-4 text-[13px] leading-5 text-slate-600">
-                Ten a mano tu documento de identidad y verifica que puedas acceder a tu correo.
-              </Text>
-              <Pressable
-                className="flex-row items-center justify-center gap-2 rounded-[14px] bg-unefa-gold py-3.5 shadow-md"
-                onPress={() => router.push('/registro')}>
-                <Text className="text-[15px] font-black text-unefa-navy">Crear cuenta UNEFA</Text>
-                <Text className="text-base font-black text-unefa-navy">→</Text>
-              </Pressable>
-            </View>
-          </View>
-
-          {/* Seccion 05: Plataformas y servicios digitales */}
+          {/* Seccion 03: Plataformas y servicios digitales */}
           <View
             className="px-4 py-8 bg-white"
             onLayout={(event) => handleLayoutSection('servicios', event)}>
             <View className="mb-5 flex-row items-start justify-between">
               <View>
-                <Text className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.5px] text-unefa-blue">[05] — Plataformas &amp; servicios</Text>
+                <Text className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.5px] text-unefa-blue">[03] — Plataformas &amp; servicios</Text>
                 <Text className="mb-1.5 text-2xl font-black text-neutral-950">
                   Servicios digitales
                 </Text>
@@ -657,14 +380,6 @@ export default function LandingScreen() {
                   Acceso público y digital a trabajos especiales de grado, guías metodológicas de
                   ingeniería y revistas de investigación.
                 </Text>
-                <Pressable
-                  className="flex-row items-center justify-center gap-2 rounded-[14px] py-3.5 border border-slate-300 bg-transparent"
-                  onPress={() => scrollToSection('carreras')}>
-                  <Text
-                    className="text-sm font-bold text-neutral-950">
-                    Abrir repositorio
-                  </Text>
-                </Pressable>
               </View>
             </View>
           </View>
@@ -701,12 +416,6 @@ export default function LandingScreen() {
                 <Pressable onPress={() => scrollToSection('nosotros')}>
                   <Text className="py-0.5 text-xs font-semibold text-unefa-blue">Doctrina</Text>
                 </Pressable>
-                <Pressable onPress={() => scrollToSection('carreras')}>
-                  <Text className="py-0.5 text-xs font-semibold text-unefa-blue">Catálogo carreras</Text>
-                </Pressable>
-                <Pressable onPress={() => scrollToSection('registro')}>
-                  <Text className="py-0.5 text-xs font-semibold text-unefa-blue">Registro de cuenta</Text>
-                </Pressable>
               </View>
 
               <View className="flex-1 gap-1.5">
@@ -741,7 +450,6 @@ export default function LandingScreen() {
 
             <View className="gap-1">
               <Text className="text-[10px] text-slate-500">© 2026 UNEFA — Todos los derechos reservados.</Text>
-              <Text className="text-[10px] font-bold text-[#c99106]">Propuesta de interfaz móvil · 2026</Text>
             </View>
           </View>
         </View>
@@ -751,7 +459,6 @@ export default function LandingScreen() {
       <BottomNav
         activeTab={activeTab}
         onPressInicio={() => scrollToSection('inicio')}
-        onPressCarreras={() => scrollToSection('carreras')}
         onOpenQr={() => setQrOpen(true)}
       />
 

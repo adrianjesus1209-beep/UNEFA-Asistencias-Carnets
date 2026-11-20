@@ -1,20 +1,18 @@
 import React from 'react';
 import { View, Text, Pressable, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Home, GraduationCap, FileText, User } from 'lucide-react-native';
+import { Home, FileText, User } from 'lucide-react-native';
 import { UnefaColors } from '@/constants/theme';
 
 interface BottomNavProps {
-  activeTab?: 'inicio' | 'carreras' | 'registro' | 'portal';
+  activeTab?: 'inicio' | 'registro' | 'portal';
   onPressInicio?: () => void;
-  onPressCarreras?: () => void;
   onOpenQr?: () => void;
 }
 
 export function BottomNav({
   activeTab = 'inicio',
   onPressInicio,
-  onPressCarreras,
   onOpenQr,
 }: BottomNavProps) {
   const router = useRouter();
@@ -49,31 +47,6 @@ export function BottomNav({
               : 'font-semibold text-slate-500'
           }`}>
           Inicio
-        </Text>
-      </Pressable>
-
-      {/* Tab: Carreras */}
-      <Pressable
-        className="flex-1 items-center justify-center py-1 gap-0.5"
-        accessibilityRole="tab"
-        accessibilityState={{ selected: activeTab === 'carreras' }}
-        accessibilityLabel="Carreras"
-        onPress={() => {
-          if (onPressCarreras) onPressCarreras();
-          else router.replace('/landing');
-        }}>
-        <GraduationCap
-          size={20}
-          color={getIconColor('carreras')}
-          strokeWidth={activeTab === 'carreras' ? 2.5 : 2}
-        />
-        <Text
-          className={`text-[11px] ${
-            activeTab === 'carreras'
-              ? 'font-bold text-unefa-blue'
-              : 'font-semibold text-slate-500'
-          }`}>
-          Carreras
         </Text>
       </Pressable>
 
