@@ -216,7 +216,7 @@
 
             <!-- Caja de visualización del pilar activo -->
             <div class="explorer-grid" role="tabpanel" tabindex="0" aria-label="Detalle del pilar seleccionado">
-                <div class="dossier-photo-bar" style="aspect-ratio: 4 / 3;">
+                <div class="dossier-photo-bar">
                     <img id="pillarImg" src="{{ asset('img/sede-central.webp') }}" alt="Doctrina UNEFA">
                     <div id="pillarCaption" class="dossier-photo-footer">
                         Patio de Honor · Aula Magna de la UNEFA
@@ -292,7 +292,7 @@
             <!-- Ficha / Dossier Horizontal de la Carrera -->
             <div class="explorer-grid" role="tabpanel" tabindex="0" aria-label="Detalle de la carrera seleccionada">
                 
-                <div class="dossier-photo-bar" style="aspect-ratio: 4 / 3;">
+                <div class="dossier-photo-bar">
                     <img id="dossierImg" src="{{ asset('img/carrera-sistemas.webp') }}" alt="Área académica de la carrera">
                     <div id="dossierCode" class="dossier-photo-tag">ING-SIS-10</div>
                     <div class="dossier-photo-footer">
@@ -303,17 +303,17 @@
 
                 <div class="dossier-content">
                     <div>
-                        <span class="badge-tag accent-blue" style="margin-bottom: 0.6rem;">Pensum Oficial 2026</span>
-                        <h3 id="dossierTitle" class="text-title-card" style="font-size: 1.7rem; margin-bottom: 0.75rem;">
+                        <span class="badge-tag accent-blue" style="margin-bottom: 0.5rem;">Pensum Oficial 2026</span>
+                        <h3 id="dossierTitle" class="text-title-card" style="font-size: 1.55rem; margin-bottom: 0.6rem;">
                             Ingeniería de Sistemas
                         </h3>
-                        <p id="dossierDesc" style="font-size: 1.05rem; color: var(--text-secondary); line-height: 1.7;">
+                        <p id="dossierDesc" style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
                             Formación en ingeniería de software crítico, arquitectura de sistemas distribuidos, bases de datos masivas, ciberseguridad y computación para la defensa y el desarrollo soberano de la nación.
                         </p>
                     </div>
 
                     <div>
-                        <strong style="display: block; font-size: 1.05rem; margin-bottom: 0.85rem; color: var(--unefa-navy);">
+                        <strong style="display: block; font-size: 0.95rem; margin-bottom: 0.65rem; color: var(--unefa-navy);">
                             Competencias Principales del Egresado:
                         </strong>
                         <div id="dossierCompetencies" class="competencies-list">
@@ -321,7 +321,7 @@
                         </div>
                     </div>
 
-                    <div style="padding-top: 1.25rem; border-top: 2px solid var(--border-subtle); display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <div style="padding-top: 1rem; border-top: 1.5px solid var(--border-subtle); display: flex; gap: 0.85rem; flex-wrap: wrap; align-items: center;">
                         <a href="{{ route('registro') }}" class="btn btn-gold btn-lg">
                             <span>Registrarme con esta carrera</span>
                             <span aria-hidden="true">→</span>
@@ -329,9 +329,6 @@
                         <a href="{{ route('login') }}" class="btn btn-outline btn-lg">
                             <span>Acceso al Portal</span>
                             <span aria-hidden="true">→</span>
-                        </a>
-                        <a href="#servicios" class="btn btn-outline btn-lg">
-                            <span>Servicios estudiantiles</span>
                         </a>
                     </div>
                 </div>

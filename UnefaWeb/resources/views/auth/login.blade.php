@@ -241,8 +241,8 @@
                         </div>
 
                         <div class="terminal-legal-row">
-                            <span>Universidad Nacional Experimental Politécnica de la FANB</span>
-                            <span class="terminal-legal-mono">UNEFA TELEMÁTICA • CARACAS, VENEZUELA</span>
+                            <span>Universidad Nacional Experimental Politécnica de la Fuerza Armada Nacional Bolivariana</span>
+                            <span class="terminal-legal-mono">UNEFA • VENEZUELA</span>
                         </div>
                     </div>
 
