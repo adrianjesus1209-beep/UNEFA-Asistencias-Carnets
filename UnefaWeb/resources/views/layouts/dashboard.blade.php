@@ -7,6 +7,7 @@
     <meta name="description" content="@yield('descripcion', 'Portal web de la Universidad Nacional Experimental Politécnica de la Fuerza Armada Nacional Bolivariana.')" />
     <link rel="icon" type="image/png" href="{{ asset('assets/img/logos/logo_unefa.png') }}" />
     <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
+    @stack('styles')
 </head>
 <body class="bg-white font-sans text-neutral-950">
     <header class="sticky top-0 z-40 border-b border-slate-200 bg-white">
