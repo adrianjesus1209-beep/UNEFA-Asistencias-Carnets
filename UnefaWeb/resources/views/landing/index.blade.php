@@ -276,8 +276,11 @@
                 <button type="button" role="tab" aria-selected="true" class="faculty-tab-btn active" data-faculty="ingenieria">
                     Ingenierías
                 </button>
-                <button type="button" role="tab" aria-selected="false" class="faculty-tab-btn" data-faculty="licenciaturas_tsu">
-                    Licenciaturas y TSU
+                <button type="button" role="tab" aria-selected="false" class="faculty-tab-btn" data-faculty="licenciaturas">
+                    Licenciaturas
+                </button>
+                <button type="button" role="tab" aria-selected="false" class="faculty-tab-btn" data-faculty="tsu">
+                    Técnico Superior Universitario (TSU)
                 </button>
             </div>
 
@@ -360,7 +363,7 @@
                         </h2>
                     </div>
                     <p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 32rem; line-height: 1.7;">
-                        Plataforma dirigida a estudiantes regulares y cursantes que ya aprobaron el Curso Introductorio (CINU). Verifica tus recaudos para emitir tu carnet digital con QR y habilitar el pase de asistencia.
+                        Plataforma dirigida a estudiantes regulares y cursantes que ya aprobaron el Curso Introductorio. Verifica tus recaudos para emitir tu carnet digital con QR y habilitar el pase de asistencia.
                     </p>
                 </div>
             </div>
@@ -373,8 +376,8 @@
                         <div class="timeline-step">
                             <span class="timeline-num">01</span>
                             <div class="timeline-body">
-                                <strong>Aprobación de CINU / Estatus Regular</strong>
-                                <p>Haber aprobado satisfactoriamente el Curso Introductorio (CINU) o mantener condición de estudiante regular activo.</p>
+                                <strong>Curso Introductorio Aprobado / Estatus Regular</strong>
+                                <p>Haber aprobado satisfactoriamente el Curso Introductorio de Nivelación o mantener condición de estudiante regular activo.</p>
                             </div>
                         </div>
                         <div class="timeline-step">
@@ -388,7 +391,7 @@
                             <span class="timeline-num">03</span>
                             <div class="timeline-body">
                                 <strong>Validación de Recaudos</strong>
-                                <p>Verificación de la constancia de aprobación de CINU y matrícula activa en la coordinación académica.</p>
+                                <p>Verificación de la constancia de aprobación del Curso Introductorio y matrícula activa en la coordinación académica.</p>
                             </div>
                         </div>
                         <div class="timeline-step">
@@ -443,7 +446,7 @@
                             <div style="display: flex; align-items: center;">
                                 <input type="checkbox" style="display: none;" checked>
                                 <span class="custom-checkbox">✓</span>
-                                <span>Constancia o certificación de aprobación del CINU</span>
+                                <span>Constancia o certificación de aprobación del Curso Introductorio</span>
                             </div>
                             <span class="badge-tag" style="font-size: 0.75rem;">Fase 1</span>
                         </label>

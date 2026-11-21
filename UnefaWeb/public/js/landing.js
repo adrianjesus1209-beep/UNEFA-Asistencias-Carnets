@@ -94,7 +94,7 @@
         subjects: ["Circuitos Electrónicos", "Sistemas de Control", "Microprocesadores", "Instrumentación Industrial", "Electrónica de Potencia"]
       }
     ],
-    licenciaturas_tsu: [
+    licenciaturas: [
       {
         id: "administracion",
         code: "LIC-AGM-08",
@@ -158,7 +158,9 @@
           "Promoción de valores éticos, cívicos y patrióticos"
         ],
         subjects: ["Pedagogía y Didáctica", "Psicología del Aprendizaje", "Enseñanza de la Lengua y Matemática", "Planificación Educativa", "Práctica Docente"]
-      },
+      }
+    ],
+    tsu: [
       {
         id: "tsu-sistemas",
         code: "TSU-ADS-06",

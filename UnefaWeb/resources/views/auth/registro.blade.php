@@ -15,14 +15,14 @@
             {{-- Banner --}}
             <div class="mb-4 rounded-[14px] border border-slate-200 bg-slate-50 p-3.5">
                 <p class="mb-0.5 text-[11px] font-semibold text-slate-600">Carnetización · Periodo 2026-I</p>
-                <p class="text-base font-black text-neutral-950">Registro de Cursantes y Aprobados CINU</p>
+                <p class="text-base font-black text-neutral-950">Registro de Estudiantes Regulares y Aprobados</p>
             </div>
 
             {{-- Tarjeta del formulario --}}
             <div class="mb-5 rounded-[22px] border border-slate-200 bg-white p-5 shadow-lg">
                 <div class="mb-[18px]">
                     <div class="mb-3 flex flex-wrap gap-2">
-                        <span class="rounded-lg bg-[rgba(242,184,7,0.16)] px-2.5 py-1 text-[11px] font-extrabold text-unefa-goldDark">Estudiante Regular / Post-CINU</span>
+                        <span class="rounded-lg bg-[rgba(242,184,7,0.16)] px-2.5 py-1 text-[11px] font-extrabold text-unefa-goldDark">Estudiante Regular / Nuevo Ingreso</span>
                         <span class="rounded-lg border border-slate-200 bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-600">Expediente digital</span>
                     </div>
 

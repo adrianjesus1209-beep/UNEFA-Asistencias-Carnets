@@ -1,133 +1,132 @@
 /**
- * Interactividad del login institucional: selector V-/E-, campo numerico, mostrar
- * clave y flujo de acceso simulado. Equivalente web de src/app/login.tsx.
+ * UNIVERSIDAD NACIONAL EXPERIMENTAL POLITÉCNICA DE LA FANB (UNEFA)
+ * Controlador de Autenticación Institucional (Portal Web)
+ * 100% JavaScript Local — Sin Dependencias Externas
  */
+
 (function () {
-    'use strict';
+  "use strict";
 
-    var formulario = document.getElementById('formulario-login');
+  let currentRole = "student";
 
-    if (!formulario) return;
+  window.switchRole = function (role) {
+    currentRole = role;
+    const tabStudent = document.getElementById("tabStudent");
+    const tabAdmin = document.getElementById("tabAdmin");
+    const identifierLabelText = document.getElementById("identifierLabelText");
+    const identifierHint = document.getElementById("identifierHint");
+    const cedulaInput = document.getElementById("cedulaInput");
+    const submitBtnText = document.getElementById("submitBtnText");
+    const alertBox = document.getElementById("loginAlertBox");
+    const registerPromptRow = document.getElementById("registerPromptRow");
 
-    var nacionalidad = document.getElementById('campo-nacionalidad');
-    var botonesNacionalidad = formulario.querySelectorAll('[data-nacionalidad]');
-    var campoCedula = document.getElementById('campo-cedula');
-    var campoClave = document.getElementById('campo-clave');
-    var botonVerClave = document.getElementById('boton-ver-clave');
-    var botonOlvidada = document.getElementById('boton-olvidada');
-    var notaOlvidada = document.getElementById('nota-olvidada');
-    var alertaError = document.getElementById('alerta-error');
-    var textoError = document.getElementById('texto-error');
-    var alertaExito = document.getElementById('alerta-exito');
-    var textoExito = document.getElementById('texto-exito');
-    var botonAcceder = document.getElementById('boton-acceder');
-    var textoBoton = formulario.querySelector('[data-texto-boton]');
-    var destinoEstudiante = formulario.getAttribute('data-destino-estudiante');
+    if (alertBox) alertBox.classList.add("hidden");
 
-    /**
-     * Selector de nacionalidad: marca el boton activo y guarda el valor.
-     */
-    function fijarNacionalidad(valor) {
-        if (nacionalidad) nacionalidad.value = valor;
-        botonesNacionalidad.forEach(function (boton) {
-            var activo = boton.getAttribute('data-nacionalidad') === valor;
-            boton.classList.toggle('bg-unefa-blue', activo);
-            var texto = boton.querySelector('span');
-            if (texto) {
-                texto.classList.toggle('!text-white', activo);
-                texto.classList.toggle('text-slate-500', !activo);
-            }
-        });
+    if (role === "student") {
+      if (tabStudent) tabStudent.classList.add("active");
+      if (tabAdmin) tabAdmin.classList.remove("active");
+      if (identifierLabelText) identifierLabelText.textContent = "Cédula de Identidad";
+      if (identifierHint) identifierHint.textContent = "Estudiantes";
+      if (cedulaInput) cedulaInput.placeholder = "27450892";
+      if (submitBtnText) submitBtnText.textContent = "Ingresar como Estudiante";
+      // El enlace de registro es para Estudiantes
+      if (registerPromptRow) registerPromptRow.style.display = "flex";
+    } else {
+      if (tabAdmin) tabAdmin.classList.add("active");
+      if (tabStudent) tabStudent.classList.remove("active");
+      if (identifierLabelText) identifierLabelText.textContent = "Cédula de Identidad";
+      if (identifierHint) identifierHint.textContent = "Personal Docente / Administrativo";
+      if (cedulaInput) cedulaInput.placeholder = "14230890";
+      if (submitBtnText) submitBtnText.textContent = "Ingresar como Personal";
+      // El personal institucional es gestionado internamente
+      if (registerPromptRow) registerPromptRow.style.display = "none";
+    }
+  };
+
+  window.togglePasswordVisibility = function () {
+    const passwordInput = document.getElementById("passwordInput");
+    if (!passwordInput) return;
+
+    const btn = document.querySelector(".btn-toggle-pwd");
+    const eyeOpen = btn ? btn.querySelector(".icon-eye") : null;
+    const eyeOff = btn ? btn.querySelector(".icon-eye-off") : null;
+
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+      if (eyeOpen && eyeOff) {
+        eyeOpen.style.display = "none";
+        eyeOff.style.display = "block";
+      }
+    } else {
+      passwordInput.type = "password";
+      if (eyeOpen && eyeOff) {
+        eyeOpen.style.display = "block";
+        eyeOff.style.display = "none";
+      }
+    }
+  };
+
+  window.handleLogin = function () {
+    const form = document.getElementById("loginForm");
+    const docType = document.getElementById("docType");
+    const cedulaInput = document.getElementById("cedulaInput");
+    const passwordInput = document.getElementById("passwordInput");
+    const alertBox = document.getElementById("loginAlertBox");
+    const submitBtn = document.getElementById("submitBtn");
+
+    const cedula = cedulaInput ? cedulaInput.value.trim() : "";
+    const pass = passwordInput ? passwordInput.value.trim() : "";
+    const nationality = docType ? docType.value : "V";
+
+    if (!cedula || !pass) {
+      if (alertBox) {
+        alertBox.innerHTML =
+          "<strong>Error de autenticación:</strong> Ingrese su número de cédula y contraseña institucional.";
+        alertBox.classList.remove("hidden");
+      }
+      return;
     }
 
-    botonesNacionalidad.forEach(function (boton) {
-        boton.addEventListener('click', function () {
-            fijarNacionalidad(boton.getAttribute('data-nacionalidad'));
-        });
-    });
-    fijarNacionalidad('V');
-
-    /**
-     * Cedula: solo digitos.
-     */
-    if (campoCedula) {
-        campoCedula.addEventListener('input', function () {
-            campoCedula.value = campoCedula.value.replace(/\D/g, '').slice(0, 8);
-        });
+    if (cedula.length < 6) {
+      if (alertBox) {
+        alertBox.innerHTML =
+          "<strong>Error de documento:</strong> El número de cédula debe tener al menos 6 dígitos.";
+        alertBox.classList.remove("hidden");
+      }
+      return;
     }
 
-    /**
-     * Mostrar / ocultar la clave institucional.
-     */
-    if (botonVerClave && campoClave) {
-        botonVerClave.addEventListener('click', function () {
-            var visible = campoClave.type === 'text';
-            campoClave.type = visible ? 'password' : 'text';
-            botonVerClave.textContent = visible ? 'Mostrar' : 'Ocultar';
-        });
+    if (pass.length < 6) {
+      if (alertBox) {
+        alertBox.innerHTML =
+          "<strong>Error de seguridad:</strong> La contraseña debe tener al menos 6 caracteres.";
+        alertBox.classList.remove("hidden");
+      }
+      return;
     }
 
-    /**
-     * Nota de recuperacion de clave (solo informativa en la maqueta).
-     */
-    if (botonOlvidada && notaOlvidada) {
-        botonOlvidada.addEventListener('click', function () {
-            notaOlvidada.classList.toggle('hidden');
-        });
+    if (alertBox) alertBox.classList.add("hidden");
+
+    const originalContent = submitBtn ? submitBtn.innerHTML : "";
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = "<span>Validando credenciales...</span>";
     }
 
-    function mostrarError(mensaje) {
-        if (!alertaError || !textoError) return;
-        textoError.textContent = mensaje;
-        alertaError.classList.remove('hidden');
-        if (alertaExito) alertaExito.classList.add('hidden');
-    }
+    setTimeout(() => {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalContent;
+      }
 
-    function ocultarAlertas() {
-        if (alertaError) alertaError.classList.add('hidden');
-        if (alertaExito) alertaExito.classList.add('hidden');
-    }
+      const destEstudiante = form ? form.getAttribute("data-destino-estudiante") : "/dashboard/estudiante";
+      const destPersonal = form ? form.getAttribute("data-destino-personal") : "/dashboard/director";
 
-    /**
-     * Flujo simulado de la maqueta: validar, 800 ms de carga, mensaje de
-     * exito, 500 ms y redireccion al dashboard del estudiante. El backend
-     * debe reemplazar esta secuencia por la autenticacion real.
-     */
-    formulario.addEventListener('submit', function (evento) {
-        evento.preventDefault();
-        ocultarAlertas();
-
-        var cedula = campoCedula ? campoCedula.value.trim() : '';
-        var clave = campoClave ? campoClave.value : '';
-
-        if (cedula.length < 6) {
-            mostrarError('Ingresa tu número de documento de identidad completo (al menos 6 dígitos).');
-            if (campoCedula) campoCedula.focus();
-            return;
-        }
-        if (clave.length < 6) {
-            mostrarError('La contraseña institucional debe tener al menos 6 caracteres.');
-            if (campoClave) campoClave.focus();
-            return;
-        }
-
-        // Estado de carga replica el spinner del boton movil.
-        if (botonAcceder) botonAcceder.disabled = true;
-        if (textoBoton) textoBoton.textContent = 'Verificando credenciales';
-
-        window.setTimeout(function () {
-            ocultarAlertas();
-            if (alertaExito && textoExito) {
-                textoExito.textContent =
-                    'Credenciales verificadas. Abriendo tu panel institucional, ' +
-                    (nacionalidad ? nacionalidad.value : 'V') + '-' + cedula + '.';
-                alertaExito.classList.remove('hidden');
-            }
-            if (textoBoton) textoBoton.textContent = 'Acceso concedido';
-
-            window.setTimeout(function () {
-                window.location.href = destinoEstudiante || '/dashboard/estudiante';
-            }, 500);
-        }, 800);
-    });
+      if (currentRole === "student") {
+        window.location.href = destEstudiante || "/dashboard/estudiante";
+      } else {
+        window.location.href = destPersonal || "/dashboard/director";
+      }
+    }, 600);
+  };
 })();
