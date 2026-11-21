@@ -83,7 +83,7 @@ export function EstudianteDashboard({ config }: EstudianteDashboardProps) {
                   ||| | |||| || ||| |||| | |||
                 </Text>
                 <Text className="text-[8px] font-bold text-slate-400 font-mono">
-                  MAT: 2022-04921-SICEU
+                  MAT: 2022-04921-UNEFA
                 </Text>
               </View>
             </View>

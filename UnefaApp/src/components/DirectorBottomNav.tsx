@@ -67,7 +67,7 @@ export function DirectorBottomNav({
         style={styles.tab}
         accessibilityRole="tab"
         accessibilityState={{ selected: isActive('auditoria') }}
-        accessibilityLabel="Auditoría SICEU"
+        accessibilityLabel="Auditoría del portal"
         onPress={onPressAuditoria}>
         <ShieldCheck size={20} color={color('auditoria')} strokeWidth={stroke('auditoria')} />
         <Text style={[styles.label, isActive('auditoria') && styles.labelActive]}>Auditoría</Text>

@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Ajustes base del portal UNEFA.
+  La tipografia es system-ui (igual que la aplicacion movil), por lo que
+  no se cargan fuentes externas y el sitio funciona sin internet.
+*/
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Compensa la altura de la barra superior fija al navegar a anclas */
+  section[id] {
+    scroll-margin-top: 5rem;
+  }
+
+  body {
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* Transicion del cajon de menu lateral (equivalente a MenuDrawer de la app) */
+.menu-drawer-panel {
+  transform: translateX(100%);
+  transition: transform 260ms ease;
+}
+
+.menu-drawer-panel.menu-drawer-open {
+  transform: translateX(0);
+}
+
+.menu-drawer-backdrop {
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.menu-drawer-backdrop.menu-drawer-open {
+  opacity: 1;
+}
+
+/* Modal del escaner QR (placeholder hasta integrar el lector real) */
+.qr-modal {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+}
+
+.qr-modal.qr-modal-open {
+  opacity: 1;
+  pointer-events: auto;
+}

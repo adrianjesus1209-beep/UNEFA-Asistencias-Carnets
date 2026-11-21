@@ -1,0 +1,3 @@
+# Finales de linea por tipo de archivo (portabilidad Windows/Linux)
+*.sh text eol=lf
+*.bat text eol=crlf
