@@ -193,7 +193,6 @@
     const dossierTitle = document.getElementById("dossierTitle");
     const dossierDesc = document.getElementById("dossierDesc");
     const dossierCompetencies = document.getElementById("dossierCompetencies");
-    const dossierSubjects = document.getElementById("dossierSubjects");
 
     if (!careersList) return;
 
@@ -251,12 +250,6 @@
           </div>
         `
           )
-          .join("");
-      }
-
-      if (dossierSubjects) {
-        dossierSubjects.innerHTML = career.subjects
-          .map((sub) => `<span class="subject-chip">${sub}</span>`)
           .join("");
       }
     }

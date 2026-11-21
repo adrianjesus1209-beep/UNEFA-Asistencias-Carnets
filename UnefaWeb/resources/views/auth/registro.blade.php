@@ -1,343 +1,479 @@
 @extends('layouts.public')
 
-@section('title', 'Registro Estudiantil y Carnet Digital 2026-I | UNEFA')
-@section('header-subtitle', 'Activación de Carnet Digital')
+@section('title', 'Registro y Activación de Carnet Digital — Portal Oficial UNEFA')
+@section('body-class', 'registro-page')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/common.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/registro.css') }}">
+@endpush
 
 @push('scripts')
     <script src="{{ asset('js/registro.js') }}" defer></script>
 @endpush
 
-@section('content')
-    {{-- Contenido tomado de la pantalla de registro de UnefaApp (src/app/registro.tsx). --}}
-    <div class="mx-auto w-full max-w-6xl px-4 pb-10 pt-4 lg:pt-8">
-        <div class="mx-auto w-full max-w-2xl">
-
-            {{-- Banner --}}
-            <div class="mb-4 rounded-[14px] border border-slate-200 bg-slate-50 p-3.5">
-                <p class="mb-0.5 text-[11px] font-semibold text-slate-600">Carnetización · Periodo 2026-I</p>
-                <p class="text-base font-black text-neutral-950">Registro de Estudiantes Regulares y Aprobados</p>
+@section('header')
+    <!-- Header Superior Institucional -->
+    <header class="login-header">
+        <a href="{{ route('landing') }}" class="login-brand" aria-label="Ir a la página principal">
+            <div class="login-brand-logo">
+                <img src="{{ asset('img/unefa-logo.webp') }}" alt="Logo UNEFA">
             </div>
+            <div class="login-brand-text">
+                <span class="login-brand-name">UNEFA</span>
+                <span class="login-brand-sub">Portal Institucional</span>
+            </div>
+        </a>
 
-            {{-- Tarjeta del formulario --}}
-            <div class="mb-5 rounded-[22px] border border-slate-200 bg-white p-5 shadow-lg">
-                <div class="mb-[18px]">
-                    <div class="mb-3 flex flex-wrap gap-2">
-                        <span class="rounded-lg bg-[rgba(242,184,7,0.16)] px-2.5 py-1 text-[11px] font-extrabold text-unefa-goldDark">Estudiante Regular / Nuevo Ingreso</span>
-                        <span class="rounded-lg border border-slate-200 bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-600">Expediente digital</span>
-                    </div>
+        <a href="{{ route('landing') }}" class="login-nav-back" aria-label="Volver al inicio">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            <span>Volver al inicio</span>
+        </a>
+    </header>
+@endsection
 
-                    <h1 class="mb-1.5 text-[26px] font-black text-neutral-950">Registro y Carnet Digital</h1>
-                    <p class="text-[13px] leading-[18px] text-slate-600">
-                        Completa las 3 secciones para formalizar tu expediente de asistencias y activar tu Carnet QR institucional.
-                    </p>
-                </div>
+@section('content')
+    <!-- Contenedor Principal Simétrico -->
+    <div class="registro-main">
+        <div class="registro-card">
+            <div class="registro-grid">
+                
+                <!-- PANEL IZQUIERDO: Identidad & Guía de Registro -->
+                <div class="registro-panel-left">
+                    <div class="panel-left-decor"></div>
 
-                {{-- Indicador de pasos (se oculta al enviar) --}}
-                <div id="indicador-pasos" class="mb-5 flex gap-2 py-1">
-                    <div class="flex-1">
-                        <div data-paso-barra="1" class="mb-1.5 h-1 rounded-sm bg-unefa-gold"></div>
-                        <p data-paso-etiqueta="1" class="text-[11px] font-extrabold text-unefa-blue">
-                            <span class="font-black">01.</span> Acceso
-                        </p>
-                    </div>
-                    <div class="flex-1">
-                        <div data-paso-barra="2" class="mb-1.5 h-1 rounded-sm bg-slate-200"></div>
-                        <p data-paso-etiqueta="2" class="text-[11px] font-semibold text-slate-500">
-                            <span class="font-black">02.</span> Académico
-                        </p>
-                    </div>
-                    <div class="flex-1">
-                        <div data-paso-barra="3" class="mb-1.5 h-1 rounded-sm bg-slate-200"></div>
-                        <p data-paso-etiqueta="3" class="text-[11px] font-semibold text-slate-500">
-                            <span class="font-black">03.</span> Residencia
-                        </p>
-                    </div>
-                </div>
-
-                {{-- Alerta de validacion --}}
-                <div id="alerta-error" class="mb-4 hidden rounded-xl border border-red-300 bg-red-100 p-3">
-                    <p id="texto-error" class="text-[13px] font-bold text-unefa-red"></p>
-                </div>
-
-                {{-- Panel de exito (visible al finalizar) --}}
-                <div id="panel-exito" class="mb-5 hidden rounded-[18px] border border-slate-200 bg-slate-50 p-6 text-center">
-                    <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
-                        <span class="text-[32px] font-black text-unefa-green">✓</span>
-                    </div>
-                    <span class="mb-2 inline-block rounded-lg bg-[rgba(4,15,217,0.1)] px-2.5 py-1 text-[11px] font-extrabold text-unefa-blue">Expediente registrado</span>
-                    <p class="mb-2.5 text-[22px] font-black text-neutral-950">¡Registro exitoso!</p>
-                    <p class="mb-5 text-sm leading-5 text-slate-600">
-                        Tu expediente para el sistema de <span class="font-extrabold">Carnetización y Control de Asistencias (Periodo 2026-I)</span> fue registrado. Tu código QR institucional y credencial digital estarán habilitados en el Portal Académico.
-                    </p>
-                    <div class="flex flex-col gap-2.5">
-                        <a href="{{ route('login') }}" class="flex items-center justify-center gap-2 rounded-[14px] bg-unefa-gold py-3 text-sm font-black text-unefa-navy transition hover:brightness-105">
-                            Ir al Portal
-                        </a>
-                        <a href="{{ route('landing') }}" class="flex items-center justify-center gap-2 rounded-[14px] border border-slate-300 py-3 text-[13px] font-bold text-neutral-950 transition hover:bg-slate-50">
-                            Volver a la página principal
-                        </a>
-                    </div>
-                </div>
-
-                {{-- TODO(backend): conectar el envio del formulario a POST /registro al integrar el registro de carnetizacion. --}}
-                <form id="formulario-registro" action="#" method="POST" novalidate>
-
-                    {{-- PASO 1: Acceso --}}
-                    <fieldset data-paso="1" class="grid gap-x-4 md:grid-cols-2">
-                        <div class="mb-4">
-                            <label for="campo-primer-nombre" class="mb-1.5 block text-[13px] font-bold text-neutral-950">Primer nombre *</label>
-                            <input type="text" name="primer_nombre" id="campo-primer-nombre" autocomplete="given-name" placeholder="Ej. Carlos" class="h-12 w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 text-sm text-neutral-950 outline-none placeholder:text-slate-400 focus:border-unefa-blue" />
+                    <!-- Jerarquía Institucional -->
+                    <div class="panel-left-content">
+                        <div class="institution-badge">
+                            <div class="institution-logo-wrap">
+                                <img src="{{ asset('img/unefa-logo.webp') }}" alt="Escudo UNEFA">
+                            </div>
+                            <div class="institution-text-wrap">
+                                <span class="institution-country">República Bolivariana de Venezuela</span>
+                                <span class="institution-name">UNEFA</span>
+                            </div>
                         </div>
 
-                        <div class="mb-4">
-                            <label for="campo-segundo-nombre" class="mb-1.5 block text-[13px] font-bold text-neutral-950">Segundo nombre</label>
-                            <input type="text" name="segundo_nombre" id="campo-segundo-nombre" autocomplete="additional-name" placeholder="Ej. Eduardo" class="h-12 w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 text-sm text-neutral-950 outline-none placeholder:text-slate-400 focus:border-unefa-blue" />
+                        <div class="institution-divider"></div>
+
+                        <div class="panel-left-titles">
+                            <p class="panel-left-sub">Vicerrectorado Académico</p>
+                            <h1 class="panel-left-title">
+                                Registro y Activación de Carnet Digital
+                            </h1>
+                            <span class="badge-periodo">
+                                Periodo Académico 2026-I
+                            </span>
+                            <p class="panel-left-desc">
+                                Formulario centralizado para la asignación de matrícula estudiantil, selección de programa académico y acreditación del Carnet Digital y Control de Asistencias.
+                            </p>
                         </div>
 
-                        <div class="mb-4">
-                            <label for="campo-primer-apellido" class="mb-1.5 block text-[13px] font-bold text-neutral-950">Primer apellido *</label>
-                            <input type="text" name="primer_apellido" id="campo-primer-apellido" autocomplete="family-name" placeholder="Ej. Mendoza" class="h-12 w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 text-sm text-neutral-950 outline-none placeholder:text-slate-400 focus:border-unefa-blue" />
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="campo-segundo-apellido" class="mb-1.5 block text-[13px] font-bold text-neutral-950">Segundo apellido</label>
-                            <input type="text" name="segundo_apellido" id="campo-segundo-apellido" autocomplete="additional-family-name" placeholder="Ej. Gómez" class="h-12 w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 text-sm text-neutral-950 outline-none placeholder:text-slate-400 focus:border-unefa-blue" />
-                        </div>
-
-                        <div class="mb-4 md:col-span-2">
-                            <label for="campo-cedula" class="mb-1.5 block text-[13px] font-bold text-neutral-950">Documento de identidad *</label>
-                            <div class="flex gap-2">
-                                <input type="hidden" name="nacionalidad" id="campo-nacionalidad" value="V" />
-                                <div class="flex gap-1 rounded-xl bg-slate-100 p-[3px]" role="group" aria-label="Nacionalidad">
-                                    <button type="button" data-nacionalidad="V" class="flex items-center justify-center rounded-[10px] bg-unefa-blue px-3 py-2.5">
-                                        <span class="text-[13px] font-extrabold !text-white text-slate-500">V-</span>
-                                    </button>
-                                    <button type="button" data-nacionalidad="E" class="flex items-center justify-center rounded-[10px] px-3 py-2.5">
-                                        <span class="text-[13px] font-extrabold text-slate-500">E-</span>
-                                    </button>
+                        <!-- Resumen de Pasos en Columna Izquierda -->
+                        <div class="left-steps-wrap">
+                            <div class="left-step-item active" id="leftStepIndicator1">
+                                <span class="circle-step">1</span>
+                                <div>
+                                    <p class="step-text-title">Datos de Acceso e Identidad</p>
+                                    <p class="step-text-desc">Cédula, correo y contraseña de seguridad</p>
                                 </div>
-                                <input type="text" name="cedula" id="campo-cedula" inputmode="numeric" maxlength="12" autocomplete="off" placeholder="Ej. 29123456" class="h-12 min-w-0 flex-1 rounded-xl border border-slate-300 bg-slate-50 px-3.5 text-sm text-neutral-950 outline-none placeholder:text-slate-400 focus:border-unefa-blue" />
                             </div>
-                        </div>
 
-                        <div class="mb-4 md:col-span-2">
-                            <label for="campo-email" class="mb-1.5 block text-[13px] font-bold text-neutral-950">Correo electrónico *</label>
-                            <input type="email" name="email" id="campo-email" autocomplete="email" placeholder="nombre@correo.com" class="h-12 w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 text-sm text-neutral-950 outline-none placeholder:text-slate-400 focus:border-unefa-blue" />
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="campo-clave" class="mb-1.5 block text-[13px] font-bold text-neutral-950">Contraseña *</label>
-                            <div class="relative flex items-center">
-                                <input type="password" name="password" id="campo-clave" autocomplete="new-password" placeholder="Mínimo 8 caracteres" class="h-12 w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 text-sm text-neutral-950 outline-none placeholder:text-slate-400 focus:border-unefa-blue" />
-                                <button type="button" data-ver-clave="campo-clave" class="absolute right-3 px-2 py-1 text-xs font-bold text-unefa-blue">Ver</button>
+                            <div class="left-step-item pending" id="leftStepIndicator2">
+                                <span class="circle-step">2</span>
+                                <div>
+                                    <p class="step-text-title">Programa Académico</p>
+                                    <p class="step-text-desc">Selección de carrera o postgrado</p>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="mb-4">
-                            <label for="campo-clave2" class="mb-1.5 block text-[13px] font-bold text-neutral-950">Confirmar contraseña *</label>
-                            <div class="relative flex items-center">
-                                <input type="password" name="password_confirmation" id="campo-clave2" autocomplete="new-password" placeholder="Repite la contraseña" class="h-12 w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 text-sm text-neutral-950 outline-none placeholder:text-slate-400 focus:border-unefa-blue" />
-                                <button type="button" data-ver-clave="campo-clave2" class="absolute right-3 px-2 py-1 text-xs font-bold text-unefa-blue">Ver</button>
+                            <div class="left-step-item pending" id="leftStepIndicator3">
+                                <span class="circle-step">3</span>
+                                <div>
+                                    <p class="step-text-title">Sede y Ubicación</p>
+                                    <p class="step-text-desc">Núcleo regional y domicilio</p>
+                                </div>
                             </div>
-                        </div>
-                    </fieldset>
-
-                    {{-- PASO 2: Academico --}}
-                    <fieldset data-paso="2" class="hidden">
-                        <div class="mb-4">
-                            <label for="campo-nacimiento" class="mb-1.5 block text-[13px] font-bold text-neutral-950">Fecha de nacimiento *</label>
-                            <input type="date" name="fecha_nacimiento" id="campo-nacimiento" class="h-12 w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 text-sm text-neutral-950 outline-none focus:border-unefa-blue" />
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="campo-telefono" class="mb-1.5 block text-[13px] font-bold text-neutral-950">Teléfono de contacto *</label>
-                            <input type="tel" name="telefono" id="campo-telefono" autocomplete="tel" placeholder="Ej. 0414-1234567" class="h-12 w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 text-sm text-neutral-950 outline-none placeholder:text-slate-400 focus:border-unefa-blue" />
-                        </div>
-
-                        <div class="mb-4">
-                            <p class="mb-1.5 text-[13px] font-bold text-neutral-950">Género *</p>
-                            <div class="grid grid-cols-3 gap-2">
-                                <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-2 py-2.5 text-center transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="genero" value="Masculino" class="sr-only" checked />
-                                    <span class="text-xs font-bold text-neutral-950">Masculino</span>
-                                </label>
-                                <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-2 py-2.5 text-center transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="genero" value="Femenino" class="sr-only" />
-                                    <span class="text-xs font-bold text-neutral-950">Femenino</span>
-                                </label>
-                                <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-2 py-2.5 text-center transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="genero" value="Otro" class="sr-only" />
-                                    <span class="text-xs font-bold text-neutral-950">Otro</span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <p class="mb-1.5 text-[13px] font-bold text-neutral-950">Nivel de instrucción *</p>
-                            <div class="flex flex-col gap-1.5">
-                                <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="nivel_instruccion" value="Bachiller en Ciencias" class="sr-only" checked />
-                                    <span class="text-xs font-bold text-neutral-950">Bachiller en Ciencias</span>
-                                </label>
-                                <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="nivel_instruccion" value="Técnico Medio Industrial" class="sr-only" />
-                                    <span class="text-xs font-bold text-neutral-950">Técnico Medio Industrial</span>
-                                </label>
-                                <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="nivel_instruccion" value="Bachiller en Humanidades" class="sr-only" />
-                                    <span class="text-xs font-bold text-neutral-950">Bachiller en Humanidades</span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="campo-egreso" class="mb-1.5 block text-[13px] font-bold text-neutral-950">Año de egreso de bachillerato *</label>
-                            <input type="number" name="anio_egreso" id="campo-egreso" min="1970" max="2026" inputmode="numeric" placeholder="Ej. 2025" class="h-12 w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 text-sm text-neutral-950 outline-none placeholder:text-slate-400 focus:border-unefa-blue" />
-                        </div>
-
-                        <div class="mb-4">
-                            <p class="mb-1.5 text-[13px] font-bold text-neutral-950">Carrera asignada / cursante *</p>
-                            <div class="grid gap-1.5 sm:grid-cols-2">
-                                <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="carrera" value="Ingeniería de Sistemas" class="sr-only" checked />
-                                    <span class="text-xs font-bold text-neutral-950">Ingeniería de Sistemas</span>
-                                </label>
-                                <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="carrera" value="Ingeniería de Telecomunicaciones" class="sr-only" />
-                                    <span class="text-xs font-bold text-neutral-950">Ingeniería de Telecomunicaciones</span>
-                                </label>
-                                <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="carrera" value="Ingeniería Mecánica" class="sr-only" />
-                                    <span class="text-xs font-bold text-neutral-950">Ingeniería Mecánica</span>
-                                </label>
-                                <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="carrera" value="Ingeniería Electrónica" class="sr-only" />
-                                    <span class="text-xs font-bold text-neutral-950">Ingeniería Electrónica</span>
-                                </label>
-                                <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="carrera" value="Lic. Administración y Gestión Municipal" class="sr-only" />
-                                    <span class="text-xs font-bold text-neutral-950">Lic. Administración y Gestión Municipal</span>
-                                </label>
-                                <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="carrera" value="Lic. Administración de Desastres" class="sr-only" />
-                                    <span class="text-xs font-bold text-neutral-950">Lic. Administración de Desastres</span>
-                                </label>
-                                <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="carrera" value="Lic. Economía Social" class="sr-only" />
-                                    <span class="text-xs font-bold text-neutral-950">Lic. Economía Social</span>
-                                </label>
-                                <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="carrera" value="Lic. Educación Integral" class="sr-only" />
-                                    <span class="text-xs font-bold text-neutral-950">Lic. Educación Integral</span>
-                                </label>
-                                <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="carrera" value="TSU en Análisis y Diseño de Sistemas / Datos" class="sr-only" />
-                                    <span class="text-xs font-bold text-neutral-950">TSU Análisis y Diseño de Sistemas / Datos</span>
-                                </label>
-                            </div>
-                        </div>
-                    </fieldset>
-
-                    {{-- PASO 3: Residencia --}}
-                    <fieldset data-paso="3" class="hidden">
-                        <div class="mb-4">
-                            <p class="mb-1.5 text-[13px] font-bold text-neutral-950">Estado *</p>
-                            <div class="grid gap-1.5 sm:grid-cols-2">
-                                <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="estado" value="Distrito Capital" class="sr-only" checked />
-                                    <span class="text-xs font-bold text-neutral-950">Distrito Capital</span>
-                                </label>
-                                <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="estado" value="Miranda" class="sr-only" />
-                                    <span class="text-xs font-bold text-neutral-950">Miranda</span>
-                                </label>
-                                <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="estado" value="Aragua" class="sr-only" />
-                                    <span class="text-xs font-bold text-neutral-950">Aragua</span>
-                                </label>
-                                <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="estado" value="Carabobo" class="sr-only" />
-                                    <span class="text-xs font-bold text-neutral-950">Carabobo</span>
-                                </label>
-                                <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="estado" value="Zulia" class="sr-only" />
-                                    <span class="text-xs font-bold text-neutral-950">Zulia</span>
-                                </label>
-                                <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="estado" value="Lara" class="sr-only" />
-                                    <span class="text-xs font-bold text-neutral-950">Lara</span>
-                                </label>
-                                <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="estado" value="Anzoátegui" class="sr-only" />
-                                    <span class="text-xs font-bold text-neutral-950">Anzoátegui</span>
-                                </label>
-                                <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="estado" value="Bolívar" class="sr-only" />
-                                    <span class="text-xs font-bold text-neutral-950">Bolívar</span>
-                                </label>
-                                <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="estado" value="Táchira" class="sr-only" />
-                                    <span class="text-xs font-bold text-neutral-950">Táchira</span>
-                                </label>
-                                <label class="cursor-pointer rounded-[10px] border border-slate-200 bg-white px-3.5 py-2.5 transition-colors has-[:checked]:border-unefa-blue has-[:checked]:bg-[rgba(4,15,217,0.08)]">
-                                    <input type="radio" name="estado" value="Otro estado de Venezuela" class="sr-only" />
-                                    <span class="text-xs font-bold text-neutral-950">Otro estado de Venezuela</span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="grid gap-x-4 md:grid-cols-2">
-                            <div class="mb-4">
-                                <label for="campo-municipio" class="mb-1.5 block text-[13px] font-bold text-neutral-950">Municipio *</label>
-                                <input type="text" name="municipio" id="campo-municipio" placeholder="Ej. Libertador" class="h-12 w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 text-sm text-neutral-950 outline-none placeholder:text-slate-400 focus:border-unefa-blue" />
-                            </div>
-                            <div class="mb-4">
-                                <label for="campo-parroquia" class="mb-1.5 block text-[13px] font-bold text-neutral-950">Parroquia *</label>
-                                <input type="text" name="parroquia" id="campo-parroquia" placeholder="Ej. Sucre / El Valle" class="h-12 w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 text-sm text-neutral-950 outline-none placeholder:text-slate-400 focus:border-unefa-blue" />
-                            </div>
-                            <div class="mb-4">
-                                <label for="campo-urbanizacion" class="mb-1.5 block text-[13px] font-bold text-neutral-950">Urbanización / sector *</label>
-                                <input type="text" name="urbanizacion" id="campo-urbanizacion" placeholder="Ej. Casalta / Chuao" class="h-12 w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 text-sm text-neutral-950 outline-none placeholder:text-slate-400 focus:border-unefa-blue" />
-                            </div>
-                            <div class="mb-4">
-                                <label for="campo-calle" class="mb-1.5 block text-[13px] font-bold text-neutral-950">Calle o avenida *</label>
-                                <input type="text" name="calle_avenida" id="campo-calle" placeholder="Ej. Av. Principal con Calle 3" class="h-12 w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 text-sm text-neutral-950 outline-none placeholder:text-slate-400 focus:border-unefa-blue" />
-                            </div>
-                            <div class="mb-4 md:col-span-2">
-                                <label for="campo-nro-casa" class="mb-1.5 block text-[13px] font-bold text-neutral-950">Nro. casa / edificio *</label>
-                                <input type="text" name="nro_casa" id="campo-nro-casa" placeholder="Ej. 14-B" class="h-12 w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 text-sm text-neutral-950 outline-none placeholder:text-slate-400 focus:border-unefa-blue" />
-                            </div>
-                        </div>
-
-                        <p class="mb-2.5 mt-1.5 text-[11px] italic leading-4 text-slate-500">
-                            Al enviar este formulario certifico bajo fe de juramento que todos los datos
-                            consignados son fidedignos y me comprometo a cumplir el reglamento disciplinario
-                            del Curso Introductorio y la doctrina cívico-militar unefista.
-                        </p>
-                    </fieldset>
-
-                    {{-- Acciones del formulario --}}
-                    <div id="acciones-formulario" class="mt-2.5 flex items-center justify-between border-t border-slate-300 pt-4">
-                        <p class="text-xs font-bold text-slate-500">Paso <span id="paso-actual">1</span> / 3</p>
-                        <div class="flex gap-2">
-                            <button type="button" id="boton-atras" class="hidden items-center justify-center gap-2 rounded-[14px] border border-slate-300 px-4 py-2.5 text-[13px] font-bold text-neutral-950 transition hover:bg-slate-50">
-                                ← Atrás
-                            </button>
-                            <button type="button" id="boton-principal" class="flex items-center justify-center gap-2 rounded-[14px] bg-unefa-gold px-4 py-2.5 text-sm font-black text-unefa-navy transition hover:brightness-105">
-                                Continuar →
-                            </button>
                         </div>
                     </div>
-                </form>
 
-                {{-- Acceso alternativo --}}
-                <div class="mt-5 flex flex-col gap-2.5 border-t border-slate-300 pt-4">
-                    <p class="text-center text-xs font-semibold text-slate-600">¿Ya posees matrícula o usuario activo?</p>
-                    <a href="{{ route('login') }}" class="flex items-center justify-center rounded-[14px] border border-slate-300 py-3 text-[13px] font-bold text-neutral-950 transition hover:bg-slate-50">
-                        Iniciar sesión en el Portal
-                    </a>
+                    <!-- Metadatos del Sistema -->
+                    <div class="panel-left-footer">
+                        <div class="panel-left-meta-row">
+                            <span class="panel-left-meta-label">Módulo de Carnetización</span>
+                            <span class="panel-left-meta-version">REG-UNEFA V2.4.0</span>
+                        </div>
+                        <p class="panel-left-legal-text">
+                            Trámite universitario oficial. La información suministrada tiene carácter de Declaración Jurada conforme a las leyes de la República.
+                        </p>
+                    </div>
                 </div>
+
+                <!-- PANEL DERECHO: Terminal Multi-Paso de Registro -->
+                <div class="registro-panel-right">
+                    <div>
+                        <!-- Estado del Terminal -->
+                        <div class="terminal-header">
+                            <span class="terminal-indicator-dot"></span>
+                            <span class="terminal-title">Terminal de Registro Estudiantil</span>
+                        </div>
+
+                        <!-- Indicador de Pasos (Pills) -->
+                        <div class="step-pills-grid" id="stepPillsContainer">
+                            <div class="step-pill active" id="stepPill1">
+                                <span class="step-pill-number">Paso 01</span>
+                                <span class="step-pill-title">Identidad</span>
+                            </div>
+                            <div class="step-pill pending" id="stepPill2">
+                                <span class="step-pill-number">Paso 02</span>
+                                <span class="step-pill-title">Académico</span>
+                            </div>
+                            <div class="step-pill pending" id="stepPill3">
+                                <span class="step-pill-number">Paso 03</span>
+                                <span class="step-pill-title">Sede</span>
+                            </div>
+                        </div>
+
+                        <!-- Alerta de validación dinámica -->
+                        <div id="signupAlertBox" class="alert-box hidden" role="alert"></div>
+
+                        <!-- Tarjeta de Confirmación de Registro Exitoso -->
+                        <div id="signupSuccessCard" class="success-card hidden">
+                            <div class="success-icon-wrap">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11.5 14.5 16 9.5"/></svg>
+                            </div>
+                            <div>
+                                <span class="success-badge">
+                                    Expediente Validado
+                                </span>
+                                <h2 class="success-title">¡Registro Completado con Éxito!</h2>
+                                <p class="success-desc">
+                                    Su solicitud ha sido asentada correctamente en los servidores de la UNEFA. Conserve su código de trámite para formalizar la entrega de recaudos y activación del carnet QR.
+                                </p>
+                            </div>
+
+                            <div class="success-code-box">
+                                <span class="success-code-label">Código Único de Trámite</span>
+                                <span class="success-code-value" id="registrationCodeBadge">UNEFA-2026-I-PRE-849201</span>
+                            </div>
+
+                            <div>
+                                <a 
+                                    href="{{ route('login') }}" 
+                                    class="btn-step-submit"
+                                    style="display: inline-flex; text-decoration: none;"
+                                >
+                                    <span>Ir al Inicio de Sesión</span>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Formulario Multi-Paso -->
+                        <form id="signupMultiForm" novalidate>
+
+                            <!-- ── PASO 01: Identidad y Acceso ────────────────────────────── -->
+                            <div class="form-step" id="stepContainer1">
+                                <div class="form-grid-2">
+                                    <div class="form-group">
+                                        <label class="form-label" for="reg_cedula">Cédula de Identidad *</label>
+                                        <div class="input-cedula-group">
+                                            <select id="reg_docType" aria-label="Nacionalidad del documento">
+                                                <option value="V">V-</option>
+                                                <option value="E">E-</option>
+                                            </select>
+                                            <input 
+                                                type="text" 
+                                                id="reg_cedula" 
+                                                inputmode="numeric" 
+                                                maxlength="9" 
+                                                placeholder="28450123" 
+                                                pattern="[0-9]*" 
+                                                oninput="this.value = this.value.replace(/[^0-9]/g, '');" 
+                                                required
+                                                autocomplete="username"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="reg_telefono">Teléfono Celular *</label>
+                                        <input 
+                                            type="tel" 
+                                            id="reg_telefono" 
+                                            class="form-input" 
+                                            placeholder="04121234567" 
+                                            maxlength="11" 
+                                            oninput="this.value = this.value.replace(/[^0-9]/g, '');" 
+                                            required
+                                            autocomplete="tel"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="form-grid-2">
+                                    <div class="form-group">
+                                        <label class="form-label" for="reg_nombres">Nombres Completos *</label>
+                                        <input 
+                                            type="text" 
+                                            id="reg_nombres" 
+                                            class="form-input" 
+                                            placeholder="Ej. Carlos Eduardo" 
+                                            required
+                                            autocomplete="given-name"
+                                        />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="reg_apellidos">Apellidos Completos *</label>
+                                        <input 
+                                            type="text" 
+                                            id="reg_apellidos" 
+                                            class="form-input" 
+                                            placeholder="Ej. González Márquez" 
+                                            required
+                                            autocomplete="family-name"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="reg_email">Correo Electrónico *</label>
+                                    <input 
+                                        type="email" 
+                                        id="reg_email" 
+                                        class="form-input" 
+                                        placeholder="estudiante@correo.com" 
+                                        required
+                                        autocomplete="email"
+                                    />
+                                </div>
+
+                                <div class="form-grid-2">
+                                    <div class="form-group">
+                                        <label class="form-label" for="reg_password">Contraseña (Mínimo 8 caracteres) *</label>
+                                        <div class="input-password-group">
+                                            <input 
+                                                type="password" 
+                                                id="reg_password" 
+                                                placeholder="••••••••••••" 
+                                                required
+                                                autocomplete="new-password"
+                                            />
+                                            <button 
+                                                type="button" 
+                                                class="btn-toggle-pwd" 
+                                                aria-label="Alternar visibilidad de contraseña" 
+                                                onclick="toggleFieldPassword('reg_password', this)"
+                                            >
+                                                <svg class="icon-eye" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                                <svg class="icon-eye-off" style="display: none;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="reg_confirmPassword">Confirmar Contraseña *</label>
+                                        <div class="input-password-group">
+                                            <input 
+                                                type="password" 
+                                                id="reg_confirmPassword" 
+                                                placeholder="Repita la contraseña institucional" 
+                                                required
+                                                autocomplete="new-password"
+                                            />
+                                            <button 
+                                                type="button" 
+                                                class="btn-toggle-pwd" 
+                                                aria-label="Alternar visibilidad de confirmación de contraseña" 
+                                                onclick="toggleFieldPassword('reg_confirmPassword', this)"
+                                            >
+                                                <svg class="icon-eye" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                                <svg class="icon-eye-off" style="display: none;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ── PASO 02: Programa Académico ───────────────────────────── -->
+                            <div class="form-step hidden" id="stepContainer2">
+                                <div class="form-group">
+                                    <label class="form-label" for="reg_nivel">Nivel de Estudio Académico *</label>
+                                    <select id="reg_nivel" class="form-select" onchange="updateCareerOptions()" required>
+                                        <option value="pregrado">Pregrado (Ingeniería / Licenciatura / TSU)</option>
+                                        <option value="postgrado">Postgrado (Especialización / Maestría / Doctorado)</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="reg_carrera">Carrera o Programa a Cursar *</label>
+                                    <select id="reg_carrera" class="form-select" required>
+                                        <optgroup label="Ingenierías (10 Semestres)">
+                                            <option value="ING-SIS">Ingeniería de Sistemas</option>
+                                            <option value="ING-TEL">Ingeniería de Telecomunicaciones</option>
+                                            <option value="ING-MEC">Ingeniería Mecánica</option>
+                                            <option value="ING-ELE">Ingeniería Electrónica</option>
+                                        </optgroup>
+                                        <optgroup label="Licenciaturas (8 Semestres)">
+                                            <option value="LIC-AGM">Licenciatura en Administración y Gestión Municipal</option>
+                                            <option value="LIC-ADD">Licenciatura en Administración de Desastres</option>
+                                            <option value="LIC-ECO">Licenciatura en Economía Social</option>
+                                            <option value="LIC-EDU">Licenciatura en Educación Integral</option>
+                                        </optgroup>
+                                        <optgroup label="Técnico Superior Universitario (6 Semestres)">
+                                            <option value="TSU-ADS">TSU en Análisis y Diseño de Sistemas / Datos</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+
+                                <div class="form-grid-2">
+                                    <div class="form-group">
+                                        <label class="form-label" for="reg_turno">Turno / Régimen Preferido *</label>
+                                        <select id="reg_turno" class="form-select" required>
+                                            <option value="diurno">Diurno (Lunes a Viernes 7:00 AM - 1:00 PM)</option>
+                                            <option value="nocturno">Nocturno (Lunes a Viernes 5:00 PM - 9:30 PM)</option>
+                                            <option value="sabados">Sabatino (Concentrado para Postgrado)</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="reg_condicion">Modalidad de Ingreso *</label>
+                                        <select id="reg_condicion" class="form-select" required>
+                                            <option value="curso_aprobado">Curso Introductorio Aprobado / Regular</option>
+                                            <option value="equivalencia">Equivalencia / Traslado Institucional</option>
+                                            <option value="convenio_fanb">Convenio Militar FANB / Personal Activo</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="reg_promedio">Promedio de Notas de Bachillerato / Pregrado (Escala 1 al 20) *</label>
+                                    <input 
+                                        type="number" 
+                                        id="reg_promedio" 
+                                        class="form-input" 
+                                        placeholder="16.50" 
+                                        step="0.01" 
+                                        min="1" 
+                                        max="20" 
+                                        required
+                                    />
+                                </div>
+                            </div>
+
+                            <!-- ── PASO 03: Sede y Ubicación ──────────────────────────────── -->
+                            <div class="form-step hidden" id="stepContainer3">
+                                <div class="form-group">
+                                    <label class="form-label" for="reg_sede">Núcleo / Sede de la UNEFA a Inscribirse *</label>
+                                    <select id="reg_sede" class="form-select" required>
+                                        <option value="caracas_chuao">Sede Central Caracas (Chuao)</option>
+                                        <option value="miranda_los_teques">Núcleo Miranda — Los Teques</option>
+                                        <option value="miranda_guatire">Extensión Miranda — Guatire</option>
+                                        <option value="aragua_maracay">Núcleo Aragua — Maracay</option>
+                                        <option value="carabobo_valencia">Núcleo Carabobo — Valencia</option>
+                                        <option value="zulia_maracaibo">Núcleo Zulia — Maracaibo</option>
+                                        <option value="lara_barquisimeto">Núcleo Lara — Barquisimeto</option>
+                                        <option value="tachira_san_cristobal">Núcleo Táchira — San Cristóbal</option>
+                                        <option value="anzoategui_san_tome">Núcleo Anzoátegui — San Tomé</option>
+                                        <option value="bolivar_puerto_ordaz">Núcleo Bolívar — Puerto Ordaz</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-grid-2">
+                                    <div class="form-group">
+                                        <label class="form-label" for="reg_estado">Estado de Residencia *</label>
+                                        <select id="reg_estado" class="form-select" required>
+                                            <option value="distrito_capital">Distrito Capital</option>
+                                            <option value="miranda">Miranda</option>
+                                            <option value="la_guaira">La Guaira</option>
+                                            <option value="aragua">Aragua</option>
+                                            <option value="carabobo">Carabobo</option>
+                                            <option value="zulia">Zulia</option>
+                                            <option value="lara">Lara</option>
+                                            <option value="otro">Otro Estado de Venezuela</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="reg_municipio">Municipio / Parroquia *</label>
+                                        <input 
+                                            type="text" 
+                                            id="reg_municipio" 
+                                            class="form-input" 
+                                            placeholder="Ej. Municipio Baruta, Parroquia Minas" 
+                                            required
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="reg_direccion">Dirección de Habitación Completa *</label>
+                                    <textarea 
+                                        id="reg_direccion" 
+                                        rows="2" 
+                                        class="form-textarea" 
+                                        placeholder="Av., calle, edificio o casa, punto de referencia exacto" 
+                                        required
+                                    ></textarea>
+                                </div>
+                            </div>
+
+                            <!-- ── Botones de Navegación del Asistente ─────────────────────── -->
+                            <div class="step-actions">
+                                <button 
+                                    type="button" 
+                                    id="btnPrevStep" 
+                                    class="btn-step-prev hidden" 
+                                    onclick="navigateStep(-1)"
+                                >
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                                    <span>Anterior</span>
+                                </button>
+
+                                <button 
+                                    type="button" 
+                                    id="btnNextStep" 
+                                    class="btn-step-next" 
+                                    onclick="navigateStep(1)"
+                                >
+                                    <span>Continuar</span>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                                </button>
+
+                                <button 
+                                    type="submit" 
+                                    id="btnSubmitRegistration" 
+                                    class="btn-step-submit hidden"
+                                >
+                                    <span>Completar Registro</span>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+
+                    <!-- Pie del Terminal: Retorno a Login y Regulador -->
+                    <div class="terminal-footer">
+                        <div class="terminal-cross-link">
+                            <span class="terminal-cross-text">¿Ya posees cuenta de usuario o eres estudiante regular?</span>
+                            <a href="{{ route('login') }}" class="terminal-cross-action">Iniciar Sesión</a>
+                        </div>
+
+                        <div class="terminal-legal-row">
+                            <span>Universidad Nacional Experimental Politécnica de la Fuerza Armada Nacional Bolivariana</span>
+                            <span class="terminal-legal-mono">UNEFA • VENEZUELA</span>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
         </div>
     </div>
+@endsection
+
+@section('footer')
+    {{-- En la vista de registro se preserva la estetica limpia de la terminal sin footer publico expandido --}}
 @endsection

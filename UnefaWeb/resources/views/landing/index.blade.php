@@ -195,8 +195,8 @@
                             Los pilares que forjan a nuestros profesionales
                         </h2>
                     </div>
-                    <p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 28rem; line-height: 1.7;">
-                        Conoce la doctrina, valores y cobertura territorial que hacen de la UNEFA la mayor universidad técnica del país.
+                    <p style="font-size: 1.05rem; color: var(--text-secondary); max-width: 30rem; line-height: 1.65;">
+                        Conoce los principios de excelencia académica, vocación de servicio y alcance nacional que fundamentan la formación profesional en la UNEFA.
                     </p>
                 </div>
             </div>
@@ -321,15 +321,6 @@
                         </div>
                     </div>
 
-                    <div>
-                        <strong style="display: block; font-size: 1.05rem; margin-bottom: 0.75rem; color: var(--unefa-navy);">
-                            Asignaturas Clave de la Malla:
-                        </strong>
-                        <div id="dossierSubjects" class="subjects-wrap">
-                            <!-- Inyectado por JS -->
-                        </div>
-                    </div>
-
                     <div style="padding-top: 1.25rem; border-top: 2px solid var(--border-subtle); display: flex; gap: 1rem; flex-wrap: wrap;">
                         <a href="{{ route('registro') }}" class="btn btn-gold btn-lg">
                             <span>Registrarme con esta carrera</span>
@@ -417,11 +408,11 @@
                     <div class="calc-progress-header">
                         <div>
                             <span class="badge-tag accent-blue" style="margin-bottom: 0.5rem;">Herramienta del Cursante</span>
-                            <h3 class="text-title-card" style="font-size: 1.5rem;">Verificador de Recaudos para Carnetización</h3>
+                            <h3 class="text-title-card" style="font-size: 1.35rem;">Verificador de Recaudos para Carnetización</h3>
                         </div>
                         <div class="text-right">
                             <div id="porcentaje-recaudos" class="calc-percentage">50%</div>
-                            <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">Listo para consignar</span>
+                            <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">Listo para consignar</span>
                         </div>
                     </div>
 
@@ -429,7 +420,7 @@
                         <div id="barra-recaudos" class="calc-progress-bar-fill" style="width: 50%;"></div>
                     </div>
 
-                    <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+                    <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 0.85rem; line-height: 1.5;">
                         Marca los recaudos que posees para tramitar tu carnet digital y habilitar tu control de asistencias:
                     </p>
 
@@ -440,7 +431,7 @@
                                 <span class="custom-checkbox">✓</span>
                                 <span>Cédula de identidad laminada y 2 fotocopias legibles</span>
                             </div>
-                            <span class="badge-tag" style="font-size: 0.75rem;">Fase 1</span>
+                            <span class="badge-tag" style="font-size: 0.68rem; padding: 0.15rem 0.45rem; flex-shrink: 0;">Fase 1</span>
                         </label>
                         <label class="check-item-label checked">
                             <div style="display: flex; align-items: center;">
@@ -448,7 +439,7 @@
                                 <span class="custom-checkbox">✓</span>
                                 <span>Constancia o certificación de aprobación del Curso Introductorio</span>
                             </div>
-                            <span class="badge-tag" style="font-size: 0.75rem;">Fase 1</span>
+                            <span class="badge-tag" style="font-size: 0.68rem; padding: 0.15rem 0.45rem; flex-shrink: 0;">Fase 1</span>
                         </label>
                         <label class="check-item-label checked">
                             <div style="display: flex; align-items: center;">
@@ -456,7 +447,7 @@
                                 <span class="custom-checkbox">✓</span>
                                 <span>Planilla de asignación de carrera o comprobante de matrícula</span>
                             </div>
-                            <span class="badge-tag" style="font-size: 0.75rem;">Fase 2</span>
+                            <span class="badge-tag" style="font-size: 0.68rem; padding: 0.15rem 0.45rem; flex-shrink: 0;">Fase 2</span>
                         </label>
                         <label class="check-item-label">
                             <div style="display: flex; align-items: center;">
@@ -464,7 +455,7 @@
                                 <span class="custom-checkbox"></span>
                                 <span>Fotografía digital fondo blanco para el carnet QR</span>
                             </div>
-                            <span class="badge-tag" style="font-size: 0.75rem;">Fase 2</span>
+                            <span class="badge-tag" style="font-size: 0.68rem; padding: 0.15rem 0.45rem; flex-shrink: 0;">Fase 2</span>
                         </label>
                         <label class="check-item-label">
                             <div style="display: flex; align-items: center;">
@@ -472,7 +463,7 @@
                                 <span class="custom-checkbox"></span>
                                 <span>Copia simple de partida de nacimiento y título de bachiller</span>
                             </div>
-                            <span class="badge-tag" style="font-size: 0.75rem;">Fase 3</span>
+                            <span class="badge-tag" style="font-size: 0.68rem; padding: 0.15rem 0.45rem; flex-shrink: 0;">Fase 3</span>
                         </label>
                         <label class="check-item-label">
                             <div style="display: flex; align-items: center;">
@@ -480,20 +471,20 @@
                                 <span class="custom-checkbox"></span>
                                 <span>Horario o constancia de materias inscritas del período</span>
                             </div>
-                            <span class="badge-tag" style="font-size: 0.75rem;">Fase 3</span>
+                            <span class="badge-tag" style="font-size: 0.68rem; padding: 0.15rem 0.45rem; flex-shrink: 0;">Fase 3</span>
                         </label>
                     </div>
 
-                    <p id="texto-mensaje-recaudos" style="text-align: center; font-size: 0.95rem; font-weight: 700; color: var(--unefa-blue); margin-bottom: 1.25rem;">
+                    <p id="texto-mensaje-recaudos" style="text-align: center; font-size: 0.85rem; font-weight: 700; color: var(--unefa-blue); margin-bottom: 0.85rem;">
                         Tienes 3 de 6 recaudos completados.
                     </p>
 
-                    <a href="{{ route('registro') }}" class="btn btn-gold btn-lg" style="width: 100%; justify-content: center;">
+                    <a href="{{ route('registro') }}" class="btn btn-gold" style="width: 100%; justify-content: center; padding: 0.65rem 1.25rem;">
                         <span>Iniciar registro de carnetización</span>
                         <span aria-hidden="true">→</span>
                     </a>
 
-                    <p style="text-align: center; font-size: 0.82rem; color: var(--text-muted); margin-top: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.4rem;">
+                    <p style="text-align: center; font-size: 0.78rem; color: var(--text-muted); margin-top: 0.75rem; display: flex; align-items: center; justify-content: center; gap: 0.4rem;">
                         @include('partials.icon', ['name' => 'shield-check', 'clase' => 'h-4 w-4 text-slate-500'])
                         Sistema de Carnetización y Asistencias Digitales · UNEFA
                     </p>
