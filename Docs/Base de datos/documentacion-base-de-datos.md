@@ -1,7 +1,7 @@
 # Documentación de la Base de Datos — UNEFA Asistencias & Carnets
 
 > [!NOTE]
-> Esta documentación fue hecha a partir de las 5 migraciones Laravel ubicadas en `database/migrations/`. Fecha: **21 de noviembre de 2026**. Esta no es la versión definitiva y puede ser modificada en un futuro si surgen cambios en la estructura de la base de datos.
+> Esta documentación fue hecha a partir de las 5 migraciones Laravel ubicadas en `database/migrations/` y los seeders en `database/seeders/`. Fecha: **22 de noviembre de 2026**. Esta no es la versión definitiva y puede ser modificada en un futuro si surgen cambios en la estructura de la base de datos.
 
 ---
 
@@ -152,8 +152,8 @@ Credenciales de acceso al sistema. Relación 1:1 con `profile`.
 
 **Índices:** `uniq_profile_id`, `uniq_username`, `uniq_email`, `uniq_user_qr_token` (todos UNIQUE), `idx_user_pin_expiration`, `idx_user_status` (INDEX)
 
-> [!IMPORTANT]
-> El campo `qr_token` es un identificador **único y permanente** por persona. Se usa para generar el código QR del carnet y registrar asistencias mediante escaneo.
+**Guía de funcionamiento:**
+El campo `qr_token` es un identificador **único y permanente** por persona. Se usa para generar el código QR del carnet y registrar asistencias mediante escaneo. Este token se genera una sola vez al crear la cuenta y no cambia, garantizando que el QR del carnet sea válido durante toda la vida del usuario en el sistema.
 
 ---
 
@@ -173,8 +173,8 @@ Asignación de múltiples roles por usuario. Cada asignación puede incluir un n
 
 **Índices:** `uniq_user_role` (UNIQUE compuesto), `uniq_credential_number` (UNIQUE), `idx_ur_role_active` (compuesto)
 
-> [!TIP]
-> Un usuario puede tener múltiples roles simultáneos (ej: Estudiante + Preparador). El borrado de un `system_role` está **restringido** (`RESTRICT`) para evitar eliminar roles que estén en uso.
+**Guía de funcionamiento:**
+Un usuario puede tener múltiples roles simultáneos (ej: Estudiante + Preparador). Cada combinación `user_id` + `role_id` es única, y cada rol genera su propio carnet con número de credencial independiente. El borrado de un `system_role` está **restringido** (`RESTRICT`) para evitar eliminar roles que estén en uso; primero se deben reasignar o eliminar las asignaciones existentes.
 
 ---
 
@@ -375,8 +375,8 @@ Inscripciones de estudiantes en secciones con notas y control de materias arrast
 
 **Índices:** `uniq_student_section` (UNIQUE compuesto), `idx_enrollment_section`, `idx_enrollment_period`, `idx_enrollment_status` (INDEX), `idx_enrollment_dragged` (compuesto: `student_id`, `status`, `is_dragged`)
 
-> [!WARNING]
-> El campo `is_dragged` marca materias que el estudiante está repitiendo. Esto se refleja también en `profile.has_dragged_subjects` como una bandera rápida de consulta.
+**Guía de funcionamiento:**
+El campo `is_dragged` indica que la inscripción corresponde a una materia que el estudiante ya cursó previamente y reprobó. Este campo funciona en conjunto con `profile.has_dragged_subjects` (ver sección de problemas detectados). El ciclo de vida de una inscripción pasa por los estados: `Pending` → `Enrolled` (confirmada por el coordinador) → `Approved` / `Failed` (al cerrar el ciclo de evaluación). Los estados `Withdrawn` y `Rejected` representan salidas anticipadas del flujo normal.
 
 ---
 
@@ -421,8 +421,8 @@ Registro de asistencia por estudiante en cada sesión de clase.
 
 **Índices:** `uniq_session_student` (UNIQUE compuesto), `idx_attendance_student_status` (compuesto), `idx_attendance_registrar`, `idx_attendance_method` (INDEX)
 
-> [!IMPORTANT]
-> La asistencia se registra principalmente por **escaneo del código QR** del carnet (`registration_method = 'QR'`), usando el `qr_token` de `user_account`. El docente puede también registrar manualmente (`Manual`).
+**Guía de funcionamiento:**
+La asistencia se registra principalmente por **escaneo del código QR** del carnet (`registration_method = 'QR'`), usando el `qr_token` almacenado en `user_account`. El flujo es: el docente abre una sesión de clase → el estudiante escanea el QR de la sesión con su dispositivo, o el docente escanea el QR del carnet del estudiante → el sistema crea el registro de asistencia verificando que la sesión esté abierta y que el estudiante esté inscrito en la sección. El docente puede también registrar asistencia manualmente (`Manual`) en caso de fallas con el lector QR.
 
 ---
 
@@ -456,6 +456,101 @@ Registro de intentos fallidos de acceso para detección de fuerza bruta y bloque
 | `attempted_at` | TIMESTAMP | Auto | Fecha/hora del intento |
 
 **Índices:** `idx_failed_lookup` (compuesto: `ip_address`, `attempt_type`, `attempted_at`)
+
+---
+
+## Datos Iniciales (Seeders)
+
+Los datos iniciales del sistema se cargan mediante seeders de Laravel ubicados en `database/seeders/`. Se ejecutan automáticamente al correr `php artisan db:seed` o `php artisan migrate --seed`.
+
+### Estructura de seeders
+
+| Archivo | Descripción |
+|---------|-------------|
+| `DatabaseSeeder.php` | Seeder principal de Laravel. Orquesta la ejecución de los demás seeders. Usa el trait `WithoutModelEvents` para evitar disparar eventos de modelo durante la carga. |
+| `UnefaInitialDataSeeder.php` | Seeder de datos base del sistema. Usa `insertOrIgnore` para que sea **seguro re-ejecutar** sin duplicar registros. |
+
+### Datos insertados por `UnefaInitialDataSeeder`
+
+#### Roles del sistema (`system_role`) — 5 registros
+
+| ID | Rol | Nivel | Descripción |
+|----|-----|-------|-------------|
+| 1 | Super Administrator | 1 | Soporte Técnico Central / TI — Acceso exclusivo a Auditoría, Bitácora y Configuración Global |
+| 2 | Director | 2 | Rector / Administrador de la Institución — Asigna Coordinadores de Carrera y valida con clave secundaria |
+| 3 | Academic Coordinator | 3 | Control de Estudios — Valida Expedientes, Registra Horarios y Emite Carnets Digitales |
+| 4 | Teacher | 4 | Docente / Titular de Materia — Gestiona Sesiones de Clase y Asistencias mediante Escaneo QR |
+| 5 | Student | 5 | Alumno Regular Aprobado — Acceso a Carnet Digital, QR y Horario Académico |
+
+#### Permisos del sistema (`permission`) — 11 registros
+
+| ID | Clave | Nombre | Módulo |
+|----|-------|--------|--------|
+| 1 | `audit.view` | Ver Bitácora y Auditoría | Seguridad |
+| 2 | `system.backup` | Gestionar Respaldos | Seguridad |
+| 3 | `coordinator.assign` | Asignar Coordinadores | Dirección |
+| 4 | `metrics.global` | Ver Métricas Globales | Dirección |
+| 5 | `student.validate_docs` | Validar Expedientes | Coordinación |
+| 6 | `credential.issue` | Emitir Carnets | Coordinación |
+| 7 | `schedule.manage` | Gestionar Horarios y Secciones | Coordinación |
+| 8 | `session.manage` | Abrir y Cerrar Clases | Docencia |
+| 9 | `attendance.scan` | Escanear QR y Registrar Asistencia | Docencia |
+| 10 | `credential.view_own` | Ver Carnets Propios y QR | General |
+| 11 | `schedule.view_own` | Ver Horario y Materias | Estudiantes |
+
+#### Matriz de permisos por rol (`role_permission`) — 24 asignaciones
+
+| Permiso | Super Admin | Director | Coordinador | Docente | Estudiante |
+|---------|:-----------:|:--------:|:-----------:|:-------:|:----------:|
+| `audit.view` | ✅ | | | | |
+| `system.backup` | ✅ | | | | |
+| `coordinator.assign` | ✅ | ✅ | | | |
+| `metrics.global` | ✅ | ✅ | ✅ | | |
+| `student.validate_docs` | ✅ | | ✅ | | |
+| `credential.issue` | ✅ | | ✅ | | |
+| `schedule.manage` | ✅ | | ✅ | | |
+| `session.manage` | ✅ | | | ✅ | |
+| `attendance.scan` | ✅ | | | ✅ | |
+| `credential.view_own` | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `schedule.view_own` | ✅ | | | | ✅ |
+
+#### Preguntas de seguridad (`security_question`) — 5 registros
+
+| ID | Pregunta |
+|----|----------|
+| 1 | ¿Cuál es el nombre de tu primera mascota? |
+| 2 | ¿Cuál es tu ciudad de nacimiento? |
+| 3 | ¿Cuál es el segundo nombre de tu madre? |
+| 4 | ¿Cuál fue tu primer colegio o escuela? |
+| 5 | ¿Cuál es tu comida favorita? |
+
+#### Carrera inicial (`career`) — 1 registro
+
+| ID | Código | Nombre | Coordinador |
+|----|--------|--------|-------------|
+| 1 | SYS-ING | Ingeniería de Sistemas | Sin asignar |
+
+#### Período académico inicial (`academic_period`) — 1 registro
+
+| ID | Nombre | Inicio | Fin | Semanas | Estado |
+|----|--------|--------|-----|---------|--------|
+| 1 | 2026-1 | 2026-02-01 | 2026-06-30 | 16 | Active |
+
+#### Usuario administrador base
+
+Se crea un usuario administrador con los siguientes datos encadenados en las tablas `profile` → `user_account` → `user_role`:
+
+| Dato | Valor |
+|------|-------|
+| **Nombre completo** | Administrador Principal Sistemas UNEFA |
+| **Cédula** | V-00000000 |
+| **Usuario** | `admin` |
+| **Correo** | admin@unefa.edu.ve |
+| **Contraseña inicial** | `admin123` (almacenada como hash bcrypt) |
+| **QR Token** | `UNEFA-QR-V00000000` |
+| **Rol asignado** | Super Administrator (ID 1) |
+| **Carnet** | `CARNET-ADMIN-0001` (vigencia: 1 año desde la fecha de seed) |
+| **Estado de cuenta** | Approved |
 
 ---
 
@@ -526,3 +621,26 @@ flowchart LR
 | **Soft Deletes** | No implementados — se usa `status` / `is_active` |
 | **IP Storage** | VARCHAR(45) para soportar IPv6 |
 | **Hashing** | Contraseñas, PINs y respuestas de seguridad almacenados como hash (VARCHAR 255) |
+| **Seeders** | Uso de `insertOrIgnore` para idempotencia; `WithoutModelEvents` para evitar side-effects |
+
+---
+
+## Problemas Detectados en el Diseño
+
+### PD-1: Desnormalización sin sincronización automática — `is_dragged` / `has_dragged_subjects`
+
+**Tablas afectadas:** `section_enrollment.is_dragged` ↔ `profile.has_dragged_subjects`
+
+**Descripción del problema:**
+El campo `is_dragged` en `section_enrollment` marca a nivel de detalle cuál materia específica está siendo repetida (arrastrada) por un estudiante. El campo `has_dragged_subjects` en `profile` replica esta información a nivel resumen como bandera booleana para consultas rápidas. Esta es una **desnormalización intencional** para evitar JOINs costosos al listar estudiantes con materias pendientes.
+
+**Riesgo de inconsistencia:**
+No existe un mecanismo automático (trigger, evento o observer) que mantenga sincronizados ambos campos. Si se modifica `is_dragged` en `section_enrollment` sin actualizar `has_dragged_subjects` en `profile`, la bandera resumen puede quedar desactualizada, mostrando información incorrecta en listados de estudiantes.
+
+**Escenarios de falla:**
+1. Se inscribe una materia arrastrada (`is_dragged = true`) pero `profile.has_dragged_subjects` no se actualiza a `true`.
+2. El estudiante aprueba su última materia arrastrada, pero `profile.has_dragged_subjects` permanece en `true`.
+3. Se elimina un registro de `section_enrollment` con `is_dragged = true` y la bandera del perfil no se recalcula.
+
+**Solución recomendada:**
+Implementar un **Observer de Laravel** en el modelo `SectionEnrollment` (o un trigger a nivel de base de datos) que, ante cualquier `INSERT`, `UPDATE` o `DELETE`, recalcule `profile.has_dragged_subjects` verificando si quedan inscripciones activas con `is_dragged = true` para ese estudiante.
