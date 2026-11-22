@@ -8,7 +8,6 @@ const FACULTIES = [
   { fac: 'Facultad de Ingeniería', rate: '96.2%', pct: 96 },
   { fac: 'Facultad de Ciencias Sociales', rate: '93.5%', pct: 93 },
   { fac: 'Técnico Superior Universitario', rate: '95.0%', pct: 95 },
-  { fac: 'Curso Integral de Nivelación Universitaria', rate: '97.4%', pct: 97 },
 ];
 
 const STAT_BOXES = [
@@ -20,9 +19,9 @@ const STAT_BOXES = [
 
 const DIRECTOR_ACTIONS = [
   { title: 'Reporte al Vicerrectorado Académico', desc: 'Consolidado de auditoría semestral y rendimiento de núcleos' },
-  { title: 'Auditoría Integral SICEU', desc: 'Supervisión de actas de grado y récord académico nacional' },
+  { title: 'Auditoría Integral del Portal', desc: 'Supervisión de actas de grado y récord académico nacional' },
   { title: 'Plan Soberanía y Defensa 2026', desc: 'Seguimiento de convenios tecnológicos con la FANB' },
-  { title: 'Aprobación de Convocatoria CINU 2026-II', desc: 'Planificación de cupos para bachilleres de nuevo ingreso' },
+  { title: 'Aprobación de cupos de ingreso 2026-II', desc: 'Planificación de cupos para nuevos estudiantes' },
 ];
 
 export function DirectorDashboard() {

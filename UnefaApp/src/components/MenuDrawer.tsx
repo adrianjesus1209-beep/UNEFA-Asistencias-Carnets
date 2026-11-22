@@ -146,33 +146,9 @@ export function MenuDrawer({ visible, onClose, onNavigateSection }: MenuDrawerPr
 
               <Pressable
                 className="flex-row items-center border-b border-[rgba(148,163,184,0.2)] py-3"
-                onPress={() => handleLink('carreras')}>
-                <Text className="w-[38px] font-mono text-xs font-bold text-unefa-blue">
-                  [03]
-                </Text>
-                <Text className="flex-1 text-base font-bold text-neutral-950">
-                  Carreras
-                </Text>
-                <ArrowRight size={16} color={UnefaColors.gold} strokeWidth={2.5} />
-              </Pressable>
-
-              <Pressable
-                className="flex-row items-center border-b border-[rgba(148,163,184,0.2)] py-3"
-                onPress={() => handleLink('admisiones')}>
-                <Text className="w-[38px] font-mono text-xs font-bold text-unefa-blue">
-                  [04]
-                </Text>
-                <Text className="flex-1 text-base font-bold text-neutral-950">
-                  Admisiones CINU
-                </Text>
-                <ArrowRight size={16} color={UnefaColors.gold} strokeWidth={2.5} />
-              </Pressable>
-
-              <Pressable
-                className="flex-row items-center border-b border-[rgba(148,163,184,0.2)] py-3"
                 onPress={() => handleLink('servicios')}>
                 <Text className="w-[38px] font-mono text-xs font-bold text-unefa-blue">
-                  [05]
+                  [03]
                 </Text>
                 <Text className="flex-1 text-base font-bold text-neutral-950">
                   Servicios
@@ -216,7 +192,7 @@ export function MenuDrawer({ visible, onClose, onNavigateSection }: MenuDrawerPr
                   router.push('/registro');
                 }}>
                 <Text className="text-sm font-extrabold text-unefa-navy">
-                  Preinscripción CINU
+                  Crear cuenta
                 </Text>
               </Pressable>
               <Pressable
@@ -226,7 +202,7 @@ export function MenuDrawer({ visible, onClose, onNavigateSection }: MenuDrawerPr
                   router.push('/login');
                 }}>
                 <Text className="text-sm font-bold text-neutral-950">
-                  Portal SICEU
+                  Portal
                 </Text>
               </Pressable>
             </View>
