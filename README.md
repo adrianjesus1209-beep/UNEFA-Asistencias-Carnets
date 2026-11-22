@@ -57,7 +57,6 @@ Sistema universitario para la gestion, carnetizacion digital con codigo QR y con
 - **Lider de departamento:** Abel Leon
 - **Integrantes:**
   - Gabriel Gonzalez
-  - Osmely Sangronis
 - **Rama en GitHub:** Documentacion
 - **Responsabilidad:** Documentacion tecnica, diagramas de flujo y arquitectura, diccionario de datos y manuales de usuario.
 
