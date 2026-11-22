@@ -20,40 +20,40 @@ import { MenuDrawer } from '@/components/MenuDrawer';
 import { QrModal } from '@/components/QrModal';
 import {
   PILLARS_DATA,
-  CAREERS_DATA,
-  CHECKLIST_ITEMS,
-  Career,
   Pillar,
 } from '@/constants/data';
 
 cssInterop(Image, { className: 'style' });
 
-// ScrollView imperative handle type
+// Tipo para la referencia imperativa del componente ScrollView
 type ScrollViewHandle = React.ElementRef<typeof ScrollView>;
 
+/**
+ * Pantalla principal y portal informativo de la aplicacion UNEFA.
+ */
 export default function LandingScreen() {
   const router = useRouter();
   const scrollRef = useRef<ScrollViewHandle>(null);
 
-  // Modals
+  // Control de visibilidad de modales y pestana activa
   const [menuOpen, setMenuOpen] = useState(false);
   const [qrOpen, setQrOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'inicio' | 'carreras' | 'cinu' | 'siceu'>('inicio');
+  const [activeTab, setActiveTab] = useState<'inicio' | 'portal'>('inicio');
 
-  // Section Y positions for smooth scrolling
+  // Posiciones verticales de cada seccion para desplazamiento suave
   const sectionPositions = useRef<{ [key: string]: number }>({});
-  const sectionTabs: Record<string, 'inicio' | 'carreras' | 'cinu' | 'siceu'> = {
+  const sectionTabs: Record<string, 'inicio' | 'portal'> = {
     inicio: 'inicio',
     nosotros: 'inicio',
-    carreras: 'carreras',
-    admisiones: 'cinu',
-    servicios: 'siceu',
+    servicios: 'portal',
   };
 
-  const handleLayoutSection = (key: string) => (event: LayoutChangeEvent) => {
+  // Almacena la posicion vertical de una seccion al renderizarse
+  const handleLayoutSection = (key: string, event: LayoutChangeEvent) => {
     sectionPositions.current[key] = event.nativeEvent.layout.y;
   };
 
+  // Desplaza la pantalla hacia la seccion indicada
   const scrollToSection = (key: string) => {
     const nextTab = sectionTabs[key] ?? 'inicio';
     setActiveTab((currentTab) => (currentTab === nextTab ? currentTab : nextTab));
@@ -63,6 +63,7 @@ export default function LandingScreen() {
     }
   };
 
+  // Sincroniza la pestana inferior con la seccion visible durante el desplazamiento
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const scrollY = event.nativeEvent.contentOffset.y + 100;
     const visibleSections = Object.entries(sectionPositions.current)
@@ -76,36 +77,9 @@ export default function LandingScreen() {
     }
   };
 
-  // Section 02 - Doctrina
+  // Gestion del pilar doctrinal seleccionado
   const [selectedPillarKey, setSelectedPillarKey] = useState<string>('ingenieria');
   const activePillar: Pillar = PILLARS_DATA[selectedPillarKey] || PILLARS_DATA.ingenieria;
-
-  // Section 03 - Carreras
-  const [selectedFaculty, setSelectedFaculty] = useState<string>('ingenieria');
-  const careersInFaculty: Career[] = CAREERS_DATA[selectedFaculty] || [];
-  const [selectedCareerId, setSelectedCareerId] = useState<string>(
-    careersInFaculty[0]?.id || 'sistemas'
-  );
-  const activeCareer: Career =
-    careersInFaculty.find((c) => c.id === selectedCareerId) ||
-    careersInFaculty[0] ||
-    CAREERS_DATA.ingenieria[0];
-
-  // Section 04 - Verificador de recaudos
-  const [checkedItems, setCheckedItems] = useState<{ [id: number]: boolean }>({
-    1: true,
-    2: true,
-  });
-
-  const toggleCheckItem = (id: number) => {
-    setCheckedItems((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
-
-  const completedCount = CHECKLIST_ITEMS.filter((item) => checkedItems[item.id]).length;
-  const percentage = Math.round((completedCount / CHECKLIST_ITEMS.length) * 100);
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -122,10 +96,10 @@ export default function LandingScreen() {
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}>
         <View className="w-full max-w-[480px]">
-          {/* ── 01. HERO SECTION ─────────────────────────────────────────── */}
+          {/* Seccion 01: Presentacion principal */}
           <View
             className="px-4 pt-5 pb-8 bg-white"
-            onLayout={handleLayoutSection('inicio')}>
+            onLayout={(event) => handleLayoutSection('inicio', event)}>
             <Text className="mb-2 text-[11px] font-extrabold uppercase tracking-[0.5px] text-unefa-blue">[01] — Institución politécnica cívico-militar</Text>
             <Text className="mb-3 text-[36px] leading-[40px] font-black tracking-[-0.5px] text-neutral-950">
               Vanguardia{'\n'}Técnica &{'\n'}
@@ -151,8 +125,8 @@ export default function LandingScreen() {
                 <Text className="mt-0.5 text-[11px] font-semibold text-slate-500">Estados</Text>
               </View>
               <View className="flex-1 items-center rounded-[14px] bg-white p-3 shadow-sm bg-white border-slate-200">
-                <Text className="text-[22px] font-black text-unefa-blue">CINU</Text>
-                <Text className="mt-0.5 text-[11px] font-semibold text-slate-500">Convocatoria</Text>
+                <Text className="text-[22px] font-black text-unefa-blue">Registro</Text>
+                <Text className="mt-0.5 text-[11px] font-semibold text-slate-500">Cuenta</Text>
               </View>
             </View>
 
@@ -160,7 +134,7 @@ export default function LandingScreen() {
               <Pressable
                 className="flex-row items-center justify-center gap-2 rounded-[14px] py-3.5 bg-unefa-gold shadow-md py-4"
                 onPress={() => router.push('/registro')}>
-                <Text className="text-[15px] font-black text-unefa-navy">Preinscripción CINU</Text>
+                <Text className="text-[15px] font-black text-unefa-navy">Crear cuenta UNEFA</Text>
                 <Text className="text-base font-black text-unefa-navy">→</Text>
               </Pressable>
 
@@ -168,17 +142,10 @@ export default function LandingScreen() {
                 className="flex-row items-center justify-center gap-2 rounded-[14px] py-3.5 border border-slate-300 bg-transparent"
                 onPress={() => router.push('/login')}>
                 <Text className="text-sm font-bold text-neutral-950">
-                  Portal SICEU
+                  Portal
                 </Text>
               </Pressable>
 
-              <Pressable
-                className="items-center self-center py-1.5"
-                onPress={() => scrollToSection('carreras')}>
-                <Text className="text-[13px] font-bold text-slate-600">
-                  Explorar carreras ↓
-                </Text>
-              </Pressable>
             </View>
 
             <View className="mb-5 overflow-hidden rounded-[18px] border border-slate-200">
@@ -202,33 +169,12 @@ export default function LandingScreen() {
               </View>
             </View>
 
-            <View className="flex-row gap-2.5">
-              <View className="flex-1 flex-row items-center gap-2.5 rounded-[14px] p-3 bg-white border-slate-200">
-                <Text className="text-xl text-unefa-blue">⚙</Text>
-                <View>
-                  <Text className="text-[13px] font-extrabold text-neutral-950">
-                    Ingenierías
-                  </Text>
-                  <Text className="text-[10px] font-semibold text-slate-500">10 Semestres</Text>
-                </View>
-              </View>
-
-              <View className="flex-1 flex-row items-center gap-2.5 rounded-[14px] p-3 bg-white border-slate-200">
-                <Text className="text-xl text-unefa-blue text-unefa-gold">★</Text>
-                <View>
-                  <Text className="text-[13px] font-extrabold text-neutral-950">
-                    Cívico-Militar
-                  </Text>
-                  <Text className="text-[10px] font-semibold text-slate-500">Doctrina Integral</Text>
-                </View>
-              </View>
-            </View>
           </View>
 
-          {/* ── 02. DOCTRINA SECTION ─────────────────────────────────────── */}
+          {/* Seccion 02: Doctrina y fundamentos unefistas */}
           <View
             className="px-4 py-8 border-y border-slate-200 bg-slate-50"
-            onLayout={handleLayoutSection('nosotros')}>
+            onLayout={(event) => handleLayoutSection('nosotros', event)}>
             <View className="mb-5">
               <Text className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.5px] text-unefa-blue">[02] — Doctrina &amp; fundamentos</Text>
               <Text className="mb-1.5 text-2xl font-black text-neutral-950">
@@ -273,7 +219,7 @@ export default function LandingScreen() {
               })}
             </ScrollView>
 
-            {/* Dossier Card */}
+            {/* Ficha informativa del pilar doctrinal */}
             <View className="mb-5 overflow-hidden rounded-[20px] border border-slate-200 shadow-md bg-white border-slate-200">
               <View className="relative h-[180px]">
                 <Image
@@ -321,336 +267,13 @@ export default function LandingScreen() {
             </View>
           </View>
 
-          {/* ── 03. CARRERAS SECTION ─────────────────────────────────────── */}
+          {/* Seccion 03: Plataformas y servicios digitales */}
           <View
             className="px-4 py-8 bg-white"
-            onLayout={handleLayoutSection('carreras')}>
+            onLayout={(event) => handleLayoutSection('servicios', event)}>
             <View className="mb-5 flex-row items-start justify-between">
               <View>
-                <Text className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.5px] text-unefa-blue">[03] — Oferta académica</Text>
-                <Text className="mb-1.5 text-2xl font-black text-neutral-950">
-                  Explorador de carreras
-                </Text>
-              </View>
-              <Pressable onPress={() => router.push('/registro')}>
-                <Text className="text-[13px] font-extrabold text-unefa-blue">Inscripción →</Text>
-              </Pressable>
-            </View>
-
-            {/* Segmented control */}
-            <View className="mb-4 flex-row rounded-[14px] border p-1 bg-slate-100 border-slate-200">
-              <Pressable
-                className={['flex-1 items-center rounded-[10px] py-2', selectedFaculty === 'ingenieria' && '!bg-unefa-blue'].filter(Boolean).join(' ')}
-                onPress={() => {
-                  setSelectedFaculty('ingenieria');
-                  setSelectedCareerId(CAREERS_DATA.ingenieria[0].id);
-                }}>
-                <Text
-                  className={[
-                    'text-xs font-extrabold',
-                    selectedFaculty === 'ingenieria' && '!text-white',
-                  ].filter(Boolean).join(' ')}>
-                  Ingenierías
-                </Text>
-                <Text className="text-[9px] text-slate-500">10 sem.</Text>
-              </Pressable>
-
-              <Pressable
-                className={['flex-1 items-center rounded-[10px] py-2', selectedFaculty === 'licenciaturas' && '!bg-unefa-blue'].filter(Boolean).join(' ')}
-                onPress={() => {
-                  setSelectedFaculty('licenciaturas');
-                  setSelectedCareerId(CAREERS_DATA.licenciaturas[0].id);
-                }}>
-                <Text
-                  className={[
-                    'text-xs font-extrabold',
-                    selectedFaculty === 'licenciaturas' && '!text-white',
-                  ].filter(Boolean).join(' ')}>
-                  Licenciaturas
-                </Text>
-                <Text className="text-[9px] text-slate-500">8 sem.</Text>
-              </Pressable>
-
-              <Pressable
-                className={['flex-1 items-center rounded-[10px] py-2', selectedFaculty === 'tsu' && '!bg-unefa-blue'].filter(Boolean).join(' ')}
-                onPress={() => {
-                  setSelectedFaculty('tsu');
-                  setSelectedCareerId(CAREERS_DATA.tsu[0].id);
-                }}>
-                <Text
-                  className={[
-                    'text-xs font-extrabold',
-                    selectedFaculty === 'tsu' && '!text-white',
-                  ].filter(Boolean).join(' ')}>
-                  Técnico Superior
-                </Text>
-                <Text className="text-[9px] text-slate-500">6 sem.</Text>
-              </Pressable>
-            </View>
-
-            {/* Career buttons list */}
-            <View className="mb-5 gap-2">
-              {careersInFaculty.map((item) => {
-                const isSelected = activeCareer.id === item.id;
-                return (
-                  <Pressable
-                    key={item.id}
-                    className={[
-                      'rounded-[14px] border border-slate-200 p-3',
-                      'bg-white border-slate-200',
-                      isSelected && '!border-unefa-blue !bg-unefa-blue/[0.05]',
-                    ].filter(Boolean).join(' ')}
-                    onPress={() => setSelectedCareerId(item.id)}>
-                    <View className="mb-0.5 flex-row justify-between">
-                      <Text className={['font-mono text-[11px] font-extrabold text-slate-500', isSelected && '!text-unefa-blue'].filter(Boolean).join(' ')}>
-                        {item.code}
-                      </Text>
-                      <Text className="text-[11px] font-semibold text-slate-500">{item.duration}</Text>
-                    </View>
-                    <Text
-                      className={[
-                        'text-sm font-extrabold',
-                        'text-neutral-950',
-                        isSelected && '!text-unefa-blue',
-                      ].filter(Boolean).join(' ')}>
-                      {item.title}
-                    </Text>
-                  </Pressable>
-                );
-              })}
-            </View>
-
-            {/* Career Detailed Dossier */}
-            <View className="mb-5 overflow-hidden rounded-[20px] border border-slate-200 shadow-md bg-white border-slate-200">
-              <View className="relative h-[180px]">
-                <Image
-                  source={{ uri: activeCareer.image }}
-                  className="h-full w-full"
-                  contentFit="cover"
-                />
-                <View className="absolute left-2.5 top-2.5 rounded-md bg-unefa-navy px-2 py-1">
-                  <Text className="font-mono text-[10px] font-extrabold text-white">{activeCareer.code}</Text>
-                </View>
-                <View className="absolute inset-x-0 bottom-0 flex-row justify-between bg-unefa-navy/[0.85] px-3 py-1.5">
-                  <Text className="text-[11px] font-bold text-white">{activeCareer.degree}</Text>
-                  <Text className="text-[11px] font-extrabold text-unefa-gold">{activeCareer.duration}</Text>
-                </View>
-              </View>
-
-              <View className="p-4">
-                <Text className="mb-2 text-xl font-black text-neutral-950">
-                  {activeCareer.title}
-                </Text>
-                <Text className="mb-4 text-[13px] leading-[19px] text-slate-600">
-                  {activeCareer.description}
-                </Text>
-
-                <View className="mb-4">
-                  <Text className="mb-2 text-[11px] font-extrabold uppercase tracking-[0.4px] text-slate-500">Competencias principales</Text>
-                  {activeCareer.competencies.map((c, i) => (
-                    <View key={i} className="mb-1.5 flex-row items-start gap-2">
-                      <Text className="text-[11px] text-unefa-gold">■</Text>
-                      <Text className="flex-1 text-xs leading-[18px] font-medium text-neutral-950">
-                        {c}
-                      </Text>
-                    </View>
-                  ))}
-                </View>
-
-                <View className="mb-4">
-                  <Text className="mb-2 text-[11px] font-extrabold uppercase tracking-[0.4px] text-slate-500">Materias troncales</Text>
-                  <View className="flex-row flex-wrap gap-1.5">
-                    {activeCareer.subjects.map((sub, i) => (
-                      <View
-                        key={i}
-                        className="rounded-[20px] border px-2.5 py-[5px] bg-slate-100 border-slate-200">
-                        <Text className="text-[11px] font-semibold text-neutral-950">
-                          {sub}
-                        </Text>
-                      </View>
-                    ))}
-                  </View>
-                </View>
-
-                <View className="mt-2 gap-2">
-                  <Text className="font-mono text-[10px] text-center text-slate-500">
-                    Modalidad presencial · Núcleo Central y sedes regionales
-                  </Text>
-                  <Pressable
-                    className="flex-row items-center justify-center gap-2 rounded-[14px] py-3.5 bg-unefa-gold shadow-md"
-                    onPress={() => router.push('/registro')}>
-                    <Text className="text-[15px] font-black text-unefa-navy">Postularme en esta carrera</Text>
-                    <Text className="text-base font-black text-unefa-navy">→</Text>
-                  </Pressable>
-                </View>
-              </View>
-            </View>
-          </View>
-
-          {/* ── 04. ADMISIONES & VERIFICADOR CINU ─────────────────────────── */}
-          <View
-            className="px-4 py-8 border-y border-slate-200 bg-slate-50"
-            onLayout={handleLayoutSection('admisiones')}>
-            <View className="mb-5">
-              <Text className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.5px] text-unefa-blue">[04] — Admisiones &amp; nivelación</Text>
-              <Text className="mb-1.5 text-2xl font-black text-neutral-950">
-                Ruta de ingreso y verificador CINU
-              </Text>
-              <Text className="text-sm leading-5 text-slate-600">
-                Todos los aspirantes formalizan su acceso a través del Curso Integral de
-                Nivelación Universitaria. Verifica tus recaudos antes de iniciar el registro.
-              </Text>
-            </View>
-
-            {/* Timeline */}
-            <View className="mb-5 gap-3">
-              {[
-                {
-                  num: '01',
-                  title: 'Registro digital',
-                  desc: 'Creación de expediente en el portal, selección de carrera politécnica y sede regional asignada.',
-                },
-                {
-                  num: '02',
-                  title: 'Consignación de recaudos',
-                  desc: 'Revisión física de documentos en la Unidad de Control de Estudios de tu núcleo UNEFA.',
-                },
-                {
-                  num: '03',
-                  title: 'Cursado del CINU',
-                  desc: '14 semanas intensivas en Matemática, Habilidades de Comunicación y Doctrina Cívico-Militar.',
-                },
-                {
-                  num: '04',
-                  title: 'Activación en SICEU',
-                  desc: 'Asignación definitiva de matrícula e inicio del primer semestre académico regular.',
-                },
-              ].map((step, idx) => (
-                <View key={idx} className="flex-row gap-3">
-                  <View className="h-8 w-8 items-center justify-center rounded-full bg-[rgba(242,184,7,0.16)]">
-                    <Text className="font-mono text-[13px] font-black text-[#c99106]">{step.num}</Text>
-                  </View>
-                  <View className="flex-1">
-                    <Text className="mb-0.5 text-sm font-extrabold text-neutral-950">
-                      {step.title}
-                    </Text>
-                    <Text className="text-xs leading-[17px] text-slate-600">
-                      {step.desc}
-                    </Text>
-                  </View>
-                </View>
-              ))}
-            </View>
-
-            {/* Sede central photo */}
-            <View className="mb-5 overflow-hidden rounded-[18px] border border-slate-200">
-              <Image
-                source={{
-                  uri: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1200&q=80',
-                }}
-                className="h-[180px] w-full"
-                contentFit="cover"
-              />
-              <View className="flex-row items-center justify-between p-3 bg-white">
-                <Text className="text-[10px] font-extrabold tracking-[0.4px] text-neutral-950">
-                  INSTALACIONES DE PREGRADO Y POSTGRADO
-                </Text>
-                <Text className="text-[10px] font-extrabold text-[#c99106]">SEDES EN 24 ESTADOS</Text>
-              </View>
-            </View>
-
-            {/* Interactive Verificador */}
-            <View className="rounded-[20px] border border-slate-200 p-[18px] bg-white border-slate-200">
-              <View className="mb-3.5 flex-row items-center justify-between">
-                <View>
-                  <Text className="text-[10px] font-extrabold uppercase text-unefa-blue">Herramienta del aspirante</Text>
-                  <Text className="text-lg font-black text-neutral-950">
-                    Verificador de recaudos
-                  </Text>
-                </View>
-                <View className="items-end">
-                  <Text className="text-[22px] font-black text-[#c99106]">{percentage}%</Text>
-                  <Text className="text-[10px] font-semibold text-slate-500">Listo para consignar</Text>
-                </View>
-              </View>
-
-              {/* Progress bar */}
-              <View className="mb-3.5 h-2 overflow-hidden rounded bg-slate-200">
-                <View className="h-full bg-unefa-gold" style={{ width: `${percentage}%` }} />
-              </View>
-
-              <Text className="mb-3 text-xs leading-[17px] text-slate-600">
-                Marca los recaudos que ya posees en físico para calcular tu preparación:
-              </Text>
-
-              {/* Checklist items */}
-              <View className="mb-4 gap-2">
-                {CHECKLIST_ITEMS.map((item) => {
-                  const isChecked = !!checkedItems[item.id];
-                  return (
-                    <Pressable
-                      key={item.id}
-                      className={[
-                        'flex-row items-center gap-2.5 rounded-xl border p-2.5',
-                        'bg-white border-slate-200',
-                        isChecked && '!border-unefa-blue !bg-unefa-blue/[0.04]',
-                      ].filter(Boolean).join(' ')}
-                      onPress={() => toggleCheckItem(item.id)}>
-                      <View className={['h-[22px] w-[22px] items-center justify-center rounded-md border-2 border-slate-300', isChecked && '!border-unefa-blue !bg-unefa-blue'].filter(Boolean).join(' ')}>
-                        {isChecked && <Text className="text-[13px] font-black text-white">✓</Text>}
-                      </View>
-                      <Text
-                        className={[
-                          'flex-1 text-xs leading-4 font-medium',
-                          'text-neutral-950',
-                          isChecked && '!font-bold',
-                        ].filter(Boolean).join(' ')}>
-                        {item.text}
-                      </Text>
-                      <View className="rounded-md bg-slate-100 px-1.5 py-0.5">
-                        <Text className="text-[9px] font-bold text-slate-500">{item.phase}</Text>
-                      </View>
-                    </Pressable>
-                  );
-                })}
-              </View>
-
-              <View
-                className={[
-                  'mb-3.5 rounded-xl p-3',
-                  percentage === 100 ? 'bg-green-100' : 'bg-unefa-blue/[0.06]',
-                ].filter(Boolean).join(' ')}>
-                <Text
-                  className={[
-                    'text-xs font-semibold text-center',
-                    percentage === 100 ? 'font-extrabold text-unefa-green' : 'text-unefa-blue',
-                  ].filter(Boolean).join(' ')}>
-                  {percentage === 100
-                    ? '¡100% de recaudos listos! Puedes formalizar tu expediente en Control de Estudios sin demoras.'
-                    : `Tienes ${completedCount} de ${CHECKLIST_ITEMS.length} recaudos completados.`}
-                </Text>
-              </View>
-
-              <Pressable
-                className="flex-row items-center justify-center gap-2 rounded-[14px] py-3.5 bg-unefa-gold shadow-md"
-                onPress={() => router.push('/registro')}>
-                <Text className="text-[15px] font-black text-unefa-navy">Iniciar preinscripción digital</Text>
-                <Text className="text-base font-black text-unefa-navy">→</Text>
-              </Pressable>
-
-              <Text className="mt-2.5 text-[11px] text-center text-slate-500">
-                🛡 Trámite 100% público y gratuito, sin intermediarios
-              </Text>
-            </View>
-          </View>
-
-          {/* ── 05. SERVICIOS DIGITALES ──────────────────────────────────── */}
-          <View
-            className="px-4 py-8 bg-white"
-            onLayout={handleLayoutSection('servicios')}>
-            <View className="mb-5 flex-row items-start justify-between">
-              <View>
-                <Text className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.5px] text-unefa-blue">[05] — Plataformas &amp; servicios</Text>
+                <Text className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.5px] text-unefa-blue">[03] — Plataformas &amp; servicios</Text>
                 <Text className="mb-1.5 text-2xl font-black text-neutral-950">
                   Servicios digitales
                 </Text>
@@ -661,7 +284,7 @@ export default function LandingScreen() {
             </View>
 
             <View className="gap-3.5">
-              {/* Service 01 */}
+              {/* Servicio 01: Portal institucional */}
               <View
                 className="rounded-[18px] border border-slate-200 p-[18px] border-[1.5px] border-unefa-gold bg-white border-slate-200">
                 <View className="mb-2.5 flex-row gap-2">
@@ -673,7 +296,7 @@ export default function LandingScreen() {
                   </View>
                 </View>
                 <Text className="mb-1.5 text-lg font-black text-neutral-950">
-                  Portal SICEU
+                  Portal
                 </Text>
                 <Text className="mb-3.5 text-[13px] leading-[18px] text-slate-600">
                   Consulta de calificaciones, récord académico, inscripción de asignaturas,
@@ -682,11 +305,11 @@ export default function LandingScreen() {
                 <Pressable
                   className="flex-row items-center justify-center gap-2 rounded-[14px] py-3.5 bg-unefa-gold shadow-md"
                   onPress={() => router.push('/login')}>
-                  <Text className="text-[15px] font-black text-unefa-navy">Acceder a SICEU</Text>
+                  <Text className="text-[15px] font-black text-unefa-navy">Acceder al portal</Text>
                 </Pressable>
               </View>
 
-              {/* Service 02 */}
+              {/* Servicio 02: Calendario academico */}
               <View className="rounded-[18px] border border-slate-200 p-[18px] bg-white border-slate-200">
                 <View className="mb-2.5 flex-row gap-2">
                   <View className="rounded-md bg-slate-100 px-2 py-[3px]">
@@ -713,7 +336,7 @@ export default function LandingScreen() {
                 </Pressable>
               </View>
 
-              {/* Service 03 */}
+              {/* Servicio 03: Tramites y constancias */}
               <View className="rounded-[18px] border border-slate-200 p-[18px] bg-white border-slate-200">
                 <View className="mb-2.5 flex-row gap-2">
                   <View className="rounded-md bg-slate-100 px-2 py-[3px]">
@@ -740,7 +363,7 @@ export default function LandingScreen() {
                 </Pressable>
               </View>
 
-              {/* Service 04 */}
+              {/* Servicio 04: Repositorio institucional */}
               <View className="rounded-[18px] border border-slate-200 p-[18px] bg-white border-slate-200">
                 <View className="mb-2.5 flex-row gap-2">
                   <View className="rounded-md bg-slate-100 px-2 py-[3px]">
@@ -757,19 +380,11 @@ export default function LandingScreen() {
                   Acceso público y digital a trabajos especiales de grado, guías metodológicas de
                   ingeniería y revistas de investigación.
                 </Text>
-                <Pressable
-                  className="flex-row items-center justify-center gap-2 rounded-[14px] py-3.5 border border-slate-300 bg-transparent"
-                  onPress={() => scrollToSection('carreras')}>
-                  <Text
-                    className="text-sm font-bold text-neutral-950">
-                    Abrir repositorio
-                  </Text>
-                </Pressable>
               </View>
             </View>
           </View>
 
-          {/* ── FOOTER ─────────────────────────────────────────────────── */}
+          {/* Pie de pagina con enlaces e informacion institucional */}
           <View className="border-t px-4 py-8 border-t-slate-200 bg-slate-50">
             <View className="mb-3 flex-row items-center gap-2.5">
               <View className="h-8 w-8 items-center justify-center rounded-md border border-slate-200 bg-white">
@@ -801,12 +416,6 @@ export default function LandingScreen() {
                 <Pressable onPress={() => scrollToSection('nosotros')}>
                   <Text className="py-0.5 text-xs font-semibold text-unefa-blue">Doctrina</Text>
                 </Pressable>
-                <Pressable onPress={() => scrollToSection('carreras')}>
-                  <Text className="py-0.5 text-xs font-semibold text-unefa-blue">Catálogo carreras</Text>
-                </Pressable>
-                <Pressable onPress={() => scrollToSection('admisiones')}>
-                  <Text className="py-0.5 text-xs font-semibold text-unefa-blue">Admisión CINU</Text>
-                </Pressable>
               </View>
 
               <View className="flex-1 gap-1.5">
@@ -814,13 +423,13 @@ export default function LandingScreen() {
                   Plataformas
                 </Text>
                 <Pressable onPress={() => router.push('/login')}>
-                  <Text className="py-0.5 text-xs font-semibold text-unefa-blue">SICEU estudiantes</Text>
+                  <Text className="py-0.5 text-xs font-semibold text-unefa-blue">Portal estudiantes</Text>
                 </Pressable>
                 <Pressable onPress={() => router.push('/login')}>
-                  <Text className="py-0.5 text-xs font-semibold text-unefa-blue">SICEU docentes</Text>
+                  <Text className="py-0.5 text-xs font-semibold text-unefa-blue">Portal docentes</Text>
                 </Pressable>
                 <Pressable onPress={() => router.push('/registro')}>
-                  <Text className="py-0.5 text-xs font-semibold text-unefa-blue">Preinscripción CINU</Text>
+                  <Text className="py-0.5 text-xs font-semibold text-unefa-blue">Crear cuenta UNEFA</Text>
                 </Pressable>
                 <Pressable onPress={() => scrollToSection('servicios')}>
                   <Text className="py-0.5 text-xs font-semibold text-unefa-blue">Biblioteca digital</Text>
@@ -841,21 +450,19 @@ export default function LandingScreen() {
 
             <View className="gap-1">
               <Text className="text-[10px] text-slate-500">© 2026 UNEFA — Todos los derechos reservados.</Text>
-              <Text className="text-[10px] font-bold text-[#c99106]">Propuesta de interfaz móvil · 2026</Text>
             </View>
           </View>
         </View>
       </ScrollView>
 
-      {/* ── NAVEGACIÓN INFERIOR ─────────────────────────────────────────── */}
+      {/* Barra de navegacion inferior */}
       <BottomNav
         activeTab={activeTab}
         onPressInicio={() => scrollToSection('inicio')}
-        onPressCarreras={() => scrollToSection('carreras')}
         onOpenQr={() => setQrOpen(true)}
       />
 
-      {/* ── MODALES ────────────────────────────────────────────────────── */}
+      {/* Modales de navegacion y codigo QR */}
       <MenuDrawer
         visible={menuOpen}
         onClose={() => setMenuOpen(false)}

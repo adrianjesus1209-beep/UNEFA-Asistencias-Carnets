@@ -72,7 +72,7 @@ export const PILLARS_DATA: Record<string, Pillar> = {
     highlights: [
       '0 aranceles de matrícula durante toda la carrera',
       'Presencia en los 24 estados con sedes y extensiones',
-      'Igualdad de oportunidades mediante el Curso Introductorio CINU',
+      'Igualdad de oportunidades mediante el acceso público a la educación',
     ],
   },
 };
@@ -277,50 +277,3 @@ export const CAREERS_DATA: Record<string, Career[]> = {
     },
   ],
 };
-
-export interface ChecklistItem {
-  id: number;
-  text: string;
-  phase: string;
-  defaultChecked: boolean;
-}
-
-export const CHECKLIST_ITEMS: ChecklistItem[] = [
-  {
-    id: 1,
-    text: 'Cédula de identidad laminada y 2 fotocopias legibles',
-    phase: 'Fase 1',
-    defaultChecked: true,
-  },
-  {
-    id: 2,
-    text: 'Título de bachiller autenticado por Zona Educativa',
-    phase: 'Fase 2',
-    defaultChecked: true,
-  },
-  {
-    id: 3,
-    text: 'Notas certificadas de 1º a 5º año de educación media',
-    phase: 'Fase 2',
-    defaultChecked: false,
-  },
-  {
-    id: 4,
-    text: 'Certificado de participación en el SNI / OPSU',
-    phase: 'Fase 1',
-    defaultChecked: false,
-  },
-  {
-    id: 5,
-    text: 'Partida de nacimiento en formato reciente legible',
-    phase: 'Fase 2',
-    defaultChecked: false,
-  },
-  {
-    id: 6,
-    text: '2 fotografías recientes fondo blanco tipo carnet',
-    phase: 'Fase 3',
-    defaultChecked: false,
-  },
-];
-

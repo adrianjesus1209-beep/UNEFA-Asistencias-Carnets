@@ -10,3 +10,10 @@ Thumbs.db
 *.swp
 *.log
 *.zip
+
+# Dependencias del generador de estilos
+node_modules/
+
+# Vista previa Blade: dependencias y cache compilada (la herramienta si se versiona)
+tools/preview/vendor/
+tools/preview/cache/
