@@ -16,7 +16,7 @@ A continuación se detalla la línea de tiempo oficial de diseño, ajuste e inte
 
 | Fecha | Versión | Tipo de Cambio | Resumen del Hito |
 | :---: | :---: | :--- | :--- |
-| **20/11/2026** | `v1.0.0` | **Creación Inicial del Esquema** | Creación y despliegue inicial de las 5 migraciones Laravel (`database/migrations/`), estructuración de las 22 tablas en 3FN, desarrollo del seeder base `UnefaInitialDataSeeder.php` y generación del script DDL [schema.sql](file:///c:/Users/Gagr/Documents/GitHub/UNEFA-Asistencias-Carnets/database/schema.sql). |
+| **20/11/2026** | `v1.0.0` | **Creación Inicial del Esquema** | Creación y despliegue inicial de las 5 migraciones Laravel (`database/migrations/`), estructuración de las 22 tablas en 3FN, desarrollo del seeder base `UnefaInitialDataSeeder.php` y generación del script DDL [schema.sql](../../database/schema.sql). |
 | **21/11/2026** | `v2.0.0` | **Directrices Institucionales Mandatorias** | Emisión e incorporación formal de las 5 nuevas directrices operativas: adopción de QR único y permanente por usuario, carnetización independiente para múltiples roles por persona, bloqueo curricular por materias arrastradas, migración de nomenclatura "SICEU" a "Portal" con login dual y registro convencional, y fijación del hito evaluativo en Semana 8. |
 | **22/11/2026** | `v2.1.0` | **Integración y Consolidación en `develop`** | Fusión integral en la rama `develop` de Laravel 11, migraciones, seeders, vistas Blade y aplicación móvil Expo. Actualización bidireccional entre la base de datos y la Especificación de Requerimientos, resolución de inconsistencias de índices y adición de recomendaciones para observadores de eventos. |
 
@@ -193,7 +193,7 @@ Entidad que resguarda los datos personales y civiles del individuo. Se mantiene 
 - **Índices:** `uniq_id_number` (UNIQUE), `idx_profile_career` (INDEX), `idx_profile_semester` (INDEX compuesto `[current_semester, has_dragged_subjects]`).
 
 **Guía de Lógica de Negocio — Control de Avance de Semestre:**  
-El campo `current_semester` registra el nivel académico nominal del estudiante. Cuando la bandera `has_dragged_subjects` se encuentra en `true`, las reglas de control de estudios estipulan la inhabilitación inmediata del avance al semestre inmediato superior (`current_semester + 1`), restringiendo la inscripción de nuevas asignaturas avanzadas hasta que las materias adeudadas sean aprobadas. El índice compuesto `idx_profile_semester (current_semester, has_dragged_subjects)` optimiza las consultas de validación en tiempo real en los procesos de inscripción. *(Para consultar los riesgos de desincronización de este campo, véase la falla FD-01 en el apartado final de fallas del diseño).*
+El campo `current_semester` registra el nivel académico nominal del estudiante. Cuando la bandera `has_dragged_subjects` se encuentra en `true`, las reglas de control de estudios estipulan la inhabilitación inmediata del avance al semestre inmediato superior (`current_semester + 1`), restringiendo la inscripción de nuevas asignaturas avanzadas hasta que las materias adeudadas sean aprobadas. El índice compuesto `idx_profile_semester (current_semester, has_dragged_subjects)` optimiza las consultas de validación en tiempo real en los procesos de inscripción. *(Para consultar la sincronización reactiva de este campo, véase la regla RNB-01 en el apartado de Reglas de Negocio y Controles Delegados al Backend).*
 
 ---
 
@@ -685,39 +685,34 @@ Los datos iniciales del sistema se administran mediante seeders de Laravel ubica
 
 ---
 
-## Fallas, Limitaciones y Riesgos del Diseño de Base de Datos
+## Reglas de Negocio y Controles Delegados al Backend
 
-En esta sección se documentan de manera formal las debilidades estructurales, riesgos de integridad y limitaciones identificadas en el diseño actual del esquema, con el fin de guiar futuras optimizaciones y alertar a los desarrolladores del backend sobre los puntos donde la base de datos no puede garantizar la coherencia por sí sola:
+En esta sección se documentan las reglas de negocio institucionales y los mecanismos de control cuya validación e integridad se encuentran deliberadamente delegados a la capa de aplicación y lógica de backend (Laravel 11). Este enfoque mantiene un esquema de base de datos ágil, escalable y con alto rendimiento transaccional, transfiriendo las validaciones complejas a la capa de servicios, observadores y peticiones de formulario:
 
-### FD-01: Desnormalización e Inconsistencia entre `section_enrollment.is_dragged` y `profile.has_dragged_subjects`
-- **Diagnóstico:** El campo `is_dragged` en `section_enrollment` marca a nivel de detalle qué materia específica está repitiendo un alumno. A su vez, `has_dragged_subjects` en `profile` replica esta información a modo de resumen booleano para acelerar consultas. Esta es una desnormalización deliberada de rendimiento.
-- **Falla Estructural:** Al no existir triggers nativos en la base de datos, no hay sincronización automática. Si un estudiante aprueba una materia en `section_enrollment` o retira una inscripción, la bandera `has_dragged_subjects` en `profile` no se actualiza de forma automática, pudiendo dejar al estudiante con un bloqueo indebido de semestre.
-- **Riesgo:** Inconsistencia de datos entre el expediente histórico del alumno y su estado de matriculación actual.
-- **Mitigación Requerida:** Implementar un **Observer en Laravel** (`SectionEnrollmentObserver`) en los eventos `saved`, `updated` y `deleted` que recalcule `has_dragged_subjects` consultando si quedan inscripciones activas con `is_dragged = true` o `status = 'Failed'`.
+### RNB-01: Sincronización Reactiva de Materias Arrastradas (`section_enrollment` ↔ `profile`)
+- **Regla de Negocio:** El campo `is_dragged` en `section_enrollment` registra a nivel atómico qué materia específica está cursando un estudiante en condición de repitencia o arrastre. Por su parte, `has_dragged_subjects` en `profile` actúa como semáforo booleano de lectura rápida para agilizar las consultas de inscripción.
+- **Control Delegado al Backend:** La sincronización entre el estado detallado de las inscripciones y el indicador global del perfil se gestiona a través de la capa de modelos de Laravel.
+- **Implementación:** Implementar un **Observer en Laravel** (`SectionEnrollmentObserver`) suscrito a los eventos `saved`, `updated` y `deleted`. Cuando se aprueba, retira o elimina una materia arrastrada, el observador evalúa si el estudiante aún posee otras materias con `is_dragged = true` o `status = 'Failed'`, actualizando de forma atómica `profile.has_dragged_subjects`.
 
-### FD-02: Delegación del Bloqueo de Avance Curricular Exclusivamente a la Capa de Aplicación
-- **Diagnóstico:** La regla que prohíbe inscribir materias de semestres superiores (`subject.semester > profile.current_semester`) cuando existen materias arrastradas no está forzada a través de restricciones relacionales o de tabla (`CHECK` o triggers `BEFORE INSERT`) en `section_enrollment`.
-- **Falla Estructural:** La base de datos aceptará cualquier inserción directa de matrícula si las claves foráneas existen, incluso si el estudiante adeuda materias de primer semestre e inscribe materias de décimo semestre.
-- **Riesgo:** Vulnerabilidad ante importaciones masivas por lotes, scripts CLI, migraciones o peticiones concurrentes que omitan las validaciones del controlador, corrompiendo la coherencia académica de las cohortes.
-- **Mitigación Requerida:** Incorporar validaciones atómicas en los Form Requests del backend y evaluar la creación de un trigger `BEFORE INSERT ON section_enrollment` que compruebe la matriz `course_prerequisite` y el estado `has_dragged_subjects`.
+### RNB-02: Control de Bloqueo de Avance Curricular y Validación de Prelaciones
+- **Regla de Negocio:** Un estudiante con materias reprobadas o arrastradas (`has_dragged_subjects = true`) no puede inscribir asignaturas pertenecientes al semestre superior (`subject.semester > profile.current_semester`), ni materias cuyos prerrequisitos en `course_prerequisite` no hayan sido superados con estado `Approved`.
+- **Control Delegado al Backend:** La verificación del grafo de prelaciones y el candado de semestre se valida en la capa de servicios de inscripción antes de persistir cualquier registro en `section_enrollment`.
+- **Implementación:** Reglas de validación en Form Requests (`EnrollmentStoreRequest`) y servicios de matrícula (`EnrollmentService`) que consultan la matriz de prerrequisitos y el semáforo del perfil dentro de una transacción atómica (`DB::transaction`).
 
-### FD-03: Ausencia de Restricción Relacional para Solapamiento de Horarios y Aulas en `section`
-- **Diagnóstico:** La tabla `section` cuenta con `day_of_week`, `start_time`, `end_time` y `classroom`, acompañados del índice compuesto `idx_section_schedule`.
-- **Falla Estructural:** El motor relacional no impide mediante una clave única que dos secciones distintas reserven la misma aula en el mismo bloque horario, ni que un mismo docente (`teacher_id`) sea asignado a dos materias en el mismo rango de tiempo.
-- **Riesgo:** Colisión de aulas físicas y sobreasignación horaria de docentes si la validación falla en la interfaz de usuario.
-- **Mitigación Requerida:** El módulo de coordinación de horarios debe realizar comprobaciones de no solapamiento mediante bloqueos transaccionales antes de insertar o modificar registros en `section`.
+### RNB-03: Control de No Solapamiento de Horarios y Aulas para Secciones y Docentes
+- **Regla de Negocio:** Una misma aula física (`classroom`) no puede ser ocupada por dos secciones diferentes en el mismo día y bloque horario. Asimismo, un mismo docente (`teacher_id`) no puede tener asignadas dos clases concurrentes.
+- **Control Delegado al Backend:** Dado que las restricciones horarias entre intervalos de tiempo (`start_time` - `end_time`) requieren cálculos dinámicos no soportados por claves únicas simples, el control de concurrencia y solapamiento horario se ejecuta a nivel de aplicación.
+- **Implementación:** Validación en el servicio de coordinación académica (`SectionManagementService`), verificando la disponibilidad mediante consultas de no solapamiento (`WHERE day_of_week = ? AND start_time < ? AND end_time > ?`) antes de confirmar el registro.
 
-### FD-04: Desacoplamiento entre la Tolerancia de Sesión y la Inserción en `attendance`
-- **Diagnóstico:** La tabla `class_session` define `tolerance_minutes`, `start_time`, `end_time` y `status = 'Open'/'Closed'`.
-- **Falla Estructural:** La tabla `attendance` no posee una restricción relacional que impida insertar un registro con `attendance_status = 'Present'` cuando la hora de la transacción supere el tiempo de tolerancia o cuando la sesión se encuentre formalmente cerrada (`status = 'Closed'`).
-- **Riesgo:** Inserción de asistencias tardías o extemporáneas provocadas por desfase de reloj, peticiones en cola de la app móvil o llamadas directas al endpoint sin validación previa del estado de la sesión.
-- **Mitigación Requerida:** Los controladores de asistencia deben ejecutar una transacción atómica verificando que la sesión esté abierta y calculando el delta de minutos para asignar `Late` o rechazar la solicitud si la sesión ya expiró.
+### RNB-04: Control Transaccional de Vigencia y Tolerancia en el Pase de Asistencia
+- **Regla de Negocio:** La toma de asistencia solo es admisible durante una sesión activa (`status = 'Open'`). Los registros dentro del margen `tolerance_minutes` se tipifican como `Present`, mientras que los ingresos posteriores a dicho margen se marcan como `Late`. Toda solicitud extemporánea tras el cierre de la clase debe ser rechazada.
+- **Control Delegado al Backend:** El cálculo de minutos de tolerancia y el estado de la sesión se validan en tiempo de ejecución en la API de asistencia.
+- **Implementación:** Controladores de asistencia (`AttendanceController`) que ejecutan bloqueos pesimistas (`lockForUpdate()`) sobre `class_session`, calculando la diferencia temporal respecto a la hora de apertura para catalogar el estado del registro o denegar el escaneo si la clase culminó.
 
-### FD-05: Dependencia de Estados Lógicos (`status` / `is_active`) sin Soft Deletes Relacionales
-- **Diagnóstico:** El esquema no implementa la columna `deleted_at` para borrado suave (SoftDeletes de Laravel), recurriendo a banderas `status = 'Inactive'` o `is_active = false`.
-- **Falla Estructural:** Todas las consultas SQL manuales, reportes y vistas Eloquent están obligadas a incluir explícitamente filtros de estado activo. Si un desarrollador omite `WHERE is_active = true`, registros deshabilitados o docentes inactivos pueden figurar en listas operativas.
-- **Riesgo:** Fuga de registros inactivos en actas oficiales, carnets o selectores de inscripción.
-- **Mitigación Requerida:** Definir Scopes Globales en los modelos Eloquent de Laravel (`UserRole`, `Section`, `AcademicPeriod`) que filtren por defecto únicamente los registros activos.
+### RNB-05: Gestión de Ciclo de Vida y Estados Activos mediante Global Scopes
+- **Regla de Negocio:** Los usuarios, secciones, períodos y roles inactivos (`status = 'Inactive'` o `is_active = false`) no deben participar en los flujos operacionales diarios de inscripción, toma de lista o carnetización activa, preservando el histórico para auditoría.
+- **Control Delegado al Backend:** El filtrado por defecto de entidades habilitadas se delega a la capa ORM de Eloquent.
+- **Implementación:** Definición de **Global Scopes de Eloquent** en los modelos clave (`UserRole`, `Section`, `AcademicPeriod`) para asegurar que las consultas operativas filtren automáticamente registros activos, utilizando `withoutGlobalScope()` únicamente en módulos de auditoría y reportes históricos.
 
 ---
 
@@ -736,4 +731,4 @@ php artisan migrate --seed
 php artisan migrate:fresh --seed
 ```
 
-Alternativamente, para entornos de producción o servidores sin CLI de PHP disponible, el archivo [database/schema.sql](file:///c:/Users/Gagr/Documents/GitHub/UNEFA-Asistencias-Carnets/database/schema.sql) contiene el volcado DDL y DML estándar compatible con MySQL 8.0+ y MariaDB 10.4+.
+Alternativamente, para entornos de producción o servidores sin CLI de PHP disponible, el archivo [database/schema.sql](../../database/schema.sql) contiene el volcado DDL y DML estándar compatible con MySQL 8.0+ y MariaDB 10.4+.

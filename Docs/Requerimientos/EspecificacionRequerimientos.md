@@ -161,9 +161,9 @@ El módulo opera mediante el **código QR único y permanente** de cada usuario 
 3. Mantener la tabla asociativa `user_role` con los campos `credential_number`, `credential_issued_at` y `credential_expires_at` para la emisión independiente de carnets por rol.
 4. Mantener la tabla `verification_code` para códigos OTP temporales (`2FA_Login`, `Password_Reset`) y el campo `security_pin_hash` en `user_account` para la clave secundaria del Director.
 5. Preservar los índices de rendimiento y validación crítica (`idx_profile_semester`, `idx_enrollment_dragged`, `uniq_session_student`, `idx_vc_lookup`).
-6. Mantener sincronizado el script DDL maestro [database/schema.sql](file:///c:/Users/Gagr/Documents/GitHub/UNEFA-Asistencias-Carnets/database/schema.sql) y el seeder inicial idempotente [UnefaInitialDataSeeder.php](file:///c:/Users/Gagr/Documents/GitHub/UNEFA-Asistencias-Carnets/database/seeders/UnefaInitialDataSeeder.php).
+6. Mantener sincronizado el script DDL maestro [database/schema.sql](../../database/schema.sql) y el seeder inicial idempotente [UnefaInitialDataSeeder.php](../../database/seeders/UnefaInitialDataSeeder.php).
 
 ### DEPARTAMENTO DE DOCUMENTACIÓN
-1. Mantener este documento y la [documentación de base de datos] sincronizados con la rama `develop` y las directrices del 21/11/2026.
+1. Mantener este documento y la [documentación de base de datos](../Base%20de%20datos/documentacion-base-de-datos.md) sincronizados con la rama `develop` y las directrices del 21/11/2026.
 2. Elaborar y actualizar los diagramas de casos de uso y entidad-relación reflejando el QR permanente, múltiples carnets y el bloqueo por materias arrastradas.
 3. Consignar manuales de usuario y evidencias técnicas requeridas para la **evaluación sumativa de cortes 1 y 2 en la Semana 8**.
