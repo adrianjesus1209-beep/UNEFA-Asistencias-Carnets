@@ -1,65 +1,72 @@
-# Documentación de la Base de Datos — UNEFA Asistencias & Carnets
+# Documentación Oficial de la Base de Datos
+## Sistema Unificado de Control de Asistencias y Carnetización Digital — UNEFA
 
 > [!NOTE]
-<<<<<<< Updated upstream
-> Esta documentación fue hecha a partir de las 5 migraciones Laravel ubicadas en `database/migrations/` y los seeders en `database/seeders/`. Fecha: **22 de noviembre de 2026**. Esta no es la versión definitiva y puede ser modificada en un futuro si surgen cambios en la estructura de la base de datos.
-=======
-> **Estado de la Documentación:** Actualizada y verificada al **22 de noviembre de 2026** sobre la rama `develop`.
-> Esta versión integra la estructura de 22 tablas definida en las migraciones Laravel (`database/migrations/`), el volcado DDL (`database/schema.sql`) y los datos semilla (`database/seeders/`), consolidando formalmente las **Directrices de Diseño del 21/11/2026**.
+> **Metadatos del Documento:**
+> - **Versión Actual:** `2.1.0` (Consolidada y Verificada).
+> - **Rama de Integración:** `develop`.
+> - **Motor / Framework:** Laravel 11 (Eloquent Migrations & Schema Builder) / MySQL 8.0+ & MariaDB 10.4+.
+> - **Total de Tablas:** 22 tablas normalizadas en Tercera Forma Normal (3FN).
 
 ---
 
-## Directrices de Diseño y Reglas de Negocio (21/11/2026)
+## Cronología Oficial de Actualizaciones
 
-El modelo de datos y la arquitectura operativa del sistema incorporan cinco directrices obligatorias emitidas el 21 de noviembre de 2026:
+A continuación se detalla la línea de tiempo oficial de diseño, ajuste e integración del esquema de base de datos del proyecto:
 
-### 1. Código QR Único y Permanente
-- **Principio:** Se descarta el uso de tablas separadas para códigos QR temporales o efímeros para el pase de asistencia.
-- **Implementación:** Cada persona física posee un identificador inmutable y permanente almacenado en `user_account.qr_token` (`VARCHAR(128) UNIQUE`).
-- **Alcance:** Este token acompaña al alumno o docente durante toda su trayectoria universitaria y se codifica tanto en el carnet físico/digital como en el módulo de escaneo de asistencia en el aula.
+| Fecha | Versión | Tipo de Cambio | Resumen del Hito |
+| :---: | :---: | :--- | :--- |
+| **20/11/2026** | `v1.0.0` | **Creación Inicial del Esquema** | Creación y despliegue inicial de las 5 migraciones Laravel (`database/migrations/`), estructuración de las 22 tablas en 3FN, desarrollo del seeder base `UnefaInitialDataSeeder.php` y generación del script DDL [schema.sql]
+ |
+| **21/11/2026** | `v2.0.0` | **Directrices Institucionales Mandatorias** | Emisión e incorporación formal de las 5 nuevas directrices operativas: adopción de QR único y permanente por usuario, carnetización independiente para múltiples roles por persona, bloqueo curricular por materias arrastradas, migración de nomenclatura "SICEU" a "Portal" con login dual y registro convencional, y fijación del hito evaluativo en Semana 8. |
+| **22/11/2026** | `v2.1.0` | **Integración y Consolidación en `develop`** | Fusión integral en la rama `develop` de Laravel 11, migraciones, seeders, vistas Blade y aplicación móvil Expo. Actualización bidireccional entre la base de datos y la Especificación de Requerimientos, resolución de inconsistencias de índices y adición de recomendaciones para observadores de eventos. |
 
-### 2. Múltiples Roles y Carnetización Independiente
-- **Principio:** Una persona física puede ostentar simultáneamente múltiples roles activos dentro de la institución (por ejemplo, un usuario puede ser estudiante de pregrado y docente/preparador al mismo tiempo).
-- **Implementación:** La tabla asociativa `user_role` vincula `user_account` con `system_role` y almacena para cada asignación individual su propio número de carnet (`credential_number VARCHAR(50) UNIQUE`), fecha de expedición (`credential_issued_at`) y fecha de vencimiento (`credential_expires_at`).
-- **Consecuencia:** Cada rol activo genera una credencial física/digital con su propio número de folio y vigencia, manteniendo los permisos segregados según el perfil que se encuentre ejerciendo.
+---
 
-### 3. Control de Materias Arrastradas y Bloqueo de Avance
-- **Principio:** Si un estudiante reprueba o arrastra una materia, el sistema restringe su avance al siguiente semestre académico hasta que apruebe y subsane la asignatura pendiente.
-- **Implementación:**
-  - `profile.current_semester`: Semestre nominal cursado.
-  - `profile.has_dragged_subjects`: Bandera booleana de consulta rápida que indica si el estudiante adeuda materias.
-  - `section_enrollment.is_dragged`: Marca asignaturas en condición de repitencia.
-  - `section_enrollment.status`: Estados de inscripción (`Pending`, `Enrolled`, `Approved`, `Failed`, `Withdrawn`, `Rejected`).
-  - `course_prerequisite`: Matriz relacional de prelaciones entre materias.
-- **Regla Operativa:** Un estudiante con `has_dragged_subjects = true` o asignaturas en estado `Failed` no puede ser promovido ni inscribir carga académica perteneciente a semestres superiores (`current_semester + 1`) que colisionen o dependan de la aprobación previa de las asignaturas rezagadas.
+## Apartado Especial: Registro de Cambios de la Última Versión (`v2.1.0` — 22/11/2026)
 
-### 4. Ajustes de Interfaz y Arquitectura de Acceso
-- **Nomenclatura Institucional:** Se sustituyó formalmente el acrónimo anterior **"SICEU"** por la denominación oficial **"Portal"** (Portal Institucional / Portal Académico UNEFA) en vistas, rutas y documentación.
-- **Bifurcación del Terminal de Acceso:** La pantalla de inicio de sesión separa el acceso en dos pestañas funcionales:
-  - **Canal Estudiantes:** Autenticación rápida por Cédula/Correo y Contraseña.
-  - **Canal Personal (Docentes y Administrativos):** Autenticación con soporte para validaciones avanzadas (2FA de 6 dígitos para directores y clave secundaria institucional).
-- **Registro Convencional:** Se eliminó el flujo antiguo de preinscripción CINU; el registro en el portal opera como una apertura de cuenta formal universitaria vinculada al expediente del titular.
+Este apartado resume todos los cambios arquitecturales, estructurales y funcionales incorporados en la versión actual del sistema respecto a los borradores preliminares:
 
-### 5. Cronograma y Hitos de Evaluación del Proyecto
-- **Confirmación Académica:** La evaluación conjunta del **1er y 2do corte** quedó formalmente fijada para la **Semana 8** del período lectivo (iniciando la semana 7 el 22/11/2026).
-- **Soporte en Base de Datos:** Las tablas `academic_period`, `calendar_event` y `class_session` registran la duración estándar (16 semanas), el cómputo de semanas de clase (`week_number`) y los hitos del cronograma académico.
+### 1. Cambios en Modelado y Atributos de Tablas
+- **`user_account.qr_token` (QR Permanente de por vida):**
+  - Se confirmó el uso exclusivo de `qr_token` (`VARCHAR(128) UNIQUE`) generado una sola vez al dar de alta la cuenta universitaria.
+  - **Eliminación:** Se erradicó formalmente la necesidad de tablas intermedias o temporales de códigos QR (anteriormente planteadas como `two_factor_code` para asistencias o tablas de tokens rotativos).
+- **`user_role` (Múltiples Carnets y Roles Concurrentes):**
+  - Se habilitó a nivel relacional que una persona física posea simultáneamente múltiples registros activos (ej. Estudiante y Docente/Preparador).
+  - Cada fila en `user_role` resguarda su propio número de carnet (`credential_number VARCHAR(50) UNIQUE`), fecha de expedición (`credential_issued_at`) y fecha de vencimiento (`credential_expires_at`), lo que permite imprimir y gestionar carnets independientes por rol con vigencias y plantillas diferenciadas.
+- **`profile.has_dragged_subjects` y `section_enrollment.is_dragged` (Semáforo de Arrastre):**
+  - Implementación del índice compuesto `idx_profile_semester` (`current_semester`, `has_dragged_subjects`) en `profile` para consultas instantáneas durante la inscripción.
+  - Implementación del índice compuesto `idx_enrollment_dragged` (`student_id`, `status`, `is_dragged`) en `section_enrollment` para trazabilidad de asignaturas en repitencia.
+  - Regla de negocio activa: Mientras `has_dragged_subjects = true` o existan asignaturas con `status = 'Failed'`, el sistema bloquea el incremento formal de semestre (`current_semester + 1`) y la matriculación en materias avanzadas.
+
+### 2. Cambios en Nomenclatura, Interfaz y Flujos de Acceso
+- **Sustitución de "SICEU" por "Portal":**
+  - Se homologó toda la base de datos, rutas, vistas Blade y controladores eliminando cualquier referencia residual a "SICEU", reemplazándola por **"Portal Institucional / Portal Académico UNEFA"**.
+- **Separación de Interfaces de Autenticación (Login Bifurcado):**
+  - **Canal Estudiantes:** Acceso directo con Cédula/Correo y Contraseña.
+  - **Canal Personal (Docentes y Directores):** Acceso con políticas de seguridad extendidas. Para el rol Director, se conecta con la tabla `verification_code` (código OTP de 6 dígitos enviado por correo) y se valida la clave secundaria almacenada en `user_account.security_pin_hash`.
+- **Registro Directo de Cuenta Convencional:**
+  - El flujo de registro estudiantil ya no opera bajo el esquema antiguo de preinscripción CINU, sino como una apertura de cuenta formal universitaria que asienta el perfil en `profile`, la cuenta en `user_account` en estado `Pending` y habilita la subida de documentos a `document_registration`.
+
+### 3. Sincronización con el Cronograma Académico (Semana 8)
+- **Hito Evaluativo Sumativo (1er y 2do Corte):**
+  - En virtud de la confirmación docente de evaluar el 1er y 2do corte juntos en la **Semana 8**, se ajustaron las validaciones de las tablas `academic_period` (duración estándar de 16 semanas), `calendar_event` (eventos de corte de notas) y `class_session` (`week_number`), garantizando el registro ordenado de las sesiones que preceden a dicha evaluación.
 
 ---
 
 ## Matriz de Trazabilidad: Directrices vs Base de Datos
 
-| Directriz | Tablas Involucradas | Columnas Clave | Índices / Restricciones | Regla / Comportamiento |
+| Directriz Mandatoria | Tablas Involucradas | Columnas Clave | Índices / Restricciones | Comportamiento en Base de Datos |
 | :--- | :--- | :--- | :--- | :--- |
-| **QR Único y Permanente** | `user_account` | `qr_token` (VARCHAR 128) | `uniq_user_qr_token` (UNIQUE) | Asignado al crear la cuenta. Token fijo de por vida para el carnet y lector QR. No requiere tablas temporales. |
-| **Múltiples Roles y Carnets** | `user_role`, `system_role`, `role_permission` | `user_role.credential_number`, `credential_issued_at`, `credential_expires_at`, `is_active` | `uniq_credential_number` (UNIQUE), `uniq_user_role` (UNIQUE compuesto) | Cada rol asignado a un usuario genera un registro con su propio número de carnet y vigencia. |
-| **Control de Arrastre de Materias** | `profile`, `section_enrollment`, `course_prerequisite`, `subject` | `profile.has_dragged_subjects`, `profile.current_semester`, `section_enrollment.is_dragged`, `section_enrollment.status` | `idx_profile_semester` (`current_semester`, `has_dragged_subjects`), `idx_enrollment_dragged` (`student_id`, `status`, `is_dragged`) | Bloquea el incremento de semestre y la inscripción en semestres posteriores mientras existan materias reprobadas. |
-| **Ajustes de Interfaz y Acceso** | `user_account`, `verification_code`, `document_registration` | `verification_code.code_type`, `user_account.security_pin_hash`, `document_registration.status` | `idx_vc_lookup`, `idx_doc_user_status` | Soporta canal Estudiante vs Personal, validación 2FA por correo para directores y registro de cuenta regular. |
-| **Hito Evaluativo Semana 8** | `academic_period`, `calendar_event`, `class_session`, `section_enrollment` | `academic_period.duration_weeks`, `calendar_event.start_date`, `class_session.week_number`, `section_enrollment.final_grade` | `idx_event_period_dates`, `idx_session_section_status` | Planificación de períodos a 16 semanas con registro semanal de sesiones y cierre de ciclo evaluativo de cortes 1 y 2 en semana 8. |
->>>>>>> Stashed changes
+| **QR Único y Permanente** | `user_account` | `qr_token` (VARCHAR 128) | `uniq_user_qr_token` (UNIQUE) | Identificador estático generado al registrar la cuenta. Usado en carnet físico/digital y lector QR de asistencia. Sin tablas efímeras. |
+| **Múltiples Roles y Carnets** | `user_role`, `system_role`, `role_permission` | `credential_number`, `credential_issued_at`, `credential_expires_at`, `is_active` | `uniq_credential_number` (UNIQUE), `uniq_user_role` (UNIQUE compuesto) | Permite asignar varios roles a un usuario. Cada asignación genera una credencial física/digital con serial y vigencia propia. |
+| **Control de Materias Arrastradas** | `profile`, `section_enrollment`, `course_prerequisite`, `subject` | `profile.has_dragged_subjects`, `profile.current_semester`, `section_enrollment.is_dragged`, `section_enrollment.status` | `idx_profile_semester`, `idx_enrollment_dragged` | Si el alumno reprueba (`Failed`) o arrastra (`is_dragged`), el sistema bloquea su avance curricular al semestre superior hasta aprobarla. |
+| **Ajustes de Interfaz y Acceso** | `user_account`, `verification_code`, `document_registration` | `code_type`, `security_pin_hash`, `pin_expires_at`, `document_registration.status` | `idx_vc_lookup`, `idx_doc_user_status` | Soporta canal Estudiante vs Personal, envío de 2FA por correo para directores y recepción de recaudos digitales. |
+| **Hito Evaluativo Semana 8** | `academic_period`, `calendar_event`, `class_session`, `section_enrollment` | `academic_period.duration_weeks`, `class_session.week_number`, `section_enrollment.final_grade` | `idx_event_period_dates`, `idx_session_section_status` | Estructura el ciclo lectivo en 16 semanas y permite el registro de clases semanales para el corte evaluativo unificado en semana 8. |
 
 ---
 
-## Diagrama Entidad-Relación
+## Diagrama Entidad-Relación Global
 
 ```mermaid
 erDiagram
@@ -103,11 +110,11 @@ erDiagram
 
 ---
 
-## Estructura Modular del Sistema (22 Tablas)
+## Arquitectura por Módulos (22 Tablas)
 
-La base de datos está normalizada en **Tercera Forma Normal (3FN)** y distribuida en **5 módulos temáticos**, coincidiendo exactamente con los archivos de migración de Laravel:
+El modelo de datos se organiza en **5 módulos funcionales**, correspondientes a las 5 migraciones Laravel del proyecto:
 
-| # | Módulo Funcional | Tablas | Archivo de Migración |
+| # | Módulo Funcional | Tablas | Archivo de Migración Laravel |
 |---|---|:---:|---|
 | 1 | Seguridad, Roles y Autenticación | 10 | `2026_11_20_000001_create_security_and_auth_tables.php` |
 | 2 | Académico, Pensum y Calendario | 5 | `2026_11_20_000002_create_academic_tables.php` |
@@ -120,42 +127,43 @@ La base de datos está normalizada en **Tercera Forma Normal (3FN)** y distribui
 ## Módulo 1 — Seguridad, Roles y Autenticación
 
 ### `system_role`
-Catálogo maestro de roles del sistema con asignación de nivel jerárquico numérico para control de acceso basado en roles (RBAC).
+Catálogo de roles institucionales con nivel jerárquico numérico para control de acceso RBAC.
 
 | Columna | Tipo de Dato | Restricciones | Descripción |
 |---|---|---|---|
 | `id` | INT UNSIGNED | PK, Auto-increment | Identificador único del rol |
-| `role_name` | VARCHAR(50) | UNIQUE | Nombre identificador (ej: `Super Administrator`, `Director`, `Academic Coordinator`, `Teacher`, `Student`) |
+| `role_name` | VARCHAR(50) | UNIQUE | Nombre formal del rol (`Super Administrator`, `Director`, `Academic Coordinator`, `Teacher`, `Student`) |
 | `hierarchy_level` | TINYINT UNSIGNED | INDEX | Nivel de precedencia jerárquica (1 = Máximo privilegio) |
 | `description` | VARCHAR(255) | NOT NULL | Resumen del alcance y funciones asignadas al rol |
 
 - **Índices:** `uniq_role_name` (UNIQUE), `idx_role_hierarchy` (INDEX).
+- **Guía de funcionamiento:** Define la estructura de permisos jerárquicos. El borrado de roles está protegido mediante integridad referencial restrictiva en `user_role`.
 
 ---
 
 ### `permission`
-Catálogo de capacidades atómicas del sistema, agrupadas por módulo operativo.
+Catálogo de permisos atómicos agrupados por módulo funcional.
 
 | Columna | Tipo de Dato | Restricciones | Descripción |
 |---|---|---|---|
 | `id` | INT UNSIGNED | PK, Auto-increment | Identificador único del permiso |
 | `permission_key` | VARCHAR(80) | UNIQUE | Clave técnica en formato `modulo.accion` (ej: `attendance.scan`, `credential.issue`) |
-| `permission_name` | VARCHAR(100) | NOT NULL | Título legible de la acción |
+| `permission_name` | VARCHAR(100) | NOT NULL | Nombre legible del permiso |
 | `module` | VARCHAR(50) | INDEX | Dominio al que pertenece (`Seguridad`, `Direccion`, `Coordinacion`, `Docencia`, `General`, `Estudiantes`) |
-| `description` | VARCHAR(255) | NULLABLE | Descripción complementaria del privilegio |
+| `description` | VARCHAR(255) | NULLABLE | Detalle explicativo de la operación autorizada |
 
 - **Índices:** `uniq_permission_key` (UNIQUE), `idx_permission_module` (INDEX).
 
 ---
 
 ### `role_permission`
-Tabla asociativa intermedia (N:M) que vincula permisos con roles jerárquicos.
+Tabla intermedia (N:M) que asocia privilegios atómicos a los roles del sistema.
 
 | Columna | Tipo de Dato | Restricciones | Descripción |
 |---|---|---|---|
 | `id` | INT UNSIGNED | PK, Auto-increment | Identificador único de la asignación |
-| `role_id` | INT UNSIGNED | FK → `system_role.id` ON DELETE CASCADE | Rol al que se concede el permiso |
-| `permission_id` | INT UNSIGNED | FK → `permission.id` ON DELETE CASCADE, INDEX | Permiso concedido |
+| `role_id` | INT UNSIGNED | FK → `system_role.id` ON DELETE CASCADE | Rol beneficiario |
+| `permission_id` | INT UNSIGNED | FK → `permission.id` ON DELETE CASCADE, INDEX | Permiso otorgado |
 
 - **Índices:** `uniq_role_permission` (UNIQUE compuesto `[role_id, permission_id]`), `idx_rp_permission` (INDEX).
 
@@ -167,13 +175,13 @@ Entidad que resguarda los datos personales y civiles del individuo. Se mantiene 
 | Columna | Tipo de Dato | Restricciones | Descripción |
 |---|---|---|---|
 | `id` | INT UNSIGNED | PK, Auto-increment | Identificador único del perfil |
-| `career_id` | INT UNSIGNED | FK → `career.id` ON DELETE SET NULL, NULLABLE, INDEX | Carrera o programa académico al que está adscrito |
+| `career_id` | INT UNSIGNED | FK → `career.id` ON DELETE SET NULL, NULLABLE, INDEX | Carrera o programa al que está adscrito |
 | `id_number` | VARCHAR(20) | UNIQUE | Número de Cédula de Identidad |
-| `id_type` | VARCHAR(2) | DEFAULT 'V' | Prefijo de nacionalidad (`V` = Venezolano, `E` = Extranjero) |
-| `first_name` | VARCHAR(50) | NOT NULL | Primer nombre oficial |
-| `middle_name` | VARCHAR(50) | NULLABLE | Segundo nombre oficial |
-| `last_name` | VARCHAR(50) | NOT NULL | Primer apellido oficial |
-| `second_last_name` | VARCHAR(50) | NULLABLE | Segundo apellido oficial |
+| `id_type` | VARCHAR(2) | DEFAULT 'V' | Tipo de documento (`V` = Venezolano, `E` = Extranjero) |
+| `first_name` | VARCHAR(50) | NOT NULL | Primer nombre |
+| `middle_name` | VARCHAR(50) | NULLABLE | Segundo nombre |
+| `last_name` | VARCHAR(50) | NOT NULL | Primer apellido |
+| `second_last_name` | VARCHAR(50) | NULLABLE | Segundo apellido |
 | `current_semester` | TINYINT UNSIGNED | DEFAULT 1 | Semestre en curso del estudiante |
 | `has_dragged_subjects` | BOOLEAN | DEFAULT false | Bandera rápida de materias reprobadas o arrastradas |
 | `address` | VARCHAR(255) | NULLABLE | Dirección física de residencia |
@@ -186,7 +194,7 @@ Entidad que resguarda los datos personales y civiles del individuo. Se mantiene 
 - **Índices:** `uniq_id_number` (UNIQUE), `idx_profile_career` (INDEX), `idx_profile_semester` (INDEX compuesto `[current_semester, has_dragged_subjects]`).
 
 > [!WARNING]
-> **Regla de Avance Académico:** El índice compuesto `idx_profile_semester` permite al motor del Portal consultar de forma instantánea si un estudiante puede o no ser promovido de semestre. Si `has_dragged_subjects = true`, el sistema bloquea cualquier avance curricular.
+> **Regla de Avance Académico:** El índice compuesto `idx_profile_semester` permite al motor del Portal consultar de forma instantánea si un estudiante puede o no ser promovido de semestre. Si `has_dragged_subjects = true`, el sistema bloquea cualquier avance curricular hacia semestres superiores.
 
 ---
 
@@ -210,13 +218,8 @@ Credenciales y parámetros de autenticación del usuario. Relación unívoca (1:
 
 - **Índices:** `uniq_profile_id` (UNIQUE), `uniq_username` (UNIQUE), `uniq_email` (UNIQUE), `uniq_user_qr_token` (UNIQUE), `idx_user_pin_expiration` (INDEX), `idx_user_status` (INDEX).
 
-<<<<<<< Updated upstream
-**Guía de funcionamiento:**
-El campo `qr_token` es un identificador **único y permanente** por persona. Se usa para generar el código QR del carnet y registrar asistencias mediante escaneo. Este token se genera una sola vez al crear la cuenta y no cambia, garantizando que el QR del carnet sea válido durante toda la vida del usuario en el sistema.
-=======
 > [!IMPORTANT]
 > **QR Permanente e Inmutable:** El campo `qr_token` es el único identificador empleado para generar el código QR institucional. Al estar fijado en la cuenta de usuario, erradica la dependencia de tokens rotativos efímeros y tablas temporales adicionales.
->>>>>>> Stashed changes
 
 ---
 
@@ -236,13 +239,8 @@ Asignación de roles al usuario. Permite **polimorfismo de roles y emisión de c
 
 - **Índices:** `uniq_user_role` (UNIQUE compuesto `[user_id, role_id]`), `uniq_credential_number` (UNIQUE), `idx_ur_role_active` (INDEX compuesto `[role_id, is_active]`).
 
-<<<<<<< Updated upstream
-**Guía de funcionamiento:**
-Un usuario puede tener múltiples roles simultáneos (ej: Estudiante + Preparador). Cada combinación `user_id` + `role_id` es única, y cada rol genera su propio carnet con número de credencial independiente. El borrado de un `system_role` está **restringido** (`RESTRICT`) para evitar eliminar roles que estén en uso; primero se deben reasignar o eliminar las asignaciones existentes.
-=======
 > [!TIP]
-> **Carnets Múltiples por Persona:** Un usuario con dos roles activos (ej. Estudiante y Docente) dispone de dos registros en `user_role`, cada uno con su propio `credential_number`, plantilla visual asociada y fechas de vigencia distintas, garantizando trazabilidad institucional completa.
->>>>>>> Stashed changes
+> **Carnets Múltiples por Persona:** Un usuario puede tener múltiples roles simultáneos (ej: Estudiante y Docente). Cada combinación `user_id` + `role_id` es única, y cada rol genera su propio carnet con número de credencial, vigencia y plantilla visual independientes. El borrado de un `system_role` está restringido (`RESTRICT`) para evitar inconsistencias operativas.
 
 ---
 
@@ -443,13 +441,10 @@ Matrícula e inscripción individual de estudiantes en secciones con registro de
 
 - **Índices:** `uniq_student_section` (UNIQUE compuesto `[student_id, section_id]`), `idx_enrollment_section` (INDEX), `idx_enrollment_period` (INDEX), `idx_enrollment_status` (INDEX), `idx_enrollment_dragged` (INDEX compuesto `[student_id, status, is_dragged]`).
 
-<<<<<<< Updated upstream
-**Guía de funcionamiento:**
-El campo `is_dragged` indica que la inscripción corresponde a una materia que el estudiante ya cursó previamente y reprobó. Este campo funciona en conjunto con `profile.has_dragged_subjects` (ver sección de problemas detectados). El ciclo de vida de una inscripción pasa por los estados: `Pending` → `Enrolled` (confirmada por el coordinador) → `Approved` / `Failed` (al cerrar el ciclo de evaluación). Los estados `Withdrawn` y `Rejected` representan salidas anticipadas del flujo normal.
-=======
 > [!WARNING]
-> **Efecto de Materia Reprobada:** Cuando `status = 'Failed'`, la lógica de negocio activa automáticamente `is_dragged = true` y propaga `has_dragged_subjects = true` al perfil (`profile`) del alumno, impidiendo la inscripción de materias de semestres más avanzados hasta su aprobación.
->>>>>>> Stashed changes
+> **Efecto de Materia Reprobada y Ciclo de Vida:**
+> Cuando una asignatura cierra con `status = 'Failed'`, la lógica de negocio activa automáticamente `is_dragged = true` y propaga `has_dragged_subjects = true` al perfil (`profile`) del alumno, impidiendo la inscripción de materias de semestres más avanzados hasta su aprobación.
+> El ciclo de vida de una inscripción transita por: `Pending` → `Enrolled` (validada por coordinación) → `Approved` / `Failed` (al asentar notas). Los estados `Withdrawn` y `Rejected` representan salidas tempranas del ciclo regular.
 
 ---
 
@@ -494,13 +489,9 @@ Registro individualizado del pase de lista por estudiante en cada sesión de cla
 
 - **Índices:** `uniq_session_student` (UNIQUE compuesto `[session_id, student_id]`), `idx_attendance_student_status` (INDEX compuesto `[student_id, attendance_status]`), `idx_attendance_registrar` (INDEX), `idx_attendance_method` (INDEX).
 
-<<<<<<< Updated upstream
-**Guía de funcionamiento:**
-La asistencia se registra principalmente por **escaneo del código QR** del carnet (`registration_method = 'QR'`), usando el `qr_token` almacenado en `user_account`. El flujo es: el docente abre una sesión de clase → el estudiante escanea el QR de la sesión con su dispositivo, o el docente escanea el QR del carnet del estudiante → el sistema crea el registro de asistencia verificando que la sesión esté abierta y que el estudiante esté inscrito en la sección. El docente puede también registrar asistencia manualmente (`Manual`) en caso de fallas con el lector QR.
-=======
 > [!IMPORTANT]
-> **No Duplicidad de Asistencia:** El índice compuesto `uniq_session_student` garantiza que un estudiante no pueda registrar asistencia más de una vez en la misma sesión de clase, sea por QR o por vía manual.
->>>>>>> Stashed changes
+> **No Duplicidad de Asistencia y QR Permanente:**
+> La asistencia se asienta principalmente por escaneo del código QR del carnet (`registration_method = 'QR'`), resolviendo el `qr_token` almacenado en `user_account`. El índice compuesto `uniq_session_student` garantiza a nivel de base de datos que un estudiante no pueda registrar asistencia más de una vez en la misma sesión, evitando duplicidades. En caso de incidencia técnica, el docente puede asentar el registro de forma manual (`Manual`).
 
 ---
 
@@ -537,106 +528,7 @@ Monitoreo y mitigación perimetral contra ataques de fuerza bruta y denegación 
 
 ---
 
-<<<<<<< Updated upstream
-## Datos Iniciales (Seeders)
-
-Los datos iniciales del sistema se cargan mediante seeders de Laravel ubicados en `database/seeders/`. Se ejecutan automáticamente al correr `php artisan db:seed` o `php artisan migrate --seed`.
-
-### Estructura de seeders
-
-| Archivo | Descripción |
-|---------|-------------|
-| `DatabaseSeeder.php` | Seeder principal de Laravel. Orquesta la ejecución de los demás seeders. Usa el trait `WithoutModelEvents` para evitar disparar eventos de modelo durante la carga. |
-| `UnefaInitialDataSeeder.php` | Seeder de datos base del sistema. Usa `insertOrIgnore` para que sea **seguro re-ejecutar** sin duplicar registros. |
-
-### Datos insertados por `UnefaInitialDataSeeder`
-
-#### Roles del sistema (`system_role`) — 5 registros
-
-| ID | Rol | Nivel | Descripción |
-|----|-----|-------|-------------|
-| 1 | Super Administrator | 1 | Soporte Técnico Central / TI — Acceso exclusivo a Auditoría, Bitácora y Configuración Global |
-| 2 | Director | 2 | Rector / Administrador de la Institución — Asigna Coordinadores de Carrera y valida con clave secundaria |
-| 3 | Academic Coordinator | 3 | Control de Estudios — Valida Expedientes, Registra Horarios y Emite Carnets Digitales |
-| 4 | Teacher | 4 | Docente / Titular de Materia — Gestiona Sesiones de Clase y Asistencias mediante Escaneo QR |
-| 5 | Student | 5 | Alumno Regular Aprobado — Acceso a Carnet Digital, QR y Horario Académico |
-
-#### Permisos del sistema (`permission`) — 11 registros
-
-| ID | Clave | Nombre | Módulo |
-|----|-------|--------|--------|
-| 1 | `audit.view` | Ver Bitácora y Auditoría | Seguridad |
-| 2 | `system.backup` | Gestionar Respaldos | Seguridad |
-| 3 | `coordinator.assign` | Asignar Coordinadores | Dirección |
-| 4 | `metrics.global` | Ver Métricas Globales | Dirección |
-| 5 | `student.validate_docs` | Validar Expedientes | Coordinación |
-| 6 | `credential.issue` | Emitir Carnets | Coordinación |
-| 7 | `schedule.manage` | Gestionar Horarios y Secciones | Coordinación |
-| 8 | `session.manage` | Abrir y Cerrar Clases | Docencia |
-| 9 | `attendance.scan` | Escanear QR y Registrar Asistencia | Docencia |
-| 10 | `credential.view_own` | Ver Carnets Propios y QR | General |
-| 11 | `schedule.view_own` | Ver Horario y Materias | Estudiantes |
-
-#### Matriz de permisos por rol (`role_permission`) — 24 asignaciones
-
-| Permiso | Super Admin | Director | Coordinador | Docente | Estudiante |
-|---------|:-----------:|:--------:|:-----------:|:-------:|:----------:|
-| `audit.view` | ✅ | | | | |
-| `system.backup` | ✅ | | | | |
-| `coordinator.assign` | ✅ | ✅ | | | |
-| `metrics.global` | ✅ | ✅ | ✅ | | |
-| `student.validate_docs` | ✅ | | ✅ | | |
-| `credential.issue` | ✅ | | ✅ | | |
-| `schedule.manage` | ✅ | | ✅ | | |
-| `session.manage` | ✅ | | | ✅ | |
-| `attendance.scan` | ✅ | | | ✅ | |
-| `credential.view_own` | ✅ | ✅ | ✅ | ✅ | ✅ |
-| `schedule.view_own` | ✅ | | | | ✅ |
-
-#### Preguntas de seguridad (`security_question`) — 5 registros
-
-| ID | Pregunta |
-|----|----------|
-| 1 | ¿Cuál es el nombre de tu primera mascota? |
-| 2 | ¿Cuál es tu ciudad de nacimiento? |
-| 3 | ¿Cuál es el segundo nombre de tu madre? |
-| 4 | ¿Cuál fue tu primer colegio o escuela? |
-| 5 | ¿Cuál es tu comida favorita? |
-
-#### Carrera inicial (`career`) — 1 registro
-
-| ID | Código | Nombre | Coordinador |
-|----|--------|--------|-------------|
-| 1 | SYS-ING | Ingeniería de Sistemas | Sin asignar |
-
-#### Período académico inicial (`academic_period`) — 1 registro
-
-| ID | Nombre | Inicio | Fin | Semanas | Estado |
-|----|--------|--------|-----|---------|--------|
-| 1 | 2026-1 | 2026-02-01 | 2026-06-30 | 16 | Active |
-
-#### Usuario administrador base
-
-Se crea un usuario administrador con los siguientes datos encadenados en las tablas `profile` → `user_account` → `user_role`:
-
-| Dato | Valor |
-|------|-------|
-| **Nombre completo** | Administrador Principal Sistemas UNEFA |
-| **Cédula** | V-00000000 |
-| **Usuario** | `admin` |
-| **Correo** | admin@unefa.edu.ve |
-| **Contraseña inicial** | `admin123` (almacenada como hash bcrypt) |
-| **QR Token** | `UNEFA-QR-V00000000` |
-| **Rol asignado** | Super Administrator (ID 1) |
-| **Carnet** | `CARNET-ADMIN-0001` (vigencia: 1 año desde la fecha de seed) |
-| **Estado de cuenta** | Approved |
-
----
-
-## Resumen de Relaciones y Claves Foráneas
-=======
 ## Relaciones de Integridad Referencial (Claves Foráneas)
->>>>>>> Stashed changes
 
 El esquema implementa un total de **28 claves foráneas** con reglas de eliminación estrictas:
 
@@ -714,84 +606,111 @@ flowchart TD
 
 ## Datos Semilla Iniciales (`UnefaInitialDataSeeder`)
 
-<<<<<<< Updated upstream
-| Aspecto | Convención |
-|---------|------------|
-| **Motor** | Laravel Migrations (Eloquent Schema Builder) |
-| **PKs** | `id` INT UNSIGNED Auto-increment en todas las tablas |
-| **Naming** | snake_case para tablas y columnas |
-| **FKs** | Prefijo `fk_` + abreviatura de tabla + columna |
-| **Índices** | Prefijo `idx_` para índices, `uniq_` para únicos |
-| **Timestamps** | `created_at` / `updated_at` con `useCurrent()` |
-| **Soft Deletes** | No implementados — se usa `status` / `is_active` |
-| **IP Storage** | VARCHAR(45) para soportar IPv6 |
-| **Hashing** | Contraseñas, PINs y respuestas de seguridad almacenados como hash (VARCHAR 255) |
-| **Seeders** | Uso de `insertOrIgnore` para idempotencia; `WithoutModelEvents` para evitar side-effects |
+Los datos iniciales del sistema se administran mediante seeders de Laravel ubicados en `database/seeders/`. Se ejecutan automáticamente al correr `php artisan db:seed` o `php artisan migrate --seed`:
+
+| Archivo | Propósito Técnico |
+|---|---|
+| `DatabaseSeeder.php` | Seeder principal de Laravel. Orquesta la ejecución de los seeders del dominio utilizando el trait `WithoutModelEvents` para evitar efectos colaterales durante la carga. |
+| `UnefaInitialDataSeeder.php` | Seeder de catálogos y datos base institucionales. Implementa `insertOrIgnore` para garantizar **idempotencia total** (seguro de re-ejecutar sin duplicar registros). |
+
+### Detalle de Datos Sembrados
+
+#### 1. Roles del Sistema (`system_role`) — 5 Registros
+| ID | Nombre del Rol | Jerarquía | Descripción Operativa |
+|:---:|---|:---:|---|
+| **1** | Super Administrator | 1 | Soporte Técnico Central / TI — Acceso exclusivo a Auditoría, Bitácora y Configuración Global |
+| **2** | Director | 2 | Rector / Administrador de la Institución — Asigna Coordinadores de Carrera y valida con clave secundaria |
+| **3** | Academic Coordinator | 3 | Control de Estudios — Valida Expedientes, Registra Horarios y Emite Carnets Digitales |
+| **4** | Teacher | 4 | Docente / Titular de Materia — Gestiona Sesiones de Clase y Asistencias mediante Escaneo QR |
+| **5** | Student | 5 | Alumno Regular Aprobado — Acceso a Carnet Digital, QR y Horario Académico |
+
+#### 2. Permisos Atómicos (`permission`) — 11 Registros
+| ID | Clave Técnica | Nombre Legible | Módulo |
+|:---:|---|---|---|
+| **1** | `audit.view` | Ver Bitácora y Auditoría | Seguridad |
+| **2** | `system.backup` | Gestionar Respaldos | Seguridad |
+| **3** | `coordinator.assign` | Asignar Coordinadores | Dirección |
+| **4** | `metrics.global` | Ver Métricas Globales | Dirección |
+| **5** | `student.validate_docs` | Validar Expedientes | Coordinación |
+| **6** | `credential.issue` | Emitir Carnets | Coordinación |
+| **7** | `schedule.manage` | Gestionar Horarios y Secciones | Coordinación |
+| **8** | `session.manage` | Abrir y Cerrar Clases | Docencia |
+| **9** | `attendance.scan` | Escanear QR y Registrar Asistencia | Docencia |
+| **10** | `credential.view_own` | Ver Carnets Propios y QR | General |
+| **11** | `schedule.view_own` | Ver Horario y Materias | Estudiantes |
+
+#### 3. Matriz de Permisos por Rol (`role_permission`) — 24 Asignaciones
+| Permiso Atómico | Super Admin | Director | Coordinador | Docente | Estudiante |
+|---|:---:|:---:|:---:|:---:|:---:|
+| `audit.view` | ✅ | | | | |
+| `system.backup` | ✅ | | | | |
+| `coordinator.assign` | ✅ | ✅ | | | |
+| `metrics.global` | ✅ | ✅ | ✅ | | |
+| `student.validate_docs` | ✅ | | ✅ | | |
+| `credential.issue` | ✅ | | ✅ | | |
+| `schedule.manage` | ✅ | | ✅ | | |
+| `session.manage` | ✅ | | | ✅ | |
+| `attendance.scan` | ✅ | | | ✅ | |
+| `credential.view_own` | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `schedule.view_own` | ✅ | | | | ✅ |
+
+#### 4. Preguntas de Seguridad Iniciales (`security_question`) — 5 Registros
+1. *¿Cuál es el nombre de tu primera mascota?*
+2. *¿Cuál es tu ciudad de nacimiento?*
+3. *¿Cuál es el segundo nombre de tu madre?*
+4. *¿Cuál fue tu primer colegio o escuela?*
+5. *¿Cuál es tu comida favorita?*
+
+#### 5. Entidades Base Iniciales
+- **Carrera Inicial (`career`):** ID 1, Código `SYS-ING`, Nombre *Ingeniería de Sistemas*.
+- **Período Lectivo (`academic_period`):** ID 1, Denominación `2026-1` (Inicio: `2026-02-01`, Fin proyectado: `2026-06-30`, Duración: 16 semanas, Estado: `Active`).
+- **Super Administrador de Arranque:**
+  - Perfil: Cédula `V-00000000`, Nombre: *Administrador Principal Sistemas UNEFA*.
+  - Cuenta: Usuario `admin`, Correo `admin@unefa.edu.ve`, Hash de clave inicial para `admin123`.
+  - Token QR Único: `UNEFA-QR-V00000000` (permanente).
+  - Carnet Asignado: `CARNET-ADMIN-0001` con vigencia activa de 1 año.
 
 ---
 
-## Problemas Detectados en el Diseño
+## Convenciones de Diseño y Buenas Prácticas
 
-### PD-1: Desnormalización sin sincronización automática — `is_dragged` / `has_dragged_subjects`
-
-**Tablas afectadas:** `section_enrollment.is_dragged` ↔ `profile.has_dragged_subjects`
-
-**Descripción del problema:**
-El campo `is_dragged` en `section_enrollment` marca a nivel de detalle cuál materia específica está siendo repetida (arrastrada) por un estudiante. El campo `has_dragged_subjects` en `profile` replica esta información a nivel resumen como bandera booleana para consultas rápidas. Esta es una **desnormalización intencional** para evitar JOINs costosos al listar estudiantes con materias pendientes.
-
-**Riesgo de inconsistencia:**
-No existe un mecanismo automático (trigger, evento o observer) que mantenga sincronizados ambos campos. Si se modifica `is_dragged` en `section_enrollment` sin actualizar `has_dragged_subjects` en `profile`, la bandera resumen puede quedar desactualizada, mostrando información incorrecta en listados de estudiantes.
-
-**Escenarios de falla:**
-1. Se inscribe una materia arrastrada (`is_dragged = true`) pero `profile.has_dragged_subjects` no se actualiza a `true`.
-2. El estudiante aprueba su última materia arrastrada, pero `profile.has_dragged_subjects` permanece en `true`.
-3. Se elimina un registro de `section_enrollment` con `is_dragged = true` y la bandera del perfil no se recalcula.
-
-**Solución recomendada:**
-Implementar un **Observer de Laravel** en el modelo `SectionEnrollment` (o un trigger a nivel de base de datos) que, ante cualquier `INSERT`, `UPDATE` o `DELETE`, recalcule `profile.has_dragged_subjects` verificando si quedan inscripciones activas con `is_dragged = true` para ese estudiante.
-=======
-El seeder del sistema (`database/seeders/UnefaInitialDataSeeder.php`) provee los datos estructurales mínimos para inicializar la plataforma:
-
-1. **Catálogo de 5 Roles:**
-   - `Super Administrator` (Jerarquía 1): Soporte técnico, auditoría global y mantenimiento.
-   - `Director` (Jerarquía 2): Máxima autoridad institucional, supervisión y métricas globales (requiere 2FA).
-   - `Academic Coordinator` (Jerarquía 3): Gestión de pensum, horarios, docentes y carnetización.
-   - `Teacher` (Jerarquía 4): Gestión de clases y pase de lista mediante escaneo QR.
-   - `Student` (Jerarquía 5): Consulta de carnet con QR, horario y porcentaje de asistencia.
-
-2. **11 Permisos Atómicos:**
-   - `audit.view`, `system.backup` (Seguridad)
-   - `coordinator.assign`, `metrics.global` (Dirección)
-   - `student.validate_docs`, `credential.issue`, `schedule.manage` (Coordinación)
-   - `session.manage`, `attendance.scan` (Docencia)
-   - `credential.view_own` (General)
-   - `schedule.view_own` (Estudiantes)
-
-3. **Catálogo de Preguntas de Seguridad:** 5 interrogantes por defecto para soporte de recuperación de acceso.
-4. **Carrera Inicial:** `SYS-ING` — *Ingeniería de Sistemas*.
-5. **Período Académico:** `2026-1` (Inicio: `2026-02-01`, Cierre proyectado: `2026-06-30`, Duración: 16 semanas).
-6. **Super Administrador Base:**
-   - Perfil: Cédula `00000000`, Nombre: *Administrador Principal Sistemas UNEFA*.
-   - Cuenta: Usuario `admin`, Correo `admin@unefa.edu.ve`, Estado `Approved`.
-   - Token QR: `UNEFA-QR-V00000000` (identificador único permanente).
-   - Credencial: `CARNET-ADMIN-0001` con vigencia de 1 año.
+| Aspecto de Diseño | Convención Técnica Adoptada |
+|---|---|
+| **Motor DDL** | Laravel Migrations (Schema Builder fluído de Eloquent) |
+| **Claves Primarias** | `id INT UNSIGNED AUTO_INCREMENT` estandarizado en las 22 tablas |
+| **Nomenclatura** | snake_case estricto en minúsculas para tablas y columnas en inglés técnico |
+| **Claves Foráneas** | Prefijo `fk_` + abreviatura de tabla origen + columna destino |
+| **Índices** | Prefijo `idx_` para índices de búsqueda simple y compuesta; `uniq_` para restricciones únicas |
+| **Marcas Temporales** | `created_at` y `updated_at` con `useCurrent()` y actualización automática |
+| **Borrado Lógico** | No se usan Soft Deletes; el ciclo de vida se controla mediante campos `status` o `is_active` |
+| **Direcciones IP** | `VARCHAR(45)` en `audit_log` y `failed_attempt` para compatibilidad completa con IPv4 e IPv6 |
+| **Criptografía** | Bcrypt / Argon2 (VARCHAR 255) para contraseñas, PINs y respuestas de seguridad |
+| **Idempotencia** | Seeders con cláusulas `insertOrIgnore` para permitir ejecuciones repetidas seguras |
 
 ---
 
-## Ejecución y Sincronización en el Entorno
+## Observaciones Arquitecturales y Recomendaciones de Implementación
 
-Para aprovisionar la base de datos de manera automatizada mediante Laravel:
+### PD-1: Sincronización de Materias Arrastradas (`is_dragged` ↔ `has_dragged_subjects`)
+- **Naturaleza del Diseño:** Existe una desnormalización deliberada de rendimiento entre la tabla de detalle `section_enrollment.is_dragged` y la bandera resumen `profile.has_dragged_subjects`. Esto permite filtrar y validar bloqueos de matrícula instantáneamente mediante el índice `idx_profile_semester` sin requerir costosos JOINs agregados.
+- **Riesgo:** Si una inscripción cambia de estado o se asienta una nota aprobatoria sin actualizar el perfil del estudiante, la bandera de bloqueo podría quedar desfasada.
+- **Solución Adoptada:** Implementar un **Observer en Laravel** sobre el modelo `SectionEnrollment` (eventos `saved`, `updated`, `deleted`) que ejecute un recálculo automático: si el estudiante no posee ninguna otra materia activa con `is_dragged = true` o `status = 'Failed'`, actualizar `profile.has_dragged_subjects = false`.
+
+---
+
+## Instrucciones de Despliegue y Aprovisionamiento
+
+Para inicializar la base de datos de manera automatizada mediante Laravel:
 
 ```bash
-# Ejecutar todas las migraciones en orden
+# Ejecutar todas las migraciones en orden correlativo
 php artisan migrate
 
-# Ejecutar las migraciones e insertar los datos semilla iniciales
+# Ejecutar migraciones e insertar catálogos y datos iniciales
 php artisan migrate --seed
 
-# Reconstruir la base de datos desde cero (entornos de desarrollo)
+# Reconstruir la base de datos desde cero (recomendado en desarrollo)
 php artisan migrate:fresh --seed
 ```
 
-Alternativamente, el archivo [schema.sql](file:///c:/Users/Gagr/Documents/GitHub/UNEFA-Asistencias-Carnets/database/schema.sql) contiene el script SQL estándar compatible con MySQL 8.0+ y MariaDB 10.4+ para importación directa por terminal o interfaz gráfica (phpMyAdmin / DBeaver).
->>>>>>> Stashed changes
+Alternativamente, para entornos de producción o servidores sin CLI de PHP disponible, el archivo [database/schema.sql](file:///c:/Users/Gagr/Documents/GitHub/UNEFA-Asistencias-Carnets/database/schema.sql) contiene el volcado DDL y DML estándar compatible con MySQL 8.0+ y MariaDB 10.4+.
