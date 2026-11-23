@@ -16,8 +16,7 @@ A continuación se detalla la línea de tiempo oficial de diseño, ajuste e inte
 
 | Fecha | Versión | Tipo de Cambio | Resumen del Hito |
 | :---: | :---: | :--- | :--- |
-| **20/11/2026** | `v1.0.0` | **Creación Inicial del Esquema** | Creación y despliegue inicial de las 5 migraciones Laravel (`database/migrations/`), estructuración de las 22 tablas en 3FN, desarrollo del seeder base `UnefaInitialDataSeeder.php` y generación del script DDL [schema.sql]
- |
+| **20/11/2026** | `v1.0.0` | **Creación Inicial del Esquema** | Creación y despliegue inicial de las 5 migraciones Laravel (`database/migrations/`), estructuración de las 22 tablas en 3FN, desarrollo del seeder base `UnefaInitialDataSeeder.php` y generación del script DDL [schema.sql](file:///c:/Users/Gagr/Documents/GitHub/UNEFA-Asistencias-Carnets/database/schema.sql). |
 | **21/11/2026** | `v2.0.0` | **Directrices Institucionales Mandatorias** | Emisión e incorporación formal de las 5 nuevas directrices operativas: adopción de QR único y permanente por usuario, carnetización independiente para múltiples roles por persona, bloqueo curricular por materias arrastradas, migración de nomenclatura "SICEU" a "Portal" con login dual y registro convencional, y fijación del hito evaluativo en Semana 8. |
 | **22/11/2026** | `v2.1.0` | **Integración y Consolidación en `develop`** | Fusión integral en la rama `develop` de Laravel 11, migraciones, seeders, vistas Blade y aplicación móvil Expo. Actualización bidireccional entre la base de datos y la Especificación de Requerimientos, resolución de inconsistencias de índices y adición de recomendaciones para observadores de eventos. |
 
@@ -137,7 +136,7 @@ Catálogo de roles institucionales con nivel jerárquico numérico para control 
 | `description` | VARCHAR(255) | NOT NULL | Resumen del alcance y funciones asignadas al rol |
 
 - **Índices:** `uniq_role_name` (UNIQUE), `idx_role_hierarchy` (INDEX).
-- **Guía de funcionamiento:** Define la estructura de permisos jerárquicos. El borrado de roles está protegido mediante integridad referencial restrictiva en `user_role`.
+- **Guía de Funcionamiento:** Define la estructura de permisos jerárquicos. El borrado de roles está protegido mediante integridad referencial restrictiva en `user_role`.
 
 ---
 
@@ -193,8 +192,8 @@ Entidad que resguarda los datos personales y civiles del individuo. Se mantiene 
 
 - **Índices:** `uniq_id_number` (UNIQUE), `idx_profile_career` (INDEX), `idx_profile_semester` (INDEX compuesto `[current_semester, has_dragged_subjects]`).
 
-> [!WARNING]
-> **Regla de Avance Académico:** El índice compuesto `idx_profile_semester` permite al motor del Portal consultar de forma instantánea si un estudiante puede o no ser promovido de semestre. Si `has_dragged_subjects = true`, el sistema bloquea cualquier avance curricular hacia semestres superiores.
+**Guía de Lógica de Negocio — Control de Avance de Semestre:**  
+El campo `current_semester` registra el nivel académico nominal del estudiante. Cuando la bandera `has_dragged_subjects` se encuentra en `true`, las reglas de control de estudios estipulan la inhabilitación inmediata del avance al semestre inmediato superior (`current_semester + 1`), restringiendo la inscripción de nuevas asignaturas avanzadas hasta que las materias adeudadas sean aprobadas. El índice compuesto `idx_profile_semester (current_semester, has_dragged_subjects)` optimiza las consultas de validación en tiempo real en los procesos de inscripción. *(Para consultar los riesgos de desincronización de este campo, véase la falla FD-01 en el apartado final de fallas del diseño).*
 
 ---
 
@@ -218,8 +217,8 @@ Credenciales y parámetros de autenticación del usuario. Relación unívoca (1:
 
 - **Índices:** `uniq_profile_id` (UNIQUE), `uniq_username` (UNIQUE), `uniq_email` (UNIQUE), `uniq_user_qr_token` (UNIQUE), `idx_user_pin_expiration` (INDEX), `idx_user_status` (INDEX).
 
-> [!IMPORTANT]
-> **QR Permanente e Inmutable:** El campo `qr_token` es el único identificador empleado para generar el código QR institucional. Al estar fijado en la cuenta de usuario, erradica la dependencia de tokens rotativos efímeros y tablas temporales adicionales.
+**Guía de Lógica de Negocio — Token QR Permanente e Inmutable:**  
+El identificador `qr_token` se genera de forma única al momento de crear la cuenta universitaria y permanece inalterable a lo largo de toda la permanencia del usuario en la institución. Opera como el código unívoco embebido en el carnet físico y digital, y actúa como credencial fija para el pase de lista diario en el aula. Su persistencia descarta el uso de tablas separadas para códigos temporales o esquemas de regeneración efímera.
 
 ---
 
@@ -239,8 +238,8 @@ Asignación de roles al usuario. Permite **polimorfismo de roles y emisión de c
 
 - **Índices:** `uniq_user_role` (UNIQUE compuesto `[user_id, role_id]`), `uniq_credential_number` (UNIQUE), `idx_ur_role_active` (INDEX compuesto `[role_id, is_active]`).
 
-> [!TIP]
-> **Carnets Múltiples por Persona:** Un usuario puede tener múltiples roles simultáneos (ej: Estudiante y Docente). Cada combinación `user_id` + `role_id` es única, y cada rol genera su propio carnet con número de credencial, vigencia y plantilla visual independientes. El borrado de un `system_role` está restringido (`RESTRICT`) para evitar inconsistencias operativas.
+**Guía de Lógica de Negocio — Emisión de Múltiples Roles y Carnets Independientes:**  
+La arquitectura admite que una misma persona cuente con múltiples roles activos de manera simultánea (por ejemplo, Estudiante de pregrado y Docente titular o Preparador). Cada asignación formal en `user_role` genera un folio de credencial independiente (`credential_number`), con fecha de emisión y fecha de caducidad propia. Esto habilita la expedición y portabilidad de credenciales diferenciadas según el rol institucional ejercido, manteniendo los permisos segregados según la sesión seleccionada por el usuario. La eliminación física de roles en `system_role` está restringida (`RESTRICT`) para preservar la integridad histórica de los carnets emitidos.
 
 ---
 
@@ -441,10 +440,8 @@ Matrícula e inscripción individual de estudiantes en secciones con registro de
 
 - **Índices:** `uniq_student_section` (UNIQUE compuesto `[student_id, section_id]`), `idx_enrollment_section` (INDEX), `idx_enrollment_period` (INDEX), `idx_enrollment_status` (INDEX), `idx_enrollment_dragged` (INDEX compuesto `[student_id, status, is_dragged]`).
 
-> [!WARNING]
-> **Efecto de Materia Reprobada y Ciclo de Vida:**
-> Cuando una asignatura cierra con `status = 'Failed'`, la lógica de negocio activa automáticamente `is_dragged = true` y propaga `has_dragged_subjects = true` al perfil (`profile`) del alumno, impidiendo la inscripción de materias de semestres más avanzados hasta su aprobación.
-> El ciclo de vida de una inscripción transita por: `Pending` → `Enrolled` (validada por coordinación) → `Approved` / `Failed` (al asentar notas). Los estados `Withdrawn` y `Rejected` representan salidas tempranas del ciclo regular.
+**Guía de Lógica de Negocio — Ciclo de Vida de Inscripciones y Repitencia:**  
+El ciclo de vida de una inscripción transita formalmente por las etapas: `Pending` (solicitud inicial de matriculación por el estudiante) → `Enrolled` (validada y ratificada por Control de Estudios) → `Approved` o `Failed` (asentamiento definitivo al cierre del ciclo evaluativo). Los estados `Withdrawn` (retiro formal reglamentario de la asignatura) y `Rejected` (rechazo por falta de cupo o incumplimiento de prelaciones) constituyen salidas anticipadas del ciclo regular. La calificación se asienta en escala vigesimal (0-20) en `final_grade`. Si una materia culmina con nota reprobatoria (`Failed`), dicha asignatura adquiere automáticamente la condición de arrastre (`is_dragged = true`), lo cual debe reflejarse en el perfil del alumno impidiendo la inscripción de materias superiores hasta su aprobación.
 
 ---
 
@@ -489,9 +486,8 @@ Registro individualizado del pase de lista por estudiante en cada sesión de cla
 
 - **Índices:** `uniq_session_student` (UNIQUE compuesto `[session_id, student_id]`), `idx_attendance_student_status` (INDEX compuesto `[student_id, attendance_status]`), `idx_attendance_registrar` (INDEX), `idx_attendance_method` (INDEX).
 
-> [!IMPORTANT]
-> **No Duplicidad de Asistencia y QR Permanente:**
-> La asistencia se asienta principalmente por escaneo del código QR del carnet (`registration_method = 'QR'`), resolviendo el `qr_token` almacenado en `user_account`. El índice compuesto `uniq_session_student` garantiza a nivel de base de datos que un estudiante no pueda registrar asistencia más de una vez en la misma sesión, evitando duplicidades. En caso de incidencia técnica, el docente puede asentar el registro de forma manual (`Manual`).
+**Guía de Lógica de Negocio — Pase de Lista y No Duplicidad:**  
+El registro de asistencia se efectúa prioritariamente mediante el escaneo del código QR del carnet estudiantil (`registration_method = 'QR'`), validando el `qr_token` contra la cuenta de usuario. La restricción de clave única compuesta `uniq_session_student (session_id, student_id)` asegura a nivel relacional que ningún estudiante pueda tener más de un registro de asistencia en la misma sesión de clase. Ante contingencias técnicas o ausencia temporal del dispositivo lector, el docente cuenta con la facultad reglamentaria de asentar la asistencia manualmente (`registration_method = 'Manual'`) registrando observaciones explicativas.
 
 ---
 
@@ -682,19 +678,46 @@ Los datos iniciales del sistema se administran mediante seeders de Laravel ubica
 | **Claves Foráneas** | Prefijo `fk_` + abreviatura de tabla origen + columna destino |
 | **Índices** | Prefijo `idx_` para índices de búsqueda simple y compuesta; `uniq_` para restricciones únicas |
 | **Marcas Temporales** | `created_at` y `updated_at` con `useCurrent()` y actualización automática |
-| **Borrado Lógico** | No se usan Soft Deletes; el ciclo de vida se controla mediante campos `status` o `is_active` |
+| **Borrado Lógico** | No se usan Soft Deletes nativos; el ciclo de vida se controla mediante campos `status` o `is_active` |
 | **Direcciones IP** | `VARCHAR(45)` en `audit_log` y `failed_attempt` para compatibilidad completa con IPv4 e IPv6 |
 | **Criptografía** | Bcrypt / Argon2 (VARCHAR 255) para contraseñas, PINs y respuestas de seguridad |
 | **Idempotencia** | Seeders con cláusulas `insertOrIgnore` para permitir ejecuciones repetidas seguras |
 
 ---
 
-## Observaciones Arquitecturales y Recomendaciones de Implementación
+## Fallas, Limitaciones y Riesgos del Diseño de Base de Datos
 
-### PD-1: Sincronización de Materias Arrastradas (`is_dragged` ↔ `has_dragged_subjects`)
-- **Naturaleza del Diseño:** Existe una desnormalización deliberada de rendimiento entre la tabla de detalle `section_enrollment.is_dragged` y la bandera resumen `profile.has_dragged_subjects`. Esto permite filtrar y validar bloqueos de matrícula instantáneamente mediante el índice `idx_profile_semester` sin requerir costosos JOINs agregados.
-- **Riesgo:** Si una inscripción cambia de estado o se asienta una nota aprobatoria sin actualizar el perfil del estudiante, la bandera de bloqueo podría quedar desfasada.
-- **Solución Adoptada:** Implementar un **Observer en Laravel** sobre el modelo `SectionEnrollment` (eventos `saved`, `updated`, `deleted`) que ejecute un recálculo automático: si el estudiante no posee ninguna otra materia activa con `is_dragged = true` o `status = 'Failed'`, actualizar `profile.has_dragged_subjects = false`.
+En esta sección se documentan de manera formal las debilidades estructurales, riesgos de integridad y limitaciones identificadas en el diseño actual del esquema, con el fin de guiar futuras optimizaciones y alertar a los desarrolladores del backend sobre los puntos donde la base de datos no puede garantizar la coherencia por sí sola:
+
+### FD-01: Desnormalización e Inconsistencia entre `section_enrollment.is_dragged` y `profile.has_dragged_subjects`
+- **Diagnóstico:** El campo `is_dragged` en `section_enrollment` marca a nivel de detalle qué materia específica está repitiendo un alumno. A su vez, `has_dragged_subjects` en `profile` replica esta información a modo de resumen booleano para acelerar consultas. Esta es una desnormalización deliberada de rendimiento.
+- **Falla Estructural:** Al no existir triggers nativos en la base de datos, no hay sincronización automática. Si un estudiante aprueba una materia en `section_enrollment` o retira una inscripción, la bandera `has_dragged_subjects` en `profile` no se actualiza de forma automática, pudiendo dejar al estudiante con un bloqueo indebido de semestre.
+- **Riesgo:** Inconsistencia de datos entre el expediente histórico del alumno y su estado de matriculación actual.
+- **Mitigación Requerida:** Implementar un **Observer en Laravel** (`SectionEnrollmentObserver`) en los eventos `saved`, `updated` y `deleted` que recalcule `has_dragged_subjects` consultando si quedan inscripciones activas con `is_dragged = true` o `status = 'Failed'`.
+
+### FD-02: Delegación del Bloqueo de Avance Curricular Exclusivamente a la Capa de Aplicación
+- **Diagnóstico:** La regla que prohíbe inscribir materias de semestres superiores (`subject.semester > profile.current_semester`) cuando existen materias arrastradas no está forzada a través de restricciones relacionales o de tabla (`CHECK` o triggers `BEFORE INSERT`) en `section_enrollment`.
+- **Falla Estructural:** La base de datos aceptará cualquier inserción directa de matrícula si las claves foráneas existen, incluso si el estudiante adeuda materias de primer semestre e inscribe materias de décimo semestre.
+- **Riesgo:** Vulnerabilidad ante importaciones masivas por lotes, scripts CLI, migraciones o peticiones concurrentes que omitan las validaciones del controlador, corrompiendo la coherencia académica de las cohortes.
+- **Mitigación Requerida:** Incorporar validaciones atómicas en los Form Requests del backend y evaluar la creación de un trigger `BEFORE INSERT ON section_enrollment` que compruebe la matriz `course_prerequisite` y el estado `has_dragged_subjects`.
+
+### FD-03: Ausencia de Restricción Relacional para Solapamiento de Horarios y Aulas en `section`
+- **Diagnóstico:** La tabla `section` cuenta con `day_of_week`, `start_time`, `end_time` y `classroom`, acompañados del índice compuesto `idx_section_schedule`.
+- **Falla Estructural:** El motor relacional no impide mediante una clave única que dos secciones distintas reserven la misma aula en el mismo bloque horario, ni que un mismo docente (`teacher_id`) sea asignado a dos materias en el mismo rango de tiempo.
+- **Riesgo:** Colisión de aulas físicas y sobreasignación horaria de docentes si la validación falla en la interfaz de usuario.
+- **Mitigación Requerida:** El módulo de coordinación de horarios debe realizar comprobaciones de no solapamiento mediante bloqueos transaccionales antes de insertar o modificar registros en `section`.
+
+### FD-04: Desacoplamiento entre la Tolerancia de Sesión y la Inserción en `attendance`
+- **Diagnóstico:** La tabla `class_session` define `tolerance_minutes`, `start_time`, `end_time` y `status = 'Open'/'Closed'`.
+- **Falla Estructural:** La tabla `attendance` no posee una restricción relacional que impida insertar un registro con `attendance_status = 'Present'` cuando la hora de la transacción supere el tiempo de tolerancia o cuando la sesión se encuentre formalmente cerrada (`status = 'Closed'`).
+- **Riesgo:** Inserción de asistencias tardías o extemporáneas provocadas por desfase de reloj, peticiones en cola de la app móvil o llamadas directas al endpoint sin validación previa del estado de la sesión.
+- **Mitigación Requerida:** Los controladores de asistencia deben ejecutar una transacción atómica verificando que la sesión esté abierta y calculando el delta de minutos para asignar `Late` o rechazar la solicitud si la sesión ya expiró.
+
+### FD-05: Dependencia de Estados Lógicos (`status` / `is_active`) sin Soft Deletes Relacionales
+- **Diagnóstico:** El esquema no implementa la columna `deleted_at` para borrado suave (SoftDeletes de Laravel), recurriendo a banderas `status = 'Inactive'` o `is_active = false`.
+- **Falla Estructural:** Todas las consultas SQL manuales, reportes y vistas Eloquent están obligadas a incluir explícitamente filtros de estado activo. Si un desarrollador omite `WHERE is_active = true`, registros deshabilitados o docentes inactivos pueden figurar en listas operativas.
+- **Riesgo:** Fuga de registros inactivos en actas oficiales, carnets o selectores de inscripción.
+- **Mitigación Requerida:** Definir Scopes Globales en los modelos Eloquent de Laravel (`UserRole`, `Section`, `AcademicPeriod`) que filtren por defecto únicamente los registros activos.
 
 ---
 
