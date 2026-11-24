@@ -1,52 +1,52 @@
 <?php
 
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
+// Landing publica
 Route::get('/', function () {
     return view('landing.index');
 })->name('landing');
 
-Route::middleware('guest')->group(function () {
-    Route::get('/login', function () {
-        return view('auth.login');
-    })->name('login');
+// Autenticacion
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
 
-    Route::post('/login', LoginController::class)->name('login.post');
+Route::post('/login', function () {
+})->name('login.post');
 
-    Route::get('/registro', function () {
-        return view('auth.registro');
-    })->name('registro');
+// Registro
+Route::get('/registro', function () {
+    return view('auth.registro');
+})->name('registro');
 
-    Route::post('/registro', function () {
-    })->name('registro.post');
+Route::post('/registro', function () {
+})->name('registro.post');
+
+// Dashboards por rol
+Route::prefix('dashboard')->name('dashboard.')->group(function () {
+
+    // Profesor
+    Route::get('/profesor', function () {
+        return view('dashboard.teacher');
+    })->name('profesor');
+
+    // Coordinador
+    Route::get('/coordinador', function () {
+        return view('dashboard.coordinator');
+    })->name('coordinador');
+
+    // Director
+    Route::get('/director', function () {
+        return view('dashboard.director');
+    })->name('director');
 });
 
-Route::middleware(['auth', 'active.user'])->group(function () {
-    Route::post('/logout', LogoutController::class)->name('logout');
-
-    Route::prefix('dashboard')->name('dashboard.')->group(function () {
-        Route::middleware('role:Teacher,Super Administrator')
-            ->get('/profesor', fn () => view('dashboard.teacher'))
-            ->name('profesor');
-
-        Route::middleware('role:Academic Coordinator,Super Administrator')
-            ->get('/coordinador', fn () => view('dashboard.coordinator'))
-            ->name('coordinador');
-
-        Route::middleware('role:Director,Super Administrator')
-            ->get('/director', fn () => view('dashboard.director'))
-            ->name('director');
-    });
-
-    Route::middleware('role:Student,Super Administrator')
-        ->prefix('dashboard/estudiante')
-        ->name('dashboard.estudiante')
-        ->group(function () {
-            Route::get('/', [StudentController::class, 'index']);
-            Route::post('/justificativos', [StudentController::class, 'storeJustification'])
-                ->name('.justificativos.store');
-        });
+// Modulo Estudiante (Reyli)
+Route::prefix('dashboard/estudiante')->name('dashboard.estudiante')->group(function () {
+    Route::get('/', [StudentController::class, 'index']);
+    Route::post('/justificativos', [StudentController::class, 'storeJustification'])
+        ->name('.justificativos.store');
 });
+
