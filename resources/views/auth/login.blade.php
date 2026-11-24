@@ -13,7 +13,6 @@
 @endpush
 
 @section('header')
-    <!-- Header Superior Institucional -->
     <header class="login-header">
         <a href="{{ route('landing') }}" class="login-brand" aria-label="Ir a la página principal">
             <div class="login-brand-logo">
@@ -33,16 +32,13 @@
 @endsection
 
 @section('content')
-    <!-- Contenedor Principal Simétrico -->
     <main class="login-main">
         <div class="login-card">
             <div class="login-grid">
-                
-                <!-- PANEL IZQUIERDO: Identidad Institucional UNEFA -->
+
                 <div class="login-panel-left">
                     <div class="panel-left-decor"></div>
 
-                    <!-- Jerarquía Institucional -->
                     <div class="panel-left-content">
                         <div class="institution-badge">
                             <div class="institution-logo-wrap">
@@ -66,7 +62,6 @@
                             </p>
                         </div>
 
-                        <!-- Tira Fotográfica del Campus (Local WebP) -->
                         <div class="campus-photo-strip">
                             <img src="{{ asset('img/sede-central.webp') }}" alt="Sede Central de la UNEFA">
                             <div class="campus-photo-overlay">
@@ -78,7 +73,6 @@
                         </div>
                     </div>
 
-                    <!-- Metadatos del Sistema -->
                     <div class="panel-left-footer">
                         <div class="panel-left-meta-row">
                             <span class="panel-left-meta-label">Módulo de Autenticación</span>
@@ -90,32 +84,29 @@
                     </div>
                 </div>
 
-                <!-- PANEL DERECHO: Terminal de Autenticación -->
                 <div class="login-panel-right">
                     <div>
-                        <!-- Estado del Terminal -->
                         <div class="terminal-header">
                             <span class="terminal-indicator-dot"></span>
                             <span class="terminal-title">Terminal Seguro de Acceso</span>
                         </div>
 
-                        <!-- Selector de Rol / Modalidad -->
                         <div class="role-selector-wrap">
                             <label class="role-selector-label" id="roleLabel">
                                 Modalidad de Autenticación
                             </label>
                             <div class="role-selector-nav" id="roleSelector" role="tablist">
-                                <button 
-                                    type="button" 
-                                    id="tabStudent" 
+                                <button
+                                    type="button"
+                                    id="tabStudent"
                                     class="role-tab-btn active"
                                     onclick="switchRole('student')"
                                 >
                                     Estudiantes
                                 </button>
-                                <button 
-                                    type="button" 
-                                    id="tabAdmin" 
+                                <button
+                                    type="button"
+                                    id="tabAdmin"
                                     class="role-tab-btn"
                                     onclick="switchRole('admin')"
                                 >
@@ -124,19 +115,15 @@
                             </div>
                         </div>
 
-                        <!-- Formulario de Acceso -->
-                        <form 
-                            class="login-form" 
-                            id="loginForm" 
-                            method="POST" 
-                            action="#" 
-                            onsubmit="event.preventDefault(); handleLogin();" 
-                            novalidate 
-                            data-destino-estudiante="{{ route('dashboard.estudiante') }}" 
-                            data-destino-personal="{{ route('dashboard.director') }}"
+                        <form
+                            class="login-form"
+                            id="loginForm"
+                            method="POST"
+                            action="{{ route('login.post') }}"
+                            novalidate
                         >
-                            
-                            <!-- Input Cédula de Identidad -->
+                            @csrf
+
                             <div class="form-group">
                                 <div class="form-label-row">
                                     <span id="identifierLabelText">Cédula de Identidad</span>
@@ -144,25 +131,25 @@
                                 </div>
                                 <div class="input-cedula-group">
                                     <select id="docType" name="nacionalidad" aria-label="Nacionalidad del documento">
-                                        <option value="V">V-</option>
-                                        <option value="E">E-</option>
+                                        <option value="V" {{ old('nacionalidad', 'V') === 'V' ? 'selected' : '' }}>V-</option>
+                                        <option value="E" {{ old('nacionalidad') === 'E' ? 'selected' : '' }}>E-</option>
                                     </select>
-                                    <input 
-                                        type="text" 
-                                        id="cedulaInput" 
+                                    <input
+                                        type="text"
+                                        id="cedulaInput"
                                         name="cedula"
-                                        inputmode="numeric" 
-                                        maxlength="9" 
-                                        placeholder="27450892" 
-                                        pattern="[0-9]*" 
-                                        oninput="this.value = this.value.replace(/[^0-9]/g, '');" 
-                                        required 
+                                        value="{{ old('cedula') }}"
+                                        inputmode="numeric"
+                                        maxlength="9"
+                                        placeholder="27450892"
+                                        pattern="[0-9]*"
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                                        required
                                         autocomplete="username"
                                     />
                                 </div>
                             </div>
 
-                            <!-- Input Contraseña Institucional -->
                             <div class="form-group">
                                 <div class="form-label-row">
                                     <label for="passwordInput">Contraseña Institucional</label>
@@ -171,18 +158,18 @@
                                     </a>
                                 </div>
                                 <div class="input-password-group">
-                                    <input 
-                                        type="password" 
-                                        id="passwordInput" 
+                                    <input
+                                        type="password"
+                                        id="passwordInput"
                                         name="password"
-                                        placeholder="••••••••••••" 
-                                        required 
+                                        placeholder="••••••••••••"
+                                        required
                                         autocomplete="current-password"
                                     />
-                                    <button 
-                                        type="button" 
-                                        class="btn-toggle-pwd" 
-                                        aria-label="Alternar visibilidad de contraseña" 
+                                    <button
+                                        type="button"
+                                        class="btn-toggle-pwd"
+                                        aria-label="Alternar visibilidad de contraseña"
                                         onclick="togglePasswordVisibility()"
                                     >
                                         <svg class="icon-eye" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
@@ -191,49 +178,53 @@
                                 </div>
                             </div>
 
-                            <!-- Alerta de validación dinámica -->
-                            <div id="loginAlertBox" class="alert-box hidden" role="alert"></div>
+                            @php
+                                $firstError = $errors->first('login') ?? $errors->first('password') ?? $errors->first();
+                            @endphp
+                            <div
+                                id="loginAlertBox"
+                                class="alert-box {{ $firstError ? '' : 'hidden' }}"
+                                role="alert"
+                            >{{ $firstError }}</div>
 
-                            <!-- Botón de Envío -->
                             <div>
-                                <button 
-                                    type="submit" 
-                                    id="submitBtn" 
+                                <button
+                                    type="submit"
+                                    id="submitBtn"
                                     class="btn-submit-login"
                                 >
                                     <span id="submitBtnText">Ingresar como Estudiante</span>
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                                 </button>
                             </div>
-
                         </form>
 
-                        <!-- Accesos Rápidos de Evaluación por Rol -->
-                        <div style="margin-top: 1.25rem; padding: 0.85rem; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px;">
-                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
-                                <span style="font-size: 0.68rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--unefa-navy);">
-                                    Acceso Rápido de Evaluación
-                                </span>
-                                <span style="font-size: 0.65rem; color: #64748b; font-weight: 600;">Dashboards</span>
+                        @if (app()->environment('local'))
+                            <div style="margin-top: 1.25rem; padding: 0.85rem; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span style="font-size: 0.68rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--unefa-navy);">
+                                        Acceso Rápido (Solo Local)
+                                    </span>
+                                    <span style="font-size: 0.65rem; color: #64748b; font-weight: 600;">Dashboards</span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.4rem;">
+                                    <a href="{{ route('dashboard.estudiante') }}" style="display: flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.45rem 0.5rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.72rem; font-weight: 700; color: var(--unefa-blue); text-decoration: none;">
+                                        <span>Estudiante</span>
+                                    </a>
+                                    <a href="{{ route('dashboard.profesor') }}" style="display: flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.45rem 0.5rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.72rem; font-weight: 700; color: #0d9488; text-decoration: none;">
+                                        <span>Profesor</span>
+                                    </a>
+                                    <a href="{{ route('dashboard.coordinador') }}" style="display: flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.45rem 0.5rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.72rem; font-weight: 700; color: #b45309; text-decoration: none;">
+                                        <span>Coordinador</span>
+                                    </a>
+                                    <a href="{{ route('dashboard.director') }}" style="display: flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.45rem 0.5rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.72rem; font-weight: 700; color: var(--unefa-navy); text-decoration: none;">
+                                        <span>Director</span>
+                                    </a>
+                                </div>
                             </div>
-                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.4rem;">
-                                <a href="{{ route('dashboard.estudiante') }}" style="display: flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.45rem 0.5rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.72rem; font-weight: 700; color: var(--unefa-blue); text-decoration: none;">
-                                    <span>Estudiante</span>
-                                </a>
-                                <a href="{{ route('dashboard.profesor') }}" style="display: flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.45rem 0.5rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.72rem; font-weight: 700; color: #0d9488; text-decoration: none;">
-                                    <span>Profesor</span>
-                                </a>
-                                <a href="{{ route('dashboard.coordinador') }}" style="display: flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.45rem 0.5rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.72rem; font-weight: 700; color: #b45309; text-decoration: none;">
-                                    <span>Coordinador</span>
-                                </a>
-                                <a href="{{ route('dashboard.director') }}" style="display: flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.45rem 0.5rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.72rem; font-weight: 700; color: var(--unefa-navy); text-decoration: none;">
-                                    <span>Director</span>
-                                </a>
-                            </div>
-                        </div>
+                        @endif
                     </div>
 
-                    <!-- Pie del Terminal: Enlace a Registro y Regulador -->
                     <div class="terminal-footer">
                         <div class="terminal-cross-link" id="registerPromptRow">
                             <span class="terminal-cross-text">¿No posees cuenta de estudiante?</span>
@@ -245,7 +236,6 @@
                             <span class="terminal-legal-mono">UNEFA • VENEZUELA</span>
                         </div>
                     </div>
-
                 </div>
 
             </div>
@@ -254,5 +244,4 @@
 @endsection
 
 @section('footer')
-    {{-- En la vista de login se preserva la estetica limpia de la terminal de acceso sin footer publico expandido --}}
 @endsection

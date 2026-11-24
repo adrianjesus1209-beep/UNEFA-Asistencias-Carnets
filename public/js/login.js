@@ -7,10 +7,7 @@
 (function () {
   "use strict";
 
-  let currentRole = "student";
-
   window.switchRole = function (role) {
-    currentRole = role;
     const tabStudent = document.getElementById("tabStudent");
     const tabAdmin = document.getElementById("tabAdmin");
     const identifierLabelText = document.getElementById("identifierLabelText");
@@ -29,7 +26,6 @@
       if (identifierHint) identifierHint.textContent = "Estudiantes";
       if (cedulaInput) cedulaInput.placeholder = "27450892";
       if (submitBtnText) submitBtnText.textContent = "Ingresar como Estudiante";
-      // El enlace de registro es para Estudiantes
       if (registerPromptRow) registerPromptRow.style.display = "flex";
     } else {
       if (tabAdmin) tabAdmin.classList.add("active");
@@ -38,7 +34,6 @@
       if (identifierHint) identifierHint.textContent = "Personal Docente / Administrativo";
       if (cedulaInput) cedulaInput.placeholder = "14230890";
       if (submitBtnText) submitBtnText.textContent = "Ingresar como Personal";
-      // El personal institucional es gestionado internamente
       if (registerPromptRow) registerPromptRow.style.display = "none";
     }
   };
@@ -66,67 +61,53 @@
     }
   };
 
-  window.handleLogin = function () {
-    const form = document.getElementById("loginForm");
-    const docType = document.getElementById("docType");
-    const cedulaInput = document.getElementById("cedulaInput");
-    const passwordInput = document.getElementById("passwordInput");
+  function showAlert(htmlMessage) {
     const alertBox = document.getElementById("loginAlertBox");
-    const submitBtn = document.getElementById("submitBtn");
+    if (!alertBox) return;
+    alertBox.innerHTML = htmlMessage;
+    alertBox.classList.remove("hidden");
+  }
 
-    const cedula = cedulaInput ? cedulaInput.value.trim() : "";
-    const pass = passwordInput ? passwordInput.value.trim() : "";
-    const nationality = docType ? docType.value : "V";
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("loginForm");
+    if (!form) return;
 
-    if (!cedula || !pass) {
-      if (alertBox) {
-        alertBox.innerHTML =
-          "<strong>Error de autenticación:</strong> Ingrese su número de cédula y contraseña institucional.";
-        alertBox.classList.remove("hidden");
+    form.addEventListener("submit", function (event) {
+      const cedulaInput = document.getElementById("cedulaInput");
+      const passwordInput = document.getElementById("passwordInput");
+      const submitBtn = document.getElementById("submitBtn");
+
+      const cedula = cedulaInput ? cedulaInput.value.trim() : "";
+      const pass = passwordInput ? passwordInput.value.trim() : "";
+
+      if (!cedula || !pass) {
+        event.preventDefault();
+        showAlert(
+          "<strong>Error de autenticación:</strong> Ingrese su número de cédula y contraseña institucional."
+        );
+        return;
       }
-      return;
-    }
 
-    if (cedula.length < 6) {
-      if (alertBox) {
-        alertBox.innerHTML =
-          "<strong>Error de documento:</strong> El número de cédula debe tener al menos 6 dígitos.";
-        alertBox.classList.remove("hidden");
+      if (cedula.length < 6) {
+        event.preventDefault();
+        showAlert(
+          "<strong>Error de documento:</strong> El número de cédula debe tener al menos 6 dígitos."
+        );
+        return;
       }
-      return;
-    }
 
-    if (pass.length < 6) {
-      if (alertBox) {
-        alertBox.innerHTML =
-          "<strong>Error de seguridad:</strong> La contraseña debe tener al menos 6 caracteres.";
-        alertBox.classList.remove("hidden");
+      if (pass.length < 6) {
+        event.preventDefault();
+        showAlert(
+          "<strong>Error de seguridad:</strong> La contraseña debe tener al menos 6 caracteres."
+        );
+        return;
       }
-      return;
-    }
 
-    if (alertBox) alertBox.classList.add("hidden");
-
-    const originalContent = submitBtn ? submitBtn.innerHTML : "";
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = "<span>Validando credenciales...</span>";
-    }
-
-    setTimeout(() => {
       if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalContent;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = "<span>Validando credenciales...</span>";
       }
-
-      const destEstudiante = form ? form.getAttribute("data-destino-estudiante") : "/dashboard/estudiante";
-      const destPersonal = form ? form.getAttribute("data-destino-personal") : "/dashboard/director";
-
-      if (currentRole === "student") {
-        window.location.href = destEstudiante || "/dashboard/estudiante";
-      } else {
-        window.location.href = destPersonal || "/dashboard/director";
-      }
-    }, 600);
-  };
+    });
+  });
 })();
