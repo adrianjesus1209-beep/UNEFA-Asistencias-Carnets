@@ -1,13 +1,14 @@
 <?php
 
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
-// landing publica //
+// Landing publica
 Route::get('/', function () {
     return view('landing.index');
 })->name('landing');
 
-// autenticación //
+// Autenticacion
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
@@ -15,35 +16,37 @@ Route::get('/login', function () {
 Route::post('/login', function () {
 })->name('login.post');
 
-// registro //
+// Registro
 Route::get('/registro', function () {
     return view('auth.registro');
 })->name('registro');
 
 Route::post('/registro', function () {
-
 })->name('registro.post');
 
-// dashboards por rol //
+// Dashboards por rol
 Route::prefix('dashboard')->name('dashboard.')->group(function () {
-    
-    // estudiante // 
-    Route::get('/estudiante', function () {
-        return view('dashboard.student');
-    })->name('estudiante');
 
-    // profesor //
+    // Profesor
     Route::get('/profesor', function () {
         return view('dashboard.teacher');
     })->name('profesor');
 
-    // coordinador //
+    // Coordinador
     Route::get('/coordinador', function () {
         return view('dashboard.coordinator');
     })->name('coordinador');
 
-    // director //
+    // Director
     Route::get('/director', function () {
         return view('dashboard.director');
     })->name('director');
 });
+
+// Modulo Estudiante (Reyli)
+Route::prefix('dashboard/estudiante')->name('dashboard.estudiante')->group(function () {
+    Route::get('/', [StudentController::class, 'index']);
+    Route::post('/justificativos', [StudentController::class, 'storeJustification'])
+        ->name('.justificativos.store');
+});
+
