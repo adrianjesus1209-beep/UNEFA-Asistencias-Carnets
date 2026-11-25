@@ -4,8 +4,7 @@
 @section('header-subtitle', 'Panel Profesor')
 
 @section('content')
-    {{-- Contenido tomado de la vista profesor del dashboard de UnefaApp (src/app/dashboard.tsx). --}}
-    @include('partials.selector-entidad', ['activo' => 'profesor'])
+
 
     <div class="mt-4">
         @include('partials.session-banner', [

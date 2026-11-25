@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\EnsureRole;
 use App\Http\Middleware\EnsureUserIsActive;
+use App\Models\UserAccount;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -21,6 +22,26 @@ return Application::configure(basePath: dirname(__DIR__))
             'active.user' => EnsureUserIsActive::class,
             'role'        => EnsureRole::class,
         ]);
+
+        $middleware->redirectGuestsTo(fn (Request $request) => route('login'));
+
+        $middleware->redirectUsersTo(function (Request $request) {
+            $user = $request->user();
+
+            if (!$user instanceof UserAccount) {
+                return route('login');
+            }
+
+            $roleName = $user->primaryActiveRoleName();
+
+            return match ($roleName) {
+                'Super Administrator', 'Director' => route('dashboard.director'),
+                'Academic Coordinator'            => route('dashboard.coordinador'),
+                'Teacher'                         => route('dashboard.profesor'),
+                'Student'                         => route('dashboard.estudiante'),
+                default                           => route('login'),
+            };
+        });
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(function (Request $request, Throwable $e): bool {

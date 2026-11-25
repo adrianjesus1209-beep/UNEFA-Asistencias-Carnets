@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>@yield('title', 'UNEFA')</title>
     <meta name="description" content="@yield('descripcion', 'Portal web de la Universidad Nacional Experimental Politécnica de la Fuerza Armada Nacional Bolivariana.')" />
     <link rel="icon" type="image/png" href="{{ asset('assets/img/logos/logo_unefa.png') }}" />
@@ -31,10 +32,13 @@
                     @include('partials.icon', ['name' => 'arrow-left', 'clase' => 'h-3.5 w-3.5 text-slate-900'])
                     Inicio
                 </a>
-                <a href="{{ route('login') }}" class="flex h-9 items-center gap-1.5 rounded-full border border-red-200 bg-red-50 px-3 text-xs font-bold text-unefa-red transition hover:bg-red-100">
-                    @include('partials.icon', ['name' => 'log-out', 'clase' => 'h-3.5 w-3.5 text-unefa-red'])
-                    Cerrar sesión
-                </a>
+                <form method="POST" action="{{ route('logout') }}" class="inline">
+                    @csrf
+                    <button type="submit" class="flex h-9 items-center gap-1.5 rounded-full border border-red-200 bg-red-50 px-3 text-xs font-bold text-unefa-red transition hover:bg-red-100">
+                        @include('partials.icon', ['name' => 'log-out', 'clase' => 'h-3.5 w-3.5 text-unefa-red'])
+                        Cerrar sesión
+                    </button>
+                </form>
             </div>
         </div>
     </header>

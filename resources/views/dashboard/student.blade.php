@@ -1,36 +1,13 @@
 @extends('layouts.dashboard')
 
 @php
-    $estudiante = $estudiante ?? [
-        'nombre' => 'Estudiante UNEFA',
-        'cedula' => 'V-0',
-        'carrera' => 'Sin carrera asignada',
-        'carrera_mayusculas' => 'SIN CARRERA ASIGNADA',
-        'semestre_ordinal' => '1ro',
-        'departamento' => 'Sin carrera asignada · 1ro Semestre',
-        'subtitulo' => 'Matrícula Oficial',
-        'insignia' => 'ESTUDIANTE REGULAR',
-        'condicion' => 'CONDICIÓN: REGULAR ACTIVO',
-        'matricula' => 'UNEFA-EST-00000',
-        'qr_token' => '',
-        'qr_resumen' => 'SIN-QR',
-        'foto' => '',
-    ];
-    $periodo = $periodo ?? ['id' => null, 'nombre' => '2026-1'];
-    $periodos = $periodos ?? [];
-    $filtros = $filtros ?? ['period_id' => $periodo['id'] ?? null, 'subject_code' => '', 'status' => ''];
-    $metricas = $metricas ?? [
-        'semestre' => '1ro',
-        'materias_inscritas' => '0',
-        'promedio_general' => '0.00',
-        'asistencia_global' => 100.0,
-        'asistencia_global_texto' => '100.0%',
-        'es_solvente' => true,
-    ];
-    $asignaturas = $asignaturas ?? [];
-    $sesionesAusentes = $sesionesAusentes ?? [];
-    $justificativos = $justificativos ?? [];
     $abrirModalJustificativo = $errors->hasAny(['session_id', 'file_type', 'document', 'observations']);
+    $fotoUrl = null;
+    if (!empty($estudiante['foto'])) {
+        $fotoUrl = str_starts_with($estudiante['foto'], 'http')
+            ? $estudiante['foto']
+            : asset('storage/' . ltrim($estudiante['foto'], '/'));
+    }
 @endphp
 
 @section('title', 'Panel Estudiante | Portal UNEFA')
@@ -38,12 +15,7 @@
 @section('descripcion', 'Panel del estudiante del Sistema Integral de Asistencias y Carnetización Digital de la UNEFA. Período académico ' . $periodo['nombre'] . '.')
 
 @section('content')
-    {{-- Selector de entidad mantenido para compatibilidad visual con la maqueta institucional. --}}
-    @include('partials.selector-entidad', [
-        'activo' => 'estudiante',
-        'estiloActivo' => 'border-slate-900 bg-slate-900 text-white',
-        'estiloEyebrow' => 'text-amber-700',
-    ])
+   
 
     @if(session('student_status'))
         <div class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs font-bold text-emerald-800" role="status">
@@ -80,7 +52,7 @@
                 'distribuir' => true,
             ])
 
-            {{-- Carnet digital del estudiante conectado a la base de datos --}}
+            {{-- Carnet digital con datos reales de user_account, profile, career y user_role --}}
             <div class="relative flex h-full flex-col overflow-hidden rounded-[18px] border border-unefa-gold/60 bg-white p-5 shadow-sm ring-1 ring-slate-100">
                 <div class="relative flex flex-1 flex-col justify-center">
                     <div class="flex flex-wrap items-start justify-between gap-3 border-b border-slate-200 pb-3">
@@ -96,8 +68,21 @@
 
                     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-center">
                         <div class="mx-auto flex h-28 w-24 shrink-0 flex-col items-center justify-center gap-1 overflow-hidden rounded-[10px] border-2 border-unefa-gold bg-white/95 p-1 sm:mx-0">
-                            @include('partials.icon', ['name' => 'user', 'clase' => 'h-10 w-10 text-slate-400'])
-                            <span class="text-center text-[11px] font-extrabold text-slate-500">FOTO</span>
+                            @if($fotoUrl)
+                                <img
+                                    src="{{ $fotoUrl }}"
+                                    alt="Foto de {{ $estudiante['nombre'] }}"
+                                    class="h-full w-full rounded-[6px] object-cover"
+                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                />
+                                <div class="hidden h-full w-full flex-col items-center justify-center gap-1">
+                                    @include('partials.icon', ['name' => 'user', 'clase' => 'h-10 w-10 text-slate-400'])
+                                    <span class="text-center text-[11px] font-extrabold text-slate-500">SIN FOTO</span>
+                                </div>
+                            @else
+                                @include('partials.icon', ['name' => 'user', 'clase' => 'h-10 w-10 text-slate-400'])
+                                <span class="text-center text-[11px] font-extrabold text-slate-500">FOTO</span>
+                            @endif
                         </div>
 
                         <div class="min-w-0 flex-1">
@@ -106,44 +91,25 @@
                             <p class="mb-1 text-[11px] font-bold text-slate-500">{{ $estudiante['carrera_mayusculas'] }}</p>
                             <p class="mb-3 text-[11px] font-extrabold text-emerald-700">{{ $estudiante['condicion'] }}</p>
 
-                            <div class="flex items-center gap-3 rounded-lg bg-white p-2">
-                                <svg viewBox="0 0 25 25" class="h-14 w-14 shrink-0 rounded-[3px] bg-white" role="img" aria-label="Código QR del estudiante matrícula {{ $estudiante['matricula'] }}">
-                                    <rect width="25" height="25" fill="#ffffff"></rect>
-                                    <g fill="#1f2937">
-                                        <rect x="1" y="1" width="7" height="7"></rect>
-                                        <rect x="17" y="1" width="7" height="7"></rect>
-                                        <rect x="1" y="17" width="7" height="7"></rect>
-                                    </g>
-                                    <g fill="#ffffff">
-                                        <rect x="2" y="2" width="5" height="5"></rect>
-                                        <rect x="18" y="2" width="5" height="5"></rect>
-                                        <rect x="2" y="18" width="5" height="5"></rect>
-                                    </g>
-                                    <g fill="#1f2937">
-                                        <rect x="3" y="3" width="3" height="3"></rect>
-                                        <rect x="19" y="3" width="3" height="3"></rect>
-                                        <rect x="3" y="19" width="3" height="3"></rect>
-                                    </g>
-                                    <g fill="#1f2937">
-                                        <rect x="9" y="1" width="1" height="1"></rect><rect x="11" y="1" width="2" height="1"></rect><rect x="14" y="1" width="1" height="1"></rect>
-                                        <rect x="9" y="3" width="2" height="1"></rect><rect x="13" y="3" width="1" height="1"></rect><rect x="15" y="3" width="2" height="1"></rect>
-                                        <rect x="10" y="5" width="1" height="1"></rect><rect x="12" y="5" width="3" height="1"></rect>
-                                        <rect x="9" y="6" width="1" height="1"></rect><rect x="11" y="6" width="1" height="1"></rect><rect x="13" y="6" width="2" height="1"></rect><rect x="16" y="6" width="1" height="1"></rect>
-                                        <rect x="1" y="9" width="1" height="2"></rect><rect x="3" y="9" width="2" height="1"></rect><rect x="6" y="9" width="1" height="1"></rect>
-                                        <rect x="9" y="8" width="2" height="1"></rect><rect x="12" y="8" width="1" height="2"></rect><rect x="15" y="8" width="2" height="1"></rect><rect x="18" y="8" width="1" height="1"></rect><rect x="21" y="8" width="2" height="1"></rect>
-                                        <rect x="9" y="10" width="1" height="2"></rect><rect x="11" y="11" width="2" height="1"></rect><rect x="14" y="10" width="1" height="2"></rect><rect x="17" y="10" width="2" height="1"></rect><rect x="21" y="10" width="1" height="2"></rect>
-                                        <rect x="9" y="12" width="3" height="1"></rect><rect x="14" y="13" width="2" height="1"></rect><rect x="18" y="12" width="1" height="2"></rect><rect x="22" y="13" width="1" height="1"></rect>
-                                        <rect x="1" y="14" width="2" height="1"></rect><rect x="4" y="14" width="1" height="2"></rect><rect x="6" y="15" width="1" height="1"></rect>
-                                        <rect x="9" y="15" width="1" height="2"></rect><rect x="12" y="14" width="2" height="2"></rect><rect x="16" y="15" width="3" height="1"></rect><rect x="21" y="15" width="1" height="1"></rect>
-                                        <rect x="9" y="18" width="2" height="1"></rect><rect x="12" y="17" width="1" height="2"></rect><rect x="15" y="18" width="1" height="2"></rect><rect x="18" y="17" width="2" height="1"></rect><rect x="22" y="18" width="1" height="2"></rect>
-                                        <rect x="10" y="20" width="3" height="1"></rect><rect x="15" y="21" width="2" height="1"></rect><rect x="19" y="20" width="1" height="2"></rect><rect x="22" y="21" width="2" height="1"></rect>
-                                        <rect x="9" y="22" width="1" height="2"></rect><rect x="12" y="23" width="2" height="1"></rect><rect x="16" y="22" width="1" height="2"></rect><rect x="19" y="23" width="3" height="1"></rect>
-                                    </g>
-                                </svg>
+                            <div class="flex items-center gap-3 rounded-lg bg-slate-50 p-2">
+                                <div
+                                    id="student-qr-container"
+                                    data-qr-token="{{ $estudiante['qr_token'] }}"
+                                    class="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-[4px] border border-slate-200 bg-white p-1"
+                                    role="img"
+                                    aria-label="Código QR del estudiante matrícula {{ $estudiante['matricula'] }}"
+                                ></div>
+
                                 <div class="min-w-0">
-                                    <span class="block truncate font-mono text-[11px] font-bold tracking-[1px] text-slate-900">QR · {{ $estudiante['qr_resumen'] }}</span>
-                                    <span class="mt-0.5 block truncate font-mono text-[11px] font-bold text-slate-500">MAT: {{ $estudiante['matricula'] }}</span>
-                                    <span class="mt-1 block text-[10px] font-semibold text-emerald-700">Credencial digital verificada</span>
+                                    <span class="block truncate font-mono text-[11px] font-bold tracking-[0.5px] text-slate-900" title="{{ $estudiante['qr_token'] }}">
+                                        QR · {{ $estudiante['qr_token'] ?: 'SIN TOKEN' }}
+                                    </span>
+                                    <span class="mt-0.5 block truncate font-mono text-[11px] font-bold text-slate-500">
+                                        MAT: {{ $estudiante['matricula'] }}
+                                    </span>
+                                    <span class="mt-1 block text-[10px] font-semibold text-emerald-700">
+                                        Credencial digital verificada
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -153,7 +119,7 @@
         </div>
 
         <div class="mt-5 flex flex-col gap-5">
-            {{-- Metricas del estudiante --}}
+            {{-- Métricas reales del estudiante --}}
             <div class="grid grid-cols-2 gap-2.5 lg:grid-cols-4">
                 @include('partials.metric-card', [
                     'valor' => $metricas['semestre'],
@@ -188,7 +154,7 @@
                 ])
             </div>
 
-            {{-- Modulo: Asignaturas y control de asistencias --}}
+            {{-- Módulo: Asignaturas y control de asistencias desde BD --}}
             <div class="rounded-[18px] border border-slate-200 bg-white p-5 shadow-sm">
                 <div class="mb-4 flex flex-wrap items-start justify-between gap-3 border-b border-slate-200 pb-3">
                     <div>
@@ -242,7 +208,12 @@
                         @foreach($asignaturas as $asignatura)
                             <div class="group rounded-[14px] border border-slate-200 bg-slate-50 p-3.5 transition duration-150 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md motion-reduce:transform-none motion-reduce:transition-none">
                                 <div class="mb-2 flex flex-wrap items-center justify-between gap-2">
-                                    <span class="rounded-md bg-slate-200 px-1.5 py-0.5 font-mono text-[11px] font-extrabold text-slate-700">{{ $asignatura['codigo'] }}</span>
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="rounded-md bg-slate-200 px-1.5 py-0.5 font-mono text-[11px] font-extrabold text-slate-700">{{ $asignatura['codigo'] }}</span>
+                                        @if(!empty($asignatura['seccion']))
+                                            <span class="rounded-md bg-amber-100 px-1.5 py-0.5 font-mono text-[11px] font-bold text-amber-800">Sec. {{ $asignatura['seccion'] }}</span>
+                                        @endif
+                                    </div>
                                     @include('partials.status-badge', ['texto' => $asignatura['porcentaje'] . '%', 'tipo' => $asignatura['estado']])
                                 </div>
                                 <h3 class="mb-0.5 text-sm font-extrabold text-slate-900">{{ $asignatura['nombre'] }}</h3>
@@ -268,7 +239,7 @@
                 @endif
             </div>
 
-            {{-- Tramites y constancias --}}
+            {{-- Trámites y constancias --}}
             <div class="rounded-[18px] border border-slate-200 bg-white p-5 shadow-sm">
                 <div class="mb-4 border-b border-slate-200 pb-3">
                     <p class="mb-0.5 text-[10px] font-extrabold uppercase tracking-[0.6px] text-amber-700">TRÁMITES Y CONSTANCIAS</p>
@@ -401,21 +372,60 @@
     <script>
         (function () {
             var modal = document.getElementById('modal-justificativo');
-            if (!modal) return;
-
-            document.querySelectorAll('[data-abrir-justificativo]').forEach(function (btn) {
-                btn.addEventListener('click', function () {
-                    modal.classList.remove('hidden');
-                    modal.classList.add('flex');
+            if (modal) {
+                document.querySelectorAll('[data-abrir-justificativo]').forEach(function (btn) {
+                    btn.addEventListener('click', function () {
+                        modal.classList.remove('hidden');
+                        modal.classList.add('flex');
+                    });
                 });
-            });
 
-            document.querySelectorAll('[data-cerrar-justificativo]').forEach(function (btn) {
-                btn.addEventListener('click', function () {
-                    modal.classList.add('hidden');
-                    modal.classList.remove('flex');
+                document.querySelectorAll('[data-cerrar-justificativo]').forEach(function (btn) {
+                    btn.addEventListener('click', function () {
+                        modal.classList.add('hidden');
+                        modal.classList.remove('flex');
+                    });
                 });
-            });
+            }
+
+            // Genera una matriz SVG determinística basada en el qr_token real del estudiante
+            var qrBox = document.getElementById('student-qr-container');
+            if (qrBox) {
+                var token = (qrBox.getAttribute('data-qr-token') || '').trim();
+                var size = 21;
+                var hash = 2166136261;
+                for (var i = 0; i < token.length; i++) {
+                    hash ^= token.charCodeAt(i);
+                    hash = Math.imul(hash, 16777619);
+                }
+
+                var isFinder = function (r, c) {
+                    return (r < 7 && c < 7) || (r < 7 && c >= size - 7) || (r >= size - 7 && c < 7);
+                };
+
+                var rects = ['<rect width="21" height="21" fill="#ffffff"/>'];
+                var drawFinder = function (ox, oy) {
+                    rects.push('<rect x="' + ox + '" y="' + oy + '" width="7" height="7" fill="#0f172a"/>');
+                    rects.push('<rect x="' + (ox + 1) + '" y="' + (oy + 1) + '" width="5" height="5" fill="#ffffff"/>');
+                    rects.push('<rect x="' + (ox + 2) + '" y="' + (oy + 2) + '" width="3" height="3" fill="#0f172a"/>');
+                };
+                drawFinder(0, 0);
+                drawFinder(size - 7, 0);
+                drawFinder(0, size - 7);
+
+                var seed = (hash >>> 0) || 123456789;
+                for (var r = 0; r < size; r++) {
+                    for (var c = 0; c < size; c++) {
+                        if (isFinder(r, c)) continue;
+                        seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+                        if (token.length > 0 && ((seed >>> 28) & 1) === 1) {
+                            rects.push('<rect x="' + c + '" y="' + r + '" width="1" height="1" fill="#0f172a"/>');
+                        }
+                    }
+                }
+
+                qrBox.innerHTML = '<svg viewBox="0 0 21 21" class="h-full w-full">' + rects.join('') + '</svg>';
+            }
         })();
     </script>
 @endpush

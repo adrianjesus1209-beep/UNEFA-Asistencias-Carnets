@@ -4,8 +4,7 @@
 @section('header-subtitle', 'Panel Director')
 
 @section('content')
-    {{-- Contenido tomado de la vista director del dashboard de UnefaApp (src/app/dashboard.tsx). --}}
-    @include('partials.selector-entidad', ['activo' => 'director'])
+  
 
     <div class="mt-4">
         @include('partials.session-banner', [

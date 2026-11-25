@@ -2,26 +2,33 @@
 
 namespace App\Services\Student;
 
+use App\DAO\Contracts\AcademicPeriodDAOInterface;
+use App\DAO\Contracts\AttendanceDAOInterface;
+use App\DAO\Contracts\SectionEnrollmentDAOInterface;
+use App\DAO\Contracts\UserAccountDAOInterface;
+use App\Models\Attendance;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 /**
  * Servicio del modulo Estudiante.
  *
- * Centraliza las consultas parametrizadas del estudiante (aislado por student_id)
- * y la sanitizacion de salida a texto plano. Disenado como capa puente limpia
- * para delegar a los DAOs centralizados de Gabriel sin tocar app/DAOs ni app/Models.
+ * Delega el acceso a datos a los DAOs y se enfoca en orquestar datos,
+ * metricas, sanitizacion y almacenamiento de archivos.
  */
 class StudentDashboardService
 {
     public const ROLE_STUDENT = 'Student';
 
-    /**
-     * Resuelve el ID del usuario autenticado (compatible con Auth::id() o sesion).
-     */
+    public function __construct(
+        private readonly UserAccountDAOInterface $userAccountDAO,
+        private readonly AcademicPeriodDAOInterface $academicPeriodDAO,
+        private readonly SectionEnrollmentDAOInterface $sectionEnrollmentDAO,
+        private readonly AttendanceDAOInterface $attendanceDAO
+    ) {}
+
     public function resolveAuthenticatedStudentId(Request $request): ?int
     {
         $authId = Auth::id();
@@ -39,161 +46,89 @@ class StudentDashboardService
         return null;
     }
 
-    /**
-     * Verifica que el usuario exista, este Approved y posea el rol Student activo.
-     */
     public function hasActiveStudentRole(int $userId): bool
     {
-        return DB::table('user_account as ua')
-            ->join('user_role as ur', 'ur.user_id', '=', 'ua.id')
-            ->join('system_role as sr', 'sr.id', '=', 'ur.role_id')
-            ->where('ua.id', $userId)
-            ->where('ua.status', 'Approved')
-            ->where('ur.is_active', true)
-            ->where('sr.role_name', self::ROLE_STUDENT)
-            ->exists();
+        return $this->userAccountDAO->hasActiveStudentRole($userId);
     }
 
-    /**
-     * Verifica que una sesion de clase pertenezca a una seccion donde este estudiante esta inscrito.
-     */
     public function studentOwnsSession(int $studentId, int $sessionId): bool
     {
-        return DB::table('class_session as cs')
-            ->join('section_enrollment as se', 'se.section_id', '=', 'cs.section_id')
-            ->where('cs.id', $sessionId)
-            ->where('se.student_id', $studentId)
-            ->whereIn('se.status', ['Enrolled', 'Approved', 'Failed', 'Pending'])
-            ->exists();
+        return $this->userAccountDAO->studentOwnsSession($studentId, $sessionId);
+    }
+
+    public function justificationStoredStatus(): string
+    {
+        return 'Justificativo consignado correctamente. Queda en estado Pendiente de revisión por Coordinación.';
     }
 
     /**
-     * Construye todos los datos sanitizados del panel del estudiante.
-     *
      * @param  array<string, mixed>  $filters
      * @return array<string, mixed>
      */
     public function getDashboardData(int $studentId, array $filters = []): array
     {
-        $account = DB::table('user_account as ua')
-            ->join('profile as p', 'p.id', '=', 'ua.profile_id')
-            ->leftJoin('career as c', 'c.id', '=', 'p.career_id')
-            ->join('user_role as ur', 'ur.user_id', '=', 'ua.id')
-            ->join('system_role as sr', 'sr.id', '=', 'ur.role_id')
-            ->where('ua.id', $studentId)
-            ->where('ua.status', 'Approved')
-            ->where('ur.is_active', true)
-            ->where('sr.role_name', self::ROLE_STUDENT)
-            ->select([
-                'ua.id as user_id',
-                'ua.username',
-                'ua.email',
-                'ua.qr_token',
-                'ua.status as account_status',
-                'p.id_number',
-                'p.id_type',
-                'p.first_name',
-                'p.middle_name',
-                'p.last_name',
-                'p.second_last_name',
-                'p.current_semester',
-                'p.has_dragged_subjects',
-                'p.profile_picture',
-                'c.career_name',
-                'c.career_code',
-                'ur.credential_number',
-                'ur.credential_issued_at',
-                'ur.credential_expires_at',
-            ])
-            ->first();
-
+        $account = $this->userAccountDAO->findStudentWithProfileAndCareer($studentId);
         abort_if($account === null, 403, 'Acceso denegado: el usuario no posee un perfil de estudiante activo.');
 
-        $periods = DB::table('academic_period')
-            ->orderByDesc('start_date')
-            ->select(['id', 'period_name', 'status'])
-            ->get()
-            ->map(fn (object $row): array => [
+        $profile = $account->profile;
+        $career = $profile?->career;
+        $studentRole = $account->roles->first();
+
+        $periods = $this->academicPeriodDAO->all()
+            ->map(fn ($row): array => [
                 'id' => (int) $row->id,
-                'nombre' => StudentInputSanitizer::plainText($row->period_name, 50),
-                'estado' => StudentInputSanitizer::plainText($row->status, 20),
+                'nombre' => StudentInputSanitizer::plainText((string) $row->period_name, 50),
+                'estado' => StudentInputSanitizer::plainText((string) $row->status, 20),
             ])
             ->all();
 
-        $activePeriod = $this->resolveSelectedPeriod($periods, isset($filters['period_id']) ? (int) $filters['period_id'] : null);
+        $activePeriod = $this->resolveSelectedPeriod(
+            $periods,
+            isset($filters['period_id']) ? (int) $filters['period_id'] : null
+        );
 
-        $enrollmentsQuery = DB::table('section_enrollment as se')
-            ->join('section as sec', 'sec.id', '=', 'se.section_id')
-            ->join('subject as sub', 'sub.id', '=', 'sec.subject_id')
-            ->join('user_account as ta', 'ta.id', '=', 'sec.teacher_id')
-            ->join('profile as tp', 'tp.id', '=', 'ta.profile_id')
-            ->where('se.student_id', $studentId)
-            ->whereNotIn('se.status', ['Withdrawn', 'Rejected'])
-            ->orderBy('sub.display_order')
-            ->orderBy('sub.subject_code')
-            ->select([
-                'se.id as enrollment_id',
-                'se.section_id',
-                'se.period_id',
-                'se.status as enrollment_status',
-                'se.is_dragged',
-                'se.final_grade',
-                'sec.section_name',
-                'sec.classroom',
-                'sec.day_of_week',
-                'sec.start_time',
-                'sec.end_time',
-                'sub.subject_code',
-                'sub.subject_name',
-                'tp.first_name as teacher_first_name',
-                'tp.last_name as teacher_last_name',
-            ]);
+        $resolvedPeriodId = $activePeriod['id'] ?? $this->academicPeriodDAO->active()?->id;
 
-        if ($activePeriod !== null) {
-            $enrollmentsQuery->where('se.period_id', $activePeriod['id']);
-        }
+        $enrollments = $resolvedPeriodId !== null
+            ? $this->sectionEnrollmentDAO->enrolledSectionsWithSubjects($studentId, (int) $resolvedPeriodId)
+            : $this->sectionEnrollmentDAO->activeEnrollmentsForStudent($studentId);
 
-        if (! empty($filters['subject_code'])) {
-            $enrollmentsQuery->where('sub.subject_code', $filters['subject_code']);
-        }
+        $filteredEnrollments = $enrollments
+            ->filter(function ($enrollment) use ($filters): bool {
+                $subject = $enrollment->section?->subject;
 
-        if (! empty($filters['status'])) {
-            $enrollmentsQuery->where('se.status', $filters['status']);
-        }
+                if (! empty($filters['subject_code']) && strtoupper((string) $subject?->subject_code) !== strtoupper((string) $filters['subject_code'])) {
+                    return false;
+                }
 
-        $enrollmentRows = $enrollmentsQuery->get();
-        $sectionIds = $enrollmentRows->pluck('section_id')->unique()->values()->all();
+                if (! empty($filters['status']) && (string) $enrollment->status !== (string) $filters['status']) {
+                    return false;
+                }
 
-        // Conteo de sesiones y asistencias del estudiante por seccion (evitando N+1).
-        $sessionCounts = [];
-        $attendedCounts = [];
+                return true;
+            })
+            ->sortBy([
+                fn ($a, $b) => ($a->section?->subject?->display_order ?? 1) <=> ($b->section?->subject?->display_order ?? 1),
+                fn ($a, $b) => strcmp((string) ($a->section?->subject?->subject_code ?? ''), (string) ($b->section?->subject?->subject_code ?? '')),
+            ])
+            ->values();
 
-        if ($sectionIds !== []) {
-            $sessionCounts = DB::table('class_session')
-                ->whereIn('section_id', $sectionIds)
-                ->selectRaw('section_id, COUNT(*) as total_sessions')
-                ->groupBy('section_id')
-                ->pluck('total_sessions', 'section_id')
-                ->all();
+        $sectionIds = $filteredEnrollments->pluck('section_id')->filter()->unique()->values()->all();
 
-            $attendedCounts = DB::table('attendance as a')
-                ->join('class_session as cs', 'cs.id', '=', 'a.session_id')
-                ->where('a.student_id', $studentId)
-                ->whereIn('cs.section_id', $sectionIds)
-                ->whereIn('a.attendance_status', ['Present', 'Late', 'Excused'])
-                ->selectRaw('cs.section_id, COUNT(*) as attended_sessions')
-                ->groupBy('cs.section_id')
-                ->pluck('attended_sessions', 'section_id')
-                ->all();
-        }
+        $sessionCounts = $this->userAccountDAO->sessionCountsBySections($sectionIds);
+        $attendedCounts = $this->userAccountDAO->attendedCountsByStudentAndSections($studentId, $sectionIds);
 
         $totalSessionsAll = 0;
         $totalAttendedAll = 0;
         $grades = [];
         $asignaturas = [];
 
-        foreach ($enrollmentRows as $row) {
-            $sectionId = (int) $row->section_id;
+        foreach ($filteredEnrollments as $enrollment) {
+            $section = $enrollment->section;
+            $subject = $section?->subject;
+            $teacherProfile = $section?->teacher?->profile;
+
+            $sectionId = (int) $enrollment->section_id;
             $totalSessions = (int) ($sessionCounts[$sectionId] ?? 0);
             $attendedSessions = min($totalSessions, (int) ($attendedCounts[$sectionId] ?? 0));
 
@@ -204,26 +139,26 @@ class StudentDashboardService
                 ? (int) round(($attendedSessions / $totalSessions) * 100)
                 : 100;
 
-            if ((int) $row->final_grade > 0) {
-                $grades[] = (int) $row->final_grade;
+            if ((int) $enrollment->final_grade > 0) {
+                $grades[] = (int) $enrollment->final_grade;
             }
 
             [$barra, $texto, $estado] = $this->resolveAttendanceStyling($percentage);
 
             $teacherName = StudentInputSanitizer::plainText(
-                trim('Prof. '.$row->teacher_first_name.' '.$row->teacher_last_name),
+                trim('Prof. ' . ($teacherProfile?->first_name ?? '') . ' ' . ($teacherProfile?->last_name ?? '')),
                 120
             );
 
             $asignaturas[] = [
                 'section_id' => $sectionId,
-                'codigo' => StudentInputSanitizer::plainText($row->subject_code, 20),
-                'nombre' => StudentInputSanitizer::plainText($row->subject_name, 100),
-                'seccion' => StudentInputSanitizer::plainText($row->section_name, 30),
+                'codigo' => StudentInputSanitizer::plainText((string) ($subject?->subject_code ?? ''), 20),
+                'nombre' => StudentInputSanitizer::plainText((string) ($subject?->subject_name ?? ''), 100),
+                'seccion' => StudentInputSanitizer::plainText((string) ($section?->section_name ?? ''), 30),
                 'profesor' => $teacherName,
-                'aula' => StudentInputSanitizer::plainText($row->classroom, 50),
+                'aula' => StudentInputSanitizer::plainText((string) ($section?->classroom ?? ''), 50),
                 'porcentaje' => $percentage,
-                'asistidas' => $attendedSessions.'/'.$totalSessions.' asistidas',
+                'asistidas' => $attendedSessions . '/' . $totalSessions . ' asistidas',
                 'barra' => $barra,
                 'texto' => $texto,
                 'estado' => $estado,
@@ -238,70 +173,71 @@ class StudentDashboardService
             ? number_format(array_sum($grades) / count($grades), 2, '.', '')
             : '0.00';
 
-        // Sesiones con inasistencia del estudiante para facilitar el envio de justificativos.
-        $absentSessions = DB::table('attendance as a')
-            ->join('class_session as cs', 'cs.id', '=', 'a.session_id')
-            ->join('section as sec', 'sec.id', '=', 'cs.section_id')
-            ->join('subject as sub', 'sub.id', '=', 'sec.subject_id')
-            ->where('a.student_id', $studentId)
-            ->where('a.attendance_status', 'Absent')
-            ->orderByDesc('cs.session_date')
-            ->limit(15)
-            ->select([
-                'cs.id as session_id',
-                'cs.session_date',
-                'sub.subject_code',
-                'sub.subject_name',
-            ])
-            ->get()
-            ->map(fn (object $row): array => [
-                'id' => (int) $row->session_id,
-                'fecha' => StudentInputSanitizer::plainText($row->session_date, 20),
-                'etiqueta' => StudentInputSanitizer::plainText(
-                    $row->subject_code.' · '.$row->subject_name.' ('.$row->session_date.')',
-                    160
-                ),
-            ])
+        $absentSessions = $this->attendanceDAO
+            ->historyByStudent($studentId, 50)
+            ->filter(function (Attendance $attendance) use ($activePeriod): bool {
+                if ($attendance->attendance_status !== 'Absent') {
+                    return false;
+                }
+
+                if (($activePeriod['id'] ?? null) !== null && (int) ($attendance->session?->period_id ?? 0) !== (int) $activePeriod['id']) {
+                    return false;
+                }
+
+                return true;
+            })
+            ->take(15)
+            ->values()
+            ->map(function (Attendance $attendance): array {
+                $session = $attendance->session;
+                $subject = $session?->section?->subject;
+                $dateStr = $session?->session_date?->format('Y-m-d') ?? (string) ($session?->session_date ?? '');
+                $code = (string) ($subject?->subject_code ?? '');
+                $name = (string) ($subject?->subject_name ?? '');
+
+                return [
+                    'id' => (int) $attendance->session_id,
+                    'fecha' => StudentInputSanitizer::plainText($dateStr, 20),
+                    'etiqueta' => StudentInputSanitizer::plainText(
+                        $code . ' · ' . $name . ' (' . $dateStr . ')',
+                        160
+                    ),
+                ];
+            })
             ->all();
 
-        // Justificativos/documentos propios del estudiante.
-        $justificativos = DB::table('document_registration')
-            ->where('user_id', $studentId)
-            ->orderByDesc('uploaded_at')
-            ->limit(10)
-            ->select(['id', 'file_name', 'file_type', 'status', 'observations', 'uploaded_at'])
-            ->get()
+        $justificativos = $this->userAccountDAO->documentsByUser($studentId, 10)
             ->map(fn (object $doc): array => [
                 'id' => (int) $doc->id,
-                'archivo' => StudentInputSanitizer::plainText($doc->file_name, 120),
-                'tipo' => StudentInputSanitizer::plainText($doc->file_type, 20),
-                'estado' => StudentInputSanitizer::plainText($doc->status, 20),
-                'observaciones' => StudentInputSanitizer::plainText($doc->observations, 500),
+                'archivo' => StudentInputSanitizer::plainText((string) $doc->file_name, 120),
+                'tipo' => StudentInputSanitizer::plainText((string) $doc->file_type, 20),
+                'estado' => StudentInputSanitizer::plainText((string) $doc->status, 20),
+                'observaciones' => StudentInputSanitizer::plainText((string) $doc->observations, 500),
                 'fecha' => StudentInputSanitizer::plainText((string) $doc->uploaded_at, 30),
             ])
             ->all();
 
         $fullName = StudentInputSanitizer::plainText(
             implode(' ', array_filter([
-                $account->first_name,
-                $account->middle_name,
-                $account->last_name,
-                $account->second_last_name,
+                $profile?->first_name,
+                $profile?->middle_name,
+                $profile?->last_name,
+                $profile?->second_last_name,
             ])),
             200
         );
 
         $formattedCedula = StudentInputSanitizer::formatCedula(
-            (string) $account->id_type,
-            (string) $account->id_number
+            (string) ($profile?->id_type ?? 'V'),
+            (string) ($profile?->id_number ?? '')
         );
 
-        $careerName = StudentInputSanitizer::plainText($account->career_name ?? 'Sin carrera asignada', 100);
-        $semesterOrdinal = $this->formatSemesterOrdinal((int) $account->current_semester);
+        $careerName = StudentInputSanitizer::plainText((string) ($career?->career_name ?? 'Sin carrera asignada'), 100);
+        $semesterOrdinal = $this->formatSemesterOrdinal((int) ($profile?->current_semester ?? 1));
         $periodName = $activePeriod['nombre'] ?? 'Sin período activo';
-        $hasDragged = (bool) $account->has_dragged_subjects;
+        $hasDragged = (bool) ($profile?->has_dragged_subjects ?? false);
         $credentialNumber = StudentInputSanitizer::plainText(
-            $account->credential_number ?: 'UNEFA-EST-'.str_pad((string) $studentId, 5, '0', STR_PAD_LEFT),
+            $studentRole?->pivot?->credential_number ?: 'UNEFA-EST-' . str_pad((string) $studentId, 5, '0', STR_PAD_LEFT),
             50
         );
         $qrToken = StudentInputSanitizer::plainText((string) $account->qr_token, 128);
@@ -313,14 +249,14 @@ class StudentDashboardService
                 'carrera' => $careerName,
                 'carrera_mayusculas' => mb_strtoupper($careerName, 'UTF-8'),
                 'semestre_ordinal' => $semesterOrdinal,
-                'departamento' => $careerName.' · '.$semesterOrdinal.' Semestre',
-                'subtitulo' => 'Matrícula Oficial '.$periodName,
+                'departamento' => $careerName . ' · ' . $semesterOrdinal . ' Semestre',
+                'subtitulo' => 'Matrícula Oficial ' . $periodName,
                 'insignia' => $hasDragged ? 'ESTUDIANTE CON ARRASTRE' : 'ESTUDIANTE REGULAR',
                 'condicion' => $hasDragged ? 'CONDICIÓN: REGULAR CON ARRASTRE' : 'CONDICIÓN: REGULAR ACTIVO',
                 'matricula' => $credentialNumber,
                 'qr_token' => $qrToken,
                 'qr_resumen' => mb_substr($qrToken, 0, 18, 'UTF-8'),
-                'foto' => StudentInputSanitizer::plainText($account->profile_picture ?? '', 255),
+                'foto' => StudentInputSanitizer::plainText((string) ($profile?->profile_picture ?? ''), 255),
             ],
             'periodo' => [
                 'id' => $activePeriod['id'] ?? null,
@@ -329,15 +265,15 @@ class StudentDashboardService
             'periodos' => $periods,
             'filtros' => [
                 'period_id' => $activePeriod['id'] ?? null,
-                'subject_code' => StudentInputSanitizer::plainText($filters['subject_code'] ?? '', 20),
-                'status' => StudentInputSanitizer::plainText($filters['status'] ?? '', 20),
+                'subject_code' => StudentInputSanitizer::plainText((string) ($filters['subject_code'] ?? ''), 20),
+                'status' => StudentInputSanitizer::plainText((string) ($filters['status'] ?? ''), 20),
             ],
             'metricas' => [
                 'semestre' => $semesterOrdinal,
                 'materias_inscritas' => (string) count($asignaturas),
                 'promedio_general' => $averageGrade,
                 'asistencia_global' => $globalAttendance,
-                'asistencia_global_texto' => number_format($globalAttendance, 1, '.', '').'%',
+                'asistencia_global_texto' => number_format($globalAttendance, 1, '.', '') . '%',
                 'es_solvente' => $globalAttendance >= 75.0 && ! $hasDragged,
             ],
             'asignaturas' => $asignaturas,
@@ -347,33 +283,30 @@ class StudentDashboardService
     }
 
     /**
-     * Registra un justificativo de inasistencia en document_registration
-     * exclusivamente para el estudiante autenticado.
-     *
      * @param  array<string, mixed>  $validated
      */
     public function storeJustification(int $studentId, array $validated, UploadedFile $file): int
     {
         $extension = strtolower($file->getClientOriginalExtension() ?: $file->extension() ?: 'bin');
-        $safeOriginalName = StudentInputSanitizer::plainText($file->getClientOriginalName(), 200);
+        $safeOriginalName = StudentInputSanitizer::plainText((string) $file->getClientOriginalName(), 200);
         if ($safeOriginalName === '') {
-            $safeOriginalName = 'justificativo.'.$extension;
+            $safeOriginalName = 'justificativo.' . $extension;
         }
 
-        $storedFileName = Str::uuid()->toString().'.'.$extension;
-        $storedPath = $file->storeAs('justificativos/student_'.$studentId, $storedFileName, 'local');
+        $storedFileName = Str::uuid()->toString() . '.' . $extension;
+        $storedPath = $file->storeAs('justificativos/student_' . $studentId, $storedFileName, 'local');
 
-        $observations = StudentInputSanitizer::plainText($validated['observations'] ?? '', 500);
+        $observations = StudentInputSanitizer::plainText((string) ($validated['observations'] ?? ''), 500);
         if (! empty($validated['session_id'])) {
-            $prefix = '[Sesión #'.(int) $validated['session_id'].'] ';
-            $observations = mb_substr($prefix.$observations, 0, 500, 'UTF-8');
+            $prefix = '[Sesión #' . (int) $validated['session_id'] . '] ';
+            $observations = mb_substr($prefix . $observations, 0, 500, 'UTF-8');
         }
 
-        return (int) DB::table('document_registration')->insertGetId([
+        return $this->userAccountDAO->createDocument([
             'user_id' => $studentId,
             'file_name' => $safeOriginalName,
             'file_path' => StudentInputSanitizer::plainText((string) $storedPath, 255),
-            'file_type' => StudentInputSanitizer::plainText($validated['file_type'], 20),
+            'file_type' => StudentInputSanitizer::plainText((string) $validated['file_type'], 20),
             'status' => 'Pending',
             'observations' => $observations,
             'uploaded_at' => now(),
@@ -435,8 +368,7 @@ class StudentDashboardService
             7 => '7mo',
             8 => '8vo',
             9 => '9no',
-            10 => '10mo',
-            default => $semester > 0 ? $semester.'mo' : '1ro',
+            default => $semester > 0 ? $semester . 'mo' : '1ro',
         };
     }
 }

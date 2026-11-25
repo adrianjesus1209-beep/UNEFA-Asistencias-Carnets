@@ -4,9 +4,7 @@
 @section('header-subtitle', 'Panel Coordinador')
 
 @section('content')
-    {{-- Contenido tomado de la vista coordinador del dashboard de UnefaApp (src/app/dashboard.tsx). --}}
-    @include('partials.selector-entidad', ['activo' => 'coordinador'])
-
+    
     <div class="mt-4">
         @include('partials.session-banner', [
             'insignia' => 'COORDINACIÓN DE CARRERA',

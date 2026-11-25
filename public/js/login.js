@@ -7,13 +7,28 @@
 (function () {
   "use strict";
 
+  const ARROW_SVG =
+    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+
+  function restoreSubmitButton() {
+    const submitBtn = document.getElementById("submitBtn");
+    const tabAdmin = document.getElementById("tabAdmin");
+    if (!submitBtn) return;
+
+    const isAdmin = tabAdmin ? tabAdmin.classList.contains("active") : false;
+    const label = isAdmin ? "Ingresar como Personal" : "Ingresar como Estudiante";
+
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = `<span id="submitBtnText">${label}</span>${ARROW_SVG}`;
+  }
+
   window.switchRole = function (role) {
     const tabStudent = document.getElementById("tabStudent");
     const tabAdmin = document.getElementById("tabAdmin");
     const identifierLabelText = document.getElementById("identifierLabelText");
     const identifierHint = document.getElementById("identifierHint");
     const cedulaInput = document.getElementById("cedulaInput");
-    const submitBtnText = document.getElementById("submitBtnText");
+    const submitBtn = document.getElementById("submitBtn");
     const alertBox = document.getElementById("loginAlertBox");
     const registerPromptRow = document.getElementById("registerPromptRow");
 
@@ -25,7 +40,9 @@
       if (identifierLabelText) identifierLabelText.textContent = "Cédula de Identidad";
       if (identifierHint) identifierHint.textContent = "Estudiantes";
       if (cedulaInput) cedulaInput.placeholder = "27450892";
-      if (submitBtnText) submitBtnText.textContent = "Ingresar como Estudiante";
+      if (submitBtn && !submitBtn.disabled) {
+        submitBtn.innerHTML = `<span id="submitBtnText">Ingresar como Estudiante</span>${ARROW_SVG}`;
+      }
       if (registerPromptRow) registerPromptRow.style.display = "flex";
     } else {
       if (tabAdmin) tabAdmin.classList.add("active");
@@ -33,7 +50,9 @@
       if (identifierLabelText) identifierLabelText.textContent = "Cédula de Identidad";
       if (identifierHint) identifierHint.textContent = "Personal Docente / Administrativo";
       if (cedulaInput) cedulaInput.placeholder = "14230890";
-      if (submitBtnText) submitBtnText.textContent = "Ingresar como Personal";
+      if (submitBtn && !submitBtn.disabled) {
+        submitBtn.innerHTML = `<span id="submitBtnText">Ingresar como Personal</span>${ARROW_SVG}`;
+      }
       if (registerPromptRow) registerPromptRow.style.display = "none";
     }
   };
@@ -68,7 +87,13 @@
     alertBox.classList.remove("hidden");
   }
 
+  window.addEventListener("pageshow", function () {
+    restoreSubmitButton();
+  });
+
   document.addEventListener("DOMContentLoaded", function () {
+    restoreSubmitButton();
+
     const form = document.getElementById("loginForm");
     if (!form) return;
 

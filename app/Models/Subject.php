@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class Subject extends Model
+{
+    protected $table = 'subject';
+
+    protected $fillable = [
+        'subject_code',
+        'subject_name',
+        'display_order',
+    ];
+
+    public function sections(): HasMany
+    {
+        return $this->hasMany(Section::class, 'subject_id');
+    }
+}

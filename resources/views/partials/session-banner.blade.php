@@ -1,4 +1,4 @@
-{{-- Banner de sesion activa con los datos de la entidad (mock hasta integrar autenticacion). --}}
+{{-- Banner de sesion activa con los datos de la entidad. --}}
 {{-- Superficie blanca con filete dorado y barra de acento configurable por rol. --}}
 @php $distribuir = !empty($distribuir); @endphp
 <div class="{{ $claseContenedor ?? 'mb-5' }} overflow-hidden rounded-[18px] border border-slate-200 bg-white shadow-sm">
@@ -36,10 +36,13 @@
                 ID Institucional:
                 <span class="font-mono text-[11px] font-extrabold text-slate-900">{{ $matricula }}</span>
             </p>
-            <a href="{{ route('login') }}" class="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-bold text-red-600 transition hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900">
-                @include('partials.icon', ['name' => 'log-out', 'clase' => 'h-3.5 w-3.5 text-red-600'])
-                Cerrar sesión
-            </a>
+            <form method="POST" action="{{ route('logout') }}" class="inline">
+                @csrf
+                <button type="submit" class="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-bold text-red-600 transition hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900">
+                    @include('partials.icon', ['name' => 'log-out', 'clase' => 'h-3.5 w-3.5 text-red-600'])
+                    Cerrar sesión
+                </button>
+            </form>
         </div>
     </div>
 </div>
