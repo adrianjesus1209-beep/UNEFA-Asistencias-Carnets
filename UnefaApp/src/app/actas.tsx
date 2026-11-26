@@ -1,12 +1,13 @@
-import React from 'react';
-import { View, Text, Pressable, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Pressable, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { ClipboardList, CheckCircle2, XCircle } from 'lucide-react-native';
+import { ClipboardList, CheckCircle2, XCircle, ScanQrCode } from 'lucide-react-native';
 import { UnefaColors } from '@/constants/theme';
 import { COURSES, Student, getCourseStats } from '@/constants/attendance';
 import { Header } from '@/components/Header';
 import { MetricsGrid } from '@/components/dashboard/MetricsGrid';
+import { QrModal } from '@/components/QrModal';
 
 function StatusChip({ status }: { status: Student['status'] }) {
   const isPresent = status === 'asistente';
@@ -37,6 +38,8 @@ export default function ActasScreen() {
     COURSES.find((c) => c.id === params.course) ?? COURSES[0];
   const { total, present, absent } = getCourseStats(course);
 
+  const [qrOpen, setQrOpen] = useState(false);
+
   const selectCourse = (id: string) => router.setParams({ course: id });
 
   return (
@@ -45,7 +48,7 @@ export default function ActasScreen() {
 
       <ScrollView
         className="flex-1"
-        contentContainerStyle={{ paddingBottom: 40 }}
+        contentContainerStyle={{ paddingBottom: 96 }}
         showsVerticalScrollIndicator={false}>
         <View className="w-full px-4 pt-4" style={{ maxWidth: 480 }}>
           {/* Título */}
@@ -167,6 +170,30 @@ export default function ActasScreen() {
           </Text>
         </View>
       </ScrollView>
+
+      {/* FAB de escaneo QR — solo icono; abre la advertencia de permiso de cámara */}
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Escanear QR de asistencia"
+        onPress={() => setQrOpen(true)}
+        className="absolute right-5 bottom-6 z-50 w-[60px] h-[60px] rounded-full items-center justify-center"
+        style={[styles.fab, { backgroundColor: UnefaColors.gold }]}
+        hitSlop={8}>
+        <ScanQrCode size={26} color={UnefaColors.navy} strokeWidth={2.2} />
+      </Pressable>
+
+      {/* Advertencia de permiso de cámara (interfaz de prueba, sin cámara real) */}
+      <QrModal visible={qrOpen} onClose={() => setQrOpen(false)} />
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  fab: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+});
