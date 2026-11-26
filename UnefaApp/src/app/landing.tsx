@@ -111,7 +111,7 @@ export default function LandingScreen() {
               cívico-militares con 100% de gratuidad de matrícula.
             </Text>
 
-            <View className="mb-6 flex-row gap-2.5">
+            <View className="mb-6 flex-row gap-2.2">
               <View className="flex-1 items-center rounded-[14px] bg-white p-3 shadow-sm bg-white border-slate-200">
                 <Text className="text-[22px] font-black text-neutral-950">
                   100%
@@ -135,7 +135,6 @@ export default function LandingScreen() {
                 className="flex-row items-center justify-center gap-2 rounded-[14px] py-3.5 bg-unefa-gold shadow-md py-4"
                 onPress={() => router.push('/registro')}>
                 <Text className="text-[15px] font-black text-unefa-navy">Crear cuenta UNEFA</Text>
-                <Text className="text-base font-black text-unefa-navy">→</Text>
               </Pressable>
 
               <Pressable
@@ -249,7 +248,6 @@ export default function LandingScreen() {
                   <Text className="mb-2 text-[11px] font-extrabold uppercase tracking-[0.4px] text-slate-500">Hitos de formación</Text>
                   {activePillar.highlights.map((h, i) => (
                     <View key={i} className="mb-1.5 flex-row items-start gap-2">
-                      <Text className="text-sm font-extrabold text-unefa-blue">→</Text>
                       <Text className="flex-1 text-xs leading-[18px] font-medium text-neutral-950">
                         {h}
                       </Text>
@@ -279,7 +277,7 @@ export default function LandingScreen() {
                 </Text>
               </View>
               <Pressable onPress={() => router.push('/login')}>
-                <Text className="text-[13px] font-extrabold text-unefa-blue">Ingreso →</Text>
+                <Text className="text-[13px] font-extrabold text-unefa-blue">Ingreso</Text>
               </Pressable>
             </View>
 

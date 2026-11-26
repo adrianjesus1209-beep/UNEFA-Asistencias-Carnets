@@ -460,9 +460,6 @@ export default function LoginScreen() {
                   <Text className="text-[15px] font-black text-unefa-navy">
                     Acceder al portal
                   </Text>
-                  <Text className="text-base font-black text-unefa-navy">
-                    →
-                  </Text>
                 </>
               )}
             </Pressable>
@@ -498,7 +495,7 @@ export default function LoginScreen() {
             </Text>
             <Pressable onPress={() => router.push('/landing')}>
               <Text className="text-[13px] font-extrabold text-unefa-blue">
-                Volver a la landing →
+                Volver a la landing
               </Text>
             </Pressable>
           </View>
