@@ -6,11 +6,7 @@
 
 @section('content')
     {{-- Contenido tomado de la vista estudiante del dashboard de UnefaApp (src/app/dashboard.tsx). --}}
-    @include('partials.selector-entidad', [
-        'activo' => 'estudiante',
-        'estiloActivo' => 'border-slate-900 bg-slate-900 text-white',
-        'estiloEyebrow' => 'text-amber-700',
-    ])
+    @include('partials.selector-entidad', ['activo' => 'estudiante'])
 
     <div class="mt-4">
         <div class="grid items-stretch gap-5 lg:grid-cols-2">
@@ -19,7 +15,7 @@
                 'insigniaFondo' => 'bg-slate-100',
                 'insigniaTexto' => 'text-slate-700',
                 'icono' => 'graduation-cap',
-                'acentoFondo' => 'bg-slate-300',
+                'acentoFondo' => 'bg-unefa-blue',
                 'bordeClase' => 'border-slate-200',
                 'nombre' => 'Carlos Manuel Mendoza Rojas',
                 'cedula' => 'V-28.123.456',
@@ -35,28 +31,28 @@
                 <div class="relative flex flex-1 flex-col justify-center">
                     <div class="flex flex-wrap items-start justify-between gap-3 border-b border-slate-200 pb-3">
                         <div>
-                            <p class="text-[11px] font-extrabold tracking-[0.4px] text-slate-600">REPÚBLICA BOLIVARIANA DE VENEZUELA</p>
-                            <p class="text-[11px] tracking-[0.3px] text-slate-500">MINISTERIO DEL PODER POPULAR PARA LA DEFENSA</p>
-                            <p class="mt-1 text-sm font-black tracking-[0.5px] text-slate-900">UNEFA · CARNET DE ASISTENCIA DIGITAL</p>
+                            <p class="text-[11px] font-extrabold tracking-[0.4px] text-slate-700">REPÚBLICA BOLIVARIANA DE VENEZUELA</p>
+                            <p class="text-[11px] tracking-[0.3px] text-slate-600">MINISTERIO DEL PODER POPULAR PARA LA DEFENSA</p>
+                            <p class="mt-1 text-sm font-black tracking-[0.5px] text-unefa-navy">UNEFA · CARNET DE ASISTENCIA DIGITAL</p>
                         </div>
-                        <span class="rounded-md bg-amber-100 px-2.5 py-1 text-xs font-black text-amber-800">2026-I</span>
+                        <span class="rounded-md bg-unefa-gold px-2.5 py-1 text-xs font-black text-unefa-navy">2026-I</span>
                     </div>
 
                     <div class="my-4 border-t border-dashed border-slate-200" aria-hidden="true"></div>
 
                     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-center">
-                        <div class="mx-auto flex h-28 w-24 shrink-0 flex-col items-center justify-center gap-1 rounded-[10px] border-2 border-unefa-gold bg-white/95 p-1 sm:mx-0">
-                            @include('partials.icon', ['name' => 'user', 'clase' => 'h-10 w-10 text-slate-400'])
-                            <span class="text-center text-[11px] font-extrabold text-slate-500">FOTO</span>
+                        <div class="mx-auto flex h-28 w-24 shrink-0 flex-col items-center justify-center gap-1 rounded-[10px] border-2 border-unefa-gold bg-slate-50 p-1 sm:mx-0">
+                            @include('partials.icon', ['name' => 'user', 'clase' => 'h-10 w-10 text-slate-500'])
+                            <span class="text-center text-[11px] font-extrabold text-slate-600">FOTO ESTUDIANTE</span>
                         </div>
 
                         <div class="min-w-0 flex-1">
-                            <p class="mb-1 text-base font-black text-slate-900">Carlos Manuel Mendoza Rojas</p>
-                            <p class="mb-1 text-[13px] font-extrabold text-amber-700">V-28.123.456</p>
-                            <p class="mb-1 text-[11px] font-bold text-slate-500">INGENIERÍA DE SISTEMAS</p>
+                            <p class="mb-1 text-base font-black text-unefa-navy">Carlos Manuel Mendoza Rojas</p>
+                            <p class="mb-1 text-[13px] font-extrabold text-unefa-blue">V-28.123.456</p>
+                            <p class="mb-1 text-[11px] font-bold text-slate-600">INGENIERÍA DE SISTEMAS</p>
                             <p class="mb-3 text-[11px] font-extrabold text-emerald-700">CONDICIÓN: REGULAR ACTIVO</p>
 
-                            <div class="flex items-center gap-3 rounded-lg bg-white p-2">
+                            <div class="flex items-center gap-3 rounded-lg bg-slate-50 p-2">
                                 <svg viewBox="0 0 25 25" class="h-14 w-14 shrink-0 rounded-[3px] bg-white" role="img" aria-label="Código QR de demostración de la matrícula 2022-04921">
                                     <rect width="25" height="25" fill="#ffffff"></rect>
                                     <g fill="#1f2937">
@@ -92,8 +88,8 @@
                                 </svg>
                                 <div class="min-w-0">
                                     <span class="block font-mono text-[11px] font-bold tracking-[1px] text-slate-900">QR DEMO · 2022-04921</span>
-                                    <span class="mt-0.5 block font-mono text-[11px] font-bold text-slate-500">MAT: 2022-04921-UNEF</span>
-                                    <span class="mt-1 block text-[10px] font-semibold text-slate-400">Código ilustrativo, no válido para accesos</span>
+                                    <span class="mt-0.5 block font-mono text-[11px] font-bold text-slate-500">MAT: 2022-04921-UNEFA</span>
+                                    <span class="mt-1 block text-[11px] font-semibold text-slate-500">Código ilustrativo, no válido para accesos</span>
                                 </div>
                             </div>
                         </div>
@@ -102,7 +98,7 @@
             </div>
         </div>
 
-        <div class="flex flex-col gap-5">
+        <div class="mt-8 flex flex-col gap-5">
             {{-- Metricas del estudiante --}}
             <div class="grid grid-cols-2 gap-2.5 lg:grid-cols-4">
                 @include('partials.metric-card', [
@@ -219,6 +215,14 @@
             <p class="pb-2 text-center text-[11px] font-semibold text-slate-500">
                 Entorno de demostración · Los datos mostrados son simulados
             </p>
+        </div>
+
+        {{-- Retorno al inicio de sesion --}}
+        <div class="mb-2 mt-4 flex justify-center">
+            <a href="{{ route('login') }}" class="flex items-center gap-2 rounded-xl border border-slate-300 bg-slate-100 px-5 py-3 text-[13px] font-extrabold text-unefa-navy transition hover:bg-slate-200">
+                @include('partials.icon', ['name' => 'arrow-left', 'clase' => 'h-4 w-4 text-unefa-navy'])
+                Volver al inicio de sesión
+            </a>
         </div>
     </div>
 @endsection

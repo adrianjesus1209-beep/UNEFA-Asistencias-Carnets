@@ -2,6 +2,7 @@
 
 @section('title', 'Panel Profesor | Portal UNEFA')
 @section('header-subtitle', 'Panel Profesor')
+@section('descripcion', 'Panel del profesor del Sistema Integral de Asistencias y Carnetización Digital de la UNEFA. Período académico 2026-I.')
 
 @section('content')
     {{-- Contenido tomado de la vista profesor del dashboard de UnefaApp (src/app/dashboard.tsx). --}}
@@ -90,7 +91,7 @@
                                 Ver Planilla
                             </span>
                         </div>
-                        <p class="mt-2 text-[10px] font-semibold text-slate-400">Pase de lista al día</p>
+                        <p class="mt-2 text-[11px] font-semibold text-slate-500">Pase de lista al día</p>
                     </div>
 
                     <div class="rounded-[14px] border border-slate-200 bg-slate-50 p-3.5">
@@ -129,7 +130,7 @@
                                 Ver Planilla
                             </span>
                         </div>
-                        <p class="mt-2 text-[10px] font-semibold text-slate-400">Pase de lista al día</p>
+                        <p class="mt-2 text-[11px] font-semibold text-slate-500">Pase de lista al día</p>
                     </div>
 
                     <div class="rounded-[14px] border border-slate-200 bg-slate-50 p-3.5">
@@ -168,7 +169,7 @@
                                 Ver Planilla
                             </span>
                         </div>
-                        <p class="mt-2 text-[10px] font-semibold text-slate-400">Pase de lista al día</p>
+                        <p class="mt-2 text-[11px] font-semibold text-slate-500">Pase de lista al día</p>
                     </div>
                 </div>
             </div>

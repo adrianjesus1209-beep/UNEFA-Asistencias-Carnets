@@ -20,8 +20,8 @@
         </div>
 
         <div class="mb-3.5 flex items-center gap-3.5 pl-3 {{ $distribuir ? 'flex-1 py-3' : '' }}">
-            <span class="flex h-[54px] w-[54px] shrink-0 items-center justify-center rounded-2xl bg-slate-100 ring-1 ring-slate-200">
-                @include('partials.icon', ['name' => $icono, 'clase' => 'h-7 w-7 text-slate-600'])
+            <span class="flex h-[54px] w-[54px] shrink-0 items-center justify-center rounded-2xl {{ $acentoFondo }}">
+                @include('partials.icon', ['name' => $icono, 'clase' => 'h-7 w-7 text-white'])
             </span>
             <div class="min-w-0">
                 <p class="mb-0.5 text-base font-black text-slate-900">{{ $nombre }}</p>
