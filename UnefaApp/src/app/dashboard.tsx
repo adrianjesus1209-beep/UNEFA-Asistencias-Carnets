@@ -100,7 +100,7 @@ export default function DashboardScreen() {
           activeTab="inicio"
           onPressInicio={() => {}}
           onPressClase={() => setQrOpen(true)}
-          onPressActas={() => {}}
+          onPressActas={() => router.push('/actas')}
           onPressCarnet={() => {}}
           onPressPerfil={() => {}}
         />
