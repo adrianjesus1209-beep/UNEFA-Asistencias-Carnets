@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DirectorController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\StudentController;
@@ -37,8 +38,12 @@ Route::middleware(['auth', 'active.user'])->group(function () {
             ->name('coordinador');
 
         Route::middleware('role:Director,Super Administrator')
-            ->get('/director', fn () => view('dashboard.director'))
-            ->name('director');
+            ->group(function () {
+                Route::get('/director', [DirectorController::class, 'index'])
+                    ->name('director');
+                Route::post('/director/coordinadores', [DirectorController::class, 'assignCoordinator'])
+                    ->name('director.coordinadores.assign');
+            });
     });
 
     Route::middleware('role:Student,Super Administrator')

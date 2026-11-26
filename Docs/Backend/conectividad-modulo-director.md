@@ -1,0 +1,10 @@
+# Conectividad del Modulo Director
+
+## Archivos creados y modificados
+
+- `app/Http/Requests/Director/DirectorDashboardRequest.php`: Autoriza al usuario con rol activo de Director o Super Administrador, sanea parametros de entrada a texto plano y valida filtros y reglas exactas de campos (cedula solo numeros, nombres y apellidos solo letras, contrasena de 8 a 16 caracteres con al menos 1 mayuscula, 1 minuscula, 1 numero y 1 caracter especial de `#$/&+/`, y correo valido).
+- `app/Http/Requests/Director/AssignCoordinatorRequest.php`: Valida y sanea la solicitud de asignacion de coordinador de carrera (`career_id`, `coordinator_id` y campos de identidad/acceso si se envian) fuera del controlador.
+- `app/Services/Director/DirectorDashboardService.php`: Resuelve la identidad del usuario autenticado, verifica el rol y estado de cuenta, obtiene los datos del perfil/carnet del director y las metricas consolidadas mediante los DAOs (`AcademicPeriodDAOInterface`, `CareerDAOInterface`, `RoleDAOInterface`, `SectionEnrollmentDAOInterface`, `AttendanceDAOInterface`), y ejecuta la asignacion de coordinador registrando el evento en `AuditLogDAOInterface`.
+- `app/Http/Controllers/DirectorController.php`: Controlador delgado que verifica el rol autorizado (respondiendo 403 si no aplica), delega a `DirectorDashboardService` y retorna la vista `dashboard.director` o redirige con estado/errores.
+- `routes/web.php`: Conecta `GET /dashboard/director` (`dashboard.director`) y `POST /dashboard/director/coordinadores` (`dashboard.director.coordinadores.assign`) bajo los middlewares `auth`, `active.user` y `role:Director,Super Administrator`.
+- `resources/views/dashboard/director.blade.php`: Renderiza los datos reales del director, metricas, carreras, coordinadores y formulario de asignacion manteniendo la estructura visual y escapando salidas con Blade para prevenir XSS.
