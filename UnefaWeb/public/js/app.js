@@ -50,15 +50,27 @@
      * Placeholder de la maqueta: no activa la camara, solo muestra el dialogo.
      */
     var modalQr = document.getElementById('modal-qr');
+    var disparadorQr = null;
 
-    function abrirQr() {
+    function enfocablesQr() {
+        if (!modalQr) return [];
+        var selectores = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+        return Array.prototype.filter.call(modalQr.querySelectorAll(selectores), function (nodo) {
+            return !nodo.disabled && nodo.offsetParent !== null;
+        });
+    }
+
+    function abrirQr(evento) {
         if (!modalQr) return;
+        disparadorQr = evento && evento.currentTarget ? evento.currentTarget : null;
         modalQr.classList.remove('hidden');
         modalQr.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
         requestAnimationFrame(function () {
             modalQr.classList.add('qr-modal-open');
         });
+        var enfocables = enfocablesQr();
+        if (enfocables.length > 0) enfocables[0].focus();
     }
 
     function cerrarQr() {
@@ -68,6 +80,8 @@
         document.body.style.overflow = '';
         window.setTimeout(function () {
             modalQr.classList.add('hidden');
+            if (disparadorQr && document.body.contains(disparadorQr)) disparadorQr.focus();
+            disparadorQr = null;
         }, 220);
     }
 
@@ -80,10 +94,27 @@
         });
     }
 
-    // Escape cierra menu y modal.
+    // Teclado: Escape cierra menu y modal; Tab queda confinado en el modal.
     document.addEventListener('keydown', function (evento) {
+        var modalAbierto = modalQr && !modalQr.classList.contains('hidden');
+
+        if (evento.key === 'Tab' && modalAbierto) {
+            var enfocables = enfocablesQr();
+            if (enfocables.length === 0) return;
+            var primero = enfocables[0];
+            var ultimo = enfocables[enfocables.length - 1];
+            if (evento.shiftKey && document.activeElement === primero) {
+                evento.preventDefault();
+                ultimo.focus();
+            } else if (!evento.shiftKey && document.activeElement === ultimo) {
+                evento.preventDefault();
+                primero.focus();
+            }
+            return;
+        }
+
         if (evento.key !== 'Escape') return;
-        if (modalQr && !modalQr.classList.contains('hidden')) cerrarQr();
+        if (modalAbierto) cerrarQr();
         if (cajon && !cajon.classList.contains('hidden')) cerrarCajon();
     });
 

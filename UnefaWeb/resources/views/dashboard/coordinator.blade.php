@@ -2,6 +2,7 @@
 
 @section('title', 'Panel Coordinador | Portal UNEFA')
 @section('header-subtitle', 'Panel Coordinador')
+@section('descripcion', 'Panel del coordinador del Sistema Integral de Asistencias y Carnetización Digital de la UNEFA. Período académico 2026-I.')
 
 @section('content')
     {{-- Contenido tomado de la vista coordinador del dashboard de UnefaApp (src/app/dashboard.tsx). --}}
@@ -69,7 +70,7 @@
                             <span class="rounded-lg bg-[rgba(180,83,9,0.1)] px-2 py-0.5 text-[10px] font-extrabold text-[#b45309]">Atención requerida</span>
                         </div>
                         <p class="mb-1 text-[15px] font-black text-[#b45309]">12 casos en seguimiento</p>
-                        <p class="text-[11px] leading-4 text-slate-500">Aspirantes y estudiantes con más de 3 ausencias consecutivas.</p>
+                        <p class="text-[11px] leading-4 text-slate-500">Estudiantes con más de 3 ausencias consecutivas.</p>
                     </div>
 
                     <div class="rounded-[14px] border border-slate-200 bg-slate-50 p-3.5">

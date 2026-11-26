@@ -2,6 +2,7 @@
 
 @section('title', 'Panel Director | Portal UNEFA')
 @section('header-subtitle', 'Panel Director')
+@section('descripcion', 'Panel del director del Sistema Integral de Asistencias y Carnetización Digital de la UNEFA. Período académico 2026-I.')
 
 @section('content')
     {{-- Contenido tomado de la vista director del dashboard de UnefaApp (src/app/dashboard.tsx). --}}
@@ -142,7 +143,7 @@
                         <p class="text-[11px] leading-4 text-slate-500">Consolidado de auditoría semestral y rendimiento de núcleos</p>
                     </div>
                     <div class="rounded-xl border border-slate-200 bg-slate-50 p-3">
-                        <p class="mb-0.5 text-[13px] font-extrabold text-slate-900">Auditoría Integral del Sistema</p>
+                        <p class="mb-0.5 text-[13px] font-extrabold text-slate-900">Auditoría Integral del Portal</p>
                         <p class="text-[11px] leading-4 text-slate-500">Supervisión de actas de grado y récord académico nacional</p>
                     </div>
                     <div class="rounded-xl border border-slate-200 bg-slate-50 p-3">
@@ -150,7 +151,7 @@
                         <p class="text-[11px] leading-4 text-slate-500">Seguimiento de convenios tecnológicos con la FANB</p>
                     </div>
                     <div class="rounded-xl border border-slate-200 bg-slate-50 p-3">
-                        <p class="mb-0.5 text-[13px] font-extrabold text-slate-900">Aprobación de Convocatoria Nuevo Ingreso 2026-II</p>
+                        <p class="mb-0.5 text-[13px] font-extrabold text-slate-900">Aprobación de cupos de ingreso 2026-II</p>
                         <p class="text-[11px] leading-4 text-slate-500">Planificación de cupos para bachilleres de nuevo ingreso</p>
                     </div>
                 </div>
