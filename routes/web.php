@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CoordinatorController;
 
 Route::get('/', function () {
     return view('landing.index');
@@ -33,8 +34,8 @@ Route::middleware(['auth', 'active.user'])->group(function () {
             ->get('/profesor', fn () => view('dashboard.teacher'))
             ->name('profesor');
 
-        Route::middleware('role:Academic Coordinator,Super Administrator')
-            ->get('/coordinador', fn () => view('dashboard.coordinator'))
+      Route::middleware('role:Academic Coordinator,Super Administrator')
+            ->get('/coordinador', [CoordinatorController::class, 'index'])
             ->name('coordinador');
 
         Route::middleware('role:Director,Super Administrator')
@@ -54,4 +55,5 @@ Route::middleware(['auth', 'active.user'])->group(function () {
             Route::post('/justificativos', [StudentController::class, 'storeJustification'])
                 ->name('.justificativos.store');
         });
+        
 });
