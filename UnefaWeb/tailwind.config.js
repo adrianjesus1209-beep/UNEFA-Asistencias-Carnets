@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-// Configuracion de Tailwind para el portal UNEFA (landing, auth y SICEU unificado por roles).
+// Configuracion de Tailwind para el portal UNEFA (landing, auth y panel unificado por roles).
 module.exports = {
   content: [
     "./resources/views/**/*.blade.php",

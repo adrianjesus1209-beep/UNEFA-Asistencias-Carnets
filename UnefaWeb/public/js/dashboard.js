@@ -1,5 +1,5 @@
 /**
- * Interactividad unificada del Portal SICEU (UNEFA).
+ * Interactividad unificada del portal UNEFA.
  * Agrupa el shell comun (inactividad RF-05, sidebar, notificaciones, dialogos)
  * y los controladores por seccion del dashboard.
  */

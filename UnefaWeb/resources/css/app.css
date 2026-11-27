@@ -18,7 +18,7 @@
     scroll-margin-top: 5rem;
   }
 
-  .siceu-portal :where(a:any-link, button, input, select, textarea, [tabindex="0"]):focus-visible {
+  .unefa-portal :where(a:any-link, button, input, select, textarea, [tabindex="0"]):focus-visible {
     outline: 3px solid #f2b807;
     outline-offset: 2px;
   }

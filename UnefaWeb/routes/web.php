@@ -20,7 +20,7 @@ Route::get('/landing', function () {
     return view('landing.index');
 })->name('landing');
 
-// Acceso SICEU.
+// Acceso al portal.
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');

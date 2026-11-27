@@ -1,4 +1,4 @@
-{{-- Barra lateral institucional reutilizable para cualquier rol del portal SICEU. --}}
+{{-- Barra lateral institucional reutilizable para cualquier rol del portal UNEFA. --}}
 @php
     $menu = $menu ?? [];
     $seccionActiva = $seccionActiva ?? 'inicio';

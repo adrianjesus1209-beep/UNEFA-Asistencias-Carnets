@@ -2,7 +2,7 @@
     $rolesConfig = [
         'estudiante' => [
             'tituloRol' => 'Estudiante',
-            'marcaHeader' => 'UNEFA · SICEU ESTUDIANTES',
+            'marcaHeader' => 'UNEFA · ESTUDIANTES',
             'subtituloHeader' => 'Vicerrectorado Académico · Control de Estudios',
             'insigniaRol' => 'ROL: ESTUDIANTE',
             'tituloMenu' => 'Navegación Académica',
@@ -47,8 +47,8 @@
             'secciones' => [
                 'inicio' => [
                     'vista' => 'dashboard.sections.estudiante.inicio',
-                    'tituloPagina' => 'Panel Principal — SICEU Estudiantes UNEFA',
-                    'descripcionPagina' => 'Panel principal del estudiante SICEU UNEFA',
+                    'tituloPagina' => 'Panel Principal — UNEFA Estudiantes',
+                    'descripcionPagina' => 'Panel principal del estudiante del portal UNEFA',
                     'breadcrumbs' => [
                         ['texto' => 'Inicio'],
                         ['texto' => 'Panel Principal'],
@@ -56,7 +56,7 @@
                 ],
                 'carnet' => [
                     'vista' => 'dashboard.sections.estudiante.carnet',
-                    'tituloPagina' => 'Mi Carnet Digital QR — SICEU Estudiantes UNEFA',
+                    'tituloPagina' => 'Mi Carnet Digital QR — UNEFA Estudiantes',
                     'descripcionPagina' => 'Carnet Digital Institucional UNEFA con código QR dinámico',
                     'breadcrumbs' => [
                         ['texto' => 'Inicio', 'url' => null],
@@ -65,7 +65,7 @@
                 ],
                 'carnet-foto' => [
                     'vista' => 'dashboard.sections.estudiante.carnet-foto',
-                    'tituloPagina' => 'Actualizar Fotografía 3:4 — SICEU Estudiantes UNEFA',
+                    'tituloPagina' => 'Actualizar Fotografía 3:4 — UNEFA Estudiantes',
                     'descripcionPagina' => 'Carga y recorte de fotografía institucional 3:4 para el carnet digital',
                     'breadcrumbs' => [
                         ['texto' => 'Inicio', 'url' => null],
@@ -75,7 +75,7 @@
                 ],
                 'escaner' => [
                     'vista' => 'dashboard.sections.estudiante.escaner',
-                    'tituloPagina' => 'Registrar Asistencia QR — SICEU Estudiantes UNEFA',
+                    'tituloPagina' => 'Registrar Asistencia QR — UNEFA Estudiantes',
                     'descripcionPagina' => 'Registro de asistencia por código QR dinámico en aula (Modalidad A)',
                     'breadcrumbs' => [
                         ['texto' => 'Inicio', 'url' => null],
@@ -84,7 +84,7 @@
                 ],
                 'horario' => [
                     'vista' => 'dashboard.sections.estudiante.horario',
-                    'tituloPagina' => 'Horario y Materias — SICEU Estudiantes UNEFA',
+                    'tituloPagina' => 'Horario y Materias — UNEFA Estudiantes',
                     'descripcionPagina' => 'Horario semanal de clases y resumen de carga académica inscrita',
                     'breadcrumbs' => [
                         ['texto' => 'Inicio', 'url' => null],
@@ -93,7 +93,7 @@
                 ],
                 'asistencia' => [
                     'vista' => 'dashboard.sections.estudiante.asistencia',
-                    'tituloPagina' => 'Historial de Asistencia — SICEU Estudiantes UNEFA',
+                    'tituloPagina' => 'Historial de Asistencia — UNEFA Estudiantes',
                     'descripcionPagina' => 'Seguimiento acumulado de asistencias, tardanzas e inasistencias por asignatura',
                     'breadcrumbs' => [
                         ['texto' => 'Inicio', 'url' => null],
@@ -102,7 +102,7 @@
                 ],
                 'seguridad' => [
                     'vista' => 'dashboard.sections.estudiante.seguridad',
-                    'tituloPagina' => 'Seguridad de Cuenta — SICEU Estudiantes UNEFA',
+                    'tituloPagina' => 'Seguridad de Cuenta — UNEFA Estudiantes',
                     'descripcionPagina' => 'Preguntas de seguridad, control de sesión e inactividad del portal',
                     'breadcrumbs' => [
                         ['texto' => 'Inicio', 'url' => null],
@@ -113,7 +113,7 @@
         ],
         'profesor' => [
             'tituloRol' => 'Docente',
-            'marcaHeader' => 'UNEFA · SICEU DOCENTES',
+            'marcaHeader' => 'UNEFA · DOCENTES',
             'subtituloHeader' => 'Vicerrectorado Académico · Control de Cátedra',
             'insigniaRol' => 'ROL: DOCENTE',
             'insigniaClase' => 'border-unefa-gold bg-unefa-gold text-unefa-navy font-black',
@@ -167,8 +167,8 @@
             'secciones' => [
                 'inicio' => [
                     'vista' => 'dashboard.sections.profesor.inicio',
-                    'tituloPagina' => 'Panel Principal — SICEU Docentes UNEFA',
-                    'descripcionPagina' => 'Panel principal del docente en SICEU UNEFA',
+                    'tituloPagina' => 'Panel Principal — UNEFA Docentes',
+                    'descripcionPagina' => 'Panel principal del docente del portal UNEFA',
                     'breadcrumbs' => [
                         ['texto' => 'Inicio'],
                         ['texto' => 'Panel Principal'],
@@ -176,7 +176,7 @@
                 ],
                 'sesion-activa' => [
                     'vista' => 'dashboard.sections.profesor.sesion-activa',
-                    'tituloPagina' => 'Sesión Activa y QR Aula — SICEU Docentes UNEFA',
+                    'tituloPagina' => 'Sesión Activa y QR Aula — UNEFA Docentes',
                     'descripcionPagina' => 'Control de sesión de clase en vivo y QR dinámico de aula (Modalidad A)',
                     'breadcrumbs' => [
                         ['texto' => 'Inicio', 'url' => null],
@@ -185,7 +185,7 @@
                 ],
                 'escaner-mod-b' => [
                     'vista' => 'dashboard.sections.profesor.escaner-mod-b',
-                    'tituloPagina' => 'Escáner Carnets (Mod. B) — SICEU Docentes UNEFA',
+                    'tituloPagina' => 'Escáner Carnets (Mod. B) — UNEFA Docentes',
                     'descripcionPagina' => 'Validación presencial de carnets estudiantiles QR (Modalidad B)',
                     'breadcrumbs' => [
                         ['texto' => 'Inicio', 'url' => null],
@@ -194,7 +194,7 @@
                 ],
                 'carga' => [
                     'vista' => 'dashboard.sections.profesor.carga',
-                    'tituloPagina' => 'Carga Horaria y Secciones — SICEU Docentes UNEFA',
+                    'tituloPagina' => 'Carga Horaria y Secciones — UNEFA Docentes',
                     'descripcionPagina' => 'Carga horaria semanal, aulas asignadas y resumen de secciones del docente',
                     'breadcrumbs' => [
                         ['texto' => 'Inicio', 'url' => null],
@@ -203,7 +203,7 @@
                 ],
                 'actas' => [
                     'vista' => 'dashboard.sections.profesor.actas',
-                    'tituloPagina' => 'Actas de Asistencia PDF — SICEU Docentes UNEFA',
+                    'tituloPagina' => 'Actas de Asistencia PDF — UNEFA Docentes',
                     'descripcionPagina' => 'Consulta de acumulados y emisión de Actas de Asistencia oficiales en PDF (RF-13)',
                     'breadcrumbs' => [
                         ['texto' => 'Inicio', 'url' => null],
@@ -212,7 +212,7 @@
                 ],
                 'carnet' => [
                     'vista' => 'dashboard.sections.profesor.carnet',
-                    'tituloPagina' => 'Mi Carnet Docente — SICEU Docentes UNEFA',
+                    'tituloPagina' => 'Mi Carnet Docente — UNEFA Docentes',
                     'descripcionPagina' => 'Credencial digital institucional del personal docente UNEFA con QR dinámico',
                     'breadcrumbs' => [
                         ['texto' => 'Inicio', 'url' => null],
@@ -221,7 +221,7 @@
                 ],
                 'seguridad' => [
                     'vista' => 'dashboard.sections.profesor.seguridad',
-                    'tituloPagina' => 'Seguridad de Cuenta — SICEU Docentes UNEFA',
+                    'tituloPagina' => 'Seguridad de Cuenta — UNEFA Docentes',
                     'descripcionPagina' => 'Preguntas de seguridad, control de sesión STAFF y auditoría de accesos',
                     'breadcrumbs' => [
                         ['texto' => 'Inicio', 'url' => null],
@@ -232,7 +232,7 @@
         ],
         'coordinador' => [
             'tituloRol' => 'Coordinador',
-            'marcaHeader' => 'UNEFA · SICEU COORDINACIÓN',
+            'marcaHeader' => 'UNEFA · COORDINACIÓN',
             'subtituloHeader' => 'Decanato Académico · Supervisión de Carrera',
             'insigniaRol' => 'ROL: COORDINADOR',
             'tituloMenu' => 'Gestión Académica',
@@ -251,7 +251,7 @@
         ],
         'director' => [
             'tituloRol' => 'Director',
-            'marcaHeader' => 'UNEFA · SICEU DIRECCIÓN',
+            'marcaHeader' => 'UNEFA · DIRECCIÓN',
             'subtituloHeader' => 'Dirección General de Núcleo · Mando Institucional',
             'insigniaRol' => 'ROL: DIRECTOR',
             'tituloMenu' => 'Dirección de Núcleo',
@@ -278,8 +278,8 @@
     $seccion = array_key_exists($seccion ?? 'inicio', $seccionesRol) ? $seccion : 'inicio';
     $seccionMeta = $seccionesRol[$seccion] ?? [
         'vista' => null,
-        'tituloPagina' => 'Panel ' . $rolMeta['tituloRol'] . ' — SICEU UNEFA',
-        'descripcionPagina' => 'Panel unificado SICEU para el rol ' . $rolMeta['tituloRol'],
+        'tituloPagina' => 'Panel ' . $rolMeta['tituloRol'] . ' — UNEFA',
+        'descripcionPagina' => 'Panel unificado de UNEFA para el rol ' . $rolMeta['tituloRol'],
         'breadcrumbs' => [['texto' => 'Inicio'], ['texto' => 'Panel ' . $rolMeta['tituloRol']]],
     ];
 

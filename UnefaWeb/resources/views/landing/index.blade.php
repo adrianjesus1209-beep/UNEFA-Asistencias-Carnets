@@ -131,7 +131,7 @@
                         <span aria-hidden="true">→</span>
                     </a>
                     <a href="{{ route('registro') }}" class="btn btn-blue btn-lg">
-                        <span>Preinscripción</span>
+                        <span>Registrarse</span>
                         <span aria-hidden="true">→</span>
                     </a>
                     <a href="#carreras" class="btn btn-outline btn-lg">

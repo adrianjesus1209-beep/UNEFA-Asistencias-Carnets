@@ -1,4 +1,4 @@
-{{-- Codigo QR ilustrativo de la matriz SICEU (reutilizable en Inicio, Carnet y Escaner). --}}
+{{-- Codigo QR ilustrativo (reutilizable en Inicio, Carnet y Escaner). --}}
 @php
     $idSvg = $id ?? null;
     $tamano = (int) ($tamano ?? 68);

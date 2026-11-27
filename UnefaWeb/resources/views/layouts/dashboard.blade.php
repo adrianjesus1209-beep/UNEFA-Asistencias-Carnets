@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@yield('title', 'Panel Principal — SICEU UNEFA')</title>
-    <meta name="description" content="@yield('descripcion', 'Portal institucional SICEU de la Universidad Nacional Experimental Politécnica de la Fuerza Armada Nacional Bolivariana.')" />
+    <title>@yield('title', 'Panel Principal — UNEFA')</title>
+    <meta name="description" content="@yield('descripcion', 'Portal institucional de la Universidad Nacional Experimental Politécnica de la Fuerza Armada Nacional Bolivariana.')" />
     <link rel="icon" type="image/png" href="{{ asset('assets/img/logos/logo_unefa.png') }}" />
     <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
     @stack('styles')
@@ -17,7 +17,7 @@
     $avatarDefaultSvg = "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 240'%3E%3Crect width='180' height='240' fill='%23e9eef6'/%3E%3Ccircle cx='90' cy='86' r='36' fill='%230b2545'/%3E%3Cpath d='M28 240 C34 176 58 148 90 148 C122 148 146 176 152 240 Z' fill='%23002855'/%3E%3Cpath d='M74 149 L90 184 L106 149 Z' fill='%23ffffff'/%3E%3Cpath d='M86 160 L90 198 L94 160 Z' fill='%23f2b807'/%3E%3C/svg%3E";
     $avatarSvg = $usuario['avatarSvg'] ?? $avatarDefaultSvg;
 @endphp
-<body class="siceu-portal min-h-screen flex flex-col bg-bg-page text-text-primary font-sans" data-login-url="{{ route('login') }}">
+<body class="unefa-portal min-h-screen flex flex-col bg-bg-page text-text-primary font-sans" data-login-url="{{ route('login') }}">
     {{-- Enlace de salto accesible --}}
     <a
         href="#contenido-principal"
@@ -55,7 +55,7 @@
                     </div>
                     <div class="flex flex-col leading-tight">
                         <span class="text-[0.95rem] sm:text-[1.02rem] font-black tracking-[0.06em] text-white uppercase">
-                            {{ $rolMeta['marcaHeader'] ?? 'UNEFA · SICEU' }}
+                            {{ $rolMeta['marcaHeader'] ?? 'UNEFA' }}
                         </span>
                         <span class="hidden sm:block text-[0.68rem] font-semibold tracking-[0.04em] text-[#b0c6ff]">
                             {{ $rolMeta['subtituloHeader'] ?? 'Vicerrectorado Académico · Control de Estudios' }}
@@ -173,7 +173,7 @@
     >
         <h1 id="logoutDialogTitle" class="text-lg font-extrabold text-unefa-navy">{{ $rolMeta['tituloLogout'] ?? '¿Cerrar sesión institucional?' }}</h1>
         <p class="mt-2 text-sm text-text-muted leading-relaxed">
-            {{ $rolMeta['mensajeLogout'] ?? 'Se revocará su token activo en Redis y se desconectará la sesión en tiempo real de SICEU.' }}
+            {{ $rolMeta['mensajeLogout'] ?? 'Se revocará su token activo en Redis y se desconectará la sesión en tiempo real del portal UNEFA.' }}
         </p>
         <div class="mt-6 flex justify-end gap-3">
             <button
