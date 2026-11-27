@@ -9,7 +9,6 @@ import { StudentBottomNav } from '@/components/StudentBottomNav';
 import { TeacherBottomNav } from '@/components/TeacherBottomNav';
 import { CoordinatorBottomNav } from '@/components/CoordinatorBottomNav';
 import { DirectorBottomNav } from '@/components/DirectorBottomNav';
-import { QrModal } from '@/components/QrModal';
 import { EntityRole, ROLES_DATA } from '@/components/dashboard/types';
 import { RoleSelectorCard } from '@/components/dashboard/RoleSelectorCard';
 import { SessionBanner } from '@/components/dashboard/SessionBanner';
@@ -38,7 +37,6 @@ export default function DashboardScreen() {
   const [selectedRole, setSelectedRole] = useState<EntityRole>('estudiante');
 
   const activeRole: EntityRole = roleFromParams ?? selectedRole;
-  const [qrOpen, setQrOpen] = useState(false);
 
   const currentRole = ROLES_DATA[activeRole];
 
@@ -91,7 +89,7 @@ export default function DashboardScreen() {
           activeTab="inicio"
           onPressInicio={() => {}}
           onPressCarnet={() => {}}
-          onPressEscanear={() => setQrOpen(true)}
+          onPressAsistencia={() => {}}
           onPressPerfil={() => {}}
         />
       )}
@@ -99,7 +97,7 @@ export default function DashboardScreen() {
         <TeacherBottomNav
           activeTab="inicio"
           onPressInicio={() => {}}
-          onPressClase={() => setQrOpen(true)}
+          onPressClase={() => {}}
           onPressActas={() => router.push('/actas')}
           onPressCarnet={() => {}}
           onPressPerfil={() => {}}
@@ -123,8 +121,6 @@ export default function DashboardScreen() {
           onPressPerfil={() => {}}
         />
       )}
-
-      <QrModal visible={qrOpen} onClose={() => setQrOpen(false)} />
     </SafeAreaView>
   );
 }

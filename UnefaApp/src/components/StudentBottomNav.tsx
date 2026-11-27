@@ -1,15 +1,16 @@
 import React from 'react';
 import { View, Text, Pressable, Platform, StyleSheet } from 'react-native';
-import { Home, IdCard, ScanQrCode, User } from 'lucide-react-native';
+import { Home, IdCard, ListChecks, User } from 'lucide-react-native';
 import { UnefaColors } from '@/constants/theme';
 
-export type StudentTab = 'inicio' | 'carnet' | 'escanear' | 'perfil';
+export type StudentTab = 'inicio' | 'carnet' | 'escanear' | 'asistencia' | 'perfil';
 
 interface StudentBottomNavProps {
   activeTab?: StudentTab;
   onPressInicio?: () => void;
   onPressCarnet?: () => void;
   onPressEscanear?: () => void;
+  onPressAsistencia?: () => void;
   onPressPerfil?: () => void;
 }
 
@@ -18,14 +19,22 @@ export function StudentBottomNav({
   onPressInicio,
   onPressCarnet,
   onPressEscanear,
+  onPressAsistencia,
   onPressPerfil,
 }: StudentBottomNavProps) {
-  const isActive = (tab: StudentTab) => activeTab === tab;
+  const isTabActive = (tab: StudentTab) => {
+    if (tab === 'escanear' || tab === 'asistencia') {
+      return activeTab === 'escanear' || activeTab === 'asistencia';
+    }
+    return activeTab === tab;
+  };
 
   const iconColor = (tab: StudentTab) =>
-    isActive(tab) ? UnefaColors.blue : '#475569';
+    isTabActive(tab) ? UnefaColors.blue : '#475569';
 
-  const iconStroke = (tab: StudentTab) => (isActive(tab) ? 2.5 : 2);
+  const iconStroke = (tab: StudentTab) => (isTabActive(tab) ? 2.5 : 2);
+
+  const handleAsistencia = onPressAsistencia ?? onPressEscanear;
 
   return (
     <View
@@ -37,11 +46,11 @@ export function StudentBottomNav({
       <Pressable
         style={styles.tab}
         accessibilityRole="tab"
-        accessibilityState={{ selected: isActive('inicio') }}
+        accessibilityState={{ selected: isTabActive('inicio') }}
         accessibilityLabel="Inicio"
         onPress={onPressInicio}>
         <Home size={22} color={iconColor('inicio')} strokeWidth={iconStroke('inicio')} />
-        <Text style={[styles.label, isActive('inicio') && styles.labelActive]}>
+        <Text style={[styles.label, isTabActive('inicio') && styles.labelActive]}>
           Inicio
         </Text>
       </Pressable>
@@ -50,30 +59,30 @@ export function StudentBottomNav({
       <Pressable
         style={styles.tab}
         accessibilityRole="tab"
-        accessibilityState={{ selected: isActive('carnet') }}
+        accessibilityState={{ selected: isTabActive('carnet') }}
         accessibilityLabel="Mi Carnet digital"
         onPress={onPressCarnet}>
         <IdCard size={22} color={iconColor('carnet')} strokeWidth={iconStroke('carnet')} />
-        <Text style={[styles.label, isActive('carnet') && styles.labelActive]}>
+        <Text style={[styles.label, isTabActive('carnet') && styles.labelActive]}>
           Mi Carnet
         </Text>
       </Pressable>
 
-      {/* Escanear QR — acción primaria, fondo dorado */}
+      {/* Asistencia — acción primaria con checklist, fondo dorado */}
       <Pressable
         style={styles.tab}
         accessibilityRole="tab"
-        accessibilityState={{ selected: isActive('escanear') }}
-        accessibilityLabel="Escanear QR de asistencia"
-        onPress={onPressEscanear}>
+        accessibilityState={{ selected: isTabActive('asistencia') }}
+        accessibilityLabel="Control de asistencia"
+        onPress={handleAsistencia}>
         <View
           style={[
             styles.qrPill,
-            isActive('escanear') && styles.qrPillActive,
+            isTabActive('asistencia') && styles.qrPillActive,
           ]}>
-          <ScanQrCode
+          <ListChecks
             size={20}
-            color={isActive('escanear') ? '#ffffff' : UnefaColors.navy}
+            color={isTabActive('asistencia') ? '#ffffff' : UnefaColors.navy}
             strokeWidth={2.5}
           />
         </View>
@@ -81,7 +90,7 @@ export function StudentBottomNav({
           style={[
             styles.label,
             styles.labelQr,
-            isActive('escanear') && styles.labelQrActive,
+            isTabActive('asistencia') && styles.labelQrActive,
           ]}>
           Asistencia
         </Text>
@@ -91,11 +100,11 @@ export function StudentBottomNav({
       <Pressable
         style={styles.tab}
         accessibilityRole="tab"
-        accessibilityState={{ selected: isActive('perfil') }}
+        accessibilityState={{ selected: isTabActive('perfil') }}
         accessibilityLabel="Mi Perfil"
         onPress={onPressPerfil}>
         <User size={22} color={iconColor('perfil')} strokeWidth={iconStroke('perfil')} />
-        <Text style={[styles.label, isActive('perfil') && styles.labelActive]}>
+        <Text style={[styles.label, isTabActive('perfil') && styles.labelActive]}>
           Perfil
         </Text>
       </Pressable>
