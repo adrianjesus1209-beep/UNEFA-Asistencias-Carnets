@@ -41,18 +41,6 @@
   opacity: 1;
 }
 
-/* Modal del escaner QR (placeholder hasta integrar el lector real) */
-.qr-modal {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 200ms ease;
-}
-
-.qr-modal.qr-modal-open {
-  opacity: 1;
-  pointer-events: auto;
-}
-
 /* Dialogo nativo para ampliacion del QR del carnet digital */
 dialog:modal {
   overscroll-behavior: contain;

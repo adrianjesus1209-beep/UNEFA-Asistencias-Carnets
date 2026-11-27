@@ -82,12 +82,8 @@
                             </span>
                         </div>
 
-                        <div class="flex flex-wrap gap-2 border-t border-slate-200 pt-2.5">
-                            <button type="button" data-abrir-qr class="flex flex-1 items-center justify-center gap-1.5 rounded-[10px] bg-unefa-blue px-3 py-2 text-xs font-extrabold text-white transition hover:brightness-110">
-                                @include('partials.icon', ['name' => 'qr-code', 'clase' => 'h-3.5 w-3.5 text-white'])
-                                Escanear Asistencia QR
-                            </button>
-                            <span class="flex items-center justify-center rounded-[10px] border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-700">
+                        <div class="flex border-t border-slate-200 pt-2.5">
+                            <span class="flex w-full items-center justify-center rounded-[10px] border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-700">
                                 Ver Planilla
                             </span>
                         </div>
@@ -121,12 +117,8 @@
                             </span>
                         </div>
 
-                        <div class="flex flex-wrap gap-2 border-t border-slate-200 pt-2.5">
-                            <button type="button" data-abrir-qr class="flex flex-1 items-center justify-center gap-1.5 rounded-[10px] bg-unefa-blue px-3 py-2 text-xs font-extrabold text-white transition hover:brightness-110">
-                                @include('partials.icon', ['name' => 'qr-code', 'clase' => 'h-3.5 w-3.5 text-white'])
-                                Escanear Asistencia QR
-                            </button>
-                            <span class="flex items-center justify-center rounded-[10px] border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-700">
+                        <div class="flex border-t border-slate-200 pt-2.5">
+                            <span class="flex w-full items-center justify-center rounded-[10px] border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-700">
                                 Ver Planilla
                             </span>
                         </div>
@@ -160,12 +152,8 @@
                             </span>
                         </div>
 
-                        <div class="flex flex-wrap gap-2 border-t border-slate-200 pt-2.5">
-                            <button type="button" data-abrir-qr class="flex flex-1 items-center justify-center gap-1.5 rounded-[10px] bg-unefa-blue px-3 py-2 text-xs font-extrabold text-white transition hover:brightness-110">
-                                @include('partials.icon', ['name' => 'qr-code', 'clase' => 'h-3.5 w-3.5 text-white'])
-                                Escanear Asistencia QR
-                            </button>
-                            <span class="flex items-center justify-center rounded-[10px] border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-700">
+                        <div class="flex border-t border-slate-200 pt-2.5">
+                            <span class="flex w-full items-center justify-center rounded-[10px] border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-700">
                                 Ver Planilla
                             </span>
                         </div>

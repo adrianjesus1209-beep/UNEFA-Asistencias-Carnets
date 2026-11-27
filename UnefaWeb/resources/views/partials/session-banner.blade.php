@@ -1,11 +1,11 @@
 {{-- Banner de sesion activa con los datos de la entidad (mock hasta integrar autenticacion). --}}
 {{-- Superficie blanca con filete dorado y barra de acento configurable por rol. --}}
 @php $distribuir = !empty($distribuir); @endphp
-<div class="{{ $claseContenedor ?? 'mb-5' }} overflow-hidden rounded-[18px] border border-slate-200 bg-white shadow-sm">
+<div class="{{ $claseContenedor ?? 'mb-5' }} {{ $distribuir ? 'flex flex-col' : '' }} overflow-hidden rounded-[18px] border border-slate-200 bg-white shadow-sm">
     {{-- Filete dorado institucional --}}
-    <div class="h-[3px] w-full bg-unefa-gold" aria-hidden="true"></div>
+    <div class="h-[3px] w-full shrink-0 bg-unefa-gold" aria-hidden="true"></div>
 
-    <div class="relative p-[18px] {{ $distribuir ? 'flex h-full flex-col' : '' }}">
+    <div class="relative p-[18px] {{ $distribuir ? 'flex flex-1 flex-col' : '' }}">
         {{-- Barra de acento del rol (el color lo define cada dashboard) --}}
         <div class="absolute inset-y-0 left-0 w-1 {{ $acentoFondo }}" aria-hidden="true"></div>
 
