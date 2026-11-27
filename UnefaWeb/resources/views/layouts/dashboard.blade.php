@@ -14,7 +14,8 @@
     $usuario = $usuario ?? [];
     $notificaciones = $notificaciones ?? [];
     $logoFallback = "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23002855' stroke='%23f2b807' stroke-width='3'/%3E%3Cpath d='M32 10 L48 18 V34 C48 44 41 51 32 55 C23 51 16 44 16 34 V18 Z' fill='%2306152a' stroke='%23f2b807' stroke-width='2'/%3E%3Ctext x='32' y='37' text-anchor='middle' font-family='sans-serif' font-size='11' font-weight='900' fill='%23f2b807'%3EUNEFA%3C/text%3E%3C/svg%3E";
-    $avatarSvg = "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 240'%3E%3Crect width='180' height='240' fill='%23e9eef6'/%3E%3Ccircle cx='90' cy='86' r='36' fill='%230b2545'/%3E%3Cpath d='M28 240 C34 176 58 148 90 148 C122 148 146 176 152 240 Z' fill='%23002855'/%3E%3Cpath d='M74 149 L90 184 L106 149 Z' fill='%23ffffff'/%3E%3Cpath d='M86 160 L90 198 L94 160 Z' fill='%23f2b807'/%3E%3C/svg%3E";
+    $avatarDefaultSvg = "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 240'%3E%3Crect width='180' height='240' fill='%23e9eef6'/%3E%3Ccircle cx='90' cy='86' r='36' fill='%230b2545'/%3E%3Cpath d='M28 240 C34 176 58 148 90 148 C122 148 146 176 152 240 Z' fill='%23002855'/%3E%3Cpath d='M74 149 L90 184 L106 149 Z' fill='%23ffffff'/%3E%3Cpath d='M86 160 L90 198 L94 160 Z' fill='%23f2b807'/%3E%3C/svg%3E";
+    $avatarSvg = $usuario['avatarSvg'] ?? $avatarDefaultSvg;
 @endphp
 <body class="siceu-portal min-h-screen flex flex-col bg-bg-page text-text-primary font-sans" data-login-url="{{ route('login') }}">
     {{-- Enlace de salto accesible --}}
@@ -102,7 +103,7 @@
                         <div class="px-4 py-3 bg-bg-secondary border-b border-border-primary flex items-center justify-between">
                             <div class="flex items-center gap-2">
                                 <span class="w-2 h-2 rounded-full bg-unefa-green" aria-hidden="true"></span>
-                                <span class="text-xs font-extrabold uppercase tracking-wider text-unefa-navy">Tiempo Real (Socket.IO)</span>
+                                <span class="text-xs font-extrabold uppercase tracking-wider text-unefa-navy">{{ $rolMeta['tituloNotificaciones'] ?? 'Tiempo Real (Socket.IO)' }}</span>
                             </div>
                             <button type="button" id="markAllNotifRead" class="text-xs font-bold text-unefa-blue hover:underline cursor-pointer bg-transparent border-0">
                                 Marcar leídas
@@ -127,7 +128,7 @@
                 </div>
 
                 {{-- RoleHeaderBadge de Alto Contraste --}}
-                <span class="inline-flex items-center px-2.5 py-1 rounded border-[1.5px] border-unefa-gold bg-unefa-navy-soft text-unefa-gold font-extrabold text-[0.72rem] tracking-[0.06em] uppercase">
+                <span class="inline-flex items-center px-2.5 py-1 rounded border-[1.5px] text-[0.72rem] tracking-[0.06em] uppercase {{ $rolMeta['insigniaClase'] ?? 'border-unefa-gold bg-unefa-navy-soft text-unefa-gold font-extrabold' }}">
                     {{ $rolMeta['insigniaRol'] ?? 'ROL: ESTUDIANTE' }}
                 </span>
 
@@ -170,9 +171,9 @@
         aria-labelledby="logoutDialogTitle"
         class="m-auto w-[min(92vw,26rem)] rounded-xl border-2 border-border-primary bg-white p-6 text-text-primary shadow-2xl"
     >
-        <h1 id="logoutDialogTitle" class="text-lg font-extrabold text-unefa-navy">¿Cerrar sesión institucional?</h1>
+        <h1 id="logoutDialogTitle" class="text-lg font-extrabold text-unefa-navy">{{ $rolMeta['tituloLogout'] ?? '¿Cerrar sesión institucional?' }}</h1>
         <p class="mt-2 text-sm text-text-muted leading-relaxed">
-            Se revocará su token activo en Redis y se desconectará la sesión en tiempo real de SICEU.
+            {{ $rolMeta['mensajeLogout'] ?? 'Se revocará su token activo en Redis y se desconectará la sesión en tiempo real de SICEU.' }}
         </p>
         <div class="mt-6 flex justify-end gap-3">
             <button
@@ -204,7 +205,7 @@
         </span>
         <h1 id="sessionExpiredTitle" class="text-lg font-extrabold text-unefa-navy">Sesión cerrada por seguridad</h1>
         <p class="mt-2 text-sm text-text-muted leading-relaxed">
-            Tu sesión se cerró automáticamente tras 10 minutos de inactividad (RF-05). Inicia sesión nuevamente para continuar.
+            {{ $rolMeta['mensajeExpirada'] ?? 'Tu sesión se cerró automáticamente tras 10 minutos de inactividad (RF-05). Inicia sesión nuevamente para continuar.' }}
         </p>
         <div class="mt-6 flex justify-end">
             <button

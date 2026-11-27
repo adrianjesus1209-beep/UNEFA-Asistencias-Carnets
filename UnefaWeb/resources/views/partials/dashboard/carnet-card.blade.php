@@ -1,16 +1,28 @@
 {{-- Plantilla oficial del Carnet Digital UNEFA (modos: compacto, anverso, preview-foto). --}}
 @php
     $modo = $modo ?? 'compacto';
-    $avatarSvg = "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 240'%3E%3Crect width='180' height='240' fill='%23e9eef6'/%3E%3Ccircle cx='90' cy='86' r='36' fill='%230b2545'/%3E%3Cpath d='M28 240 C34 176 58 148 90 148 C122 148 146 176 152 240 Z' fill='%23002855'/%3E%3Cpath d='M74 149 L90 184 L106 149 Z' fill='%23ffffff'/%3E%3Cpath d='M86 160 L90 198 L94 160 Z' fill='%23f2b807'/%3E%3C/svg%3E";
+    $datos = $titular ?? ($estudiante ?? []);
+    $avatarDefaultSvg = "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 240'%3E%3Crect width='180' height='240' fill='%23e9eef6'/%3E%3Ccircle cx='90' cy='86' r='36' fill='%230b2545'/%3E%3Cpath d='M28 240 C34 176 58 148 90 148 C122 148 146 176 152 240 Z' fill='%23002855'/%3E%3Cpath d='M74 149 L90 184 L106 149 Z' fill='%23ffffff'/%3E%3Cpath d='M86 160 L90 198 L94 160 Z' fill='%23f2b807'/%3E%3C/svg%3E";
+    $avatarSvg = $avatarSrc ?? ($datos['avatarSvg'] ?? $avatarDefaultSvg);
     $logoFallback = "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23002855' stroke='%23f2b807' stroke-width='3'/%3E%3Cpath d='M32 10 L48 18 V34 C48 44 41 51 32 55 C23 51 16 44 16 34 V18 Z' fill='%2306152a' stroke='%23f2b807' stroke-width='2'/%3E%3Ctext x='32' y='37' text-anchor='middle' font-family='sans-serif' font-size='11' font-weight='900' fill='%23f2b807'%3EUNEFA%3C/text%3E%3C/svg%3E";
-    $nombre = $estudiante['nombreCompleto'] ?? 'Carlos Eduardo González Márquez';
-    $nombreCorto = $estudiante['nombreCorto'] ?? 'Carlos E. González M.';
-    $cedula = $estudiante['cedula'] ?? 'V-28.450.123';
-    $carrera = $estudiante['carrera'] ?? 'Ingeniería de Sistemas';
-    $carreraCodigo = $estudiante['carreraCodigo'] ?? 'ING-SIS-10';
-    $nucleo = $estudiante['nucleo'] ?? 'Núcleo Carabobo';
-    $serial = $estudiante['serial'] ?? 'UNEFA-2026-EST-008492';
-    $vigencia = $estudiante['vigencia'] ?? '31/12/2026';
+    $nombre = $datos['nombreCompleto'] ?? 'Carlos Eduardo González Márquez';
+    $nombreCorto = $datos['nombreCorto'] ?? 'Carlos E. González M.';
+    $cedula = $datos['cedula'] ?? 'V-28.450.123';
+    $carrera = $datos['carrera'] ?? 'Ingeniería de Sistemas';
+    $carreraCodigo = $datos['carreraCodigo'] ?? 'ING-SIS-10';
+    $nucleo = $datos['nucleo'] ?? 'Núcleo Carabobo';
+    $serial = $datos['serial'] ?? 'UNEFA-2026-EST-008492';
+    $vigencia = $datos['vigencia'] ?? '31/12/2026';
+    $franjaContenedorClase = $franjaContenedorClase ?? 'bg-bg-tertiary border-b border-border-primary';
+    $franjaTextoClase = $franjaTextoClase ?? 'text-unefa-blue';
+    $franjaTexto = $franjaTexto ?? 'Carnet Estudiantil · Pregrado';
+    $campoPrincipalEtiqueta = $campoPrincipalEtiqueta ?? 'Carrera:';
+    $campoPrincipalValor = $campoPrincipalValor ?? ($datos['cargo'] ?? ($carrera . ' (' . $carreraCodigo . ')'));
+    $bordeCompacto = $bordeCompacto ?? 'border-border-primary';
+    $tituloCompacto = $tituloCompacto ?? 'República Bolivariana de Venezuela · UNEFA';
+    $estadoCompacto = $estadoCompacto ?? null;
+    $subtituloCompacto = $subtituloCompacto ?? 'Ing. de Sistemas';
+    $qrTamanoCompacto = $qrTamanoCompacto ?? 68;
 @endphp
 
 @if($modo === 'anverso')
@@ -30,8 +42,8 @@
             </div>
         </div>
 
-        <div class="px-5 py-2 bg-bg-tertiary border-b border-border-primary text-center">
-            <span class="text-xs font-black tracking-[0.14em] uppercase text-unefa-blue">Carnet Estudiantil · Pregrado</span>
+        <div class="px-5 py-2 {{ $franjaContenedorClase }} text-center">
+            <span class="text-xs font-black tracking-[0.14em] uppercase {{ $franjaTextoClase }}">{{ $franjaTexto }}</span>
         </div>
 
         <div class="p-5 sm:p-6 grid grid-cols-1 sm:grid-cols-[132px_1fr] gap-5 items-center">
@@ -53,8 +65,8 @@
                         <dd class="font-mono font-extrabold text-unefa-navy">{{ $cedula }}</dd>
                     </div>
                     <div class="flex gap-2">
-                        <dt class="font-bold text-text-muted">Carrera:</dt>
-                        <dd class="font-bold text-unefa-blue">{{ $carrera }} ({{ $carreraCodigo }})</dd>
+                        <dt class="font-bold text-text-muted">{{ $campoPrincipalEtiqueta }}</dt>
+                        <dd class="font-bold text-unefa-blue">{{ $campoPrincipalValor }}</dd>
                     </div>
                     <div class="flex gap-2">
                         <dt class="font-bold text-text-muted">Núcleo:</dt>
@@ -103,9 +115,12 @@
         </div>
     </div>
 @else
-    <div class="border-[1.5px] border-border-primary rounded-lg overflow-hidden bg-white">
+    <div class="border-[1.5px] {{ $bordeCompacto }} rounded-lg overflow-hidden bg-white">
         <div class="bg-unefa-navy text-white px-3.5 py-2 border-b-2 border-unefa-gold flex items-center justify-between">
-            <span class="text-[0.65rem] font-extrabold tracking-wider uppercase">República Bolivariana de Venezuela · UNEFA</span>
+            <span class="text-[0.65rem] font-extrabold tracking-wider uppercase">{{ $tituloCompacto }}</span>
+            @if(!empty($estadoCompacto))
+                <span class="text-[0.62rem] font-mono text-unefa-gold font-bold">{{ $estadoCompacto }}</span>
+            @endif
         </div>
         <div class="p-3.5 flex items-center justify-between gap-3">
             <div class="flex items-center gap-3 min-w-0">
@@ -113,12 +128,12 @@
                 <div class="min-w-0">
                     <p class="text-sm font-extrabold text-unefa-navy truncate">{{ $nombreCorto }}</p>
                     <p class="text-xs font-mono font-bold text-text-secondary mt-0.5">C.I. {{ $cedula }}</p>
-                    <p class="text-xs text-text-muted truncate">Ing. de Sistemas</p>
+                    <p class="text-xs text-text-muted truncate">{{ $subtituloCompacto }}</p>
                     <p class="text-[0.68rem] font-mono text-unefa-blue mt-1">{{ $serial }}</p>
                 </div>
             </div>
             <div class="shrink-0">
-                @include('partials.dashboard.qr-svg', ['id' => $qrId ?? 'dashMiniQr', 'tamano' => 68])
+                @include('partials.dashboard.qr-svg', ['id' => $qrId ?? 'dashMiniQr', 'tamano' => $qrTamanoCompacto])
             </div>
         </div>
     </div>

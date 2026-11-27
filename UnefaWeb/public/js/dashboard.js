@@ -389,39 +389,42 @@
     }
 
     // -------------------------------------------------------------------------
-    // Seccion Escaner: Camara web y simulacion de respuestas API
+    // Escáner QR reutilizable (Estudiante Mod. A y Docente Mod. B)
     // -------------------------------------------------------------------------
-    var btnWebcam = document.getElementById('btnToggleWebcam');
-    if (btnWebcam || document.querySelector('[data-sim-scan]')) {
-        var mediaStream = null;
-        var videoEl = document.getElementById('realWebcamVideo');
-        var simEl = document.getElementById('simulatedViewfinder');
-        var scanCard = document.getElementById('scanResultCard');
-        var scanIcon = document.getElementById('scanResultIcon');
-        var scanHeading = document.getElementById('scanResultHeading');
-        var scanDetail = document.getElementById('scanResultDetail');
-        var scanMeta = document.getElementById('scanResultMeta');
+    var SCAN_STYLES = {
+        present: {
+            card: 'mt-4 p-4 rounded-xl border-2 border-unefa-green bg-[#d1fae5]/35 flex items-start gap-3.5',
+            icon: 'w-10 h-10 rounded-full bg-unefa-green text-white flex items-center justify-center shrink-0 font-black',
+            sym: '✓',
+            h: 'text-sm font-black uppercase tracking-wide text-[#065f46]'
+        },
+        late: {
+            card: 'mt-4 p-4 rounded-xl border-2 border-unefa-gold-dark bg-unefa-gold/15 flex items-start gap-3.5',
+            icon: 'w-10 h-10 rounded-full bg-unefa-gold text-unefa-navy flex items-center justify-center shrink-0 font-black',
+            sym: '!',
+            h: 'text-sm font-black uppercase tracking-wide text-unefa-navy'
+        },
+        error: {
+            card: 'mt-4 p-4 rounded-xl border-2 border-unefa-red bg-[#ffdad6] flex items-start gap-3.5',
+            icon: 'w-10 h-10 rounded-full bg-unefa-red text-white flex items-center justify-center shrink-0 font-black',
+            sym: '✕',
+            h: 'text-sm font-black uppercase tracking-wide text-[#93000a]'
+        }
+    };
 
-        var SCAN_STYLES = {
-            present: {
-                card: 'mt-4 p-4 rounded-xl border-2 border-unefa-green bg-[#d1fae5]/35 flex items-start gap-3.5',
-                icon: 'w-10 h-10 rounded-full bg-unefa-green text-white flex items-center justify-center shrink-0 font-black',
-                sym: '✓',
-                h: 'text-sm font-black uppercase tracking-wide text-[#065f46]'
-            },
-            late: {
-                card: 'mt-4 p-4 rounded-xl border-2 border-unefa-gold-dark bg-unefa-gold/15 flex items-start gap-3.5',
-                icon: 'w-10 h-10 rounded-full bg-unefa-gold text-unefa-navy flex items-center justify-center shrink-0 font-black',
-                sym: '!',
-                h: 'text-sm font-black uppercase tracking-wide text-unefa-navy'
-            },
-            error: {
-                card: 'mt-4 p-4 rounded-xl border-2 border-unefa-red bg-[#ffdad6] flex items-start gap-3.5',
-                icon: 'w-10 h-10 rounded-full bg-unefa-red text-white flex items-center justify-center shrink-0 font-black',
-                sym: '✕',
-                h: 'text-sm font-black uppercase tracking-wide text-[#93000a]'
-            }
-        };
+    function bindScannerController(cfg) {
+        var btnWebcam = document.getElementById(cfg.btnCamId);
+        var simButtons = document.querySelectorAll('[' + cfg.simAttr + ']');
+        if (!btnWebcam && !simButtons.length) return;
+
+        var mediaStream = null;
+        var videoEl = document.getElementById(cfg.videoId);
+        var simEl = document.getElementById(cfg.simViewId);
+        var scanCard = document.getElementById(cfg.cardId);
+        var scanIcon = document.getElementById(cfg.iconId);
+        var scanHeading = document.getElementById(cfg.headingId);
+        var scanDetail = document.getElementById(cfg.detailId);
+        var scanMeta = document.getElementById(cfg.metaId);
 
         var updateResultCard = function (type, title, desc, sub) {
             if (!scanCard || !SCAN_STYLES[type]) return;
@@ -458,25 +461,73 @@
                         btnWebcam.textContent = 'Detener Cámara';
                     })
                     .catch(function () {
-                        updateResultCard('error', 'SIN_PERMISOS_CAMARA', 'No se pudo acceder a la cámara web del dispositivo.', 'Verifique los permisos del navegador para usar el escáner QR.');
+                        updateResultCard('error', 'SIN_PERMISOS_CAMARA', cfg.camErrDetail, cfg.camErrMeta);
                     });
             });
         }
 
-        var SCENARIOS = {
-            present: ['present', 'ASISTENCIA REGISTRADA · PRESENTE', 'Ingeniería de Software (01S-2610-D1) · Prof. Elena Rivas · Aula B-204', '08:52:14 AM · Registrado dentro del margen de tolerancia (15 min)'],
-            late: ['late', 'ASISTENCIA REGISTRADA · TARDANZA (LATE)', 'Ingeniería de Software (01S-2610-D1) · Prof. Elena Rivas · Aula B-204', '09:04:19 AM · Escaneo posterior a la tolerancia con sesión abierta'],
-            duplicate: ['error', '409 · ASISTENCIA_YA_REGISTRADA', 'Tu asistencia ya fue registrada en esta sesión de clase.', 'El sistema impide registros duplicados mediante restricción única en PostgreSQL.'],
-            expired: ['error', '401 · TOKEN_QR_EXPIRADO', 'El código QR ha vencido. Solicita que se actualice e intenta de nuevo.', 'Los códigos de aula rotan cada 30 s con vigencia máxima de 45 s.']
-        };
-
-        document.querySelectorAll('[data-sim-scan]').forEach(function (btn) {
+        simButtons.forEach(function (btn) {
             btn.addEventListener('click', function () {
-                var s = SCENARIOS[btn.getAttribute('data-sim-scan')];
+                var s = cfg.scenarios[btn.getAttribute(cfg.simAttr)];
                 if (s) updateResultCard(s[0], s[1], s[2], s[3]);
             });
         });
     }
+
+    bindScannerController({
+        btnCamId: 'btnToggleWebcam',
+        simAttr: 'data-sim-scan',
+        videoId: 'realWebcamVideo',
+        simViewId: 'simulatedViewfinder',
+        cardId: 'scanResultCard',
+        iconId: 'scanResultIcon',
+        headingId: 'scanResultHeading',
+        detailId: 'scanResultDetail',
+        metaId: 'scanResultMeta',
+        camErrDetail: 'No se pudo acceder a la cámara web del dispositivo.',
+        camErrMeta: 'Verifique los permisos del navegador para usar el escáner QR.',
+        scenarios: {
+            present: ['present', 'ASISTENCIA REGISTRADA · PRESENTE', 'Ingeniería de Software (01S-2610-D1) · Prof. Elena Rivas · Aula B-204', '08:52:14 AM · Registrado dentro del margen de tolerancia (15 min)'],
+            late: ['late', 'ASISTENCIA REGISTRADA · TARDANZA (LATE)', 'Ingeniería de Software (01S-2610-D1) · Prof. Elena Rivas · Aula B-204', '09:04:19 AM · Escaneo posterior a la tolerancia con sesión abierta'],
+            duplicate: ['error', '409 · ASISTENCIA_YA_REGISTRADA', 'Tu asistencia ya fue registrada en esta sesión de clase.', 'El sistema impide registros duplicados mediante restricción única en PostgreSQL.'],
+            expired: ['error', '401 · TOKEN_QR_EXPIRADO', 'El código QR ha vencido. Solicita que se actualice e intenta de nuevo.', 'Los códigos de aula rotan cada 30 s con vigencia máxima de 45 s.']
+        }
+    });
+
+    bindScannerController({
+        btnCamId: 'btnToggleDocCam',
+        simAttr: 'data-sim-b',
+        videoId: 'docWebcamVideo',
+        simViewId: 'docSimViewfinder',
+        cardId: 'modBResultCard',
+        iconId: 'modBResultIcon',
+        headingId: 'modBResultHeading',
+        detailId: 'modBResultDetail',
+        metaId: 'modBResultMeta',
+        camErrDetail: 'No se pudo acceder a la cámara web del equipo.',
+        camErrMeta: 'Autorice el uso de la cámara en la barra del navegador.',
+        scenarios: {
+            present: ['present', 'CARNET VALIDADO · ASISTENCIA PRESENTE', 'Luis Fernando Morales Peña (V-27.890.341) · Inscrito en 01S-2610-D1', 'Firma HMAC-SHA256 verificada · Foto APPROVED · Dentro de tolerancia'],
+            late: ['late', 'CARNET VALIDADO · TARDANZA (LATE)', 'Diego Andrés Castillo Lugo (V-28.732.190) · Inscrito en 01S-2610-D1', 'Registrado fuera del margen de tolerancia con sesión abierta'],
+            invalid_card: ['error', '422 · CARNET_ESTUDIANTIL_INVALIDO', 'El carnet escaneado está revocado, sin foto aprobada o no pertenece a un estudiante.', 'El estudiante debe completar la aprobación fotográfica en Coordinación (Supuesto S-02).'],
+            not_enrolled: ['error', '403 · ESTUDIANTE_NO_INSCRITO', 'El estudiante escaneado no figura inscrito en la sección 01S-2610-D1.', 'Verifique la sección seleccionada o solicite revisión en Control de Estudios.'],
+            duplicate: ['error', '409 · ASISTENCIA_YA_REGISTRADA', 'La asistencia de este estudiante ya fue asentada en la sesión actual.', 'Restricción única (session_id, student_id) activa en PostgreSQL 16.']
+        }
+    });
+
+    // Helper compartido para filas <dl> dentro de dialogos de detalle académico.
+    var appendTerm = function (dl, label, value, valueClass) {
+        var wrap = document.createElement('div');
+        var dt = document.createElement('dt');
+        dt.className = 'text-xs font-bold uppercase text-text-muted';
+        dt.textContent = label;
+        var dd = document.createElement('dd');
+        dd.className = valueClass || 'font-semibold';
+        dd.textContent = value;
+        wrap.appendChild(dt);
+        wrap.appendChild(dd);
+        dl.appendChild(wrap);
+    };
 
     // -------------------------------------------------------------------------
     // Seccion Horario: Modal de detalle de asignatura y planilla PDF
@@ -493,19 +544,6 @@
 
         var dlgTitle = document.getElementById('scheduleDialogTitle');
         var dlgBody = document.getElementById('scheduleDialogBody');
-
-        var appendTerm = function (dl, label, value, valueClass) {
-            var wrap = document.createElement('div');
-            var dt = document.createElement('dt');
-            dt.className = 'text-xs font-bold uppercase text-text-muted';
-            dt.textContent = label;
-            var dd = document.createElement('dd');
-            dd.className = valueClass || 'font-semibold';
-            dd.textContent = value;
-            wrap.appendChild(dt);
-            wrap.appendChild(dd);
-            dl.appendChild(wrap);
-        };
 
         document.querySelectorAll('[data-course-modal]').forEach(function (btn) {
             btn.addEventListener('click', function () {
@@ -787,26 +825,28 @@
     }
 
     // -------------------------------------------------------------------------
-    // Seccion Seguridad: Validacion RF-04 y visibilidad de respuestas
+    // Seccion Seguridad: Validacion RF-04 reutilizable (Estudiante y Docente)
     // -------------------------------------------------------------------------
-    var secForm = document.getElementById('securityQuestionsForm');
-    if (secForm) {
-        var q1 = document.getElementById('secQ1');
-        var q2 = document.getElementById('secQ2');
-        var a1 = document.getElementById('secA1');
-        var a2 = document.getElementById('secA2');
-        var c1 = document.getElementById('secA1Counter');
-        var c2 = document.getElementById('secA2Counter');
-        var secAlert = document.getElementById('secAlertBox');
-        var secSuccess = document.getElementById('secSuccessBox');
+    function bindSecurityQuestionsForm(cfg) {
+        var secForm = document.getElementById(cfg.formId);
+        if (!secForm) return;
+
+        var q1 = document.getElementById(cfg.q1Id);
+        var q2 = document.getElementById(cfg.q2Id);
+        var a1 = document.getElementById(cfg.a1Id);
+        var a2 = document.getElementById(cfg.a2Id);
+        var c1 = document.getElementById(cfg.c1Id);
+        var c2 = document.getElementById(cfg.c2Id);
+        var secAlert = document.getElementById(cfg.alertId);
+        var secSuccess = document.getElementById(cfg.successId);
 
         var updateCounter = function (input, badge) {
             if (!input || !badge) return false;
             var len = input.value.trim().length;
             var ok = len >= 4 && len <= 16;
             badge.textContent = ok
-                ? '✓ ' + len + ' / 16 caracteres · Longitud válida (4–16)'
-                : '✕ ' + len + ' / 16 caracteres · Debe tener entre 4 y 16 caracteres';
+                ? '✓ ' + len + ' / 16 caracteres · ' + cfg.validSuffix
+                : '✕ ' + len + ' / 16 caracteres · ' + cfg.invalidSuffix;
             badge.className = ok
                 ? 'inline-flex self-start px-2.5 py-0.5 rounded bg-[#d1fae5] text-[#065f46] text-xs font-mono font-bold'
                 : 'inline-flex self-start px-2.5 py-0.5 rounded bg-[#ffdad6] text-[#93000a] text-xs font-mono font-bold';
@@ -816,23 +856,6 @@
         if (a1) a1.addEventListener('input', function () { updateCounter(a1, c1); });
         if (a2) a2.addEventListener('input', function () { updateCounter(a2, c2); });
 
-        document.querySelectorAll('[data-toggle-input]').forEach(function (btn) {
-            btn.addEventListener('click', function () {
-                var targetId = btn.getAttribute('data-toggle-input');
-                var target = document.getElementById(targetId);
-                if (!target) return;
-                var showing = target.type === 'password';
-                target.type = showing ? 'text' : 'password';
-                btn.setAttribute('aria-pressed', showing ? 'true' : 'false');
-                var num = targetId === 'secA1' ? '1' : '2';
-                btn.setAttribute('aria-label', (showing ? 'Ocultar' : 'Mostrar') + ' respuesta ' + num);
-                var eyeOpen = btn.querySelector('[data-eye-open]');
-                var eyeOff = btn.querySelector('[data-eye-off]');
-                if (eyeOpen) eyeOpen.classList.toggle('hidden', showing);
-                if (eyeOff) eyeOff.classList.toggle('hidden', !showing);
-            });
-        });
-
         secForm.addEventListener('submit', function (e) {
             e.preventDefault();
             if (secAlert) secAlert.classList.add('hidden');
@@ -840,7 +863,7 @@
 
             if (q1 && q2 && q1.value === q2.value) {
                 if (secAlert) {
-                    secAlert.textContent = 'ERROR_VALIDACION: Debe seleccionar dos preguntas de seguridad diferentes.';
+                    secAlert.textContent = cfg.dupMsg;
                     secAlert.classList.remove('hidden');
                 }
                 return;
@@ -850,15 +873,694 @@
             var ok2 = updateCounter(a2, c2);
             if (!ok1 || !ok2) {
                 if (secAlert) {
-                    secAlert.textContent = 'ERROR_VALIDACION: Cada respuesta debe tener estrictamente entre 4 y 16 caracteres (RF-04).';
+                    secAlert.textContent = cfg.lenMsg;
                     secAlert.classList.remove('hidden');
                 }
                 return;
             }
 
             if (secSuccess) {
-                secSuccess.textContent = 'Preguntas de seguridad guardadas y encriptadas correctamente (PUT /api/auth/security-questions).';
+                secSuccess.textContent = cfg.okMsg;
                 secSuccess.classList.remove('hidden');
+            }
+        });
+    }
+
+    document.querySelectorAll('[data-toggle-input]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var targetId = btn.getAttribute('data-toggle-input');
+            var target = document.getElementById(targetId);
+            if (!target) return;
+            var showing = target.type === 'password';
+            target.type = showing ? 'text' : 'password';
+            btn.setAttribute('aria-pressed', showing ? 'true' : 'false');
+            var num = targetId === 'secA1' ? '1' : '2';
+            btn.setAttribute('aria-label', (showing ? 'Ocultar' : 'Mostrar') + ' respuesta ' + num);
+            var eyeOpen = btn.querySelector('[data-eye-open]');
+            var eyeOff = btn.querySelector('[data-eye-off]');
+            if (eyeOpen) eyeOpen.classList.toggle('hidden', showing);
+            if (eyeOff) eyeOff.classList.toggle('hidden', !showing);
+        });
+    });
+
+    bindSecurityQuestionsForm({
+        formId: 'securityQuestionsForm',
+        q1Id: 'secQ1',
+        q2Id: 'secQ2',
+        a1Id: 'secA1',
+        a2Id: 'secA2',
+        c1Id: 'secA1Counter',
+        c2Id: 'secA2Counter',
+        alertId: 'secAlertBox',
+        successId: 'secSuccessBox',
+        validSuffix: 'Longitud válida (4–16)',
+        invalidSuffix: 'Debe tener entre 4 y 16 caracteres',
+        dupMsg: 'ERROR_VALIDACION: Debe seleccionar dos preguntas de seguridad diferentes.',
+        lenMsg: 'ERROR_VALIDACION: Cada respuesta debe tener estrictamente entre 4 y 16 caracteres (RF-04).',
+        okMsg: 'Preguntas de seguridad guardadas y encriptadas correctamente (PUT /api/auth/security-questions).'
+    });
+
+    bindSecurityQuestionsForm({
+        formId: 'docSecForm',
+        q1Id: 'dq1',
+        q2Id: 'dq2',
+        a1Id: 'da1',
+        a2Id: 'da2',
+        c1Id: 'dc1',
+        c2Id: 'dc2',
+        alertId: 'docSecAlert',
+        successId: 'docSecOk',
+        validSuffix: 'Longitud válida',
+        invalidSuffix: 'Requerido 4–16',
+        dupMsg: 'ERROR_VALIDACION: Las dos preguntas de seguridad deben ser diferentes.',
+        lenMsg: 'ERROR_VALIDACION: Cada respuesta debe tener entre 4 y 16 caracteres (RF-04).',
+        okMsg: 'Preguntas de seguridad actualizadas correctamente en el servidor.'
+    });
+
+    // -------------------------------------------------------------------------
+    // Modulo Docente - Inicio: Temporizador de tolerancia y apertura de sesion
+    // -------------------------------------------------------------------------
+    var teacherTolClock = document.getElementById('teacherTolClock');
+    var openSessionDlg = document.getElementById('openSessionDialog');
+    if (teacherTolClock || openSessionDlg) {
+        if (teacherTolClock) {
+            var teacherTolSec = 9 * 60 + 18;
+            window.setInterval(function () {
+                if (teacherTolSec > 0) {
+                    teacherTolSec -= 1;
+                    teacherTolClock.textContent = formatTime(teacherTolSec);
+                }
+            }, 1000);
+        }
+
+        if (openSessionDlg) {
+            var newSessionSection = document.getElementById('newSessionSection');
+            document.querySelectorAll('[data-quick-open]').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    if (newSessionSection) {
+                        newSessionSection.value = btn.getAttribute('data-quick-open') || '01S-2610-D1';
+                    }
+                    openSessionDlg.showModal();
+                });
+            });
+
+            var cancelNewSessionBtn = document.getElementById('cancelNewSession');
+            if (cancelNewSessionBtn) {
+                cancelNewSessionBtn.addEventListener('click', function () {
+                    openSessionDlg.close();
+                });
+            }
+
+            var newSessionForm = document.getElementById('newSessionForm');
+            if (newSessionForm) {
+                newSessionForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    var nextUrl = newSessionForm.getAttribute('data-sesion-activa-url');
+                    if (nextUrl) window.location.href = nextUrl;
+                });
+            }
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Modulo Docente - Sesion Activa: QR 30s, Nomina Socket.IO, RF-10 y Cierre
+    // -------------------------------------------------------------------------
+    var rosterTbody = document.getElementById('rosterTableBody');
+    if (rosterTbody) {
+        var sessionClosed = false;
+        var qrSecDoc = 30;
+        var rotCount = 4;
+        var rosterFilter = 'ALL';
+        var editingStudentId = null;
+
+        var DOC_STUDENTS = [
+            { id: '1', name: 'Carlos Eduardo González Márquez', ci: 'V-28.450.123', status: 'PRESENT', time: '08:52:14', mod: 'Modalidad A (QR)', note: 'Dentro de tolerancia' },
+            { id: '2', name: 'María Alejandra Ruiz Díaz', ci: 'V-29.114.602', status: 'PRESENT', time: '08:51:49', mod: 'Modalidad A (QR)', note: 'Dentro de tolerancia' },
+            { id: '3', name: 'Luis Fernando Morales Peña', ci: 'V-27.890.341', status: 'PRESENT', time: '08:50:12', mod: 'Modalidad B (Carnet)', note: 'Carnet escaneado en aula' },
+            { id: '4', name: 'Valentina Sofía Herrera Castro', ci: 'V-30.012.744', status: 'PRESENT', time: '08:49:05', mod: 'Modalidad A (QR)', note: 'Dentro de tolerancia' },
+            { id: '5', name: 'Diego Andrés Castillo Lugo', ci: 'V-28.732.190', status: 'LATE', time: '09:03:22', mod: 'Modalidad A (QR)', note: '3 min tras tolerancia' },
+            { id: '6', name: 'Oriana Patricia Mendoza Silva', ci: 'V-29.408.511', status: 'JUSTIFIED', time: '08:46:00', mod: 'Manual (Docente)', note: 'Reposo médico avalado por Coordinación' },
+            { id: '7', name: 'Jesús Gabriel Paredes Rojas', ci: 'V-28.991.204', status: 'PENDING', time: '—', mod: 'Sin registro', note: '' },
+            { id: '8', name: 'Camila Andrea Torres Blanco', ci: 'V-30.245.887', status: 'PENDING', time: '—', mod: 'Sin registro', note: '' }
+        ];
+
+        var DOC_BADGES = {
+            PRESENT: { text: 'PRESENTE', cls: 'inline-flex px-2.5 py-0.5 rounded bg-[#d1fae5] text-[#065f46] text-xs font-extrabold' },
+            LATE: { text: 'TARDANZA', cls: 'inline-flex px-2.5 py-0.5 rounded bg-unefa-gold/25 text-unefa-navy border border-unefa-gold-dark text-xs font-extrabold' },
+            JUSTIFIED: { text: 'JUSTIFICADA', cls: 'inline-flex px-2.5 py-0.5 rounded bg-unefa-blue text-white text-xs font-extrabold' },
+            ABSENT: { text: 'AUSENTE', cls: 'inline-flex px-2.5 py-0.5 rounded bg-unefa-red text-white text-xs font-extrabold' },
+            PENDING: { text: 'SIN REGISTRO', cls: 'inline-flex px-2.5 py-0.5 rounded bg-bg-tertiary text-text-muted text-xs font-bold' }
+        };
+
+        var rosterSearch = document.getElementById('rosterSearch');
+        var editDlg = document.getElementById('manualEditDialog');
+        var statusSel = document.getElementById('manualStatusSelect');
+        var justInput = document.getElementById('manualJustificationInput');
+        var justReqMark = document.getElementById('justReqMark');
+        var editAlert = document.getElementById('manualEditAlert');
+
+        var openEditModal = function (id) {
+            var st = DOC_STUDENTS.find(function (s) { return s.id === id; });
+            if (!st || !editDlg) return;
+            editingStudentId = id;
+            var lbl = document.getElementById('manualStudentLabel');
+            if (lbl) lbl.textContent = st.name + ' · ' + st.ci;
+            if (statusSel) statusSel.value = st.status === 'PENDING' ? 'PRESENT' : st.status;
+            if (justInput) justInput.value = st.note || '';
+            if (justReqMark && statusSel) justReqMark.classList.toggle('hidden', statusSel.value !== 'JUSTIFIED');
+            if (editAlert) editAlert.classList.add('hidden');
+            editDlg.showModal();
+        };
+
+        var updateCounters = function () {
+            var cntPresent = document.getElementById('cntPresent');
+            var cntLate = document.getElementById('cntLate');
+            var cntJust = document.getElementById('cntJustified');
+            var cntPending = document.getElementById('cntPending');
+            var lblPending = document.getElementById('lblPending');
+            if (cntPresent) cntPresent.textContent = String(DOC_STUDENTS.filter(function (s) { return s.status === 'PRESENT'; }).length);
+            if (cntLate) cntLate.textContent = String(DOC_STUDENTS.filter(function (s) { return s.status === 'LATE'; }).length);
+            if (cntJust) cntJust.textContent = String(DOC_STUDENTS.filter(function (s) { return s.status === 'JUSTIFIED'; }).length);
+            if (cntPending) cntPending.textContent = String(DOC_STUDENTS.filter(function (s) { return s.status === 'PENDING' || s.status === 'ABSENT'; }).length);
+            if (lblPending) lblPending.textContent = sessionClosed ? 'Ausentes' : 'Sin Registro';
+        };
+
+        var renderRoster = function () {
+            var q = (rosterSearch && rosterSearch.value ? rosterSearch.value : '').trim().toLowerCase();
+            var rows = DOC_STUDENTS.filter(function (s) {
+                var matchQ = !q || s.name.toLowerCase().indexOf(q) !== -1 || s.ci.toLowerCase().indexOf(q) !== -1;
+                var matchF = rosterFilter === 'ALL'
+                    || (rosterFilter === 'PENDING' ? (s.status === 'PENDING' || s.status === 'ABSENT') : s.status === rosterFilter);
+                return matchQ && matchF;
+            });
+
+            rosterTbody.textContent = '';
+
+            if (!rows.length) {
+                var emptyTr = document.createElement('tr');
+                var emptyTd = document.createElement('td');
+                emptyTd.colSpan = 4;
+                emptyTd.className = 'py-8 text-center text-sm text-text-muted';
+                emptyTd.textContent = 'No se encontraron estudiantes con ese criterio.';
+                emptyTr.appendChild(emptyTd);
+                rosterTbody.appendChild(emptyTr);
+            } else {
+                rows.forEach(function (s) {
+                    var tr = document.createElement('tr');
+                    tr.className = 'hover:bg-bg-secondary';
+
+                    var thStudent = document.createElement('th');
+                    thStudent.scope = 'row';
+                    thStudent.className = 'py-3.5 px-4 text-left font-normal';
+                    var nameSpan = document.createElement('span');
+                    nameSpan.className = 'block font-bold text-unefa-navy';
+                    nameSpan.textContent = s.name;
+                    var ciSpan = document.createElement('span');
+                    ciSpan.className = 'block text-xs font-mono text-text-muted';
+                    ciSpan.textContent = s.ci;
+                    thStudent.appendChild(nameSpan);
+                    thStudent.appendChild(ciSpan);
+                    if (s.note) {
+                        var noteSpan = document.createElement('span');
+                        noteSpan.className = 'block text-[0.72rem] text-unefa-blue mt-0.5';
+                        noteSpan.textContent = s.note;
+                        thStudent.appendChild(noteSpan);
+                    }
+
+                    var tdMeta = document.createElement('td');
+                    tdMeta.className = 'py-3.5 px-4 whitespace-nowrap';
+                    var timeSpan = document.createElement('span');
+                    timeSpan.className = 'block font-mono text-xs font-bold text-unefa-navy';
+                    timeSpan.textContent = s.time;
+                    var modSpan = document.createElement('span');
+                    modSpan.className = 'block text-xs text-text-muted';
+                    modSpan.textContent = s.mod;
+                    tdMeta.appendChild(timeSpan);
+                    tdMeta.appendChild(modSpan);
+
+                    var tdBadge = document.createElement('td');
+                    tdBadge.className = 'py-3.5 px-4 whitespace-nowrap';
+                    var badgeInfo = DOC_BADGES[s.status] || DOC_BADGES.PENDING;
+                    var badgeEl = document.createElement('span');
+                    badgeEl.className = badgeInfo.cls;
+                    badgeEl.textContent = badgeInfo.text;
+                    tdBadge.appendChild(badgeEl);
+
+                    var tdAction = document.createElement('td');
+                    tdAction.className = 'py-3.5 px-4 text-right whitespace-nowrap';
+                    var editBtn = document.createElement('button');
+                    editBtn.type = 'button';
+                    editBtn.className = 'px-3 py-1.5 rounded-md bg-white border border-border-primary text-xs font-extrabold text-unefa-navy hover:bg-unefa-navy hover:text-white cursor-pointer transition-colors';
+                    editBtn.textContent = 'Editar / Justificar';
+                    editBtn.addEventListener('click', function () {
+                        openEditModal(s.id);
+                    });
+                    tdAction.appendChild(editBtn);
+
+                    tr.appendChild(thStudent);
+                    tr.appendChild(tdMeta);
+                    tr.appendChild(tdBadge);
+                    tr.appendChild(tdAction);
+                    rosterTbody.appendChild(tr);
+                });
+            }
+
+            updateCounters();
+        };
+
+        var syncQrClock = function () {
+            var s1 = document.getElementById('classQrSec');
+            var s2 = document.getElementById('projectorQrSec');
+            var bar = document.getElementById('classQrBar');
+            if (s1) s1.textContent = qrSecDoc + 's';
+            if (s2) s2.textContent = qrSecDoc + 's';
+            if (bar) bar.style.width = ((qrSecDoc / 30) * 100) + '%';
+        };
+
+        var rotateClassQr = function () {
+            if (sessionClosed) return;
+            qrSecDoc = 30;
+            rotCount += 1;
+            var salt = Math.random().toString(16).slice(2, 10);
+            var tokEl = document.getElementById('classQrToken');
+            if (tokEl) tokEl.textContent = 'salt: ' + salt + ' · rot #' + String(rotCount).padStart(2, '0');
+            ['classQrSvg', 'projectorQrSvg'].forEach(function (id) {
+                var svg = document.getElementById(id);
+                if (!svg) return;
+                svg.querySelectorAll('rect').forEach(function (r, idx) {
+                    if (idx > 45 && idx % 6 === 0) {
+                        r.setAttribute('fill', Math.random() > 0.5 ? '#06152a' : '#ffffff');
+                    }
+                });
+            });
+            syncQrClock();
+        };
+
+        window.setInterval(function () {
+            if (sessionClosed) return;
+            qrSecDoc -= 1;
+            if (qrSecDoc <= 0) rotateClassQr();
+            else syncQrClock();
+        }, 1000);
+
+        var forceRotateBtn = document.getElementById('btnForceRotateClassQr');
+        if (forceRotateBtn) forceRotateBtn.addEventListener('click', rotateClassQr);
+
+        var simScanBtn = document.getElementById('btnSimulateStudentScan');
+        if (simScanBtn) {
+            simScanBtn.addEventListener('click', function () {
+                if (sessionClosed) return;
+                var pending = DOC_STUDENTS.find(function (s) { return s.status === 'PENDING'; });
+                if (!pending) return;
+                pending.status = 'PRESENT';
+                pending.time = new Date().toTimeString().slice(0, 8);
+                pending.mod = 'Modalidad A (Socket.IO)';
+                pending.note = 'Escaneo recibido en tiempo real';
+                renderRoster();
+            });
+        }
+
+        if (statusSel) {
+            statusSel.addEventListener('change', function () {
+                if (justReqMark) justReqMark.classList.toggle('hidden', statusSel.value !== 'JUSTIFIED');
+            });
+        }
+
+        var cancelEditBtn = document.getElementById('cancelManualEdit');
+        if (cancelEditBtn && editDlg) {
+            cancelEditBtn.addEventListener('click', function () { editDlg.close(); });
+        }
+
+        var manualEditForm = document.getElementById('manualEditForm');
+        if (manualEditForm && editDlg) {
+            manualEditForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                if (editAlert) editAlert.classList.add('hidden');
+                var newStatus = statusSel ? statusSel.value : 'PRESENT';
+                var note = justInput ? justInput.value.trim() : '';
+
+                if (newStatus === 'JUSTIFIED' && note.length < 4) {
+                    if (editAlert) {
+                        editAlert.textContent = 'ERROR_VALIDACION: El motivo es obligatorio al marcar una inasistencia como JUSTIFICADA (RF-10).';
+                        editAlert.classList.remove('hidden');
+                    }
+                    if (justInput) justInput.focus();
+                    return;
+                }
+
+                var st = DOC_STUDENTS.find(function (s) { return s.id === editingStudentId; });
+                if (st) {
+                    st.status = newStatus;
+                    st.mod = sessionClosed ? 'Manual Post-Cierre (Auditado)' : 'Manual (Docente)';
+                    st.time = new Date().toTimeString().slice(0, 8);
+                    st.note = note || (newStatus === 'ABSENT' ? 'Marcado manualmente por el docente' : 'Actualizado manualmente');
+                }
+                editDlg.close();
+                renderRoster();
+            });
+        }
+
+        var projDlg = document.getElementById('projectorDialog');
+        var btnProj = document.getElementById('btnOpenProjector');
+        if (btnProj && projDlg) {
+            btnProj.addEventListener('click', function () {
+                if (!sessionClosed) projDlg.showModal();
+            });
+        }
+
+        var closeDlg = document.getElementById('closeSessionDialog');
+        var btnCloseTrigger = document.getElementById('btnCloseSessionTrigger');
+        var closeSummaryEl = document.getElementById('closeSessionSummary');
+        if (btnCloseTrigger && closeDlg) {
+            btnCloseTrigger.addEventListener('click', function () {
+                if (sessionClosed) return;
+                var pendingCount = DOC_STUDENTS.filter(function (s) { return s.status === 'PENDING'; }).length;
+                if (closeSummaryEl) {
+                    closeSummaryEl.textContent = '';
+                    closeSummaryEl.appendChild(document.createTextNode('Al cerrar la sesión '));
+                    var strongCourse = document.createElement('strong');
+                    strongCourse.textContent = 'ING-SIS-601 (01S-2610-D1)';
+                    closeSummaryEl.appendChild(strongCourse);
+                    closeSummaryEl.appendChild(document.createTextNode(', el QR dinámico de aula se inhabilitará y los '));
+                    var strongPending = document.createElement('strong');
+                    strongPending.textContent = pendingCount + ' estudiantes sin registro';
+                    closeSummaryEl.appendChild(strongPending);
+                    closeSummaryEl.appendChild(document.createTextNode(' serán marcados automáticamente como '));
+                    var strongAbs = document.createElement('strong');
+                    strongAbs.textContent = 'AUSENTE (ABSENT)';
+                    closeSummaryEl.appendChild(strongAbs);
+                    closeSummaryEl.appendChild(document.createTextNode('.'));
+                }
+                closeDlg.showModal();
+            });
+        }
+
+        var cancelCloseBtn = document.getElementById('cancelCloseSession');
+        if (cancelCloseBtn && closeDlg) {
+            cancelCloseBtn.addEventListener('click', function () { closeDlg.close(); });
+        }
+
+        var confirmCloseBtn = document.getElementById('confirmCloseSession');
+        if (confirmCloseBtn && closeDlg) {
+            confirmCloseBtn.addEventListener('click', function () {
+                sessionClosed = true;
+                DOC_STUDENTS.forEach(function (s) {
+                    if (s.status === 'PENDING') {
+                        s.status = 'ABSENT';
+                        s.mod = 'Cierre Automático';
+                        s.note = 'Sin registro al cierre de sesión';
+                    }
+                });
+                var stateBadge = document.getElementById('sessionStateBadge');
+                if (stateBadge) {
+                    stateBadge.textContent = '■ SESIÓN CERRADA (CLOSED)';
+                    stateBadge.className = 'inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-bg-tertiary text-unefa-navy border border-border-grid text-xs font-black uppercase tracking-wider';
+                }
+                var qrLiveTag = document.getElementById('qrLiveTag');
+                if (qrLiveTag) {
+                    qrLiveTag.textContent = 'INACTIVO';
+                    qrLiveTag.className = 'px-2.5 py-1 rounded-full bg-[#ffdad6] text-[#93000a] text-[0.68rem] font-extrabold';
+                }
+                var qrBox = document.getElementById('classQrBox');
+                if (qrBox) qrBox.classList.add('opacity-50');
+                var auditBanner = document.getElementById('closedAuditBanner');
+                if (auditBanner) auditBanner.classList.remove('hidden');
+                if (btnCloseTrigger) {
+                    btnCloseTrigger.disabled = true;
+                    btnCloseTrigger.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+                if (btnProj) {
+                    btnProj.disabled = true;
+                    btnProj.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+                closeDlg.close();
+                renderRoster();
+            });
+        }
+
+        if (rosterSearch) rosterSearch.addEventListener('input', renderRoster);
+        document.querySelectorAll('.roster-pill').forEach(function (pill) {
+            pill.addEventListener('click', function () {
+                rosterFilter = pill.getAttribute('data-roster-filter') || 'ALL';
+                document.querySelectorAll('.roster-pill').forEach(function (p) {
+                    var on = p === pill;
+                    p.setAttribute('aria-pressed', on ? 'true' : 'false');
+                    p.className = on
+                        ? 'roster-pill px-3 py-1 rounded-full text-xs font-extrabold bg-unefa-navy text-white cursor-pointer'
+                        : 'roster-pill px-3 py-1 rounded-full text-xs font-bold bg-bg-secondary border border-border-primary text-text-secondary cursor-pointer';
+                });
+                renderRoster();
+            });
+        });
+
+        renderRoster();
+    }
+
+    // -------------------------------------------------------------------------
+    // Modulo Docente - Carga Horaria: Modal detalle de bloque de catedra
+    // -------------------------------------------------------------------------
+    var secDetailDlg = document.getElementById('sectionDetailDialog');
+    if (secDetailDlg) {
+        var DOC_LOAD_DATA = {
+            '01S-2610-D1': { name: 'ING-SIS-601 · Ingeniería de Software', room: 'Aula B-204 (Capacidad 40)', slots: 'Lunes y Jueves · 08:45 - 10:15', enrolled: '32 estudiantes inscritos' },
+            '01S-2610-N1': { name: 'ING-SIS-601 · Ingeniería de Software', room: 'Aula B-206 (Capacidad 35)', slots: 'Martes y Viernes · 17:30 - 19:00', enrolled: '28 estudiantes inscritos' },
+            '02S-2612-D1': { name: 'ING-SIS-704 · Arquitectura de Software', room: 'Lab. Comp. 1 (Capacidad 30)', slots: 'Miércoles y Viernes · 10:30 - 12:00', enrolled: '26 estudiantes inscritos' }
+        };
+        var secDlgTitle = document.getElementById('secDlgTitle');
+        var secDlgBody = document.getElementById('secDlgBody');
+
+        document.querySelectorAll('[data-sec-modal]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var code = btn.getAttribute('data-sec-modal');
+                var d = DOC_LOAD_DATA[code];
+                if (!d || !secDlgTitle || !secDlgBody) return;
+                secDlgTitle.textContent = code + ' · ' + d.name;
+                secDlgBody.textContent = '';
+
+                var dl = document.createElement('dl');
+                dl.className = 'space-y-2';
+                appendTerm(dl, 'Aula', d.room, 'font-semibold');
+                appendTerm(dl, 'Bloques', d.slots, 'font-mono text-xs font-bold text-unefa-blue');
+                appendTerm(dl, 'Matrícula', d.enrolled, 'font-bold text-unefa-navy');
+                secDlgBody.appendChild(dl);
+
+                secDetailDlg.showModal();
+            });
+        });
+    }
+
+    // -------------------------------------------------------------------------
+    // Modulo Docente - Actas PDF (RF-13 con caso de borde 0 sesiones = 0%)
+    // -------------------------------------------------------------------------
+    var actCardsEl = document.getElementById('actSectionCards');
+    var actRosterEl = document.getElementById('actRosterBody');
+    if (actCardsEl && actRosterEl) {
+        var ACT_SECTIONS = {
+            '01S-2610-D1': {
+                code: '01S-2610-D1',
+                subject: 'Ingeniería de Software (ING-SIS-601)',
+                shift: 'Diurno · Aula B-204',
+                closedSessions: 12,
+                enrolled: 32,
+                avg: '90,2%',
+                risk: 1,
+                rows: [
+                    { ci: 'V-28.450.123', name: 'Carlos Eduardo González Márquez', p: 11, l: 1, j: 0, a: 0, pct: 95 },
+                    { ci: 'V-29.114.602', name: 'María Alejandra Ruiz Díaz', p: 12, l: 0, j: 0, a: 0, pct: 100 },
+                    { ci: 'V-27.890.341', name: 'Luis Fernando Morales Peña', p: 10, l: 1, j: 1, a: 0, pct: 92 },
+                    { ci: 'V-28.732.190', name: 'Diego Andrés Castillo Lugo', p: 7, l: 1, j: 0, a: 4, pct: 67 },
+                    { ci: 'V-29.408.511', name: 'Oriana Patricia Mendoza Silva', p: 10, l: 0, j: 2, a: 0, pct: 100 }
+                ]
+            },
+            '01S-2610-N1': {
+                code: '01S-2610-N1',
+                subject: 'Ingeniería de Software (ING-SIS-601)',
+                shift: 'Nocturno · Aula B-206',
+                closedSessions: 10,
+                enrolled: 28,
+                avg: '86,8%',
+                risk: 2,
+                rows: [
+                    { ci: 'V-26.812.400', name: 'Roberto José Salazar M.', p: 9, l: 1, j: 0, a: 0, pct: 95 },
+                    { ci: 'V-27.304.119', name: 'Gabriela Victoria Núñez', p: 8, l: 0, j: 1, a: 1, pct: 90 },
+                    { ci: 'V-25.998.712', name: 'Daniel Alejandro Quintero', p: 6, l: 1, j: 0, a: 3, pct: 70 }
+                ]
+            },
+            '02S-2612-D1': {
+                code: '02S-2612-D1',
+                subject: 'Arquitectura de Software (ING-SIS-704)',
+                shift: 'Diurno · Lab. Comp. 1',
+                closedSessions: 0,
+                enrolled: 26,
+                avg: '0%',
+                risk: 0,
+                rows: [
+                    { ci: 'V-28.110.503', name: 'Andrea Carolina Pérez', p: 0, l: 0, j: 0, a: 0, pct: 0 },
+                    { ci: 'V-28.540.918', name: 'Miguel Ángel Ramírez', p: 0, l: 0, j: 0, a: 0, pct: 0 },
+                    { ci: 'V-29.002.441', name: 'Paola Estefanía León', p: 0, l: 0, j: 0, a: 0, pct: 0 }
+                ]
+            }
+        };
+
+        var activeActSec = '01S-2610-D1';
+
+        var renderActs = function () {
+            actCardsEl.textContent = '';
+
+            Object.keys(ACT_SECTIONS).forEach(function (key) {
+                var s = ACT_SECTIONS[key];
+                var on = s.code === activeActSec;
+                var cardBtn = document.createElement('button');
+                cardBtn.type = 'button';
+                cardBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+                cardBtn.className = on
+                    ? 'text-left rounded-xl bg-white border-2 border-unefa-navy shadow-panel overflow-hidden cursor-pointer'
+                    : 'text-left rounded-xl bg-white border-[1.5px] border-border-primary hover:bg-bg-secondary overflow-hidden cursor-pointer';
+
+                var cardStrip = document.createElement('span');
+                cardStrip.className = 'block h-1 w-full ' + (on ? 'bg-unefa-gold' : 'bg-transparent');
+                cardStrip.setAttribute('aria-hidden', 'true');
+
+                var cardInner = document.createElement('div');
+                cardInner.className = 'p-4';
+
+                var topRow = document.createElement('div');
+                topRow.className = 'flex items-center justify-between';
+                var codeSpan = document.createElement('span');
+                codeSpan.className = 'font-mono text-xs font-extrabold text-unefa-blue';
+                codeSpan.textContent = s.code;
+                var avgSpan = document.createElement('span');
+                avgSpan.className = 'text-xs font-black ' + (s.closedSessions === 0 ? 'text-text-muted' : 'text-[#047857]');
+                avgSpan.textContent = s.avg;
+                topRow.appendChild(codeSpan);
+                topRow.appendChild(avgSpan);
+
+                var subjP = document.createElement('p');
+                subjP.className = 'font-extrabold text-sm text-unefa-navy mt-1';
+                subjP.textContent = s.subject;
+
+                var metaP = document.createElement('p');
+                metaP.className = 'text-xs text-text-muted mt-0.5';
+                metaP.textContent = s.shift + ' · ' + s.closedSessions + ' sesiones cerradas';
+
+                cardInner.appendChild(topRow);
+                cardInner.appendChild(subjP);
+                cardInner.appendChild(metaP);
+                cardBtn.appendChild(cardStrip);
+                cardBtn.appendChild(cardInner);
+                cardBtn.addEventListener('click', function () {
+                    activeActSec = s.code;
+                    renderActs();
+                });
+                actCardsEl.appendChild(cardBtn);
+            });
+
+            var cur = ACT_SECTIONS[activeActSec];
+            var elAvg = document.getElementById('actKpiAvg');
+            var elSes = document.getElementById('actKpiSessions');
+            var elEnr = document.getElementById('actKpiEnrolled');
+            var elRsk = document.getElementById('actKpiRisk');
+            var zeroEl = document.getElementById('zeroSessionsNotice');
+            var tblTitle = document.getElementById('actTableTitle');
+            var tblSub = document.getElementById('actTableSubtitle');
+
+            if (elAvg) elAvg.textContent = cur.avg;
+            if (elSes) elSes.textContent = String(cur.closedSessions);
+            if (elEnr) elEnr.textContent = String(cur.enrolled);
+            if (elRsk) elRsk.textContent = String(cur.risk);
+            if (zeroEl) zeroEl.classList.toggle('hidden', cur.closedSessions > 0);
+            if (tblTitle) tblTitle.textContent = 'Consolidado de Asistencia — ' + cur.code;
+            if (tblSub) tblSub.textContent = cur.subject + ' · Periodo 2026-II';
+
+            actRosterEl.textContent = '';
+            cur.rows.forEach(function (r) {
+                var risk = cur.closedSessions > 0 && r.pct < 75;
+                var pctCls = cur.closedSessions === 0
+                    ? 'px-2.5 py-0.5 rounded bg-bg-tertiary text-text-muted font-mono font-bold text-xs'
+                    : risk
+                        ? 'px-2.5 py-0.5 rounded bg-[#ffdad6] text-[#93000a] font-mono font-extrabold text-xs'
+                        : 'px-2.5 py-0.5 rounded bg-[#d1fae5] text-[#065f46] font-mono font-extrabold text-xs';
+
+                var tr = document.createElement('tr');
+                tr.className = 'hover:bg-bg-secondary';
+
+                var thCi = document.createElement('th');
+                thCi.scope = 'row';
+                thCi.className = 'py-3.5 px-4 font-mono text-xs font-bold text-unefa-navy whitespace-nowrap text-left';
+                thCi.textContent = r.ci;
+
+                var tdName = document.createElement('td');
+                tdName.className = 'py-3.5 px-4 font-bold text-unefa-navy';
+                tdName.textContent = r.name;
+
+                tr.appendChild(thCi);
+                tr.appendChild(tdName);
+
+                [r.p, r.l, r.j, r.a].forEach(function (val) {
+                    var tdNum = document.createElement('td');
+                    tdNum.className = 'py-3.5 px-4 text-center font-mono';
+                    tdNum.textContent = String(val);
+                    tr.appendChild(tdNum);
+                });
+
+                var tdPct = document.createElement('td');
+                tdPct.className = 'py-3.5 px-4 text-right whitespace-nowrap';
+                var pctBadge = document.createElement('span');
+                pctBadge.className = pctCls;
+                pctBadge.textContent = r.pct + '%' + (risk ? ' · Riesgo' : '');
+                tdPct.appendChild(pctBadge);
+                tr.appendChild(tdPct);
+
+                actRosterEl.appendChild(tr);
+            });
+        };
+
+        var actPdfDlg = document.getElementById('actPdfDialog');
+        var btnEmitActPdf = document.getElementById('btnEmitActPdf');
+        var actPdfBody = document.getElementById('actPdfBody');
+        if (btnEmitActPdf && actPdfDlg && actPdfBody) {
+            btnEmitActPdf.addEventListener('click', function () {
+                var s = ACT_SECTIONS[activeActSec];
+                actPdfBody.textContent = '';
+
+                var dl = document.createElement('dl');
+                dl.className = 'space-y-2';
+                appendTerm(dl, 'Sección', s.code + ' — ' + s.subject, 'font-bold text-unefa-navy');
+                appendTerm(dl, 'Resumen', s.closedSessions + ' sesiones cerradas incluidas · Promedio acumulado: ' + s.avg, 'font-semibold');
+                actPdfBody.appendChild(dl);
+
+                var fileBox = document.createElement('div');
+                fileBox.className = 'p-3 rounded-md bg-bg-secondary border border-border-primary font-mono text-xs text-unefa-navy';
+                fileBox.textContent = 'acta_asistencia_' + s.code + '_2026-II.pdf · Generado server-side';
+                actPdfBody.appendChild(fileBox);
+
+                actPdfDlg.showModal();
+            });
+        }
+
+        renderActs();
+    }
+
+    // -------------------------------------------------------------------------
+    // Modulo Docente - Validacion rapida de fotografia en modal Carnet
+    // -------------------------------------------------------------------------
+    var docPhotoInput = document.getElementById('docPhotoFileInput');
+    var docPhotoAlert = document.getElementById('docPhotoAlert');
+    if (docPhotoInput && docPhotoAlert) {
+        docPhotoInput.addEventListener('change', function () {
+            var f = docPhotoInput.files && docPhotoInput.files[0];
+            docPhotoAlert.classList.add('hidden');
+            if (!f) return;
+            if (f.type !== 'image/jpeg' && f.type !== 'image/png') {
+                docPhotoAlert.textContent = 'ERROR_VALIDACION: Solo se admiten imágenes JPEG o PNG.';
+                docPhotoAlert.classList.remove('hidden');
+                docPhotoInput.value = '';
+                return;
+            }
+            if (f.size > 5 * 1024 * 1024) {
+                docPhotoAlert.textContent = 'ERROR_VALIDACION: El archivo supera el límite máximo permitido de 5 MB.';
+                docPhotoAlert.classList.remove('hidden');
+                docPhotoInput.value = '';
             }
         });
     }

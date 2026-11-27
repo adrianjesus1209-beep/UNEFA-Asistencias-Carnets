@@ -4,6 +4,8 @@
     $seccionActiva = $seccionActiva ?? 'inicio';
     $rol = $rol ?? 'estudiante';
     $usuario = $usuario ?? [];
+    $canalBadge = $canalBadge ?? 'v2.0';
+    $subtituloMovil = $usuario['subtituloMovil'] ?? (($usuario['cedula'] ?? '') . ' · Periodo 2026-II');
 @endphp
 <aside
     id="dashboardSidebar"
@@ -12,8 +14,8 @@
 >
     <div class="py-5 overflow-y-auto">
         <div class="px-4 pb-3 mb-2 border-b border-white/10 lg:hidden">
-            <p class="text-sm font-extrabold text-white">{{ $usuario['nombreCompleto'] ?? 'Usuario UNEFA' }}</p>
-            <p class="text-xs font-mono text-unefa-gold">{{ $usuario['cedula'] ?? '' }} · Periodo 2026-II</p>
+            <p class="text-sm font-extrabold text-white">{{ $usuario['nombreMovil'] ?? ($usuario['nombreCompleto'] ?? 'Usuario UNEFA') }}</p>
+            <p class="text-xs font-mono text-unefa-gold">{{ $subtituloMovil }}</p>
         </div>
 
         <p class="px-4 mb-2 text-[0.68rem] font-extrabold uppercase tracking-[0.12em] text-[#b0c6ff]/70">
@@ -49,7 +51,7 @@
                 <span class="w-2 h-2 rounded-full bg-unefa-green" aria-hidden="true"></span>
                 Socket.IO Activo
             </span>
-            <span class="font-mono text-[0.68rem] text-[#b0c6ff]">v2.0</span>
+            <span class="font-mono text-[0.68rem] text-[#b0c6ff]">{{ $canalBadge }}</span>
         </div>
 
         <button
