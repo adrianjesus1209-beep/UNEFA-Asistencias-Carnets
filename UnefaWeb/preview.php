@@ -74,17 +74,19 @@ if ($uri === '/') {
     exit;
 }
 
-$vista = unefa_vista_por_path($uri);
+$resuelto = unefa_resolver_path($uri);
 
-if ($vista === null) {
+if ($resuelto === null) {
     http_response_code(404);
     header('Content-Type: text/html; charset=utf-8');
     echo '<pre>404 - Ruta fuera del mapa de la vista previa: ' . htmlspecialchars($uri) . '</pre>';
     exit;
 }
 
+$vista = $resuelto['vista'];
+
 try {
-    $html = unefa_render($vista);
+    $html = unefa_render($vista, $resuelto['data']);
 } catch (Throwable $e) {
     http_response_code(500);
     header('Content-Type: text/html; charset=utf-8');

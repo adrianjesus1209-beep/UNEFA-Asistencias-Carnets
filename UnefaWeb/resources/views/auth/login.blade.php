@@ -132,8 +132,8 @@
                             action="#" 
                             onsubmit="event.preventDefault(); handleLogin();" 
                             novalidate 
-                            data-destino-estudiante="{{ route('dashboard.estudiante') }}" 
-                            data-destino-personal="{{ route('dashboard.director') }}"
+                            data-destino-estudiante="{{ route('dashboard', ['rol' => 'estudiante']) }}" 
+                            data-destino-personal="{{ route('dashboard', ['rol' => 'director']) }}"
                         >
                             
                             <!-- Input Cédula de Identidad -->
@@ -217,16 +217,16 @@
                                 <span style="font-size: 0.65rem; color: #64748b; font-weight: 600;">Dashboards</span>
                             </div>
                             <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.4rem;">
-                                <a href="{{ route('dashboard.estudiante') }}" style="display: flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.45rem 0.5rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.72rem; font-weight: 700; color: var(--unefa-blue); text-decoration: none;">
+                                <a href="{{ route('dashboard', ['rol' => 'estudiante']) }}" style="display: flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.45rem 0.5rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.72rem; font-weight: 700; color: var(--unefa-blue); text-decoration: none;">
                                     <span>Estudiante</span>
                                 </a>
-                                <a href="{{ route('dashboard.profesor') }}" style="display: flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.45rem 0.5rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.72rem; font-weight: 700; color: #0d9488; text-decoration: none;">
+                                <a href="{{ route('dashboard', ['rol' => 'profesor']) }}" style="display: flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.45rem 0.5rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.72rem; font-weight: 700; color: #0d9488; text-decoration: none;">
                                     <span>Profesor</span>
                                 </a>
-                                <a href="{{ route('dashboard.coordinador') }}" style="display: flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.45rem 0.5rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.72rem; font-weight: 700; color: #b45309; text-decoration: none;">
+                                <a href="{{ route('dashboard', ['rol' => 'coordinador']) }}" style="display: flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.45rem 0.5rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.72rem; font-weight: 700; color: #b45309; text-decoration: none;">
                                     <span>Coordinador</span>
                                 </a>
-                                <a href="{{ route('dashboard.director') }}" style="display: flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.45rem 0.5rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.72rem; font-weight: 700; color: var(--unefa-navy); text-decoration: none;">
+                                <a href="{{ route('dashboard', ['rol' => 'director']) }}" style="display: flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.45rem 0.5rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.72rem; font-weight: 700; color: var(--unefa-navy); text-decoration: none;">
                                     <span>Director</span>
                                 </a>
                             </div>

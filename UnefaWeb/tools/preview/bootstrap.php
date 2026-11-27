@@ -7,8 +7,7 @@
 |
 | Monta el compilador real de Blade (illuminate/view) sin instalar el
 | framework Laravel completo, y define los helpers route() y asset()
-| que usan las vistas. El backend Laravel reutilizara estas mismas
-| vistas tal cual; aqui solo se replican los helpers minimos.
+| que usan las vistas.
 |
 */
 
@@ -33,8 +32,19 @@ if (!defined('UNEFA_BASE_PATH')) {
 
 // Mapa de nombres de ruta a paths (espejo de routes/web.php).
 if (!function_exists('route')) {
-    function route(string $name): string
+    function route(string $name, array $params = []): string
     {
+        if ($name === 'dashboard') {
+            $rol = $params['rol'] ?? 'estudiante';
+            $seccion = $params['seccion'] ?? 'inicio';
+
+            if ($seccion === 'inicio') {
+                return '/dashboard/' . rawurlencode((string) $rol);
+            }
+
+            return '/dashboard/' . rawurlencode((string) $rol) . '/' . rawurlencode((string) $seccion);
+        }
+
         $rutas = [
             'landing' => '/landing',
             'login' => '/login',
@@ -61,20 +71,52 @@ if (!function_exists('asset')) {
     }
 }
 
-// Vista a nombre de vista para cada path (espejo de routes/web.php).
-function unefa_vista_por_path(string $path): ?string
+// Resuelve la vista y los datos iniciales para cada path (espejo de routes/web.php).
+function unefa_resolver_path(string $path): ?array
 {
     static $mapa = [
-        '/landing' => 'landing.index',
-        '/login' => 'auth.login',
-        '/registro' => 'auth.registro',
-        '/dashboard/estudiante' => 'dashboard.student',
-        '/dashboard/profesor' => 'dashboard.teacher',
-        '/dashboard/coordinador' => 'dashboard.coordinator',
-        '/dashboard/director' => 'dashboard.director',
+        '/landing' => ['vista' => 'landing.index', 'data' => []],
+        '/login' => ['vista' => 'auth.login', 'data' => []],
+        '/registro' => ['vista' => 'auth.registro', 'data' => []],
     ];
 
-    return $mapa[$path] ?? null;
+    if (isset($mapa[$path])) {
+        return $mapa[$path];
+    }
+
+    $rolesPermitidos = ['estudiante', 'profesor', 'coordinador', 'director'];
+
+    if ($path === '/dashboard') {
+        $rol = (string) ($_GET['rol'] ?? 'estudiante');
+        $seccion = (string) ($_GET['seccion'] ?? 'inicio');
+
+        return [
+            'vista' => 'dashboard.index',
+            'data' => [
+                'rol' => in_array($rol, $rolesPermitidos, true) ? $rol : 'estudiante',
+                'seccion' => $seccion ?: 'inicio',
+            ],
+        ];
+    }
+
+    if (preg_match('#^/dashboard/(estudiante|profesor|coordinador|director)(?:/([a-z0-9-]+))?$#', $path, $coincidencias)) {
+        return [
+            'vista' => 'dashboard.index',
+            'data' => [
+                'rol' => (string) ($_GET['rol'] ?? $coincidencias[1]),
+                'seccion' => (string) ($_GET['seccion'] ?? ($coincidencias[2] ?? 'inicio')),
+            ],
+        ];
+    }
+
+    return null;
+}
+
+function unefa_vista_por_path(string $path): ?string
+{
+    $resuelto = unefa_resolver_path($path);
+
+    return $resuelto['vista'] ?? null;
 }
 
 // Crea la factory de vistas (compilador Blade real con cache en disco).
@@ -114,7 +156,6 @@ function unefa_render(string $vista, array $data = []): string
 }
 
 // Version de contenido: maxima fecha de modificacion de las vistas.
-// El auto-recarga del navegador compara este valor para refrescar.
 function unefa_vistas_version(): int
 {
     $max = 0;
