@@ -16,6 +16,9 @@ import { EstudianteDashboard } from '@/components/dashboard/EstudianteDashboard'
 import { ProfesorDashboard } from '@/components/dashboard/ProfesorDashboard';
 import { CoordinadorDashboard } from '@/components/dashboard/CoordinadorDashboard';
 import { DirectorDashboard } from '@/components/dashboard/DirectorDashboard';
+import { CarnetFotoView } from '@/components/dashboard/CarnetFotoView';
+import { PerfilView } from '@/components/dashboard/PerfilView';
+import { EstudianteAsistenciaView } from '@/components/dashboard/EstudianteAsistenciaView';
 
 export type { EntityRole };
 
@@ -35,14 +38,65 @@ export default function DashboardScreen() {
   // Sin param, habilita el selector de evaluación.
   const fromLogin = Boolean(roleFromParams);
   const [selectedRole, setSelectedRole] = useState<EntityRole>('estudiante');
+  const [activeTab, setActiveTab] = useState<string>('inicio');
 
   const activeRole: EntityRole = roleFromParams ?? selectedRole;
-
   const currentRole = ROLES_DATA[activeRole];
+
+  const handleRoleSelect = (role: EntityRole) => {
+    setSelectedRole(role);
+    setActiveTab('inicio');
+  };
+
+  const getHeaderSubtitle = () => {
+    if (activeTab === 'carnet') return `Mi Carnet · ${currentRole.title}`;
+    if (activeTab === 'perfil') return `Mi Perfil · ${currentRole.title}`;
+    if (activeTab === 'asistencia') return `Asistencias · ${currentRole.title}`;
+    if (activeTab === 'clase') return `Clase Activa · ${currentRole.title}`;
+    return `Panel ${currentRole.title}`;
+  };
+
+  const renderContent = () => {
+    // Vista dedicada para Mi Carnet (solo opciones para agregar la foto del carnet)
+    if (activeTab === 'carnet') {
+      return <CarnetFotoView config={currentRole} />;
+    }
+
+    // Vista dedicada para Perfil (datos de identificación y opciones para resetear contraseña)
+    if (activeTab === 'perfil') {
+      return (
+        <PerfilView
+          config={currentRole}
+          onLogout={() => router.replace('/login' as any)}
+        />
+      );
+    }
+
+    // Vista dedicada de Asistencias para Estudiante
+    if (activeRole === 'estudiante' && activeTab === 'asistencia') {
+      return <EstudianteAsistenciaView config={currentRole} />;
+    }
+
+    // Vista de Inicio según el rol activo
+    return (
+      <>
+        <SessionBanner
+          activeRole={activeRole}
+          config={currentRole}
+          onLogout={() => router.replace('/login' as any)}
+        />
+
+        {activeRole === 'estudiante' && <EstudianteDashboard config={currentRole} />}
+        {activeRole === 'profesor' && <ProfesorDashboard />}
+        {activeRole === 'coordinador' && <CoordinadorDashboard />}
+        {activeRole === 'director' && <DirectorDashboard />}
+      </>
+    );
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <Header subtitle={`Panel ${currentRole.title}`} showBack={true} />
+      <Header subtitle={getHeaderSubtitle()} showBack={true} />
 
       <ScrollView
         className="flex-1"
@@ -54,19 +108,11 @@ export default function DashboardScreen() {
 
           {/* Selector de rol solo en modo evaluación (sin sesión real) */}
           {!fromLogin && (
-            <RoleSelectorCard activeRole={activeRole} onSelect={setSelectedRole} />
+            <RoleSelectorCard activeRole={activeRole} onSelect={handleRoleSelect} />
           )}
 
-          <SessionBanner
-            activeRole={activeRole}
-            config={currentRole}
-            onLogout={() => router.replace('/login' as any)}
-          />
-
-          {activeRole === 'estudiante' && <EstudianteDashboard config={currentRole} />}
-          {activeRole === 'profesor' && <ProfesorDashboard />}
-          {activeRole === 'coordinador' && <CoordinadorDashboard />}
-          {activeRole === 'director' && <DirectorDashboard />}
+          {/* Contenido dinámico según el botón seleccionado en el tab bar */}
+          {renderContent()}
 
           {/* Volver al login */}
           <View className="mt-2.5 mb-5 items-center">
@@ -83,42 +129,42 @@ export default function DashboardScreen() {
         </View>
       </ScrollView>
 
-      {/* Barra inferior diferenciada por rol */}
+      {/* Barra inferior interactiva por rol */}
       {activeRole === 'estudiante' && (
         <StudentBottomNav
-          activeTab="inicio"
-          onPressInicio={() => {}}
-          onPressCarnet={() => {}}
-          onPressAsistencia={() => {}}
-          onPressPerfil={() => {}}
+          activeTab={activeTab as any}
+          onPressInicio={() => setActiveTab('inicio')}
+          onPressCarnet={() => setActiveTab('carnet')}
+          onPressAsistencia={() => setActiveTab('asistencia')}
+          onPressPerfil={() => setActiveTab('perfil')}
         />
       )}
       {activeRole === 'profesor' && (
         <TeacherBottomNav
-          activeTab="inicio"
-          onPressInicio={() => {}}
-          onPressClase={() => {}}
+          activeTab={activeTab as any}
+          onPressInicio={() => setActiveTab('inicio')}
+          onPressClase={() => setActiveTab('clase')}
           onPressActas={() => router.push('/actas')}
-          onPressCarnet={() => {}}
-          onPressPerfil={() => {}}
+          onPressCarnet={() => setActiveTab('carnet')}
+          onPressPerfil={() => setActiveTab('perfil')}
         />
       )}
       {activeRole === 'coordinador' && (
         <CoordinatorBottomNav
-          activeTab="inicio"
-          onPressInicio={() => {}}
-          onPressCatedras={() => {}}
-          onPressGestion={() => {}}
-          onPressPerfil={() => {}}
+          activeTab={activeTab as any}
+          onPressInicio={() => setActiveTab('inicio')}
+          onPressCatedras={() => setActiveTab('catedras')}
+          onPressGestion={() => setActiveTab('gestion')}
+          onPressPerfil={() => setActiveTab('perfil')}
         />
       )}
       {activeRole === 'director' && (
         <DirectorBottomNav
-          activeTab="inicio"
-          onPressInicio={() => {}}
-          onPressSedes={() => {}}
-          onPressAuditoria={() => {}}
-          onPressPerfil={() => {}}
+          activeTab={activeTab as any}
+          onPressInicio={() => setActiveTab('inicio')}
+          onPressSedes={() => setActiveTab('sedes')}
+          onPressAuditoria={() => setActiveTab('auditoria')}
+          onPressPerfil={() => setActiveTab('perfil')}
         />
       )}
     </SafeAreaView>
