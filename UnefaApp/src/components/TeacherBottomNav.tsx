@@ -1,12 +1,11 @@
 import React from 'react';
 import { View, Text, Pressable, Platform, StyleSheet } from 'react-native';
-import { Home, Radio, FileText, User } from 'lucide-react-native';
+import { Radio, FileText, User } from 'lucide-react-native';
 
 export type TeacherTab = 'inicio' | 'clase' | 'actas' | 'perfil';
 
 interface TeacherBottomNavProps {
   activeTab?: TeacherTab;
-  onPressInicio?: () => void;
   onPressClase?: () => void;
   onPressActas?: () => void;
   onPressPerfil?: () => void;
@@ -15,13 +14,17 @@ interface TeacherBottomNavProps {
 const TEAL = '#0d9488';
 
 export function TeacherBottomNav({
-  activeTab = 'inicio',
-  onPressInicio,
+  activeTab = 'clase',
   onPressClase,
   onPressActas,
   onPressPerfil,
 }: TeacherBottomNavProps) {
-  const isActive = (tab: TeacherTab) => activeTab === tab;
+  const isClaseActive = activeTab === 'clase' || activeTab === 'inicio';
+  const isActive = (tab: TeacherTab) => {
+    if (tab === 'clase') return isClaseActive;
+    return activeTab === tab;
+  };
+
   const color = (tab: TeacherTab) => (isActive(tab) ? TEAL : '#475569');
   const stroke = (tab: TeacherTab) => (isActive(tab) ? 2.5 : 2);
 
@@ -31,32 +34,21 @@ export function TeacherBottomNav({
         styles.bar,
         Platform.OS === 'ios' ? styles.iosPadding : styles.androidPadding,
       ]}>
-      {/* Inicio */}
-      <Pressable
-        style={styles.tab}
-        accessibilityRole="tab"
-        accessibilityState={{ selected: isActive('inicio') }}
-        accessibilityLabel="Inicio"
-        onPress={onPressInicio}>
-        <Home size={20} color={color('inicio')} strokeWidth={stroke('inicio')} />
-        <Text style={[styles.label, isActive('inicio') && styles.labelActive]}>Inicio</Text>
-      </Pressable>
-
       {/* Clase activa — acción primaria con pill teal */}
       <Pressable
         style={styles.tab}
         accessibilityRole="tab"
-        accessibilityState={{ selected: isActive('clase') }}
+        accessibilityState={{ selected: isClaseActive }}
         accessibilityLabel="Clase activa"
         onPress={onPressClase}>
-        <View style={[styles.clasePill, isActive('clase') && styles.clasePillActive]}>
+        <View style={[styles.clasePill, isClaseActive && styles.clasePillActive]}>
           <Radio
             size={18}
-            color={isActive('clase') ? '#ffffff' : TEAL}
+            color={isClaseActive ? '#ffffff' : TEAL}
             strokeWidth={2.5}
           />
         </View>
-        <Text style={[styles.label, styles.labelClase, isActive('clase') && styles.labelClaseActive]}>
+        <Text style={[styles.label, styles.labelClase, isClaseActive && styles.labelClaseActive]}>
           Clase
         </Text>
       </Pressable>
