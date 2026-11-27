@@ -145,7 +145,6 @@ export default function DashboardScreen() {
           onPressInicio={() => setActiveTab('inicio')}
           onPressClase={() => setActiveTab('clase')}
           onPressActas={() => router.push('/actas')}
-          onPressCarnet={() => setActiveTab('carnet')}
           onPressPerfil={() => setActiveTab('perfil')}
         />
       )}

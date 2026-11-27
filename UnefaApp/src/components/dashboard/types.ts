@@ -39,7 +39,7 @@ export const ROLES_DATA: Record<EntityRole, RoleConfig> = {
     name: 'Prof. Ing. Elena Rivas Méndez',
     cedula: 'V-14.567.890',
     department: 'Dpto. de Informática y Telecomunicaciones',
-    subtitle: 'Dedicación Exclusiva · Escalafón Agregado',
+    subtitle: 'Tiempo Completo (T.V.)',
     matricula: 'DOC-UNEFA-8812',
     accentColor: '#0d9488',
   },

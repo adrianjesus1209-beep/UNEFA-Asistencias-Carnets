@@ -1,15 +1,14 @@
 import React from 'react';
 import { View, Text, Pressable, Platform, StyleSheet } from 'react-native';
-import { Home, Radio, FileText, IdCard, User } from 'lucide-react-native';
+import { Home, Radio, FileText, User } from 'lucide-react-native';
 
-export type TeacherTab = 'inicio' | 'clase' | 'actas' | 'carnet' | 'perfil';
+export type TeacherTab = 'inicio' | 'clase' | 'actas' | 'perfil';
 
 interface TeacherBottomNavProps {
   activeTab?: TeacherTab;
   onPressInicio?: () => void;
   onPressClase?: () => void;
   onPressActas?: () => void;
-  onPressCarnet?: () => void;
   onPressPerfil?: () => void;
 }
 
@@ -20,7 +19,6 @@ export function TeacherBottomNav({
   onPressInicio,
   onPressClase,
   onPressActas,
-  onPressCarnet,
   onPressPerfil,
 }: TeacherBottomNavProps) {
   const isActive = (tab: TeacherTab) => activeTab === tab;
@@ -72,17 +70,6 @@ export function TeacherBottomNav({
         onPress={onPressActas}>
         <FileText size={20} color={color('actas')} strokeWidth={stroke('actas')} />
         <Text style={[styles.label, isActive('actas') && styles.labelActive]}>Actas</Text>
-      </Pressable>
-
-      {/* Mi Carnet */}
-      <Pressable
-        style={styles.tab}
-        accessibilityRole="tab"
-        accessibilityState={{ selected: isActive('carnet') }}
-        accessibilityLabel="Mi carnet digital"
-        onPress={onPressCarnet}>
-        <IdCard size={20} color={color('carnet')} strokeWidth={stroke('carnet')} />
-        <Text style={[styles.label, isActive('carnet') && styles.labelActive]}>Carnet</Text>
       </Pressable>
 
       {/* Perfil */}
