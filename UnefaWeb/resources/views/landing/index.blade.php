@@ -99,9 +99,9 @@
                 </div>
 
                 <h1 class="text-title-monumental">
-                    Excelencia educativa.<br>
-                    Disciplina patriótica.<br>
-                    <span style="color: var(--unefa-blue);">Matrícula 100% gratuita.</span>
+                    Excelencia educativa<br>
+                    Disciplina patriótica<br>
+                    <span style="color: var(--unefa-blue);">Matrícula 100% gratuita</span>
                 </h1>
 
                 <p class="hero-desc">
@@ -473,7 +473,7 @@
                     </div>
 
                     <p id="texto-mensaje-recaudos" style="text-align: center; font-size: 0.85rem; font-weight: 700; color: var(--unefa-blue); margin-bottom: 0.85rem;">
-                        Tienes 3 de 6 recaudos completados.
+                        Tienes 3 de 6 recaudos completados
                     </p>
 
                     <a href="{{ route('registro') }}" class="btn btn-gold" style="width: 100%; justify-content: center; padding: 0.65rem 1.25rem;">
