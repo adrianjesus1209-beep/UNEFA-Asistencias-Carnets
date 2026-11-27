@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
-import { QrCode, Award, Users, Calendar } from 'lucide-react-native';
+import { Award, Users, Calendar } from 'lucide-react-native';
 import { UnefaColors } from '@/constants/theme';
 import { COURSES, getCourseStats } from '@/constants/attendance';
 import { MetricsGrid } from './MetricsGrid';
@@ -74,11 +74,6 @@ export function ProfesorDashboard() {
               </View>
 
               <View className="flex-row gap-2 pt-2.5" style={styles.courseActionBorder}>
-                <View className="flex-row items-center gap-1.5 flex-1 justify-center px-3 py-2 rounded-xl"
-                  style={{ backgroundColor: UnefaColors.blue }}>
-                  <QrCode size={13} color="#ffffff" />
-                  <Text className="text-xs font-black text-white">Escanear Asistencia QR</Text>
-                </View>
                 <Pressable
                   className="bg-white border border-slate-300 px-3 py-2 rounded-xl justify-center active:bg-slate-100"
                   accessibilityRole="button"

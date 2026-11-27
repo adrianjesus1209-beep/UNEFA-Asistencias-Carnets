@@ -26,7 +26,7 @@ export const ROLES_DATA: Record<EntityRole, RoleConfig> = {
     name: 'Carlos Manuel Mendoza Rojas',
     cedula: 'V-28.123.456',
     department: 'Ingeniería de Sistemas · 7mo Semestre',
-    subtitle: 'Matrícula Oficial 2026-I · Modalidad Diurna',
+    subtitle: 'Matrícula 2026-I · Modalidad Diurna',
     matricula: 'UNEFA-2022-04921',
     accentColor: UnefaColors.blue,
   },

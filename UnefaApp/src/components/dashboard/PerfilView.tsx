@@ -10,7 +10,6 @@ import {
   AlertCircle,
   IdCard,
   Mail,
-  Building2,
   GraduationCap,
   LogOut,
 } from 'lucide-react-native';
@@ -153,7 +152,7 @@ export function PerfilView({ config, onLogout }: PerfilViewProps) {
             <View className="flex-row justify-between items-center">
               <View className="flex-row items-center gap-1.5">
                 <GraduationCap size={14} color="#64748b" />
-                <Text className="text-xs font-bold text-slate-500">Programa / Cátedra:</Text>
+                <Text className="text-xs font-bold text-slate-500">Carrera:</Text>
               </View>
               <Text className="text-xs font-bold text-slate-800 text-right max-w-[200px]">
                 {config.department}
@@ -170,15 +169,6 @@ export function PerfilView({ config, onLogout }: PerfilViewProps) {
               </Text>
             </View>
 
-            <View className="flex-row justify-between items-center">
-              <View className="flex-row items-center gap-1.5">
-                <Building2 size={14} color="#64748b" />
-                <Text className="text-xs font-bold text-slate-500">Núcleo / Sede:</Text>
-              </View>
-              <Text className="text-xs font-bold text-slate-800">
-                Núcleo Caracas · Sede Central
-              </Text>
-            </View>
 
             <View className="flex-row justify-between items-center">
               <Text className="text-xs font-bold text-slate-500">Régimen académico:</Text>
