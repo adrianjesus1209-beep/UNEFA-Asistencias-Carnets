@@ -13,7 +13,7 @@ rol: estudiante, profesor, coordinador y director).
   banner de sesion y iconos SVG embebidos (lucide, sin CDNs).
 - `resources/views/landing/`: landing con 5 secciones (inicio, doctrina,
   carreras, admisiones, servicios).
-- `resources/views/auth/`: login SICEU y preinscripcion CINU (wizard 3 pasos).
+- `resources/views/auth/`: acceso de usuarios y preinscripcion CINU (wizard 3 pasos).
 - `resources/views/dashboard/`: student, teacher, coordinator y director.
 - `routes/web.php`: rutas estilo Laravel para el router propio del backend.
 - `resources/css/app.css`: directivas Tailwind y ajustes base.

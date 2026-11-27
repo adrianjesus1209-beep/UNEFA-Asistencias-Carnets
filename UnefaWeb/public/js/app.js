@@ -1,7 +1,7 @@
 /**
  * Interactividad compartida del portal UNEFA.
- * Equivalente web de los componentes MenuDrawer y QrModal de UnefaApp,
- * mas el resaltado de la seccion activa en la navegacion.
+ * Incluye el cajon de menu lateral, respaldo progresivo de <dialog>
+ * y el resaltado de la seccion activa en la navegacion.
  */
 (function () {
     'use strict';
@@ -46,75 +46,48 @@
     }
 
     /**
-     * Modal del escaner QR (partials/qr-modal.blade.php).
-     * Placeholder de la maqueta: no activa la camara, solo muestra el dialogo.
+     * Respaldo progresivo para <dialog> con Invoker Commands y closedby="any"
+     * en navegadores sin soporte nativo (Safari / versiones anteriores).
      */
-    var modalQr = document.getElementById('modal-qr');
-    var disparadorQr = null;
-
-    function enfocablesQr() {
-        if (!modalQr) return [];
-        var selectores = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-        return Array.prototype.filter.call(modalQr.querySelectorAll(selectores), function (nodo) {
-            return !nodo.disabled && nodo.offsetParent !== null;
+    if (!('commandForElement' in HTMLButtonElement.prototype)) {
+        document.querySelectorAll('button[command="show-modal"][commandfor]').forEach(function (boton) {
+            boton.addEventListener('click', function () {
+                var objetivo = document.getElementById(boton.getAttribute('commandfor'));
+                if (objetivo && typeof objetivo.showModal === 'function' && !objetivo.open) {
+                    objetivo.showModal();
+                }
+            });
         });
     }
 
-    function abrirQr(evento) {
-        if (!modalQr) return;
-        disparadorQr = evento && evento.currentTarget ? evento.currentTarget : null;
-        modalQr.classList.remove('hidden');
-        modalQr.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
-        requestAnimationFrame(function () {
-            modalQr.classList.add('qr-modal-open');
-        });
-        var enfocables = enfocablesQr();
-        if (enfocables.length > 0) enfocables[0].focus();
-    }
+    if (!('closedBy' in HTMLDialogElement.prototype)) {
+        var fueraDelDialogo = function (evento, dialogo) {
+            var rect = dialogo.getBoundingClientRect();
+            return (
+                evento.clientX < rect.left ||
+                evento.clientX > rect.right ||
+                evento.clientY < rect.top ||
+                evento.clientY > rect.bottom
+            );
+        };
 
-    function cerrarQr() {
-        if (!modalQr) return;
-        modalQr.classList.remove('qr-modal-open');
-        modalQr.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-        window.setTimeout(function () {
-            modalQr.classList.add('hidden');
-            if (disparadorQr && document.body.contains(disparadorQr)) disparadorQr.focus();
-            disparadorQr = null;
-        }, 220);
-    }
-
-    document.querySelectorAll('[data-abrir-qr]').forEach(function (nodo) {
-        nodo.addEventListener('click', abrirQr);
-    });
-    if (modalQr) {
-        modalQr.querySelectorAll('[data-cerrar-qr]').forEach(function (nodo) {
-            nodo.addEventListener('click', cerrarQr);
+        document.querySelectorAll('dialog[closedby="any"]').forEach(function (dialogo) {
+            var presionadoFuera = false;
+            dialogo.addEventListener('pointerdown', function (evento) {
+                presionadoFuera = fueraDelDialogo(evento, dialogo);
+            });
+            dialogo.addEventListener('pointerup', function (evento) {
+                if (presionadoFuera && fueraDelDialogo(evento, dialogo)) {
+                    dialogo.close();
+                }
+                presionadoFuera = false;
+            });
         });
     }
 
-    // Teclado: Escape cierra menu y modal; Tab queda confinado en el modal.
+    // Teclado: Escape cierra el cajon de menu lateral.
     document.addEventListener('keydown', function (evento) {
-        var modalAbierto = modalQr && !modalQr.classList.contains('hidden');
-
-        if (evento.key === 'Tab' && modalAbierto) {
-            var enfocables = enfocablesQr();
-            if (enfocables.length === 0) return;
-            var primero = enfocables[0];
-            var ultimo = enfocables[enfocables.length - 1];
-            if (evento.shiftKey && document.activeElement === primero) {
-                evento.preventDefault();
-                ultimo.focus();
-            } else if (!evento.shiftKey && document.activeElement === ultimo) {
-                evento.preventDefault();
-                primero.focus();
-            }
-            return;
-        }
-
         if (evento.key !== 'Escape') return;
-        if (modalAbierto) cerrarQr();
         if (cajon && !cajon.classList.contains('hidden')) cerrarCajon();
     });
 

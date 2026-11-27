@@ -4,12 +4,13 @@
 
 /*
   Ajustes base del portal UNEFA.
-  La tipografia es system-ui (igual que la aplicacion movil), por lo que
-  no se cargan fuentes externas y el sitio funciona sin internet.
+  La tipografia es system-ui, sin dependencias de fuentes externas para operar offline.
 */
 @layer base {
   html {
     scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
   }
 
   /* Compensa la altura de la barra superior fija al navegar a anclas */
@@ -17,12 +18,55 @@
     scroll-margin-top: 5rem;
   }
 
-  body {
-    -webkit-font-smoothing: antialiased;
+  .unefa-portal :where(a:any-link, button, input, select, textarea, [tabindex="0"]):focus-visible {
+    outline: 3px solid #f2b807;
+    outline-offset: 2px;
   }
 }
 
-/* Transicion del cajon de menu lateral (equivalente a MenuDrawer de la app) */
+@layer components {
+  .shadow-panel {
+    box-shadow: 0 2px 6px rgba(6, 21, 42, 0.05);
+  }
+
+  .nav-item {
+    position: relative;
+    transition: background-color 150ms ease, color 150ms ease;
+  }
+
+  .nav-item[aria-current="page"] {
+    background-color: #0b2545;
+    color: #ffffff;
+  }
+
+  /* Indicador no dependiente solo del color (WCAG 1.4.1) */
+  .nav-item[aria-current="page"]::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background-color: #f2b807;
+  }
+
+  .tab-btn {
+    position: relative;
+    transition: background-color 150ms ease, color 150ms ease;
+  }
+
+  .tab-btn[aria-selected="true"] {
+    background-color: #ffffff;
+    color: #06152a;
+  }
+
+  .tab-btn[aria-selected="true"]::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    border-block-end: 3px solid #f2b807;
+  }
+}
+
+/* Transicion del cajon de menu lateral (landing publica) */
 .menu-drawer-panel {
   transform: translateX(100%);
   transition: transform 260ms ease;
@@ -41,14 +85,14 @@
   opacity: 1;
 }
 
-/* Modal del escaner QR (placeholder hasta integrar el lector real) */
-.qr-modal {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 200ms ease;
+/* Contencion de scroll y backdrop para <dialog> modales nativos */
+dialog:modal {
+  overscroll-behavior: contain;
 }
 
-.qr-modal.qr-modal-open {
-  opacity: 1;
-  pointer-events: auto;
+dialog::backdrop {
+  background: rgba(6, 21, 42, 0.65);
+  backdrop-filter: blur(4px);
+  overflow: hidden;
+  overscroll-behavior: contain;
 }
