@@ -56,7 +56,7 @@
 </div>
 
 {{-- Banda de Identidad Docente + KPIs --}}
-<section aria-label="Resumen operativo del docente" class="bg-white border-[1.5px] border-border-primary rounded-xl p-5 sm:p-6 shadow-panel grid grid-cols-1 xl:grid-cols-[5fr_7fr] gap-6 items-center">
+<section aria-label="Resumen operativo del docente" class="bg-white border-[1.5px] border-border-primary rounded-xl p-5 sm:p-6 shadow-panel grid grid-cols-1 xl:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-6 items-center">
     <div>
         <span class="inline-flex items-center px-2.5 py-0.5 rounded bg-bg-tertiary text-unefa-blue font-extrabold text-[0.72rem] uppercase tracking-wider mb-2">
             Personal Docente · Dedicación Exclusiva
@@ -96,9 +96,9 @@
 </section>
 
 {{-- Layout Principal 65% / 35% --}}
-<div class="grid grid-cols-1 lg:grid-cols-[8fr_4fr] gap-6 items-start">
+<div class="grid grid-cols-1 xl:grid-cols-[minmax(0,8fr)_minmax(0,4fr)] gap-6 items-start">
     {{-- Columna Izquierda --}}
-    <div class="flex flex-col gap-6">
+    <div class="flex min-w-0 flex-col gap-6">
         {{-- Banner de Sesion Activa en Aula --}}
         <section aria-label="Sesión abierta actualmente" class="bg-white border-2 border-unefa-gold-dark rounded-xl overflow-hidden shadow-panel">
             <div class="h-1.5 w-full bg-unefa-gold" aria-hidden="true"></div>
@@ -189,11 +189,11 @@
     </div>
 
     {{-- Columna Derecha --}}
-    <div class="flex flex-col gap-6">
+    <div class="flex min-w-0 flex-col gap-6">
         {{-- Widget Carnet Docente --}}
         <section aria-labelledby="docCarnetWidgetTitle" class="bg-white border-[1.5px] border-border-primary rounded-xl shadow-panel overflow-hidden">
-            <div class="px-5 py-3.5 border-b border-border-primary flex items-center justify-between">
-                <h2 id="docCarnetWidgetTitle" class="text-sm font-extrabold text-unefa-navy">Mi Carnet Docente</h2>
+            <div class="px-5 py-3.5 border-b border-border-primary flex flex-wrap items-center justify-between gap-2">
+                <h2 id="docCarnetWidgetTitle" class="min-w-0 text-sm font-extrabold text-unefa-navy">Mi Carnet Docente</h2>
                 <a href="{{ route('dashboard', ['rol' => $rol, 'seccion' => 'carnet']) }}" class="text-xs font-bold text-unefa-blue hover:underline">Ver Carnet / PDF →</a>
             </div>
             <div class="p-4">
@@ -212,7 +212,7 @@
 
         {{-- Feed Tiempo Real de Escaneos --}}
         <section aria-labelledby="liveFeedTitle" class="bg-white border-[1.5px] border-border-primary rounded-xl shadow-panel overflow-hidden">
-            <div class="px-5 py-3.5 border-b border-border-primary flex items-center justify-between">
+            <div class="px-5 py-3.5 border-b border-border-primary flex flex-wrap items-center justify-between gap-2">
                 <h2 id="liveFeedTitle" class="text-sm font-extrabold text-unefa-navy">Últimos Escaneos en Vivo</h2>
                 <span class="inline-flex items-center gap-1 text-[0.7rem] font-bold text-[#047857]">
                     <span class="w-2 h-2 rounded-full bg-unefa-green" aria-hidden="true"></span>
