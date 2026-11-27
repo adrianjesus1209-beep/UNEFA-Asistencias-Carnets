@@ -94,6 +94,46 @@
         });
     }
 
+    /**
+     * Respaldo progresivo para <dialog> con Invoker Commands y closedby="any"
+     * en navegadores sin soporte nativo (Safari / versiones anteriores).
+     */
+    if (!('commandForElement' in HTMLButtonElement.prototype)) {
+        document.querySelectorAll('button[command="show-modal"][commandfor]').forEach(function (boton) {
+            boton.addEventListener('click', function () {
+                var objetivo = document.getElementById(boton.getAttribute('commandfor'));
+                if (objetivo && typeof objetivo.showModal === 'function' && !objetivo.open) {
+                    objetivo.showModal();
+                }
+            });
+        });
+    }
+
+    if (!('closedBy' in HTMLDialogElement.prototype)) {
+        var fueraDelDialogo = function (evento, dialogo) {
+            var rect = dialogo.getBoundingClientRect();
+            return (
+                evento.clientX < rect.left ||
+                evento.clientX > rect.right ||
+                evento.clientY < rect.top ||
+                evento.clientY > rect.bottom
+            );
+        };
+
+        document.querySelectorAll('dialog[closedby="any"]').forEach(function (dialogo) {
+            var presionadoFuera = false;
+            dialogo.addEventListener('pointerdown', function (evento) {
+                presionadoFuera = fueraDelDialogo(evento, dialogo);
+            });
+            dialogo.addEventListener('pointerup', function (evento) {
+                if (presionadoFuera && fueraDelDialogo(evento, dialogo)) {
+                    dialogo.close();
+                }
+                presionadoFuera = false;
+            });
+        });
+    }
+
     // Teclado: Escape cierra menu y modal; Tab queda confinado en el modal.
     document.addEventListener('keydown', function (evento) {
         var modalAbierto = modalQr && !modalQr.classList.contains('hidden');

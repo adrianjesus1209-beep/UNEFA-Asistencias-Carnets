@@ -204,13 +204,5 @@
                 </div>
             </div>
         </div>
-
-        {{-- Retorno al inicio de sesion --}}
-        <div class="mb-2 mt-4 flex justify-center">
-            <a href="{{ route('login') }}" class="flex items-center gap-2 rounded-xl border border-slate-300 bg-slate-100 px-5 py-3 text-[13px] font-extrabold text-unefa-navy transition hover:bg-slate-200">
-                @include('partials.icon', ['name' => 'arrow-left', 'clase' => 'h-4 w-4 text-unefa-navy'])
-                Volver al inicio de sesión
-            </a>
-        </div>
     </div>
 @endsection

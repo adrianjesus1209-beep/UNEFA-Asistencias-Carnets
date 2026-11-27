@@ -52,3 +52,14 @@
   opacity: 1;
   pointer-events: auto;
 }
+
+/* Dialogo nativo para ampliacion del QR del carnet digital */
+dialog:modal {
+  overscroll-behavior: contain;
+}
+
+dialog::backdrop {
+  background: rgba(6, 21, 42, 0.72);
+  overflow: hidden;
+  overscroll-behavior: contain;
+}

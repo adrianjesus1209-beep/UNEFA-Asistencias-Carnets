@@ -40,63 +40,80 @@
 
                     <div class="my-4 border-t border-dashed border-slate-200" aria-hidden="true"></div>
 
-                    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-center">
+                    <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
                         <div class="mx-auto flex h-28 w-24 shrink-0 flex-col items-center justify-center gap-1 rounded-[10px] border-2 border-unefa-gold bg-slate-50 p-1 sm:mx-0">
                             @include('partials.icon', ['name' => 'user', 'clase' => 'h-10 w-10 text-slate-500'])
                             <span class="text-center text-[11px] font-extrabold text-slate-600">FOTO ESTUDIANTE</span>
                         </div>
 
-                        <div class="min-w-0 flex-1">
+                        <div class="min-w-0 flex-1 text-center sm:text-left">
                             <p class="mb-1 text-base font-black text-unefa-navy">Carlos Manuel Mendoza Rojas</p>
                             <p class="mb-1 text-[13px] font-extrabold text-unefa-blue">V-28.123.456</p>
                             <p class="mb-1 text-[11px] font-bold text-slate-600">INGENIERÍA DE SISTEMAS</p>
-                            <p class="mb-3 text-[11px] font-extrabold text-emerald-700">CONDICIÓN: REGULAR ACTIVO</p>
+                            <p class="text-[11px] font-extrabold text-emerald-700">CONDICIÓN: REGULAR ACTIVO</p>
+                        </div>
+                    </div>
 
-                            <div class="flex items-center gap-3 rounded-lg bg-slate-50 p-2">
-                                <svg viewBox="0 0 25 25" class="h-14 w-14 shrink-0 rounded-[3px] bg-white" role="img" aria-label="Código QR de demostración de la matrícula 2022-04921">
-                                    <rect width="25" height="25" fill="#ffffff"></rect>
-                                    <g fill="#1f2937">
-                                        <rect x="1" y="1" width="7" height="7"></rect>
-                                        <rect x="17" y="1" width="7" height="7"></rect>
-                                        <rect x="1" y="17" width="7" height="7"></rect>
-                                    </g>
-                                    <g fill="#ffffff">
-                                        <rect x="2" y="2" width="5" height="5"></rect>
-                                        <rect x="18" y="2" width="5" height="5"></rect>
-                                        <rect x="2" y="18" width="5" height="5"></rect>
-                                    </g>
-                                    <g fill="#1f2937">
-                                        <rect x="3" y="3" width="3" height="3"></rect>
-                                        <rect x="19" y="3" width="3" height="3"></rect>
-                                        <rect x="3" y="19" width="3" height="3"></rect>
-                                    </g>
-                                    <g fill="#1f2937">
-                                        <rect x="9" y="1" width="1" height="1"></rect><rect x="11" y="1" width="2" height="1"></rect><rect x="14" y="1" width="1" height="1"></rect>
-                                        <rect x="9" y="3" width="2" height="1"></rect><rect x="13" y="3" width="1" height="1"></rect><rect x="15" y="3" width="2" height="1"></rect>
-                                        <rect x="10" y="5" width="1" height="1"></rect><rect x="12" y="5" width="3" height="1"></rect>
-                                        <rect x="9" y="6" width="1" height="1"></rect><rect x="11" y="6" width="1" height="1"></rect><rect x="13" y="6" width="2" height="1"></rect><rect x="16" y="6" width="1" height="1"></rect>
-                                        <rect x="1" y="9" width="1" height="2"></rect><rect x="3" y="9" width="2" height="1"></rect><rect x="6" y="9" width="1" height="1"></rect>
-                                        <rect x="9" y="8" width="2" height="1"></rect><rect x="12" y="8" width="1" height="2"></rect><rect x="15" y="8" width="2" height="1"></rect><rect x="18" y="8" width="1" height="1"></rect><rect x="21" y="8" width="2" height="1"></rect>
-                                        <rect x="9" y="10" width="1" height="2"></rect><rect x="11" y="11" width="2" height="1"></rect><rect x="14" y="10" width="1" height="2"></rect><rect x="17" y="10" width="2" height="1"></rect><rect x="21" y="10" width="1" height="2"></rect>
-                                        <rect x="9" y="12" width="3" height="1"></rect><rect x="14" y="13" width="2" height="1"></rect><rect x="18" y="12" width="1" height="2"></rect><rect x="22" y="13" width="1" height="1"></rect>
-                                        <rect x="1" y="14" width="2" height="1"></rect><rect x="4" y="14" width="1" height="2"></rect><rect x="6" y="15" width="1" height="1"></rect>
-                                        <rect x="9" y="15" width="1" height="2"></rect><rect x="12" y="14" width="2" height="2"></rect><rect x="16" y="15" width="3" height="1"></rect><rect x="21" y="15" width="1" height="1"></rect>
-                                        <rect x="9" y="18" width="2" height="1"></rect><rect x="12" y="17" width="1" height="2"></rect><rect x="15" y="18" width="1" height="2"></rect><rect x="18" y="17" width="2" height="1"></rect><rect x="22" y="18" width="1" height="2"></rect>
-                                        <rect x="10" y="20" width="3" height="1"></rect><rect x="15" y="21" width="2" height="1"></rect><rect x="19" y="20" width="1" height="2"></rect><rect x="22" y="21" width="2" height="1"></rect>
-                                        <rect x="9" y="22" width="1" height="2"></rect><rect x="12" y="23" width="2" height="1"></rect><rect x="16" y="22" width="1" height="2"></rect><rect x="19" y="23" width="3" height="1"></rect>
-                                    </g>
-                                </svg>
-                                <div class="min-w-0">
-                                    <span class="block font-mono text-[11px] font-bold tracking-[1px] text-slate-900">QR DEMO · 2022-04921</span>
-                                    <span class="mt-0.5 block font-mono text-[11px] font-bold text-slate-500">MAT: 2022-04921-UNEFA</span>
-                                    <span class="mt-1 block text-[11px] font-semibold text-slate-500">Código ilustrativo, no válido para accesos</span>
-                                </div>
-                            </div>
+                    {{-- Bloque dedicado del QR: zona de silencio blanca, alto contraste y opcion de ampliacion --}}
+                    <div class="mt-4 flex flex-col items-center gap-3.5 rounded-2xl border border-slate-200 bg-slate-50 p-3.5 sm:flex-row sm:items-center">
+                        <button
+                            type="button"
+                            command="show-modal"
+                            commandfor="modal-carnet-qr"
+                            class="group relative flex shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white p-2.5 shadow-sm transition hover:border-unefa-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900"
+                            aria-label="Ampliar código QR del carnet digital"
+                        >
+                            @include('partials.carnet-qr-svg', ['clase' => 'h-24 w-24', 'decorativo' => true])
+                        </button>
+
+                        <div class="min-w-0 flex-1 text-center sm:text-left">
+                            <span class="block font-mono text-xs font-extrabold tracking-[0.8px] text-slate-900">QR DEMO · 2022-04921</span>
+                            <span class="mt-0.5 block font-mono text-[11px] font-bold text-slate-600">MAT: 2022-04921-UNEFA</span>
+                            <span class="mt-1 block text-[11px] font-semibold text-slate-500">Código ilustrativo, no válido para accesos</span>
+                            <button
+                                type="button"
+                                command="show-modal"
+                                commandfor="modal-carnet-qr"
+                                class="mt-2.5 inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-extrabold text-unefa-navy transition hover:border-unefa-navy hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900"
+                            >
+                                @include('partials.icon', ['name' => 'qr-code', 'clase' => 'h-3.5 w-3.5 text-unefa-navy'])
+                                Ampliar QR
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        {{-- Dialogo nativo para visualizar el QR del carnet en formato amplio y legible --}}
+        <dialog
+            id="modal-carnet-qr"
+            closedby="any"
+            aria-labelledby="carnet-qr-titulo"
+            class="carnet-qr-dialog m-auto w-[calc(100%-2rem)] max-w-[380px] rounded-[22px] border border-slate-200 bg-white p-6 text-center shadow-2xl"
+        >
+            <div class="flex flex-col items-center">
+                <h1 id="carnet-qr-titulo" class="text-lg font-black text-unefa-navy">Carnet Digital QR</h1>
+                <p class="mt-1 text-xs font-bold text-slate-600">Carlos Manuel Mendoza Rojas · V-28.123.456</p>
+
+                <div class="my-4 rounded-2xl border-2 border-unefa-gold/70 bg-white p-4 shadow-sm">
+                    @include('partials.carnet-qr-svg', ['clase' => 'h-56 w-56'])
+                </div>
+
+                <p class="font-mono text-xs font-extrabold tracking-[0.8px] text-slate-900">MAT: 2022-04921-UNEFA</p>
+                <p class="mt-1 text-[11px] font-semibold text-slate-500">Código ilustrativo, no válido para accesos</p>
+
+                <form method="dialog" class="mt-5 w-full">
+                    <button
+                        type="submit"
+                        autofocus
+                        class="w-full rounded-[14px] bg-unefa-navy py-3 text-sm font-extrabold text-white transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2"
+                    >
+                        Cerrar
+                    </button>
+                </form>
+            </div>
+        </dialog>
 
         <div class="mt-8 flex flex-col gap-5">
             {{-- Metricas del estudiante --}}
@@ -215,14 +232,6 @@
             <p class="pb-2 text-center text-[11px] font-semibold text-slate-500">
                 Entorno de demostración · Los datos mostrados son simulados
             </p>
-        </div>
-
-        {{-- Retorno al inicio de sesion --}}
-        <div class="mb-2 mt-4 flex justify-center">
-            <a href="{{ route('login') }}" class="flex items-center gap-2 rounded-xl border border-slate-300 bg-slate-100 px-5 py-3 text-[13px] font-extrabold text-unefa-navy transition hover:bg-slate-200">
-                @include('partials.icon', ['name' => 'arrow-left', 'clase' => 'h-4 w-4 text-unefa-navy'])
-                Volver al inicio de sesión
-            </a>
         </div>
     </div>
 @endsection

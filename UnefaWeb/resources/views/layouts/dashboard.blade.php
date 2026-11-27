@@ -23,15 +23,15 @@
             </a>
 
             <div class="flex items-center gap-2">
-                <button type="button" data-abrir-qr class="flex h-9 items-center justify-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 transition hover:bg-slate-100" aria-label="Abrir escáner QR">
+                <button type="button" data-abrir-qr class="flex h-9 items-center justify-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900" aria-label="Abrir escáner QR">
                     @include('partials.icon', ['name' => 'qr-code', 'clase' => 'h-4 w-4 text-unefa-navy'])
                     <span class="hidden text-[11px] font-bold text-unefa-goldDark sm:inline">Escáner QR</span>
                 </button>
-                <a href="{{ route('landing') }}" class="flex h-9 items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 text-xs font-bold text-slate-900 transition hover:bg-slate-100">
+                <a href="{{ route('landing') }}" class="flex h-9 items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 text-xs font-bold text-slate-900 transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900">
                     @include('partials.icon', ['name' => 'arrow-left', 'clase' => 'h-3.5 w-3.5 text-slate-900'])
                     Inicio
                 </a>
-                <a href="{{ route('login') }}" class="flex h-9 items-center gap-1.5 rounded-full border border-red-200 bg-red-50 px-3 text-xs font-bold text-unefa-red transition hover:bg-red-100">
+                <a href="{{ route('login') }}" class="flex h-9 items-center gap-1.5 rounded-full border border-red-200 bg-red-50 px-3 text-xs font-bold text-unefa-red transition hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900">
                     @include('partials.icon', ['name' => 'log-out', 'clase' => 'h-3.5 w-3.5 text-unefa-red'])
                     Cerrar sesión
                 </a>

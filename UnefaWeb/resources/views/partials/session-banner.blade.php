@@ -36,10 +36,6 @@
                 ID Institucional:
                 <span class="font-mono text-[11px] font-extrabold text-slate-900">{{ $matricula }}</span>
             </p>
-            <a href="{{ route('login') }}" class="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-bold text-red-600 transition hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900">
-                @include('partials.icon', ['name' => 'log-out', 'clase' => 'h-3.5 w-3.5 text-red-600'])
-                Cerrar sesión
-            </a>
         </div>
     </div>
 </div>
