@@ -401,7 +401,7 @@
         message.textContent =
           pct === 100
             ? "Excelente. Ya tienes todos los recaudos completos para consignar."
-            : `Tienes ${completed} de ${total} recaudos completados.`;
+            : `Tienes ${completed} de ${total} recaudos completados`;
       }
     }
 
